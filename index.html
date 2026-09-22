@@ -196,7 +196,6 @@
 
         * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
         
-        /* تفعيل التدفق الطبيعي ومنع حجب المحتوى أو الشاشة البيضاء */
         html, body {
             width: 100%;
             min-height: 100vh;
@@ -218,7 +217,6 @@
 
         .main-viewport { flex: 1; display: flex; flex-direction: column; width: 100%; }
         
-        /* نظام الشاشات الطبيعي الموثوق (بدون Display: none على الشاشة الرئيسية) */
         .app-screen {
             display: none;
             flex-direction: column;
@@ -448,7 +446,7 @@
             display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700;
         }
 
-        /* القائمة الجانبية الكلاسيكية النظيفة */
+        /* القائمة الجانبية */
         .sidebar-mask {
             position: fixed; inset: 0; background: rgba(0, 0, 0, 0.45); z-index: 1500;
             opacity: 0; pointer-events: none; transition: opacity 0.25s ease;
@@ -474,7 +472,6 @@
         .sidebar-link:hover { background: var(--segment-bg); }
         .sidebar-link-left { display: flex; align-items: center; gap: 10px; }
 
-        /* رقم الإصدار كنص سادة بدون خلفيات */
         .sidebar-version-plain {
             padding: 14px 20px; font-size: 12px; color: var(--text-muted); font-weight: 500;
             border-top: 1px solid var(--border-light); text-align: center;
@@ -544,30 +541,6 @@
         .admin-pane { display: none; padding: 18px; }
         .admin-pane.active { display: block; }
 
-        /* iOS Form Fields and Controls */
-        .ios-item-row {
-            background: var(--surface); border: 1px solid var(--border-light); border-radius: var(--radius-sm);
-            padding: 12px 14px; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center;
-        }
-        .ios-segmented-control {
-            display: flex; background: var(--segment-bg); border-radius: var(--radius-sm); padding: 3px; gap: 4px;
-        }
-        .ios-segment-opt {
-            flex: 1; text-align: center; padding: 6px 12px; font-size: 12px; font-weight: 700;
-            border-radius: 6px; cursor: pointer; color: var(--text-muted); transition: 0.15s;
-        }
-        .ios-segment-opt.active {
-            background: var(--surface); color: var(--text-main); box-shadow: var(--shadow-sm);
-        }
-        .admin-nav-tabs::-webkit-scrollbar { display: none; }
-        .admin-tab-chip {
-            padding: 12px 15px; font-size: 13px; font-weight: 600; color: var(--text-muted);
-            cursor: pointer; border-bottom: 2px solid transparent; white-space: nowrap; display:flex; align-items:center; gap:6px;
-        }
-        .admin-tab-chip.active { color: var(--brand-accent); border-bottom-color: var(--brand-accent); }
-        .admin-pane { display: none; padding: 18px; }
-        .admin-pane.active { display: block; }
-
         .stat-grid-modern {
             display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 10px; margin-bottom: 18px;
         }
@@ -585,6 +558,31 @@
             background: var(--surface); border: 1px solid var(--border-light);
             border-radius: var(--radius-sm); margin-bottom: 14px; overflow: hidden; position: relative;
         }
+
+        /* هوية المطور الشخصية الفاخرة */
+        .dev-hero-container {
+            border-radius: var(--radius-md); overflow: hidden; border: 1px solid var(--border-light);
+            background: var(--surface); margin-bottom: 14px; position: relative; box-shadow: var(--shadow-sm);
+        }
+        .dev-cover-banner {
+            width: 100%; height: 160px; background-size: cover; background-position: center;
+            position: relative; background-color: var(--brand-primary);
+        }
+        .dev-cover-overlay {
+            position: absolute; inset: 0;
+            background: linear-gradient(180deg, rgba(15, 23, 42, 0.2) 0%, rgba(15, 23, 42, 0.85) 100%);
+        }
+        .dev-profile-header-content {
+            padding: 0 20px 20px; position: relative; margin-top: -46px; display: flex; flex-direction: column; gap: 12px;
+        }
+        .dev-avatar-row {
+            display: flex; align-items: flex-end; justify-content: space-between; gap: 14px;
+        }
+        .dev-avatar-img {
+            width: 90px; height: 90px; border-radius: 24px; object-fit: cover;
+            border: 4px solid var(--surface); background: var(--segment-bg);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15); flex-shrink: 0;
+        }
     </style>
 </head>
 <body>
@@ -593,7 +591,7 @@
 
 <div class="main-viewport">
     
-    <!-- 1. الشاشة الرئيسية (المنيو) - مفعلة مباشرة بدون شاشة بيضاء -->
+    <!-- 1. الشاشة الرئيسية (المنيو) -->
     <div id="screen-home" class="app-screen active">
         <header class="header">
             <div class="header-btn" onclick="openSidebarDrawer()">
@@ -608,7 +606,7 @@
                     <div id="uiCurrentBranchStatusBadge" class="header-hours-badge badge-open">مفتوح الآن</div>
                 </div>
             </div>
-            <!-- زر الشمس/القمر لتبديل المظهر في الترويسة فقط -->
+            <!-- زر الشمس/القمر لتبديل المظهر -->
             <div class="theme-icon-btn" onclick="toggleAppTheme()" title="تبديل المظهر">
                 <svg id="headerThemeIcon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
             </div>
@@ -855,48 +853,110 @@
         </div>
     </div>
 
-    <!-- 7. شاشة المطور النظيفة والكلاسيكية (المهندس عمر عبيدات) -->
+    <!-- 7. شاشة المطور الشخصية الفاخرة (المهندس عمر عبيدات) مع خلفية وصورة حية -->
     <div id="screen-developer" class="app-screen">
         <div class="screen-header">
             <div class="header-btn" onclick="navigateRouter('screen-home')" style="width:34px; height:34px;">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
             </div>
-            <div class="screen-title">المطور والمهندس المسؤول</div>
+            <div class="screen-title">عن المطور</div>
         </div>
-        <div class="scrollable-content" style="padding: 24px 20px;">
-            
-            <div style="max-width:550px; margin:0 auto;">
-                <div style="margin-bottom: 24px;">
-                    <div style="font-size: 20px; font-weight: 800; color: var(--text-main); margin-bottom: 4px;" id="uiDevName">المهندس عمر عبيدات</div>
-                    <div style="font-size: 13px; color: var(--text-muted); font-weight: 500;" id="uiDevTitle">Lead Systems Architect & Full-Stack Engineer</div>
-                </div>
-
-                <div class="section-card" style="padding: 14px 18px; margin-bottom: 18px;">
-                    <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid var(--border-light);">
-                        <span style="font-size: 13px; color: var(--text-muted);">حالة المنظومة السحابية:</span>
-                        <span style="font-size: 13px; color: var(--success); font-weight: 700;">Online (نشطة)</span>
+        <div class="scrollable-content" style="padding: 20px 16px 140px;">
+            <div style="max-width: 580px; margin: 0 auto; display: flex; flex-direction: column; gap: 14px;">
+                
+                <!-- بطاقة المطور الفاخرة مع غلاف الصورة الشخصية المعتمدة -->
+                <div class="dev-hero-container">
+                    <div class="dev-cover-banner" id="uiDevCoverBg">
+                        <div class="dev-cover-overlay"></div>
                     </div>
-                    <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px 0;">
-                        <span style="font-size: 13px; color: var(--text-muted);">المستخدمون النشطون الآن:</span>
-                        <span class="num-font" style="font-size: 14px; font-weight: 800; color: var(--brand-accent);" id="liveUsersSim">5</span>
+                    
+                    <div class="dev-profile-header-content">
+                        <div class="dev-avatar-row">
+                            <img src="https://www.instagram.com/p/DY2jpFQjSkB/media/?size=l" id="uiDevPhoto" class="dev-avatar-img" onerror="this.src='https://placehold.co/400x400/2563eb/ffffff?text=Omar+Obeidat'" alt="صورة المهندس عمر عبيدات">
+                            <span style="display: inline-flex; align-items: center; gap: 4px; font-size: 11px; font-weight: 800; padding: 4px 10px; border-radius: 14px; background: rgba(16, 185, 129, 0.12); color: var(--success); border: 1px solid rgba(16, 185, 129, 0.25); margin-bottom: 8px;">
+                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                                مهندس معتمد
+                            </span>
+                        </div>
+                        
+                        <div>
+                            <h1 style="font-size: 21px; font-weight: 900; color: var(--text-main); margin-bottom: 2px;" id="uiDevName">المهندس عمر عبيدات</h1>
+                            <div style="font-size: 13px; font-weight: 700; color: var(--brand-accent);" id="uiDevTitle">Software Engineer & Systems Architect</div>
+                        </div>
+
+                        <!-- نبذة مهنية راقية -->
+                        <p style="font-size: 13px; color: var(--text-muted); line-height: 1.7; margin: 0; font-weight: 500;" id="uiDevBio">
+                            مهندس برمجيات متخصص في بناء وتطوير المنظومات الرقمية المتقدمة، وهندسة واجهات المستخدم التفاعلية فائقة السرعة، وتصميم البنى السحابية الآمنة وقواعد البيانات اللحظية وفق أرقى المعايير التقنية الحديثة.
+                        </p>
                     </div>
                 </div>
 
-                <!-- وسائل التواصل (واتساب وإنستغرام فقط دون زر اتصال) -->
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px;">
-                    <a href="https://wa.me/962796433698" target="_blank" class="btn-brand-solid" style="background:#10b981; text-decoration:none;">
-                        واتساب 0796433698
+                <!-- بطاقة مجالات الاختصاص والتميز التقني -->
+                <div class="section-card" style="padding: 20px;">
+                    <div style="font-size: 14px; font-weight: 800; margin-bottom: 14px; color: var(--text-main); display: flex; align-items: center; gap: 8px;">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--brand-accent)" stroke-width="2.5" stroke-linecap="round"><polygon points="12 2 2 7 12 12 22 7 12 2"></polygon><polyline points="2 17 12 22 22 17"></polyline><polyline points="2 12 12 17 22 12"></polyline></svg>
+                        <span>مجالات الاختصاص والخبرة</span>
+                    </div>
+
+                    <div style="display: flex; flex-direction: column; gap: 10px;">
+                        <div style="display: flex; align-items: flex-start; gap: 10px; padding: 10px 12px; background: var(--segment-bg); border-radius: var(--radius-sm); border: 1px solid var(--border-light);">
+                            <div style="width: 8px; height: 8px; border-radius: 50%; background: var(--brand-accent); margin-top: 6px; flex-shrink: 0;"></div>
+                            <div>
+                                <div style="font-size: 13px; font-weight: 800; color: var(--text-main);">تطوير الأنظمة والتطبيقات السحابية</div>
+                                <div style="font-size: 12px; color: var(--text-muted); line-height: 1.5;">بناء حلول برمجية متكاملة (Full-Stack Architecture) تعتمد على المزامنة اللحظية والسرعة الفائقة.</div>
+                            </div>
+                        </div>
+
+                        <div style="display: flex; align-items: flex-start; gap: 10px; padding: 10px 12px; background: var(--segment-bg); border-radius: var(--radius-sm); border: 1px solid var(--border-light);">
+                            <div style="width: 8px; height: 8px; border-radius: 50%; background: var(--brand-accent); margin-top: 6px; flex-shrink: 0;"></div>
+                            <div>
+                                <div style="font-size: 13px; font-weight: 800; color: var(--text-main);">هندسة واجهات المستخدم (UI/UX Engineering)</div>
+                                <div style="font-size: 12px; color: var(--text-muted); line-height: 1.5;">تصميم واجهات أنيقة وعصرية تحاكي أحدث معايير وتطبيقات Apple iOS مع سلاسة تفاعلية تامة.</div>
+                            </div>
+                        </div>
+
+                        <div style="display: flex; align-items: flex-start; gap: 10px; padding: 10px 12px; background: var(--segment-bg); border-radius: var(--radius-sm); border: 1px solid var(--border-light);">
+                            <div style="width: 8px; height: 8px; border-radius: 50%; background: var(--brand-accent); margin-top: 6px; flex-shrink: 0;"></div>
+                            <div>
+                                <div style="font-size: 13px; font-weight: 800; color: var(--text-main);">أمان الأنظمة وإدارة الصلاحيات (Security & Access Control)</div>
+                                <div style="font-size: 12px; color: var(--text-muted); line-height: 1.5;">تطبيق سياسات حماية متقدمة، وفصل الصلاحيات بدقة، وتوثيق سجلات الأنشطة والعمليات المشفرة.</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- بطاقة المهارات والتقنيات الأساسية -->
+                <div class="section-card" style="padding: 18px 20px;">
+                    <div style="font-size: 14px; font-weight: 800; margin-bottom: 12px; color: var(--text-main);">الأدوات والتقنيات البرمجية</div>
+                    <div style="display: flex; flex-wrap: wrap; gap: 6px;">
+                        <span style="font-size: 12px; font-weight: 700; padding: 6px 12px; border-radius: var(--radius-sm); background: var(--segment-bg); color: var(--text-main); border: 1px solid var(--border-light);">Full-Stack Web</span>
+                        <span style="font-size: 12px; font-weight: 700; padding: 6px 12px; border-radius: var(--radius-sm); background: var(--segment-bg); color: var(--text-main); border: 1px solid var(--border-light);">Cloud Firestore</span>
+                        <span style="font-size: 12px; font-weight: 700; padding: 6px 12px; border-radius: var(--radius-sm); background: var(--segment-bg); color: var(--text-main); border: 1px solid var(--border-light);">Progressive Web Apps (PWA)</span>
+                        <span style="font-size: 12px; font-weight: 700; padding: 6px 12px; border-radius: var(--radius-sm); background: var(--segment-bg); color: var(--text-main); border: 1px solid var(--border-light);">Realtime Sync</span>
+                        <span style="font-size: 12px; font-weight: 700; padding: 6px 12px; border-radius: var(--radius-sm); background: var(--segment-bg); color: var(--text-main); border: 1px solid var(--border-light);">System Security</span>
+                        <span style="font-size: 12px; font-weight: 700; padding: 6px 12px; border-radius: var(--radius-sm); background: var(--segment-bg); color: var(--text-main); border: 1px solid var(--border-light);">Mobile-First UI</span>
+                    </div>
+                </div>
+
+                <!-- أزرار التواصل المباشر (واتساب وإنستغرام فقط بأسلوب راقٍ) -->
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                    <a href="https://wa.me/962796433698" target="_blank" rel="noopener noreferrer" style="display: flex; align-items: center; justify-content: center; gap: 8px; padding: 14px 16px; border-radius: var(--radius-sm); background: #10b981; color: #ffffff; text-decoration: none; font-size: 13px; font-weight: 800; box-shadow: 0 4px 14px rgba(16, 185, 129, 0.25); transition: 0.15s ease;">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg>
+                        <span>واتساب 0796433698</span>
                     </a>
-                    <a href="https://www.instagram.com/o_yd" target="_blank" class="btn-brand-solid" style="background:#e1306c; text-decoration:none;" id="uiDevIgLink">
-                        إنستغرام @o_yd
+
+                    <a href="https://www.instagram.com/o_yd" target="_blank" rel="noopener noreferrer" id="uiDevIgLink" style="display: flex; align-items: center; justify-content: center; gap: 8px; padding: 14px 16px; border-radius: var(--radius-sm); background: linear-gradient(135deg, #f58529, #dd2a7b, #8134af); color: #ffffff; text-decoration: none; font-size: 13px; font-weight: 800; box-shadow: 0 4px 14px rgba(221, 42, 123, 0.25); transition: 0.15s ease;">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
+                        <span>إنستغرام @o_yd</span>
                     </a>
                 </div>
 
-                <div style="font-size: 12px; color: var(--text-muted); text-align: center;" id="uiDevCopyright">
+                <!-- حقوق الملكية الفكرية للمطور -->
+                <div style="text-align: center; font-size: 12px; color: var(--text-muted); font-weight: 600; padding: 8px 0;" id="uiDevCopyright">
                     جميع الحقوق محفوظة للمهندس عمر عبيدات © 2026
                 </div>
-            </div>
 
+            </div>
         </div>
     </div>
 
@@ -944,7 +1004,7 @@
             <!-- تبويبات حصرية للمطور omar -->
             <div class="admin-tab-chip dev-only-tab" id="tabHeadStore" onclick="switchAdminTabPane('store')">طرق الدفع والفروع</div>
             <div class="admin-tab-chip dev-only-tab" id="tabHeadDelivery" onclick="switchAdminTabPane('delivery')">أسعار التوصيل</div>
-            <div class="admin-tab-chip dev-only-tab" id="tabHeadDeveloper" onclick="switchAdminTabPane('developer')">الترويسة والهوية</div>
+            <div class="admin-tab-chip dev-only-tab" id="tabHeadDeveloper" onclick="switchAdminTabPane('developer')">الترويسة وصفحة المطور</div>
             <div class="admin-tab-chip dev-only-tab" id="tabHeadThemes" onclick="switchAdminTabPane('themes')">الثيمات والتصميم</div>
             <div class="admin-tab-chip dev-only-tab" id="tabHeadAuditLog" onclick="switchAdminTabPane('auditLog')">سجل التعديلات</div>
             <div class="admin-tab-chip dev-only-tab" id="tabHeadBackup" onclick="switchAdminTabPane('backup')">نسخ واستيراد</div>
@@ -1108,7 +1168,7 @@
                 <div id="adminTownsManagerList"></div>
             </div>
 
-            <!-- تبويب: الترويسة والهوية والمطور (حصري للمطور) -->
+            <!-- تبويب: الترويسة وهوية المطور (حصري للمطور) -->
             <div class="admin-pane" id="paneDeveloper">
                 <div class="section-card" style="margin-bottom:14px;">
                     <div class="section-title">التحكم بالترويسة وهوية المحل</div>
@@ -1129,13 +1189,36 @@
                 </div>
 
                 <div class="section-card" style="margin-bottom:14px;">
-                    <div class="section-title">تعديل بيانات صفحة المطور</div>
+                    <div class="section-title">التحكم الكامل بصفحة المطور وصورته</div>
                     <div style="display:flex; flex-direction:column; gap:8px;">
-                        <input type="text" class="ios-input-field" id="editDevNameInput" placeholder="اسم المطور">
-                        <input type="text" class="ios-input-field" id="editDevTitleInput" placeholder="المسمى المهني">
-                        <input type="text" class="ios-input-field num-font" id="editDevPhoneInput" placeholder="رقم واتساب المطور">
-                        <input type="text" class="ios-input-field num-font" id="editDevIgInput" placeholder="رابط إنستغرام المطور">
-                        <input type="text" class="ios-input-field" id="editDevCopyrightInput" placeholder="حقوق الملكية">
+                        <div>
+                            <span style="font-size:11px; color:var(--text-muted); font-weight:700;">اسم المطور:</span>
+                            <input type="text" class="ios-input-field" id="editDevNameInput" placeholder="اسم المطور">
+                        </div>
+                        <div>
+                            <span style="font-size:11px; color:var(--text-muted); font-weight:700;">المسمى المهني:</span>
+                            <input type="text" class="ios-input-field" id="editDevTitleInput" placeholder="المسمى المهني">
+                        </div>
+                        <div>
+                            <span style="font-size:11px; color:var(--text-muted); font-weight:700;">رابط صورة المطور الشخصية (أو رابط منشور إنستغرام):</span>
+                            <input type="text" class="ios-input-field num-font" id="editDevPhotoInput" placeholder="رابط الصورة أو بوست الإنستغرام">
+                        </div>
+                        <div>
+                            <span style="font-size:11px; color:var(--text-muted); font-weight:700;">النبذة التعريفية للمطور:</span>
+                            <textarea class="ios-textarea-field" id="editDevBioInput" placeholder="النبذة المهنية" style="height:65px;"></textarea>
+                        </div>
+                        <div>
+                            <span style="font-size:11px; color:var(--text-muted); font-weight:700;">رقم هاتف / واتساب المطور:</span>
+                            <input type="text" class="ios-input-field num-font" id="editDevPhoneInput" placeholder="رقم واتساب المطور">
+                        </div>
+                        <div>
+                            <span style="font-size:11px; color:var(--text-muted); font-weight:700;">رابط حساب إنستغرام المطور:</span>
+                            <input type="text" class="ios-input-field num-font" id="editDevIgInput" placeholder="رابط إنستغرام المطور">
+                        </div>
+                        <div>
+                            <span style="font-size:11px; color:var(--text-muted); font-weight:700;">حقوق الملكية بالأسفل:</span>
+                            <input type="text" class="ios-input-field" id="editDevCopyrightInput" placeholder="حقوق الملكية">
+                        </div>
                     </div>
                 </div>
 
@@ -1426,7 +1509,9 @@
         },
         devInfo: {
             name: "المهندس عمر عبيدات",
-            title: "Lead Systems Architect & Full-Stack Engineer",
+            title: "Software Engineer & Systems Architect",
+            photo: "https://www.instagram.com/p/DY2jpFQjSkB/?stkn=bmYxZ3d4YTE0MXl4",
+            bio: "مهندس برمجيات متخصص في بناء وتطوير المنظومات الرقمية المتقدمة، وهندسة واجهات المستخدم التفاعلية فائقة السرعة، وتصميم البنى السحابية الآمنة وقواعد البيانات اللحظية وفق أرقى المعايير التقنية الحديثة.",
             phone: "0796433698",
             instagram: "https://www.instagram.com/o_yd",
             copyright: "جميع الحقوق محفوظة للمهندس عمر عبيدات © 2026"
@@ -1520,6 +1605,17 @@
         selectedProduct: null,
         productModalQty: 1
     };
+
+    // دالة ذكية لتحويل أي رابط بوست إنستغرام إلى رابط مباشر للصورة
+    function formatImageUrl(url) {
+        if (!url) return '';
+        let clean = url.trim();
+        const igMatch = clean.match(/instagram\.com\/p\/([A-Za-z0-9_-]+)/);
+        if (igMatch && igMatch[1]) {
+            return `https://www.instagram.com/p/${igMatch[1]}/media/?size=l`;
+        }
+        return clean;
+    }
 
     function autoIncrementSystemVersion() {
         let cur = storeConfig.appVersion || "v7.0.1";
@@ -1760,13 +1856,21 @@
         if (storeConfig.devInfo) {
             const dName = document.getElementById('uiDevName');
             const dTitle = document.getElementById('uiDevTitle');
+            const dBio = document.getElementById('uiDevBio');
             const dCopy = document.getElementById('uiDevCopyright');
             const dIg = document.getElementById('uiDevIgLink');
+            const dPhoto = document.getElementById('uiDevPhoto');
+            const dCover = document.getElementById('uiDevCoverBg');
 
             if (dName) dName.innerText = storeConfig.devInfo.name || "المهندس عمر عبيدات";
             if (dTitle) dTitle.innerText = storeConfig.devInfo.title || "";
+            if (dBio && storeConfig.devInfo.bio) dBio.innerText = storeConfig.devInfo.bio;
             if (dCopy) dCopy.innerText = storeConfig.devInfo.copyright || "";
             if (dIg && storeConfig.devInfo.instagram) dIg.href = storeConfig.devInfo.instagram;
+
+            const finalPhotoUrl = formatImageUrl(storeConfig.devInfo.photo || "https://www.instagram.com/p/DY2jpFQjSkB/?stkn=bmYxZ3d4YTE0MXl4");
+            if (dPhoto) dPhoto.src = finalPhotoUrl;
+            if (dCover) dCover.style.backgroundImage = `url('${finalPhotoUrl}')`;
         }
 
         if (storeConfig.theme) {
@@ -2530,7 +2634,6 @@
         }
     };
 
-    /* تبديل توفر الصنف السريع مباشرة من قائمة الأدمن */
     window.quickToggleProductAvailability = function(id, event) {
         if (event) event.stopPropagation();
         const prod = productsList.find(p => p.id === id);
@@ -2547,7 +2650,6 @@
         showToastMsg(`الصنف أصبح ${prod.isAvailable ? 'متوفراً' : 'غير متوفر'}`);
     };
 
-    /* فلترة أصناف الأدمن */
     window.filterAdminProductsList = function() {
         const query = (document.getElementById('adminMenuFilterInput')?.value || '').trim().toLowerCase();
         renderAdminProductsManager(query);
@@ -2681,6 +2783,8 @@
             renderAdminPaymentMethodsList();
         } else if (paneId === 'pricingControl') {
             renderAdminPricingControlView();
+        } else if (paneId === 'developer') {
+            populateStoreConfigInputs();
         } else if (paneId === 'auditLog') {
             renderAuditLogsView();
         }
@@ -3209,12 +3313,16 @@
 
         const dNameIn = document.getElementById('editDevNameInput');
         const dTitleIn = document.getElementById('editDevTitleInput');
+        const dPhotoIn = document.getElementById('editDevPhotoInput');
+        const dBioIn = document.getElementById('editDevBioInput');
         const dPhoneIn = document.getElementById('editDevPhoneInput');
         const dIgIn = document.getElementById('editDevIgInput');
         const dCopyIn = document.getElementById('editDevCopyrightInput');
 
         if (dNameIn) dNameIn.value = dInfo.name || 'المهندس عمر عبيدات';
         if (dTitleIn) dTitleIn.value = dInfo.title || '';
+        if (dPhotoIn) dPhotoIn.value = dInfo.photo || 'https://www.instagram.com/p/DY2jpFQjSkB/?stkn=bmYxZ3d4YTE0MXl4';
+        if (dBioIn) dBioIn.value = dInfo.bio || '';
         if (dPhoneIn) dPhoneIn.value = dInfo.phone || '0796433698';
         if (dIgIn) dIgIn.value = dInfo.instagram || 'https://www.instagram.com/o_yd';
         if (dCopyIn) dCopyIn.value = dInfo.copyright || '';
@@ -3251,6 +3359,8 @@
         storeConfig.devInfo = {
             name: document.getElementById('editDevNameInput').value.trim() || "المهندس عمر عبيدات",
             title: document.getElementById('editDevTitleInput').value.trim() || "",
+            photo: document.getElementById('editDevPhotoInput').value.trim() || "https://www.instagram.com/p/DY2jpFQjSkB/?stkn=bmYxZ3d4YTE0MXl4",
+            bio: document.getElementById('editDevBioInput').value.trim() || "",
             phone: document.getElementById('editDevPhoneInput').value.trim() || "0796433698",
             instagram: document.getElementById('editDevIgInput').value.trim() || "https://www.instagram.com/o_yd",
             copyright: document.getElementById('editDevCopyrightInput').value.trim() || ""
@@ -3265,9 +3375,9 @@
         if (window.cloudSaveSettings) window.cloudSaveSettings(storeConfig);
 
         autoIncrementSystemVersion();
-        recordSystemAuditAction("تعديل الترويسة وهوية المطور", "تعديل بيانات الكافيه والمطور");
+        recordSystemAuditAction("تعديل بيانات المطور والترويسة", "تعديل صورة وبيانات المطور وهوية الكافيه");
         applyStoreConfigToUI();
-        showToastMsg("تم حفظ التعديلات وتحديث الإصدار");
+        showToastMsg("تم حفظ صورة وبيانات المطور والترويسة بنجاح");
     };
 
     function renderThemePresets() {
@@ -3381,19 +3491,6 @@
         };
         reader.readAsText(file);
     };
-
-    // محاكي المستخدمين النشطين البسيط والواقعي لصفحة المطور
-    setInterval(() => {
-        const liveEl = document.getElementById('liveUsersSim');
-        if (liveEl) {
-            let cur = parseInt(liveEl.innerText) || 5;
-            let change = Math.floor(Math.random() * 3) - 1; // -1, 0, or 1
-            let next = cur + change;
-            if (next < 3) next = 3;
-            if (next > 16) next = 16;
-            liveEl.innerText = next;
-        }
-    }, 4000);
 
     document.addEventListener('DOMContentLoaded', () => {
         const isDark = (localStorage.getItem('cc_theme') === 'dark');
