@@ -5,11 +5,31 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>COFFEE CORNER | كافيه كورنر</title>
     
+    <!-- وسوم المعاينة والسوشيال ميديا (Open Graph & SEO) -->
+    <meta name="description" content="القائمة الرقمية لكافيه كورنر - أشهى الكوكتيلات والحلويات الفاخرة والوافل والكريب. اطلب أونلاين الآن">
+    <meta property="og:title" content="COFFEE CORNER | كافيه كورنر">
+    <meta property="og:description" content="أشهى الكوكتيلات والحلويات الفاخرة والوافل والكريب - فرع كفرسوم وفرع سما الروسان">
+    <meta property="og:image" id="metaOgImage" content="./logo.png">
+    <meta property="og:type" content="website">
+    <meta name="twitter:card" content="summary_large_image">
+    
+    <!-- وسوم تطبيق الهاتف المستقل (PWA Mobile App) -->
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Coffee Corner">
+    <meta name="theme-color" content="#1e293b">
+    <link rel="apple-touch-icon" id="appleTouchIcon" href="./logo.png">
+    <link rel="icon" type="image/png" id="faviconImg" href="./logo.png">
+
+    <!-- Web App Manifest ديناميكي لتمكين تثبيت التطبيق -->
+    <link rel="manifest" id="pwaManifestLink" href="data:application/manifest+json,%7B%22name%22%3A%22COFFEE%20CORNER%22%2C%22short_name%22%3A%22CoffeeCorner%22%2C%22start_url%22%3A%22.%22%2C%22display%22%3A%22standalone%22%2C%22background_color%22%3A%22%23f8fafc%22%2C%22theme_color%22%3A%22%231e293b%22%2C%22icons%22%3A%5B%7B%22src%22%3A%22logo.png%22%2C%22sizes%22%3A%22512x512%22%2C%22type%22%3A%22image%2Fpng%22%7D%5D%7D">
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
     
-    <!-- Firebase SDKs -->
+    <!-- Firebase SDKs السحابية -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
         import { getAuth, signInAnonymously, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
@@ -62,7 +82,7 @@
                     if (window.onCloudPromos) window.onCloudPromos(promos);
                 }, err => console.warn("Cloud promos sync:", err));
 
-                // 3. مزامنة العروض الحصرية المنشورة بواسطة الأدمن فقط
+                // 3. مزامنة العروض الحصرية
                 const offersRef = collection(db, 'artifacts', appId, 'public', 'data', 'offers');
                 onSnapshot(offersRef, (snap) => {
                     const offers = [];
@@ -70,7 +90,7 @@
                     if (window.onCloudOffers) window.onCloudOffers(offers);
                 }, err => console.warn("Cloud offers sync:", err));
 
-                // 4. مزامنة الإعدادات العامة (الفروع، أرقام الواتساب، طرق الدفع، التوصيل، الثيمات)
+                // 4. مزامنة الإعدادات العامة (الفروع، أرقام الواتساب، طرق الدفع، الشعار)
                 const settingsRef = doc(db, 'artifacts', appId, 'public', 'data', 'settings', 'config_v2');
                 onSnapshot(settingsRef, (snap) => {
                     if (snap.exists() && window.onCloudSettings) {
@@ -78,7 +98,7 @@
                     }
                 }, err => console.warn("Cloud settings sync:", err));
 
-                // 5. مزامنة الإحصائيات والزيارات
+                // 5. مزامنة الإحصائيات والزيارات الحقيقية
                 const statsRef = doc(db, 'artifacts', appId, 'public', 'data', 'stats', 'analytics');
                 onSnapshot(statsRef, (snap) => {
                     if (snap.exists() && window.onCloudStats) {
@@ -91,7 +111,6 @@
             }
         }
 
-        // دوال التعديل والحفظ السحابي
         window.cloudSaveProduct = async (id, data) => {
             if (!db) return;
             try {
@@ -199,7 +218,7 @@
             position: sticky; top: 0; z-index: 100;
             background: var(--header-bg);
             backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
-            padding: 14px 20px; display: flex; align-items: center; justify-content: space-between;
+            padding: 12px 18px; display: flex; align-items: center; justify-content: space-between;
             border-bottom: 1px solid var(--border-light);
         }
         .header-btn {
@@ -208,53 +227,27 @@
             color: var(--text-main); cursor: pointer; transition: 0.15s ease;
         }
         .header-btn:active { transform: scale(0.95); }
-        .brand-box { text-align: center; flex: 1; }
-        .brand-title { font-size: 17px; font-weight: 800; letter-spacing: -0.3px; line-height: 1.2; }
-        .brand-sub { font-size: 11px; font-weight: 700; color: var(--text-muted); margin-top: 2px; }
+        
+        .brand-box {
+            text-align: center; flex: 1; display: flex; align-items: center; justify-content: center;
+            gap: 10px; cursor: pointer; user-select: none;
+        }
+        .brand-logo-img {
+            width: 36px; height: 36px; border-radius: 50%; object-fit: cover;
+            border: 1px solid var(--border-light); background: #ffffff;
+        }
+        .brand-text-wrap { text-align: right; }
+        .brand-title { font-size: 16px; font-weight: 800; letter-spacing: -0.3px; line-height: 1.2; }
+        .brand-sub { font-size: 11px; font-weight: 700; color: var(--text-muted); margin-top: 1px; }
 
-        .tech-terminal-box {
-            background: #090d16;
-            color: #38bdf8;
-            border-radius: var(--radius-md);
-            padding: 18px;
-            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-            font-size: 12px;
-            line-height: 1.7;
-            border: 1px solid #1e293b;
-            box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.4);
-            direction: ltr;
-            text-align: left;
-            margin-top: 14px;
+        /* شارة حالة مواعيد العمل في الهيدر */
+        .header-hours-badge {
+            display: inline-flex; align-items: center; gap: 5px;
+            font-size: 10px; font-weight: 800; padding: 2px 7px;
+            border-radius: 12px; margin-top: 3px;
         }
-        .tech-badge-chip {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            padding: 5px 11px;
-            border-radius: 6px;
-            background: var(--segment-bg);
-            border: 1px solid var(--border-light);
-            font-size: 11px;
-            font-weight: 700;
-            color: var(--text-main);
-        }
-        .tech-metric-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 10px 0;
-            border-bottom: 1px solid var(--border-light);
-            font-size: 13px;
-        }
-        .tech-metric-row:last-child { border-bottom: none; }
-        .pulse-indicator {
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            background: #10b981;
-            box-shadow: 0 0 8px #10b981;
-            display: inline-block;
-        }
+        .badge-open { background: rgba(16, 185, 129, 0.12); color: var(--success); }
+        .badge-closed { background: rgba(239, 68, 68, 0.12); color: var(--danger); }
 
         .search-container { padding: 14px 20px 0; }
         .search-bar {
@@ -332,7 +325,7 @@
             font-size: 10px; font-weight: 800; padding: 3px 8px; border-radius: 12px;
         }
 
-        /* شاشة تفاصيل وتخصيص المنتج */
+        /* تفاصيل وتخصيص المنتج */
         .pd-wrapper { max-width: 600px; margin: 0 auto; width: 100%; display: flex; flex-direction: column; height: 100%; }
         .pd-img-hero { width: 100%; height: 260px; object-fit: cover; background: var(--segment-bg); flex-shrink: 0; }
         .pd-back-float {
@@ -396,7 +389,7 @@
             text-align: center; cursor: pointer;
         }
 
-        /* السلة */
+        /* السلة والشراء */
         .cart-box-container { max-width: 600px; margin: 0 auto; width: 100%; padding: 18px 18px 110px; }
         .section-card {
             background: var(--surface); border: 1px solid var(--border-light);
@@ -426,10 +419,21 @@
             background: var(--surface); color: var(--text-main); box-shadow: var(--shadow-sm);
         }
 
+        /* تنبيه إغلاق الفرع */
+        .closed-alert-box {
+            background: rgba(239, 68, 68, 0.08); border: 1px solid var(--danger);
+            border-radius: var(--radius-sm); padding: 14px; margin-bottom: 14px;
+            color: var(--danger); font-size: 13px; font-weight: 800; line-height: 1.5;
+            display: none; align-items: center; gap: 10px;
+        }
+
         .btn-order-submit {
             background: var(--success); color: #ffffff; font-size: 15px; font-weight: 800;
             padding: 15px; border-radius: var(--radius-sm); text-align: center; cursor: pointer;
             display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%;
+        }
+        .btn-order-submit.disabled {
+            background: #94a3b8 !important; cursor: not-allowed; opacity: 0.7;
         }
 
         .floating-dock {
@@ -446,6 +450,16 @@
             background: var(--brand-accent); color: #ffffff; width: 26px; height: 26px; border-radius: 50%;
             display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 800;
         }
+
+        /* نافذة تثبيت التطبيق PWA الذكية */
+        .pwa-install-banner {
+            position: fixed; top: 16px; left: 50%; transform: translate(-50%, -150%);
+            width: calc(100% - 32px); max-width: 440px; background: var(--surface);
+            border: 1px solid var(--border-light); border-radius: var(--radius-md);
+            padding: 12px 16px; display: flex; align-items: center; justify-content: space-between;
+            box-shadow: var(--shadow-float); z-index: 1200; transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .pwa-install-banner.visible { transform: translate(-50%, 0); }
 
         /* القائمة الجانبية */
         .sidebar-mask {
@@ -495,6 +509,27 @@
         body.dark-mode .toast-popup { background: #f8fafc; color: #090d16; }
         .toast-popup.active { transform: translate(-50%, 0); opacity: 1; }
 
+        /* نافذة الفاتورة الرقمية المصورة (Digital Receipt Modal) */
+        .receipt-modal-backdrop {
+            position: fixed; inset: 0; background: rgba(0, 0, 0, 0.65); z-index: 2500;
+            display: none; align-items: center; justify-content: center; padding: 16px;
+            backdrop-filter: blur(5px);
+        }
+        .receipt-modal-backdrop.active { display: flex; }
+        .receipt-card-body {
+            background: #ffffff; color: #0f172a; width: 100%; max-width: 440px;
+            border-radius: var(--radius-md); padding: 24px; box-shadow: var(--shadow-float);
+            max-height: 90vh; overflow-y: auto; position: relative;
+        }
+        .receipt-header {
+            text-align: center; border-bottom: 2px dashed #cbd5e1; padding-bottom: 16px; margin-bottom: 16px;
+        }
+        .receipt-logo { width: 60px; height: 60px; border-radius: 50%; margin: 0 auto 8px; display: block; border: 1px solid #e2e8f0; }
+        .receipt-items-table { width: 100%; border-collapse: collapse; margin-bottom: 16px; font-size: 13px; }
+        .receipt-items-table th { text-align: right; border-bottom: 1px solid #e2e8f0; padding: 6px 0; color: #64748b; font-size: 12px; }
+        .receipt-items-table td { padding: 8px 0; border-bottom: 1px dashed #f1f5f9; }
+        .receipt-total-row { display: flex; justify-content: space-between; font-weight: 900; font-size: 17px; border-top: 2px solid #0f172a; padding-top: 10px; margin-top: 8px; }
+
         /* لوحة الإدارة المتطورة */
         .admin-nav-tabs {
             display: flex; background: var(--surface); border-bottom: 1px solid var(--border-light);
@@ -509,7 +544,6 @@
         .admin-pane { display: none; padding: 20px; }
         .admin-pane.active { display: block; }
 
-        /* كروت الإحصائيات الفخمة */
         .stat-grid-modern {
             display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; margin-bottom: 20px;
         }
@@ -528,7 +562,6 @@
         .chart-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; }
         .canvas-responsive { width: 100%; height: 190px; }
 
-        /* ثيمات وألوان */
         .theme-swatch-grid {
             display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 10px; margin-bottom: 16px;
         }
@@ -550,6 +583,21 @@
 
 <div class="app-container" id="appContainer">
 
+<!-- شريط ذكي لاقتراح تثبيت التطبيق على الشاشة الرئيسية (PWA) -->
+<div class="pwa-install-banner" id="pwaInstallBanner">
+    <div style="display:flex; align-items:center; gap:10px;">
+        <img src="./logo.png" class="brand-logo-img" id="pwaBannerLogo" alt="لوجو">
+        <div>
+            <div style="font-size:13px; font-weight:800;">تطبيق كافيه كورنر</div>
+            <div style="font-size:11px; color:var(--text-muted);">ثبّت التطبيق لطلب أسرع وتصفح ممتع</div>
+        </div>
+    </div>
+    <div style="display:flex; gap:6px;">
+        <button class="btn-brand-solid" style="padding:6px 12px; font-size:12px;" onclick="triggerPWAInstall()">تثبيت</button>
+        <button class="btn-brand-outline" style="padding:6px 10px; font-size:12px; width:auto;" onclick="dismissPWABanner()">إغلاق</button>
+    </div>
+</div>
+
 <div class="main-viewport">
     
     <!-- 1. الشاشة الرئيسية (المنيو والبحث) -->
@@ -559,9 +607,13 @@
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
             </div>
             <!-- النقر السري 4 مرات متتالية لفتح بوابة الإدارة المشفرة -->
-            <div class="brand-box" onclick="handleSecretAdminTrigger()" style="cursor: pointer;" title="COFFEE CORNER">
-                <div class="brand-title" id="uiBrandTitle">كافيه كورنر</div>
-                <div class="brand-sub" id="uiBrandSub">أشهى الكوكتيلات والحلويات الفاخرة</div>
+            <div class="brand-box" onclick="handleSecretAdminTrigger()" title="COFFEE CORNER">
+                <img src="./logo.png" class="brand-logo-img" id="uiHeaderLogo" onerror="this.src='https://placehold.co/400x400/1e293b/ffffff?text=Coffee+Corner'" alt="شعار كافيه كورنر">
+                <div class="brand-text-wrap">
+                    <div class="brand-title" id="uiBrandTitle">كافيه كورنر</div>
+                    <div class="brand-sub" id="uiBrandSub">أشهى الكوكتيلات والحلويات الفاخرة</div>
+                    <div id="uiCurrentBranchStatusBadge" class="header-hours-badge badge-open">مفتوح الآن</div>
+                </div>
             </div>
             <div class="header-btn" onclick="navigateRouter('screen-cart')">
                 <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
@@ -594,7 +646,7 @@
                 
                 <div class="pd-info-card">
                     <h1 class="pd-head-title" id="psTitle">اسم المنتج</h1>
-                    <p class="pd-head-desc" id="psDesc">وصف المنتج اللذيذ والمكونات الطازجة</p>
+                    <p class="pd-head-desc" id="psDesc">وصف المنتج والمكونات الطازجة</p>
                     <div class="pd-head-price num-font" id="psBasePrice">0.00 د.أ</div>
                 </div>
 
@@ -674,7 +726,10 @@
                 </div>
 
                 <div class="section-card">
-                    <div class="section-title">الفرع المراد الطلب منه</div>
+                    <div class="section-title">
+                        <span>الفرع المراد الطلب منه</span>
+                        <span id="cartBranchStatusNotice" style="font-size:11px; font-weight:800;"></span>
+                    </div>
                     <div class="tabs-segment">
                         <div class="tab-btn active" id="btnBranch0" onclick="switchCartBranch(0)">كفرسوم</div>
                         <div class="tab-btn" id="btnBranch1" onclick="switchCartBranch(1)">سما الروسان</div>
@@ -742,9 +797,15 @@
                     </div>
                 </div>
 
-                <button class="btn-order-submit" onclick="dispatchOrderToWhatsApp()">
+                <!-- صندوق تنبيه إغلاق الفرع ومنع الإرسال -->
+                <div class="closed-alert-box" id="branchClosedAlertBox">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+                    <span id="branchClosedAlertMsg">عذراً، هذا الفرع مغلق حالياً ولا يستقبل الطلبات.</span>
+                </div>
+
+                <button class="btn-order-submit" id="btnWhatsAppSubmitOrder" onclick="dispatchOrderToWhatsApp()">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
-                    <span>تأكيد وإرسال الطلب عبر واتساب</span>
+                    <span id="submitOrderBtnText">تأكيد وإرسال الطلب عبر واتساب</span>
                 </button>
 
             </div>
@@ -772,19 +833,25 @@
         </div>
         <div class="scrollable-content" style="padding: 20px;">
             <div class="section-card" style="margin-bottom:14px;">
-                <div style="font-size:16px; font-weight:800; margin-bottom:6px;">فرع كفرسوم</div>
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+                    <div style="font-size:16px; font-weight:800;">فرع كفرسوم</div>
+                    <span class="header-hours-badge" id="branchBadgeBranch0">مفتوح</span>
+                </div>
                 <div style="font-size:13px; color:var(--text-muted); line-height:1.6;" id="branchInfoView0">
                     <strong>الموقع:</strong> الشارع الرئيسي مقابل مجمع المحلات.<br>
                     <strong>هاتف / واتساب:</strong> <span class="num-font" id="branchPhoneTxt0">962790155906</span><br>
-                    <strong>أوقات العمل:</strong> <span id="branchHoursTxt0">6:30 صباحاً حتى 3:00 فجراً يومياً.</span>
+                    <strong>أوقات العمل:</strong> <span id="branchHoursTxt0">من 6:30 صباحاً حتى 3:00 فجراً يومياً.</span>
                 </div>
             </div>
             <div class="section-card">
-                <div style="font-size:16px; font-weight:800; margin-bottom:6px;">فرع سما الروسان</div>
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+                    <div style="font-size:16px; font-weight:800;">فرع سما الروسان</div>
+                    <span class="header-hours-badge" id="branchBadgeBranch1">مفتوح</span>
+                </div>
                 <div style="font-size:13px; color:var(--text-muted); line-height:1.6;" id="branchInfoView1">
                     <strong>الموقع:</strong> الشارع العام بجانب مبنى البلدية.<br>
                     <strong>هاتف / واتساب:</strong> <span class="num-font" id="branchPhoneTxt1">962790155906</span><br>
-                    <strong>أوقات العمل:</strong> <span id="branchHoursTxt1">4:00 مساءً حتى 3:00 فجراً يومياً.</span>
+                    <strong>أوقات العمل:</strong> <span id="branchHoursTxt1">من 4:00 عصراً حتى 3:00 فجراً يومياً.</span>
                 </div>
             </div>
         </div>
@@ -822,7 +889,7 @@
                 <div style="display:flex; justify-content:space-between; align-items:flex-start;">
                     <div>
                         <div style="display:flex; align-items:center; gap:8px; margin-bottom:6px;">
-                            <span class="pulse-indicator"></span>
+                            <span style="width:8px; height:8px; border-radius:50%; background:#10b981; box-shadow:0 0 8px #10b981; display:inline-block;"></span>
                             <span style="font-size:12px; font-weight:800; color:var(--success); letter-spacing:0.5px;">SYSTEM OPERATIONAL</span>
                         </div>
                         <h2 style="font-size:20px; font-weight:900; margin-bottom:4px;">المهندس عمر عبيدات</h2>
@@ -833,43 +900,24 @@
                     </div>
                 </div>
 
-                <div style="display:flex; flex-wrap:wrap; gap:8px; margin-top:16px;">
-                    <span class="tech-badge-chip">
-                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"></path></svg>
-                        Cloud Realtime Engine
-                    </span>
-                    <span class="tech-badge-chip">
-                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
-                        Zero-Exposure Security
-                    </span>
-                    <span class="tech-badge-chip">
-                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 14 14"></polyline></svg>
-                        Reactive State Management
-                    </span>
-                </div>
-
-                <div class="tech-terminal-box">
+                <div style="background:#090d16; color:#38bdf8; border-radius:var(--radius-md); padding:18px; font-family:ui-monospace, SFMono-Regular, monospace; font-size:12px; line-height:1.7; border:1px solid #1e293b; direction:ltr; text-align:left; margin-top:16px;">
                     <div style="color:#64748b; margin-bottom:8px;">// SYSTEM KERNEL & ARCHITECTURAL SPECS</div>
                     <div><span style="color:#f43f5e;">const</span> <span style="color:#e2e8f0;">SystemKernel</span> = {</div>
-                    <div style="padding-left:14px;"><span style="color:#38bdf8;">runtime:</span> <span style="color:#a7f3d0;">"Pure-Reactive SPA"</span>,</div>
-                    <div style="padding-left:14px;"><span style="color:#38bdf8;">persistence:</span> <span style="color:#fde047;">"Dual-Layer (Cloud Artifacts + In-Memory)"</span>,</div>
-                    <div style="padding-left:14px;"><span style="color:#38bdf8;">accessProtocol:</span> <span style="color:#a7f3d0;">"Stealth Admin Pattern"</span>,</div>
-                    <div style="padding-left:14px;"><span style="color:#38bdf8;">leadEngineer:</span> <span style="color:#a7f3d0;">"Eng. Omar Obeidat"</span></div>
+                    <div style="padding-left:14px;"><span style="color:#38bdf8;">runtime:</span> <span style="color:#a7f3d0;">"Pure-Reactive PWA / POS"</span>,</div>
+                    <div style="padding-left:14px;"><span style="color:#38bdf8;">cloudSync:</span> <span style="color:#fde047;">"Realtime Firestore TLS 1.3"</span>,</div>
+                    <div style="padding-left:14px;"><span style="color:#38bdf8;">security:</span> <span style="color:#a7f3d0;">"Stealth Admin Access Pattern"</span>,</div>
+                    <div style="padding-left:14px;"><span style="color:#38bdf8;">engineer:</span> <span style="color:#a7f3d0;">"Eng. Omar Obeidat"</span></div>
                     <div>};</div>
                 </div>
             </div>
 
             <div class="section-card" style="max-width:650px; margin:0 auto; padding:20px;">
                 <div class="section-title">مواصفات الخادم والحماية المطبقة</div>
-                <div class="tech-metric-row">
+                <div style="display:flex; justify-content:space-between; padding:10px 0; border-bottom:1px solid var(--border-light); font-size:13px;">
                     <span style="color:var(--text-muted); font-weight:700;">بروتوكول التشفير والمزامنة:</span>
                     <span class="num-font" style="font-weight:800; color:var(--brand-accent);">TLS 1.3 / HTTPS Realtime Sync</span>
                 </div>
-                <div class="tech-metric-row">
-                    <span style="color:var(--text-muted); font-weight:700;">حماية واجهة الإدارة:</span>
-                    <span style="font-weight:800; color:var(--success);">بوابة غير مرئية (Stealth Access Only)</span>
-                </div>
-                <div class="tech-metric-row">
+                <div style="display:flex; justify-content:space-between; padding:10px 0; border-bottom:1px solid var(--border-light); font-size:13px;">
                     <span style="color:var(--text-muted); font-weight:700;">حقوق الملكية الفكرية:</span>
                     <span style="font-weight:800;">جميع الحقوق محفوظة للمهندس عمر عبيدات © 2026</span>
                 </div>
@@ -917,19 +965,23 @@
         <div class="admin-nav-tabs">
             <div class="admin-tab-chip active" id="tabHeadAnalytics" onclick="switchAdminTabPane('analytics')">
                 <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
-                <span>الإحصائيات الذكية</span>
+                <span>الإحصائيات</span>
             </div>
             <div class="admin-tab-chip" id="tabHeadMenu" onclick="switchAdminTabPane('menu')">
                 <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 8h1a4 4 0 0 1 0 8h-1"></path><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"></path></svg>
                 <span>أصناف المنيو</span>
             </div>
+            <div class="admin-tab-chip" id="tabHeadBackup" onclick="switchAdminTabPane('backup')">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                <span>النسخ والاستيراد</span>
+            </div>
             <div class="admin-tab-chip" id="tabHeadDelivery" onclick="switchAdminTabPane('delivery')">
                 <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="1" y="3" width="15" height="13"></rect><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon><circle cx="5.5" cy="18.5" r="2.5"></circle><circle cx="18.5" cy="18.5" r="2.5"></circle></svg>
-                <span>أسعار التوصيل والمناطق</span>
+                <span>أسعار التوصيل</span>
             </div>
             <div class="admin-tab-chip" id="tabHeadStore" onclick="switchAdminTabPane('store')">
                 <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="2" y="5" width="20" height="14" rx="2"></rect><line x1="2" y1="10" x2="22" y2="10"></line></svg>
-                <span>طرق الدفع وأرقام الفروع</span>
+                <span>الفروع والدفع واللوجو</span>
             </div>
             <div class="admin-tab-chip" id="tabHeadPromos" onclick="switchAdminTabPane('promos')">
                 <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="19" y1="5" x2="5" y2="19"></line><circle cx="6.5" cy="6.5" r="2.5"></circle><circle cx="17.5" cy="17.5" r="2.5"></circle></svg>
@@ -947,7 +999,7 @@
 
         <div class="scrollable-content">
             
-            <!-- تبويب 1: الإحصائيات -->
+            <!-- تبويب 1: الإحصائيات الحقيقية -->
             <div class="admin-pane active" id="paneAnalytics">
                 <div class="stat-grid-modern">
                     <div class="stat-card-pro">
@@ -978,9 +1030,6 @@
                             <div style="font-size:14px; font-weight:800;">حركة النشاط الأسبوعي الحقيقي</div>
                             <div style="font-size:11px; color:var(--text-muted); font-weight:600;">توزيع الزيارات الفعلية حسب الأيام</div>
                         </div>
-                        <div style="display:flex; align-items:center; gap:8px;">
-                            <span style="font-size:11px; font-weight:700; color:var(--brand-accent);">● النشاط</span>
-                        </div>
                     </div>
                     <canvas id="analyticsWeeklyCanvas" class="canvas-responsive" width="600" height="200"></canvas>
                 </div>
@@ -1003,7 +1052,33 @@
                 <div id="adminProductsControlList"></div>
             </div>
 
-            <!-- تبويب 3: أسعار التوصيل والمناطق -->
+            <!-- تبويب 3: النسخ الاحتياطي وتصدير واستيراد البيانات (ميزة 4) -->
+            <div class="admin-pane" id="paneBackup">
+                <div class="section-card" style="margin-bottom:16px;">
+                    <div class="section-title">تصدير وحفظ نسخة احتياطية من المنيو</div>
+                    <p style="font-size:13px; color:var(--text-muted); line-height:1.6; margin-bottom:14px;">
+                        يمكنك بضغطة زر تنزيل وحفظ ملف يحتوي على جميع أصناف المنيو، الأسعار، الصور، والإعدادات على هاتفك أو حاسوبك للرجوع إليها في أي وقت.
+                    </p>
+                    <button class="btn-brand-solid" onclick="exportMenuDataBackup()">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                        <span>تصدير المنيو كملف (Export JSON)</span>
+                    </button>
+                </div>
+
+                <div class="section-card">
+                    <div class="section-title">استيراد واسترجاع منيو من ملف</div>
+                    <p style="font-size:13px; color:var(--text-muted); line-height:1.6; margin-bottom:14px;">
+                        إذا أردت استرجاع نسخة احتياطية قديمة أو نقل منيو جاهز إلى موقعك في ثوانٍ، اختر الملف من جهازك:
+                    </p>
+                    <input type="file" id="importJsonFileInput" accept=".json" style="display:none;" onchange="handleImportMenuFile(event)">
+                    <button class="btn-brand-outline" onclick="document.getElementById('importJsonFileInput').click()">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="display:inline; vertical-align:middle; margin-left:6px;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+                        <span>اختيار ملف واستيراده (Import JSON)</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- تبويب 4: أسعار التوصيل والمناطق -->
             <div class="admin-pane" id="paneDelivery">
                 <div class="section-card" style="margin-bottom:14px;">
                     <div class="section-title">اختر الفرع لإدارة مناطقه</div>
@@ -1023,24 +1098,37 @@
                 <div id="adminTownsManagerList"></div>
             </div>
 
-            <!-- تبويب 4: طرق الدفع وأرقام الفروع -->
+            <!-- تبويب 5: الفروع، طرق الدفع، وتعديل الشعار (الميزة 3) -->
             <div class="admin-pane" id="paneStore">
+                <!-- تخصيص الشعار وصورة المعاينة -->
                 <div class="section-card" style="margin-bottom:16px;">
-                    <div class="section-title">أرقام هواتف الفروع والواتساب</div>
+                    <div class="section-title">شعار المحل وصورة المعاينة في السوشيال ميديا</div>
+                    <div style="display:flex; align-items:center; gap:14px; margin-bottom:12px;">
+                        <img src="./logo.png" id="adminPreviewLogoImg" style="width:60px; height:60px; border-radius:50%; object-fit:cover; border:1px solid var(--border-light); background:#fff;" alt="لوجو">
+                        <div style="flex:1;">
+                            <span style="font-size:12px; font-weight:700; color:var(--text-muted);">رابط صورة الشعار (URL أو مسار محلي):</span>
+                            <input type="text" class="ios-input-field num-font" id="storeLogoUrlInput" placeholder="مثال: ./logo.png أو رابط صورة أونلاين" style="margin-top:4px;">
+                        </div>
+                    </div>
+                    <button class="btn-brand-solid" onclick="saveStoreLogoSetting()">حفظ وتحديث الشعار في الموقع وتطبيقه للجميع</button>
+                </div>
+
+                <!-- أوقات العمل وأرقام الفروع -->
+                <div class="section-card" style="margin-bottom:16px;">
+                    <div class="section-title">أرقام الفروع والواتساب ومواعيد العمل</div>
                     <div style="display:flex; flex-direction:column; gap:12px;">
                         <div>
-                            <span style="font-size:12px; font-weight:700; color:var(--text-muted);">رقم واتساب فرع كفرسوم (لإرسال الطلبات):</span>
+                            <span style="font-size:12px; font-weight:700; color:var(--text-muted);">رقم واتساب فرع كفرسوم (يفتح 6:30 ص حتى 3:00 فجراً):</span>
                             <input type="text" class="ios-input-field num-font" id="storePhone0Input" placeholder="مثال: 962790155906" style="margin-top:4px;">
                         </div>
                         <div>
-                            <span style="font-size:12px; font-weight:700; color:var(--text-muted);">رقم واتساب فرع سما الروسان (لإرسال الطلبات):</span>
+                            <span style="font-size:12px; font-weight:700; color:var(--text-muted);">رقم واتساب فرع سما الروسان (يفتح 4:00 عصراً حتى 3:00 فجراً):</span>
                             <input type="text" class="ios-input-field num-font" id="storePhone1Input" placeholder="مثال: 962790155906" style="margin-top:4px;">
                         </div>
                         <button class="btn-brand-solid" style="margin-top:6px;" onclick="saveStoreAndPaymentSettings()">حفظ أرقام الفروع</button>
                     </div>
                 </div>
 
-                <!-- إدارة وإضافة طرق دفع ديناميكية جديدة -->
                 <div class="section-card">
                     <div class="section-title">
                         <span>طرق الدفع المفعلة للزبائن</span>
@@ -1053,14 +1141,14 @@
                         <div style="font-size:13px; font-weight:800; margin-bottom:10px; color:var(--brand-accent);">+ إضافة وسيلة دفع جديدة</div>
                         <div style="display:flex; flex-direction:column; gap:8px;">
                             <input type="text" class="ios-input-field" id="newPayMethodName" placeholder="اسم وسيلة الدفع (مثال: محفظة زين كاش أو فيزا كارد)">
-                            <input type="text" class="ios-input-field" id="newPayMethodDesc" placeholder="تعليمات أو تفاصيل الدفع (مثال: يرجى التحويل على رقم 079xxxx)">
+                            <input type="text" class="ios-input-field" id="newPayMethodDesc" placeholder="تعليمات أو تفاصيل الدفع">
                             <button class="btn-brand-solid" onclick="addNewCustomPaymentMethod()">إضافة وسيلة الدفع وتفعيلها للزبائن</button>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- تبويب 5: أكواد الخصم -->
+            <!-- تبويب 6: أكواد الخصم -->
             <div class="admin-pane" id="panePromos">
                 <div class="section-card" style="padding:14px; margin-bottom:16px;">
                     <div class="section-title">إصدار كود خصم جديد</div>
@@ -1080,7 +1168,7 @@
                 <div id="adminPromosManagerList"></div>
             </div>
 
-            <!-- تبويب 6: العروض الحصرية -->
+            <!-- تبويب 7: العروض الحصرية -->
             <div class="admin-pane" id="paneOffers">
                 <div class="section-card" style="padding:14px; margin-bottom:16px;">
                     <div class="section-title">إضافة عرض حصري جديد</div>
@@ -1095,7 +1183,7 @@
                 <div id="adminOffersManagerList"></div>
             </div>
 
-            <!-- تبويب 7: ثيمات وألوان وتصميم الموقع -->
+            <!-- تبويب 8: ثيمات وألوان وتصميم الموقع -->
             <div class="admin-pane" id="paneThemes">
                 <div class="section-card">
                     <div class="section-title">نماذج وتصاميم جاهزة للموقع</div>
@@ -1176,11 +1264,14 @@
 
 </div>
 
-<!-- القائمة الجانبية (Sidebar) بدون أي كشف لبوابة الإدارة -->
+<!-- القائمة الجانبية (Sidebar) خالية من أي كشف لبوابة الإدارة -->
 <div class="sidebar-mask" id="sidebarMask" onclick="closeSidebarDrawer()"></div>
 <div class="sidebar-drawer" id="sidebarDrawer">
     <div class="sidebar-top">
-        <div style="font-size:16px; font-weight:800;">COFFEE CORNER</div>
+        <div style="display:flex; align-items:center; gap:8px;">
+            <img src="./logo.png" class="brand-logo-img" id="sidebarLogoImg" alt="">
+            <div style="font-size:15px; font-weight:800;">COFFEE CORNER</div>
+        </div>
         <div class="header-btn" onclick="closeSidebarDrawer()" style="width:34px; height:34px;">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
         </div>
@@ -1201,7 +1292,13 @@
         <div class="sidebar-link" onclick="navigateRouter('screen-branches'); closeSidebarDrawer();">
             <div class="sidebar-link-left">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
-                <span>فروعنا</span>
+                <span>فروعنا وأوقات العمل</span>
+            </div>
+        </div>
+        <div class="sidebar-link" onclick="triggerPWAInstall(); closeSidebarDrawer();" id="sidebarInstallBtn" style="display:none;">
+            <div class="sidebar-link-left">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"></rect><line x1="12" y1="18" x2="12.01" y2="18"></line></svg>
+                <span>تثبيت التطبيق على الهاتف</span>
             </div>
         </div>
         <div class="sidebar-link" onclick="navigateRouter('screen-complaints'); closeSidebarDrawer();">
@@ -1232,6 +1329,66 @@
     </div>
 </div>
 
+<!-- شاشة الفاتورة الرقمية المصورة المنبثقة (Digital Receipt Modal - ميزة 7) -->
+<div class="receipt-modal-backdrop" id="receiptModalBackdrop">
+    <div class="receipt-card-body" id="receiptCardPrintArea">
+        <div class="receipt-header">
+            <img src="./logo.png" id="receiptLogoImg" class="receipt-logo" alt="">
+            <div style="font-size:18px; font-weight:900;">COFFEE CORNER | كافيه كورنر</div>
+            <div style="font-size:12px; color:#64748b; margin-top:2px;">فاتورة طلب إلكترونية معتمدة</div>
+            <div style="font-size:13px; font-weight:800; color:var(--brand-accent); margin-top:6px;" id="receiptOrderNum">#ORD-0000</div>
+            <div style="font-size:11px; color:#94a3b8; margin-top:2px;" id="receiptDateTime"></div>
+        </div>
+
+        <div style="font-size:12px; line-height:1.6; margin-bottom:14px; background:#f8fafc; padding:10px; border-radius:6px; border:1px solid #e2e8f0;">
+            <div><strong>الفرع:</strong> <span id="receiptBranch"></span></div>
+            <div><strong>العميل:</strong> <span id="receiptCustomer"></span> (<span id="receiptPhone" class="num-font"></span>)</div>
+            <div><strong>الاستلام:</strong> <span id="receiptDeliveryMode"></span></div>
+            <div id="receiptAddressRow"><strong>العنوان:</strong> <span id="receiptAddress"></span></div>
+            <div><strong>طريقة الدفع:</strong> <span id="receiptPayMethod"></span></div>
+        </div>
+
+        <table class="receipt-items-table">
+            <thead>
+                <tr>
+                    <th>الصنف</th>
+                    <th style="text-align:center;">الكمية</th>
+                    <th style="text-align:left;">المجموع</th>
+                </tr>
+            </thead>
+            <tbody id="receiptTableBody"></tbody>
+        </table>
+
+        <div style="font-size:12px; line-height:1.8; color:#64748b;">
+            <div style="display:flex; justify-content:space-between;">
+                <span>مجموع الأصناف:</span>
+                <span class="num-font" id="receiptSubtotal">0.00 د.أ</span>
+            </div>
+            <div style="display:flex; justify-content:space-between; color:var(--success);" id="receiptDiscountRow">
+                <span>خصم الكود:</span>
+                <span class="num-font" id="receiptDiscount">-0.00 د.أ</span>
+            </div>
+            <div style="display:flex; justify-content:space-between;" id="receiptDeliveryRow">
+                <span>أجور التوصيل:</span>
+                <span class="num-font" id="receiptDeliveryFee">0.00 د.أ</span>
+            </div>
+        </div>
+
+        <div class="receipt-total-row">
+            <span>المجموع النهائي:</span>
+            <span class="num-font" id="receiptFinalTotal" style="color:var(--brand-accent);">0.00 د.أ</span>
+        </div>
+
+        <div style="display:flex; flex-direction:column; gap:8px; margin-top:20px;">
+            <button class="btn-brand-solid" onclick="shareOrCopyReceiptText()">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line></svg>
+                <span>مشاركة / نسخ الفاتورة</span>
+            </button>
+            <button class="btn-brand-outline" onclick="closeReceiptModal()">إغلاق ومتابعة</button>
+        </div>
+    </div>
+</div>
+
 <!-- السلة العائمة المباشرة -->
 <div class="floating-dock" id="floatingCartDock" onclick="navigateRouter('screen-cart')">
     <div style="display:flex; align-items:center; gap:10px;">
@@ -1250,7 +1407,7 @@
     window.DEFAULT_CATALOG = [
         { id:"p1", name:"كوكتيل إمبراطور فواكه", category:"كوكتيلات", price:2.50, desc:"مزيج قطع فواكه طازجة مع القشطة والمكسرات", img:"https://images.unsplash.com/photo-1577805947697-89e18249d767?w=400&q=80", isAvailable:true },
         { id:"p2", name:"وافل بلجيكي نوتيلا", category:"وافل", price:2.50, desc:"وافل دافئ مقرمش غني بصوص النوتيلا الأصلي", img:"https://images.unsplash.com/photo-1562376552-0d160a2f238d?w=400&q=80", isAvailable:true },
-        { id:"p3", name:"كريب فيتوتشيني تريبل", category:"كريب", price:3.00, desc:"شرائح كريب رقيقة مع 3 صصوصات شوكولاتة بلجيكية", img:"https://images.unsplash.com/photo-1519676867240-f03562e64548?w=400&q=80", isAvailable:true },
+        { id:"p3", name:"كريب فيتوتشيني تريبل", category:"كريب", price:3.00, desc:"شرائح كريب رقيقة مع 3 صوصات شوكولاتة بلجيكية", img:"https://images.unsplash.com/photo-1519676867240-f03562e64548?w=400&q=80", isAvailable:true },
         { id:"p4", name:"ميلك شيك أوريو", category:"ميلك شيك", price:2.00, desc:"مخفوق الحليب والآيس كريم مع بسكويت الأوريو", img:"https://images.unsplash.com/photo-1572490122747-3968b75cc699?w=400&q=80", isAvailable:true },
         { id:"p5", name:"بان كيك كلاسيك", category:"بان كيك", price:2.00, desc:"طبقات بان كيك هشة وطرية مع صوصك المفضل", img:"https://images.unsplash.com/photo-1528207776546-384cb11312b2?w=400&q=80", isAvailable:true },
         { id:"p6", name:"كنافة نابلسية بالجبن", category:"كنافة", price:3.00, desc:"كنافة سخنة متبلة بالسمن والجبن المذوب", img:"https://images.unsplash.com/photo-1628198642220-4bf63f25c755?w=400&q=80", isAvailable:true },
@@ -1262,17 +1419,18 @@
     const DEFAULT_STORE_CONFIG = {
         brandTitle: "كافيه كورنر",
         brandSub: "أشهى الكوكتيلات والحلويات الفاخرة",
+        logoUrl: "./logo.png",
         branches: {
             0: {
                 name: "كفرسوم",
                 whatsapp: "962790155906",
-                hours: "6:30 صباحاً حتى 3:00 فجراً يومياً.",
+                hours: "من 6:30 صباحاً حتى 3:00 فجراً يومياً.",
                 towns: { "كفرسوم": 1.0, "سمر": 1.25, "سحم": 1.5, "حبراص": 1.25, "يبلا": 1.5, "الرفيد": 1.5, "حرثا": 1.5, "المزيريب": 1.5, "عقربا": 2.0, "حاتم": 1.75, "ملكا": 2.0, "أم قيس": 2.5, "المنصورة": 2.0 }
             },
             1: {
                 name: "سما الروسان",
                 whatsapp: "962790155906",
-                hours: "4:00 مساءً حتى 3:00 فجراً يومياً.",
+                hours: "من 4:00 عصراً حتى 3:00 فجراً يومياً.",
                 towns: { "سما الروسان": 1.0, "حبراص": 1.25, "حاتم": 1.5, "كفرسوم": 1.5, "إبدر": 1.75, "المخيبة": 2.5 }
             }
         },
@@ -1312,7 +1470,6 @@
     let offersList = JSON.parse(localStorage.getItem('cc_v2_offers')) || [];
     let storeConfig = JSON.parse(localStorage.getItem('cc_v2_config')) || DEFAULT_STORE_CONFIG;
     
-    // إحصائيات واقعية تبدأ من الصفر
     let siteStats = JSON.parse(localStorage.getItem('cc_v2_stats')) || {
         visits: 0,
         orders: 0,
@@ -1326,6 +1483,8 @@
     let adminActiveTownBranch = 0;
     let secretClickCount = 0;
     let secretClickTimer = null;
+    let deferredPwaPrompt = null;
+    let latestCompletedReceiptData = null;
 
     window.appState = {
         cartBranch: 0,
@@ -1337,7 +1496,110 @@
         productModalQty: 1
     };
 
-    // بوابة الإدارة السرية: النقر 4 مرات سريعة على العنوان
+    // ميزة 2: فحص أوقات العمل الذكية ومنع الطلب عند الإغلاق
+    // فرع كفرسوم: من 6:30 صباحاً حتى 3:00 فجراً (مغلق من 3:00 ص إلى 6:30 ص)
+    // فرع سما الروسان: من 4:00 عصراً حتى 3:00 فجراً (مغلق من 3:00 ص إلى 4:00 م)
+    window.checkBranchOpenStatus = function(branchIndex) {
+        const now = new Date();
+        const minutesNow = now.getHours() * 60 + now.getMinutes();
+
+        if (branchIndex === 0) {
+            // كفرسوم: إغلاق من 180 (3:00 ص) إلى 390 (6:30 ص)
+            const isClosed = (minutesNow >= 180 && minutesNow < 390);
+            return {
+                isOpen: !isClosed,
+                openTimeText: "6:30 صباحاً",
+                hoursText: "من 6:30 صباحاً حتى 3:00 فجراً",
+                message: isClosed ? "فرع كفرسوم مغلق حالياً. يبدأ استقبال الطلبات الساعة 6:30 صباحاً." : "مفتوح ويستقبل الطلبات الآن"
+            };
+        } else {
+            // سما الروسان: إغلاق من 180 (3:00 ص) إلى 960 (4:00 م)
+            const isClosed = (minutesNow >= 180 && minutesNow < 960);
+            return {
+                isOpen: !isClosed,
+                openTimeText: "4:00 عصراً",
+                hoursText: "من 4:00 عصراً حتى 3:00 فجراً",
+                message: isClosed ? "فرع سما الروسان مغلق حالياً. يبدأ استقبال الطلبات الساعة 4:00 عصراً." : "مفتوح ويستقبل الطلبات الآن"
+            };
+        }
+    };
+
+    window.updateBranchStatusUI = function() {
+        const status0 = checkBranchOpenStatus(0);
+        const status1 = checkBranchOpenStatus(1);
+
+        // شارات شاشة الفروع
+        const b0 = document.getElementById('branchBadgeBranch0');
+        const b1 = document.getElementById('branchBadgeBranch1');
+        if (b0) {
+            b0.className = `header-hours-badge ${status0.isOpen ? 'badge-open' : 'badge-closed'}`;
+            b0.innerText = status0.isOpen ? 'مفتوح الآن' : 'مغلق حالياً';
+        }
+        if (b1) {
+            b1.className = `header-hours-badge ${status1.isOpen ? 'badge-open' : 'badge-closed'}`;
+            b1.innerText = status1.isOpen ? 'مفتوح الآن' : 'مغلق حالياً';
+        }
+
+        // شارة الهيدر للفرع المختار في السلة
+        const curStatus = checkBranchOpenStatus(window.appState.cartBranch);
+        const headerBadge = document.getElementById('uiCurrentBranchStatusBadge');
+        if (headerBadge) {
+            headerBadge.className = `header-hours-badge ${curStatus.isOpen ? 'badge-open' : 'badge-closed'}`;
+            headerBadge.innerText = curStatus.isOpen ? 'مفتوح الآن' : 'مغلق حالياً';
+        }
+
+        // تنبيه السلة وزر الطلب
+        const alertBox = document.getElementById('branchClosedAlertBox');
+        const alertMsg = document.getElementById('branchClosedAlertMsg');
+        const submitBtn = document.getElementById('btnWhatsAppSubmitOrder');
+        const submitText = document.getElementById('submitOrderBtnText');
+        const notice = document.getElementById('cartBranchStatusNotice');
+
+        if (notice) {
+            notice.innerText = curStatus.isOpen ? '● الفرع متاح للطلب' : '● الفرع مغلق حالياً';
+            notice.style.color = curStatus.isOpen ? 'var(--success)' : 'var(--danger)';
+        }
+
+        if (!curStatus.isOpen) {
+            if (alertBox) alertBox.style.display = 'flex';
+            if (alertMsg) alertMsg.innerText = `عذراً، ${curStatus.message}`;
+            if (submitBtn) submitBtn.classList.add('disabled');
+            if (submitText) submitText.innerText = `الفرع مغلق (يفتح ${curStatus.openTimeText})`;
+        } else {
+            if (alertBox) alertBox.style.display = 'none';
+            if (submitBtn) submitBtn.classList.remove('disabled');
+            if (submitText) submitText.innerText = "تأكيد وإرسال الطلب عبر واتساب";
+        }
+    };
+
+    // ميزة 1: تحويل الموقع إلى تطبيق هاتف ذكي (PWA Setup)
+    window.addEventListener('beforeinstallprompt', (e) => {
+        e.preventDefault();
+        deferredPwaPrompt = e;
+        const banner = document.getElementById('pwaInstallBanner');
+        const sideBtn = document.getElementById('sidebarInstallBtn');
+        if (banner && !sessionStorage.getItem('cc_pwa_dismissed')) banner.classList.add('visible');
+        if (sideBtn) sideBtn.style.display = 'flex';
+    });
+
+    window.triggerPWAInstall = async () => {
+        if (deferredPwaPrompt) {
+            deferredPwaPrompt.prompt();
+            const { outcome } = await deferredPwaPrompt.userChoice;
+            deferredPwaPrompt = null;
+            dismissPWABanner();
+        } else {
+            showToastMsg("لتثبيت التطبيق على آيفون: اضغط زر مشاركة [↑] ثم اختر «إضافة إلى الشاشة الرئيسية»");
+        }
+    };
+
+    window.dismissPWABanner = () => {
+        const banner = document.getElementById('pwaInstallBanner');
+        if (banner) banner.classList.remove('visible');
+        sessionStorage.setItem('cc_pwa_dismissed', 'true');
+    };
+
+    // بوابة الإدارة السرية: 4 نقرات سريعة على العنوان
     window.handleSecretAdminTrigger = function() {
         secretClickCount++;
         clearTimeout(secretClickTimer);
@@ -1408,6 +1670,7 @@
         if (screenId === 'screen-cart') {
             renderCartContent();
             recalculateCartSummary();
+            updateBranchStatusUI();
             const dock = document.getElementById('floatingCartDock');
             if (dock) dock.classList.remove('visible');
         } else if (screenId === 'screen-offers') {
@@ -1441,6 +1704,15 @@
         if (titleEl) titleEl.innerText = storeConfig.brandTitle || "كافيه كورنر";
         if (subEl) subEl.innerText = storeConfig.brandSub || "";
 
+        const logoSrc = storeConfig.logoUrl || './logo.png';
+        ['uiHeaderLogo', 'pwaBannerLogo', 'sidebarLogoImg', 'receiptLogoImg', 'adminPreviewLogoImg'].forEach(id => {
+            const img = document.getElementById(id);
+            if (img) img.src = logoSrc;
+        });
+
+        const storeLogoInput = document.getElementById('storeLogoUrlInput');
+        if (storeLogoInput) storeLogoInput.value = storeConfig.logoUrl || './logo.png';
+
         if (storeConfig.theme) {
             document.documentElement.style.setProperty('--brand-accent', storeConfig.theme.accent);
             document.documentElement.style.setProperty('--brand-primary', storeConfig.theme.primary);
@@ -1462,6 +1734,86 @@
 
         populateTownDropdown();
         renderPaymentMethodsList();
+        updateBranchStatusUI();
+    };
+
+    window.saveStoreLogoSetting = function() {
+        const newLogo = (document.getElementById('storeLogoUrlInput').value || '').trim();
+        if (!newLogo) return showToastMsg("يرجى إدخال رابط صالح للصورة");
+        storeConfig.logoUrl = newLogo;
+        localStorage.setItem('cc_v2_config', JSON.stringify(storeConfig));
+        if (window.cloudSaveSettings) window.cloudSaveSettings(storeConfig);
+        applyStoreConfigToUI();
+        showToastMsg("تم تحديث الشعار وتطبيقه في جميع الشاشات بنجاح");
+    };
+
+    // ميزة 4: تصدير واستيراد المنيو بالكامل (Backup & Restore)
+    window.exportMenuDataBackup = function() {
+        const backupPayload = {
+            exportDate: new Date().toISOString(),
+            brand: "COFFEE CORNER",
+            products: productsList,
+            promos: promoCodesList,
+            offers: offersList,
+            storeConfig: storeConfig
+        };
+        const blob = new Blob([JSON.stringify(backupPayload, null, 2)], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `coffee-corner-menu-backup-${new Date().toISOString().slice(0, 10)}.json`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+        showToastMsg("تم تصدير وحفظ نسخة المنيو على جهازك بنجاح");
+    };
+
+    window.handleImportMenuFile = function(e) {
+        const file = e.target.files[0];
+        if (!file) return;
+
+        const reader = new FileReader();
+        reader.onload = async function(evt) {
+            try {
+                const parsed = JSON.parse(evt.target.result);
+                if (parsed.products && Array.isArray(parsed.products)) {
+                    productsList = parsed.products;
+                    localStorage.setItem('cc_v2_products', JSON.stringify(productsList));
+                    if (parsed.promos) {
+                        promoCodesList = parsed.promos;
+                        localStorage.setItem('cc_v2_promos', JSON.stringify(promoCodesList));
+                    }
+                    if (parsed.offers) {
+                        offersList = parsed.offers;
+                        localStorage.setItem('cc_v2_offers', JSON.stringify(offersList));
+                    }
+                    if (parsed.storeConfig) {
+                        storeConfig = { ...storeConfig, ...parsed.storeConfig };
+                        localStorage.setItem('cc_v2_config', JSON.stringify(storeConfig));
+                        if (window.cloudSaveSettings) window.cloudSaveSettings(storeConfig);
+                    }
+
+                    // رفع الأصناف المستوردة سحابياً
+                    for (const item of productsList) {
+                        const { id, ...pData } = item;
+                        if (window.cloudSaveProduct) await window.cloudSaveProduct(id, pData);
+                    }
+
+                    renderCategoryChips();
+                    renderMenuProducts();
+                    renderAdminProductsManager();
+                    applyStoreConfigToUI();
+                    showToastMsg("تم استيراد المنيو والبيانات وتحديثها سحابياً بنجاح");
+                } else {
+                    showToastMsg("الملف غير صالح أو لا يحتوي على بنية منيو صحيحة");
+                }
+            } catch (err) {
+                console.error(err);
+                showToastMsg("حدث خطأ أثناء قراءة ملف النسخة الاحتياطية");
+            }
+        };
+        reader.readAsText(file);
     };
 
     window.renderCategoryChips = function() {
@@ -1554,7 +1906,6 @@
         document.getElementById('psQtyDisplay').innerText = '1';
         document.getElementById('psNotes').value = '';
 
-        // إلغاء الأحجام تماماً للوافل والكريب والبان كيك
         const isNoSizeCategory = ["وافل", "كريب", "بان كيك"].includes(item.category);
         const sizeGroupEl = document.getElementById('psSizeGroup');
 
@@ -1748,6 +2099,7 @@
 
         populateTownDropdown();
         renderPaymentMethodsList();
+        updateBranchStatusUI();
     }
 
     window.switchCartBranch = function(branchId) {
@@ -1756,6 +2108,7 @@
         document.getElementById('btnBranch1').classList.toggle('active', branchId === 1);
         populateTownDropdown();
         renderPaymentMethodsList();
+        updateBranchStatusUI();
     };
 
     window.switchDeliveryMode = function(mode) {
@@ -1880,7 +2233,15 @@
         document.getElementById('sumTotal').innerText = finalTotal.toFixed(2) + ' د.أ';
     };
 
+    // إرسال الطلب، إغلاق الفرع، وتوليد الفاتورة الرقمية (ميزة 2 وميزة 5)
     window.dispatchOrderToWhatsApp = function() {
+        // فحص حالة مواعيد العمل ومنع الطلب تماماً إذا كان المحل مغلقاً
+        const branchStatus = checkBranchOpenStatus(window.appState.cartBranch);
+        if (!branchStatus.isOpen) {
+            showToastMsg(`عذراً، ${branchStatus.message}`);
+            return;
+        }
+
         if (window.appState.cart.length === 0) return showToastMsg("السلة فارغة");
         const clientName = document.getElementById('cartClientName').value.trim();
         const clientPhone = document.getElementById('cartClientPhone').value.trim();
@@ -1922,6 +2283,25 @@
         const selectedPayObj = (storeConfig.paymentMethods || DEFAULT_STORE_CONFIG.paymentMethods).find(m => m.id === window.appState.paymentMethod);
         let payLabel = selectedPayObj ? selectedPayObj.name : 'دفع نقدي';
 
+        // تخزين بيانات الفاتورة الرقمية لفتحها وعرضها للزبون
+        latestCompletedReceiptData = {
+            invoiceNumber,
+            dateText: new Date().toLocaleString('ar-JO', { dateStyle: 'full', timeStyle: 'short' }),
+            branchName: branch.name,
+            clientName,
+            clientPhone,
+            deliveryMode: window.appState.deliveryMode === 'delivery' ? 'توصيل للبيت' : 'استلام من الفرع',
+            addressText,
+            townName,
+            payLabel,
+            items: [...window.appState.cart],
+            subtotal,
+            discountVal,
+            deliveryFee,
+            finalAmount
+        };
+
+        // صياغة رسالة الواتساب
         let msg = `*طلب جديد | ${storeConfig.brandTitle}*\n`;
         msg += `رقم الفاتورة: *${invoiceNumber}*\n`;
         msg += `الفرع: ${branch.name}\n`;
@@ -1948,14 +2328,103 @@
         msg += `الاستلام: ${window.appState.deliveryMode === 'delivery' ? 'توصيل للبيت' : 'من الفرع'}\n`;
         if (addressText) msg += `العنوان: ${addressText}\n`;
 
+        // إفراغ السلة
         window.appState.cart = [];
         localStorage.removeItem('cc_v2_cart');
         appliedPromoObject = null;
         navigateRouter('screen-home');
         refreshCartDockStatus();
 
+        // فتح محادثة الواتساب
         const targetWhatsapp = branch.whatsapp || "962790155906";
         window.open(`https://wa.me/${targetWhatsapp}?text=${encodeURIComponent(msg)}`, '_blank');
+
+        // عرض بطاقة الفاتورة الرقمية المنبثقة للزبون ليحتفظ بها (ميزة 5)
+        setTimeout(openReceiptModal, 600);
+    };
+
+    // ميزة 5: بطاقة الفاتورة الرقمية المصورة
+    window.openReceiptModal = function() {
+        if (!latestCompletedReceiptData) return;
+        const d = latestCompletedReceiptData;
+
+        document.getElementById('receiptOrderNum').innerText = d.invoiceNumber;
+        document.getElementById('receiptDateTime').innerText = d.dateText;
+        document.getElementById('receiptBranch').innerText = d.branchName;
+        document.getElementById('receiptCustomer').innerText = d.clientName;
+        document.getElementById('receiptPhone').innerText = d.clientPhone;
+        document.getElementById('receiptDeliveryMode').innerText = d.deliveryMode;
+        document.getElementById('receiptPayMethod').innerText = d.payLabel;
+
+        const addrRow = document.getElementById('receiptAddressRow');
+        if (d.addressText) {
+            addrRow.style.display = 'block';
+            document.getElementById('receiptAddress').innerText = `${d.townName} - ${d.addressText}`;
+        } else {
+            addrRow.style.display = 'none';
+        }
+
+        const tbody = document.getElementById('receiptTableBody');
+        tbody.innerHTML = d.items.map(item => `
+            <tr>
+                <td>
+                    <div style="font-weight:800;">${item.name}</div>
+                    <div style="font-size:11px; color:#64748b;">
+                        ${item.sizeName !== 'قياسي' ? `الحجم: ${item.sizeName} ` : ''}
+                        ${item.sauceName ? `النكهة: ${item.sauceName}` : ''}
+                    </div>
+                </td>
+                <td style="text-align:center; font-weight:800;" class="num-font">${item.qty}</td>
+                <td style="text-align:left; font-weight:800;" class="num-font">${item.lineTotal.toFixed(2)} د.أ</td>
+            </tr>
+        `).join('');
+
+        document.getElementById('receiptSubtotal').innerText = d.subtotal.toFixed(2) + ' د.أ';
+        const discRow = document.getElementById('receiptDiscountRow');
+        if (d.discountVal > 0) {
+            discRow.style.display = 'flex';
+            document.getElementById('receiptDiscount').innerText = `-${d.discountVal.toFixed(2)} د.أ`;
+        } else {
+            discRow.style.display = 'none';
+        }
+
+        const delRow = document.getElementById('receiptDeliveryRow');
+        if (d.deliveryFee > 0) {
+            delRow.style.display = 'flex';
+            document.getElementById('receiptDeliveryFee').innerText = `${d.deliveryFee.toFixed(2)} د.أ`;
+        } else {
+            delRow.style.display = 'none';
+        }
+
+        document.getElementById('receiptFinalTotal').innerText = d.finalAmount.toFixed(2) + ' د.أ';
+
+        document.getElementById('receiptModalBackdrop').classList.add('active');
+    };
+
+    window.closeReceiptModal = function() {
+        document.getElementById('receiptModalBackdrop').classList.remove('active');
+    };
+
+    window.shareOrCopyReceiptText = async function() {
+        if (!latestCompletedReceiptData) return;
+        const d = latestCompletedReceiptData;
+        let text = `فاتورة كافيه كورنر ${d.invoiceNumber}\n`;
+        text += `الفرع: ${d.branchName}\nالعميل: ${d.clientName}\n`;
+        text += `المجموع النهائي: ${d.finalAmount.toFixed(2)} د.أ\n`;
+        text += `طريقة الدفع: ${d.payLabel}\nشكراً لطلبكم من كافيه كورنر!`;
+
+        if (navigator.share) {
+            try {
+                await navigator.share({ title: `فاتورة ${d.invoiceNumber}`, text: text });
+                return;
+            } catch(e){}
+        }
+
+        navigator.clipboard.writeText(text).then(() => {
+            showToastMsg("تم نسخ نص الفاتورة للحافظة بنجاح");
+        }).catch(() => {
+            showToastMsg("تم حفظ بيانات الفاتورة بنجاح");
+        });
     };
 
     window.dispatchComplaintMsg = function() {
@@ -2040,7 +2509,7 @@
     };
 
     window.switchAdminTabPane = function(paneId) {
-        ['analytics', 'menu', 'delivery', 'store', 'promos', 'offers', 'themes'].forEach(p => {
+        ['analytics', 'menu', 'backup', 'delivery', 'store', 'promos', 'offers', 'themes'].forEach(p => {
             const head = document.getElementById('tabHead' + p.charAt(0).toUpperCase() + p.slice(1));
             const pane = document.getElementById('pane' + p.charAt(0).toUpperCase() + p.slice(1));
             if (head) head.classList.toggle('active', p === paneId);
@@ -2250,6 +2719,7 @@
 
         document.getElementById('storePhone0Input').value = b0.whatsapp || '';
         document.getElementById('storePhone1Input').value = b1.whatsapp || '';
+        document.getElementById('storeLogoUrlInput').value = storeConfig.logoUrl || './logo.png';
 
         renderAdminPaymentMethodsList();
     }
@@ -2595,7 +3065,7 @@
         showToastMsg("تم حذف العرض سحابياً");
     };
 
-    // تهيئة التطبيق وتسجيل الزيارة الحقيقية
+    // تهيئة التطبيق ومتابعة المواعيد تلقائياً
     document.addEventListener('DOMContentLoaded', () => {
         if (localStorage.getItem('cc_theme') === 'dark') {
             document.body.classList.add('dark-mode');
@@ -2603,7 +3073,6 @@
             if (themeSwitch) themeSwitch.checked = true;
         }
 
-        // احتساب زيارة حقيقية واحدة لكل جلسة
         if (!sessionStorage.getItem('cc_session_counted')) {
             sessionStorage.setItem('cc_session_counted', 'true');
             siteStats.visits = (siteStats.visits || 0) + 1;
@@ -2622,6 +3091,10 @@
         renderCategoryChips();
         renderMenuProducts();
         refreshCartDockStatus();
+        updateBranchStatusUI();
+
+        // فحص مستمر لمواعيد العمل كل دقيقة وتحديث الشارات تلقائياً
+        setInterval(updateBranchStatusUI, 60000);
 
         if (window.location.hash === '#admin') {
             navigateRouter('screen-admin-login');
