@@ -24,7 +24,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
     
-    <!-- محرك Firebase السحابي المباشر -->
+    <!-- محرك Firebase السحابي المباشر والمزامنة اللحظية -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
         import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
@@ -86,11 +86,18 @@
                     }
                 }, () => {});
 
-                // 6. مزامنة سجل تعديلات النظام للمطور
+                // 6. مزامنة سجل تدقيق المطور
                 onSnapshot(collection(db, 'artifacts', appId, 'public', 'data', 'audit_logs'), (snap) => {
                     const logs = [];
                     snap.forEach(d => logs.push({ id: d.id, ...d.data() }));
                     if (window.onCloudAuditLogs) window.onCloudAuditLogs(logs);
+                }, () => {});
+
+                // 7. مزامنة حسابات المستخدمين والزبائن وحالات الحظر
+                onSnapshot(collection(db, 'artifacts', appId, 'public', 'data', 'users'), (snap) => {
+                    const usersMap = {};
+                    snap.forEach(d => usersMap[d.id] = { id: d.id, ...d.data() });
+                    if (window.onCloudUsers) window.onCloudUsers(usersMap);
                 }, () => {});
 
             } catch (e) {}
@@ -151,6 +158,13 @@
             try {
                 const logId = 'log_' + Date.now() + '_' + Math.random().toString(36).substr(2, 4);
                 await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'audit_logs', logId), logEntry);
+            } catch(e){}
+        };
+
+        window.cloudSaveUser = async (phoneKey, userData) => {
+            if (!db) return;
+            try {
+                await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'users', phoneKey), userData, { merge: true });
             } catch(e){}
         };
 
@@ -265,12 +279,20 @@
         .badge-open { background: rgba(16, 185, 129, 0.12); color: var(--success); }
         .badge-closed { background: rgba(239, 68, 68, 0.12); color: var(--danger); }
 
-        .theme-icon-btn {
+        .header-right-actions {
+            display: flex; align-items: center; gap: 6px;
+        }
+
+        .theme-icon-btn, .user-avatar-btn {
             width: 40px; height: 40px; border-radius: var(--radius-sm); background: var(--surface);
             border: 1px solid var(--border-light); display: flex; align-items: center; justify-content: center;
-            cursor: pointer; color: var(--text-main); transition: 0.2s;
+            cursor: pointer; color: var(--text-main); transition: 0.2s; position: relative;
         }
-        .theme-icon-btn:active { transform: scale(0.95); }
+        .theme-icon-btn:active, .user-avatar-btn:active { transform: scale(0.95); }
+        .user-online-dot {
+            position: absolute; bottom: 4px; left: 4px; width: 8px; height: 8px;
+            border-radius: 50%; background: var(--success); border: 1.5px solid var(--surface);
+        }
 
         .search-container { padding: 14px 20px 0; }
         .search-bar {
@@ -422,6 +444,13 @@
             background: rgba(239, 68, 68, 0.08); border: 1px solid var(--danger);
             border-radius: var(--radius-sm); padding: 12px 14px; margin-bottom: 14px;
             color: var(--danger); font-size: 13px; font-weight: 600; line-height: 1.5;
+            display: none; align-items: center; gap: 8px;
+        }
+
+        .banned-alert-box {
+            background: rgba(239, 68, 68, 0.1); border: 1.5px solid var(--danger);
+            border-radius: var(--radius-sm); padding: 12px 14px; margin-bottom: 14px;
+            color: var(--danger); font-size: 13px; font-weight: 700; line-height: 1.5;
             display: none; align-items: center; gap: 8px;
         }
 
@@ -583,6 +612,18 @@
             border: 4px solid var(--surface); background: var(--segment-bg);
             box-shadow: 0 8px 20px rgba(0,0,0,0.15); flex-shrink: 0;
         }
+
+        /* واجهة حسابات المستخدمين (User Profile & Auth) */
+        .user-badge-status {
+            font-size: 11px; font-weight: 700; padding: 2px 8px; border-radius: 10px;
+        }
+        .user-status-active { background: rgba(16, 185, 129, 0.12); color: var(--success); }
+        .user-status-banned { background: rgba(239, 68, 68, 0.12); color: var(--danger); }
+        
+        .client-card-banner {
+            background: linear-gradient(135deg, var(--brand-accent), #1e293b);
+            color: #ffffff; border-radius: var(--radius-md); padding: 20px; margin-bottom: 14px;
+        }
     </style>
 </head>
 <body>
@@ -606,9 +647,17 @@
                     <div id="uiCurrentBranchStatusBadge" class="header-hours-badge badge-open">مفتوح الآن</div>
                 </div>
             </div>
-            <!-- زر الشمس/القمر لتبديل المظهر -->
-            <div class="theme-icon-btn" onclick="toggleAppTheme()" title="تبديل المظهر">
-                <svg id="headerThemeIcon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+            
+            <div class="header-right-actions">
+                <!-- زر حساب العميل / تسجيل الدخول الذكي -->
+                <div class="user-avatar-btn" onclick="handleUserAccountHeaderClick()" title="حسابي">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                    <div class="user-online-dot" id="headerUserOnlineDot" style="display:none;"></div>
+                </div>
+                <!-- زر الشمس/القمر لتبديل المظهر -->
+                <div class="theme-icon-btn" onclick="toggleAppTheme()" title="تبديل المظهر">
+                    <svg id="headerThemeIcon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+                </div>
             </div>
         </header>
 
@@ -647,7 +696,7 @@
                     <div class="custom-card-group" id="psSizeOptionsContainer"></div>
                 </div>
 
-                <!-- نكهات الكريب والوافل والبان كيك (بدون أسعار مشوهة بجانب الاسم) -->
+                <!-- نكهات الكريب والوافل والبان كيك -->
                 <div class="pd-group" id="psSaucesContainer" style="display:none;">
                     <div class="pd-group-title">النكهات والصوصات</div>
                     <div class="pd-group-sub">لغاية 3 نكهات للمكس اللذيذ</div>
@@ -740,8 +789,12 @@
                     <div id="promoErrorAlert" style="font-size:12px; margin-top:6px; font-weight:600; color:var(--danger);"></div>
                 </div>
 
+                <!-- بيانات العميل المحفوظة تلقائياً -->
                 <div class="section-card">
-                    <div class="section-title">بيانات العميل</div>
+                    <div class="section-title">
+                        <span>بيانات العميل</span>
+                        <span id="cartUserAutofillBadge" style="font-size:11px; font-weight:700; color:var(--success); display:none;">✓ تم التعبئة من حسابك</span>
+                    </div>
                     <div style="display:flex; flex-direction:column; gap:8px;">
                         <input type="text" class="ios-input-field" id="cartClientName" placeholder="الاسم الكريم">
                         <input type="tel" class="ios-input-field num-font" id="cartClientPhone" placeholder="رقم الهاتف الخلوي (079xxxxxxx)">
@@ -772,6 +825,12 @@
                         <span>الإجمالي النهائي</span>
                         <span class="num-font" id="sumTotal" style="color:var(--brand-accent);">0.00 د.أ</span>
                     </div>
+                </div>
+
+                <!-- تنبيه حظر الحساب الأمني -->
+                <div class="banned-alert-box" id="userBannedAlertBox">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="12" cy="12" r="10"></circle><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"></line></svg>
+                    <span>عذراً، هذا الحساب محظور حالياً من قبل الإدارة ولا يمكنه إتمام الطلبات.</span>
                 </div>
 
                 <!-- تنبيه إغلاق الفرع الذكي -->
@@ -853,7 +912,7 @@
         </div>
     </div>
 
-    <!-- 7. شاشة المطور الشخصية الفاخرة (المهندس عمر عبيدات) مع خلفية وصورة حية -->
+    <!-- 7. شاشة المطور الشخصية الفاخرة (المهندس عمر عبيدات) -->
     <div id="screen-developer" class="app-screen">
         <div class="screen-header">
             <div class="header-btn" onclick="navigateRouter('screen-home')" style="width:34px; height:34px;">
@@ -864,7 +923,6 @@
         <div class="scrollable-content" style="padding: 20px 16px 140px;">
             <div style="max-width: 580px; margin: 0 auto; display: flex; flex-direction: column; gap: 14px;">
                 
-                <!-- بطاقة المطور الفاخرة مع غلاف الصورة الشخصية المعتمدة -->
                 <div class="dev-hero-container">
                     <div class="dev-cover-banner" id="uiDevCoverBg">
                         <div class="dev-cover-overlay"></div>
@@ -884,14 +942,12 @@
                             <div style="font-size: 13px; font-weight: 700; color: var(--brand-accent);" id="uiDevTitle">Software Engineer & Systems Architect</div>
                         </div>
 
-                        <!-- نبذة مهنية راقية -->
                         <p style="font-size: 13px; color: var(--text-muted); line-height: 1.7; margin: 0; font-weight: 500;" id="uiDevBio">
                             مهندس برمجيات متخصص في بناء وتطوير المنظومات الرقمية المتقدمة، وهندسة واجهات المستخدم التفاعلية فائقة السرعة، وتصميم البنى السحابية الآمنة وقواعد البيانات اللحظية وفق أرقى المعايير التقنية الحديثة.
                         </p>
                     </div>
                 </div>
 
-                <!-- بطاقة مجالات الاختصاص والتميز التقني -->
                 <div class="section-card" style="padding: 20px;">
                     <div style="font-size: 14px; font-weight: 800; margin-bottom: 14px; color: var(--text-main); display: flex; align-items: center; gap: 8px;">
                         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--brand-accent)" stroke-width="2.5" stroke-linecap="round"><polygon points="12 2 2 7 12 12 22 7 12 2"></polygon><polyline points="2 17 12 22 22 17"></polyline><polyline points="2 12 12 17 22 12"></polyline></svg>
@@ -925,33 +981,18 @@
                     </div>
                 </div>
 
-                <!-- بطاقة المهارات والتقنيات الأساسية -->
-                <div class="section-card" style="padding: 18px 20px;">
-                    <div style="font-size: 14px; font-weight: 800; margin-bottom: 12px; color: var(--text-main);">الأدوات والتقنيات البرمجية</div>
-                    <div style="display: flex; flex-wrap: wrap; gap: 6px;">
-                        <span style="font-size: 12px; font-weight: 700; padding: 6px 12px; border-radius: var(--radius-sm); background: var(--segment-bg); color: var(--text-main); border: 1px solid var(--border-light);">Full-Stack Web</span>
-                        <span style="font-size: 12px; font-weight: 700; padding: 6px 12px; border-radius: var(--radius-sm); background: var(--segment-bg); color: var(--text-main); border: 1px solid var(--border-light);">Cloud Firestore</span>
-                        <span style="font-size: 12px; font-weight: 700; padding: 6px 12px; border-radius: var(--radius-sm); background: var(--segment-bg); color: var(--text-main); border: 1px solid var(--border-light);">Progressive Web Apps (PWA)</span>
-                        <span style="font-size: 12px; font-weight: 700; padding: 6px 12px; border-radius: var(--radius-sm); background: var(--segment-bg); color: var(--text-main); border: 1px solid var(--border-light);">Realtime Sync</span>
-                        <span style="font-size: 12px; font-weight: 700; padding: 6px 12px; border-radius: var(--radius-sm); background: var(--segment-bg); color: var(--text-main); border: 1px solid var(--border-light);">System Security</span>
-                        <span style="font-size: 12px; font-weight: 700; padding: 6px 12px; border-radius: var(--radius-sm); background: var(--segment-bg); color: var(--text-main); border: 1px solid var(--border-light);">Mobile-First UI</span>
-                    </div>
-                </div>
-
-                <!-- أزرار التواصل المباشر (واتساب وإنستغرام فقط بأسلوب راقٍ) -->
                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
-                    <a href="https://wa.me/962796433698" target="_blank" rel="noopener noreferrer" style="display: flex; align-items: center; justify-content: center; gap: 8px; padding: 14px 16px; border-radius: var(--radius-sm); background: #10b981; color: #ffffff; text-decoration: none; font-size: 13px; font-weight: 800; box-shadow: 0 4px 14px rgba(16, 185, 129, 0.25); transition: 0.15s ease;">
+                    <a href="https://wa.me/962796433698" target="_blank" rel="noopener noreferrer" style="display: flex; align-items: center; justify-content: center; gap: 8px; padding: 14px 16px; border-radius: var(--radius-sm); background: #10b981; color: #ffffff; text-decoration: none; font-size: 13px; font-weight: 800; box-shadow: 0 4px 14px rgba(16, 185, 129, 0.25);">
                         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg>
                         <span>واتساب 0796433698</span>
                     </a>
 
-                    <a href="https://www.instagram.com/o_yd" target="_blank" rel="noopener noreferrer" id="uiDevIgLink" style="display: flex; align-items: center; justify-content: center; gap: 8px; padding: 14px 16px; border-radius: var(--radius-sm); background: linear-gradient(135deg, #f58529, #dd2a7b, #8134af); color: #ffffff; text-decoration: none; font-size: 13px; font-weight: 800; box-shadow: 0 4px 14px rgba(221, 42, 123, 0.25); transition: 0.15s ease;">
+                    <a href="https://www.instagram.com/o_yd" target="_blank" rel="noopener noreferrer" id="uiDevIgLink" style="display: flex; align-items: center; justify-content: center; gap: 8px; padding: 14px 16px; border-radius: var(--radius-sm); background: linear-gradient(135deg, #f58529, #dd2a7b, #8134af); color: #ffffff; text-decoration: none; font-size: 13px; font-weight: 800; box-shadow: 0 4px 14px rgba(221, 42, 123, 0.25);">
                         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
                         <span>إنستغرام @o_yd</span>
                     </a>
                 </div>
 
-                <!-- حقوق الملكية الفكرية للمطور -->
                 <div style="text-align: center; font-size: 12px; color: var(--text-muted); font-weight: 600; padding: 8px 0;" id="uiDevCopyright">
                     جميع الحقوق محفوظة للمهندس عمر عبيدات © 2026
                 </div>
@@ -997,6 +1038,7 @@
 
         <div class="admin-nav-tabs">
             <div class="admin-tab-chip active" id="tabHeadMenu" onclick="switchAdminTabPane('menu')">المنيو</div>
+            <div class="admin-tab-chip" id="tabHeadUsers" onclick="switchAdminTabPane('users')">العملاء والحسابات</div>
             <div class="admin-tab-chip" id="tabHeadPricingControl" onclick="switchAdminTabPane('pricingControl')">الأسعار والأحجام والنكهات</div>
             <div class="admin-tab-chip" id="tabHeadOffers" onclick="switchAdminTabPane('offers')">العروض والتايمر</div>
             <div class="admin-tab-chip" id="tabHeadPromos" onclick="switchAdminTabPane('promos')">أكواد الخصم</div>
@@ -1012,7 +1054,7 @@
 
         <div class="scrollable-content">
             
-            <!-- تبويب: المنيو مع بحث سريع وتبديل التوفر بنقرة واحدة -->
+            <!-- تبويب: المنيو -->
             <div class="admin-pane active" id="paneMenu">
                 <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; gap:8px;">
                     <input type="text" class="ios-input-field" id="adminMenuFilterInput" oninput="filterAdminProductsList()" placeholder="بحث سريع في الأصناف..." style="padding:8px 12px; font-size:13px;">
@@ -1021,9 +1063,23 @@
                 <div id="adminProductsControlList"></div>
             </div>
 
-            <!-- تبويب: الأسعار والنكهات والأحجام المفصلة -->
+            <!-- تبويب: إدارة العملاء والحسابات وخاصية الحظر الأمني -->
+            <div class="admin-pane" id="paneUsers">
+                <div class="section-card" style="margin-bottom:12px;">
+                    <div class="section-title">
+                        <span>إدارة حسابات الزبائن والرقابة</span>
+                        <span class="num-font" style="font-size:12px; color:var(--brand-accent);" id="adminUsersCountLabel">0 عميل</span>
+                    </div>
+                    <input type="text" class="ios-input-field" id="adminUsersSearchInput" oninput="renderAdminUsersListView()" placeholder="بحث بالاسم أو رقم الهاتف..." style="margin-bottom:10px;">
+                    <div style="font-size:11px; color:var(--text-muted); line-height:1.5;">
+                        يمكنك الاطلاع على العملاء المسجلين، عدد طلباتهم، تاريخ تسجيلهم، وتفعيل أو حظر أي حساب بنقرة زر واحدة فوراً.
+                    </div>
+                </div>
+                <div id="adminUsersCardsList"></div>
+            </div>
+
+            <!-- تبويب: الأسعار والنكهات والأحجام -->
             <div class="admin-pane" id="panePricingControl">
-                <!-- قسم أسعار المشروبات (3 أحجام) -->
                 <div class="section-card" style="margin-bottom:14px;">
                     <div class="section-title">فروقات أسعار أحجام المشروبات العامة</div>
                     <div style="font-size:12px; color:var(--text-muted); margin-bottom:10px;">الحجم الصغير هو السعر الأساسي للصنف، وهنا تحدد فارق سعر الحجمين الوسط والكبير:</div>
@@ -1044,7 +1100,6 @@
                     <button class="btn-brand-solid" onclick="saveGlobalCustomizationPricing()">حفظ أسعار الأحجام والإضافات</button>
                 </div>
 
-                <!-- قسم نكهات وصوصات الحلويات (وافل، كريب، بان كيك، كنافة) -->
                 <div class="section-card">
                     <div class="section-title">
                         <span>نكهات وصوصات الحلويات (وافل، كريب، بان كيك، كنافة)</span>
@@ -1055,7 +1110,7 @@
                 </div>
             </div>
 
-            <!-- تبويب: العروض الذكية والتايمر -->
+            <!-- تبويب: العروض الذكية -->
             <div class="admin-pane" id="paneOffers">
                 <div class="section-card">
                     <div class="section-title">إضافة عرض حصري بمؤقت ذكي</div>
@@ -1281,7 +1336,7 @@
         </div>
     </div>
 
-    <!-- 10. محرر الأصناف (مشروبات بـ 3 أحجام، والحلويات بنكهات) -->
+    <!-- 10. محرر الأصناف -->
     <div id="screen-product-editor" class="app-screen" style="z-index:1800;">
         <div class="screen-header">
             <div class="header-btn" onclick="navigateRouter('screen-admin-dashboard')" style="width:34px; height:34px;">
@@ -1324,7 +1379,6 @@
                         <input type="text" class="ios-input-field num-font" id="editProductImgField" style="margin-top:2px;">
                     </div>
 
-                    <!-- خيارات الأحجام الثلاثة: مخصصة للمشروبات -->
                     <div id="editorSizesWrapperBox" style="background:var(--segment-bg); padding:10px; border-radius:var(--radius-sm); border:1px solid var(--border-light);">
                         <div style="display:flex; align-items:center; justify-content:space-between;">
                             <div>
@@ -1355,9 +1409,102 @@
         </div>
     </div>
 
+    <!-- 11. شاشة تسجيل الدخول / إنشاء حساب للعملاء (Customer Auth) -->
+    <div id="screen-user-auth" class="app-screen">
+        <div class="screen-header">
+            <div class="header-btn" onclick="navigateRouter('screen-home')" style="width:34px; height:34px;">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+            </div>
+            <div class="screen-title">حساب العميل</div>
+        </div>
+        <div class="scrollable-content" style="padding: 20px 16px;">
+            <div class="section-card" style="max-width:420px; margin:20px auto 0; padding:24px 20px;">
+                
+                <div class="tabs-segment" style="margin-bottom:16px;">
+                    <div class="tab-btn active" id="tabAuthLogin" onclick="switchAuthTabMode('login')">تسجيل الدخول</div>
+                    <div class="tab-btn" id="tabAuthRegister" onclick="switchAuthTabMode('register')">إنشاء حساب جديد</div>
+                </div>
+
+                <div id="authFormArea">
+                    <div id="authRegisterExtraFields" style="display:none; flex-direction:column; gap:10px; margin-bottom:10px;">
+                        <div>
+                            <span style="font-size:12px; font-weight:700; color:var(--text-muted);">الاسم الكريم:</span>
+                            <input type="text" class="ios-input-field" id="authInputName" placeholder="الاسم الكامل">
+                        </div>
+                        <div>
+                            <span style="font-size:12px; font-weight:700; color:var(--text-muted);">عنوان التوصيل المعتاد (اختياري):</span>
+                            <input type="text" class="ios-input-field" id="authInputAddress" placeholder="الحي، الشارع، المعلم">
+                        </div>
+                    </div>
+
+                    <div style="display:flex; flex-direction:column; gap:10px; margin-bottom:14px;">
+                        <div>
+                            <span style="font-size:12px; font-weight:700; color:var(--text-muted);">رقم الهاتف الخلوي:</span>
+                            <input type="tel" class="ios-input-field num-font" id="authInputPhone" placeholder="079xxxxxxx">
+                        </div>
+                        <div>
+                            <span style="font-size:12px; font-weight:700; color:var(--text-muted);">رمز المرور (PIN):</span>
+                            <input type="password" class="ios-input-field num-font" id="authInputPin" placeholder="••••" style="letter-spacing:3px;">
+                        </div>
+                    </div>
+
+                    <button class="btn-brand-solid" style="width:100%; margin-bottom:10px;" id="authSubmitBtn" onclick="handleAuthSubmitAction()">دخول الحساب</button>
+                    <div id="authStatusAlert" style="font-size:12px; font-weight:700; text-align:center; color:var(--danger);"></div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- 12. شاشة الملف الشخصي للزبون (Customer Profile & History) -->
+    <div id="screen-user-profile" class="app-screen">
+        <div class="screen-header">
+            <div class="header-btn" onclick="navigateRouter('screen-home')" style="width:34px; height:34px;">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+            </div>
+            <div class="screen-title">الملف الشخصي للعميل</div>
+        </div>
+        <div class="scrollable-content" style="padding: 16px;">
+            <div style="max-width:540px; margin:0 auto; display:flex; flex-direction:column; gap:12px;">
+                
+                <div class="client-card-banner">
+                    <div style="display:flex; justify-content:space-between; align-items:flex-start;">
+                        <div>
+                            <div style="font-size:18px; font-weight:800; margin-bottom:2px;" id="profDisplayName">اسم العميل</div>
+                            <div class="num-font" style="font-size:13px; opacity:0.85;" id="profDisplayPhone">079xxxxxxx</div>
+                        </div>
+                        <span class="user-badge-status user-status-active" id="profDisplayStatusBadge">حساب موثق</span>
+                    </div>
+                    <div style="margin-top:14px; padding-top:12px; border-top:1px solid rgba(255,255,255,0.2); display:flex; justify-content:space-between; font-size:12px;">
+                        <span>إجمالي الطلبات المنفذة:</span>
+                        <strong class="num-font" id="profDisplayOrdersCount">0 طلبات</strong>
+                    </div>
+                </div>
+
+                <div class="section-card">
+                    <div class="section-title">بياناتي المحفوظة للطلب التلقائي</div>
+                    <div style="display:flex; flex-direction:column; gap:10px;">
+                        <div>
+                            <span style="font-size:11px; font-weight:700; color:var(--text-muted);">الاسم المعتمد:</span>
+                            <input type="text" class="ios-input-field" id="profEditName">
+                        </div>
+                        <div>
+                            <span style="font-size:11px; font-weight:700; color:var(--text-muted);">العنوان الافتراضي للتوصيل:</span>
+                            <input type="text" class="ios-input-field" id="profEditAddress" placeholder="الحي، الشارع، المعلم">
+                        </div>
+                        <button class="btn-brand-solid" onclick="saveUpdatedClientProfile()">تحديث بياناتي</button>
+                    </div>
+                </div>
+
+                <button class="btn-brand-outline" style="color:var(--danger); border-color:var(--danger); font-weight:700;" onclick="logoutClientSession()">تسجيل الخروج من الحساب</button>
+
+            </div>
+        </div>
+    </div>
+
 </div>
 
-<!-- القائمة الجانبية الكلاسيكية النظيفة بدون زر مظهر ومع رقم الإصدار السادة -->
+<!-- القائمة الجانبية -->
 <div class="sidebar-mask" id="sidebarMask" onclick="closeSidebarDrawer()"></div>
 <div class="sidebar-drawer" id="sidebarDrawer">
     <div class="sidebar-top">
@@ -1372,6 +1519,12 @@
             <div class="sidebar-link-left">
                 <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path></svg>
                 <span>الصفحة الرئيسية</span>
+            </div>
+        </div>
+        <div class="sidebar-link" onclick="handleUserAccountHeaderClick(); closeSidebarDrawer();">
+            <div class="sidebar-link-left">
+                <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                <span id="sidebarUserLinkText">حساب العميل</span>
             </div>
         </div>
         <div class="sidebar-link" onclick="navigateRouter('screen-offers'); closeSidebarDrawer();">
@@ -1400,12 +1553,11 @@
         </div>
     </div>
 
-    <!-- رقم الإصدار الديناميكي التلقائي كنص سادة بدون أي خلفيات ملونة -->
+    <!-- رقم الإصدار الديناميكي التلقائي -->
     <div class="sidebar-version-plain">
         إصدار النظام: <span class="num-font" id="sidebarVersionLabel" style="font-weight:700;">v7.0.1</span>
     </div>
 
-    <!-- روابط السوشيال ميديا للمحل -->
     <div class="sidebar-social-row">
         <a href="https://www.facebook.com/share/1DCWUZrBAY/?mibextid=wwXIfr" target="_blank" class="social-chip-clean" id="sidebarLinkFb">
             فيسبوك
@@ -1587,6 +1739,8 @@
     let storeConfig = safeGetJson('cc_v4_config', DEFAULT_STORE_CONFIG);
     let auditLogsList = safeGetJson('cc_v4_audit_logs', []);
     let siteStats = safeGetJson('cc_v4_stats', { visits: 0, orders: 0, totalSales: 0.0 });
+    let registeredUsersMap = safeGetJson('cc_v4_users', {});
+    let activeClientSession = safeGetJson('cc_v4_client_session', null);
 
     let activeSessionUser = null;
     let appliedPromoObject = null;
@@ -1595,6 +1749,7 @@
     let secretClickTimer = null;
     let latestCompletedReceiptData = null;
     let countdownIntervalId = null;
+    let currentAuthMode = 'login'; // 'login' or 'register'
 
     window.appState = {
         cartBranch: 0,
@@ -1606,7 +1761,6 @@
         productModalQty: 1
     };
 
-    // دالة ذكية لتحويل أي رابط بوست إنستغرام إلى رابط مباشر للصورة
     function formatImageUrl(url) {
         if (!url) return '';
         let clean = url.trim();
@@ -1641,7 +1795,6 @@
         const minutesNow = now.getHours() * 60 + now.getMinutes();
 
         if (branchIndex === 0) {
-            // كفرسوم: إغلاق من 3:00 ص (180 دقيقة) حتى 6:30 ص (390 دقيقة)
             const isClosed = (minutesNow >= 180 && minutesNow < 390);
             return {
                 isOpen: !isClosed,
@@ -1649,7 +1802,6 @@
                 message: isClosed ? "فرع كفرسوم مغلق حالياً. يبدأ استقبال الطلبات الساعة 6:30 صباحاً." : "مفتوح ويستقبل الطلبات الآن"
             };
         } else {
-            // سما الروسان: إغلاق من 3:00 ص (180 دقيقة) حتى 4:00 عصراً (960 دقيقة)
             const isClosed = (minutesNow >= 180 && minutesNow < 960);
             return {
                 isOpen: !isClosed,
@@ -1683,9 +1835,22 @@
 
         const alertBox = document.getElementById('branchClosedAlertBox');
         const alertMsg = document.getElementById('branchClosedAlertMsg');
+        const bannedAlertBox = document.getElementById('userBannedAlertBox');
         const submitBtn = document.getElementById('btnWhatsAppSubmitOrder');
         const submitText = document.getElementById('submitOrderBtnText');
         const notice = document.getElementById('cartBranchStatusNotice');
+
+        // التحقق من حالة حظر العميل
+        const isClientBanned = activeClientSession && registeredUsersMap[activeClientSession.phone]?.isBanned;
+
+        if (isClientBanned) {
+            if (bannedAlertBox) bannedAlertBox.style.display = 'flex';
+            if (submitBtn) submitBtn.classList.add('disabled');
+            if (submitText) submitText.innerText = "الحساب محظور من قبل الإدارة";
+            return;
+        } else {
+            if (bannedAlertBox) bannedAlertBox.style.display = 'none';
+        }
 
         if (notice) {
             notice.innerText = curStatus.isOpen ? '● الفرع متاح للطلب' : '● الفرع مغلق حالياً';
@@ -1783,6 +1948,14 @@
         renderAuditLogsView();
     };
 
+    window.onCloudUsers = (users) => {
+        if (!users) return;
+        registeredUsersMap = users;
+        localStorage.setItem('cc_v4_users', JSON.stringify(registeredUsersMap));
+        renderAdminUsersListView();
+        updateClientSessionState();
+    };
+
     window.showToastMsg = function(msg) {
         const t = document.getElementById('systemToast');
         if (!t) return;
@@ -1798,6 +1971,7 @@
             window.scrollTo(0, 0);
         }
         if (screenId === 'screen-cart') {
+            applyClientAutofillToCart();
             renderCartContent();
             recalculateCartSummary();
             updateBranchStatusUI();
@@ -1835,6 +2009,243 @@
         const activeSvg = isDark ? sunSvg : moonSvg;
         if (hIcon) hIcon.outerHTML = activeSvg.replace('<svg ', '<svg id="headerThemeIcon" ');
     }
+
+    /* نظام حسابات العملاء التلقائي والذكي */
+    window.handleUserAccountHeaderClick = function() {
+        if (activeClientSession) {
+            renderClientProfileScreen();
+            navigateRouter('screen-user-profile');
+        } else {
+            switchAuthTabMode('login');
+            navigateRouter('screen-user-auth');
+        }
+    };
+
+    window.switchAuthTabMode = function(mode) {
+        currentAuthMode = mode;
+        const isReg = (mode === 'register');
+        document.getElementById('tabAuthLogin').classList.toggle('active', !isReg);
+        document.getElementById('tabAuthRegister').classList.toggle('active', isReg);
+        document.getElementById('authRegisterExtraFields').style.display = isReg ? 'flex' : 'none';
+        document.getElementById('authSubmitBtn').innerText = isReg ? 'إنشاء حساب وتثبيته' : 'دخول الحساب';
+        document.getElementById('authStatusAlert').innerText = '';
+    };
+
+    window.handleAuthSubmitAction = function() {
+        const phone = (document.getElementById('authInputPhone').value || '').trim().replace(/\s+/g, '');
+        const pin = (document.getElementById('authInputPin').value || '').trim();
+        const errEl = document.getElementById('authStatusAlert');
+        errEl.innerText = '';
+
+        if (!phone || phone.length < 9) {
+            errEl.innerText = 'يرجى إدخال رقم هاتف صحيح';
+            return;
+        }
+        if (!pin || pin.length < 3) {
+            errEl.innerText = 'يرجى إدخال رمز مرور لا يقل عن 3 خانات';
+            return;
+        }
+
+        const phoneKey = 'u_' + phone;
+
+        if (currentAuthMode === 'register') {
+            const name = (document.getElementById('authInputName').value || '').trim();
+            const address = (document.getElementById('authInputAddress').value || '').trim();
+            if (!name) {
+                errEl.innerText = 'يرجى كتابة الاسم الكريم';
+                return;
+            }
+
+            if (registeredUsersMap[phoneKey]) {
+                errEl.innerText = 'هذا الرقم مسجل مسبقاً، يمكنك تسجيل الدخول مباشرة';
+                return;
+            }
+
+            const newUser = {
+                id: phoneKey,
+                name: name,
+                phone: phone,
+                pin: pin,
+                address: address,
+                ordersCount: 0,
+                totalSpent: 0.0,
+                createdAt: new Date().toLocaleDateString('ar-JO'),
+                isBanned: false
+            };
+
+            registeredUsersMap[phoneKey] = newUser;
+            localStorage.setItem('cc_v4_users', JSON.stringify(registeredUsersMap));
+            if (window.cloudSaveUser) window.cloudSaveUser(phoneKey, newUser);
+
+            activeClientSession = { phone: phone, name: name, address: address };
+            localStorage.setItem('cc_v4_client_session', JSON.stringify(activeClientSession));
+
+            updateClientSessionState();
+            showToastMsg(`أهلاً وسهلاً بك يا ${name}`);
+            navigateRouter('screen-home');
+
+        } else {
+            const user = registeredUsersMap[phoneKey];
+            if (!user) {
+                errEl.innerText = 'الرقم غير مسجل. يرجى اختيار "إنشاء حساب جديد" أولاً';
+                return;
+            }
+            if (user.pin !== pin) {
+                errEl.innerText = 'رمز المرور غير صحيح';
+                return;
+            }
+            if (user.isBanned) {
+                errEl.innerText = 'عذراً، هذا الحساب محظور من قبل الإدارة';
+                return;
+            }
+
+            activeClientSession = { phone: phone, name: user.name, address: user.address || '' };
+            localStorage.setItem('cc_v4_client_session', JSON.stringify(activeClientSession));
+
+            updateClientSessionState();
+            showToastMsg(`مرحباً بعودتك يا ${user.name}`);
+            navigateRouter('screen-home');
+        }
+    };
+
+    window.logoutClientSession = function() {
+        activeClientSession = null;
+        localStorage.removeItem('cc_v4_client_session');
+        updateClientSessionState();
+        showToastMsg('تم تسجيل الخروج من حساب العميل');
+        navigateRouter('screen-home');
+    };
+
+    function updateClientSessionState() {
+        const dot = document.getElementById('headerUserOnlineDot');
+        const sideText = document.getElementById('sidebarUserLinkText');
+        if (activeClientSession) {
+            if (dot) dot.style.display = 'block';
+            if (sideText) sideText.innerText = `حسابي (${activeClientSession.name})`;
+        } else {
+            if (dot) dot.style.display = 'none';
+            if (sideText) sideText.innerText = 'حساب العميل (دخول)';
+        }
+        applyClientAutofillToCart();
+        updateBranchStatusUI();
+    }
+
+    function applyClientAutofillToCart() {
+        if (!activeClientSession) return;
+        const nameField = document.getElementById('cartClientName');
+        const phoneField = document.getElementById('cartClientPhone');
+        const addrField = document.getElementById('cartAddressInput');
+        const badge = document.getElementById('cartUserAutofillBadge');
+
+        if (nameField && !nameField.value) nameField.value = activeClientSession.name || '';
+        if (phoneField && !phoneField.value) phoneField.value = activeClientSession.phone || '';
+        if (addrField && !addrField.value && activeClientSession.address) addrField.value = activeClientSession.address;
+        if (badge) badge.style.display = 'inline-block';
+    }
+
+    function renderClientProfileScreen() {
+        if (!activeClientSession) return;
+        const phoneKey = 'u_' + activeClientSession.phone;
+        const user = registeredUsersMap[phoneKey] || activeClientSession;
+
+        document.getElementById('profDisplayName').innerText = user.name || 'عميل كافيه كورنر';
+        document.getElementById('profDisplayPhone').innerText = user.phone || '';
+        document.getElementById('profDisplayOrdersCount').innerText = `${user.ordersCount || 0} طلبات`;
+        document.getElementById('profEditName').value = user.name || '';
+        document.getElementById('profEditAddress').value = user.address || '';
+
+        const badge = document.getElementById('profDisplayStatusBadge');
+        if (user.isBanned) {
+            badge.className = "user-badge-status user-status-banned";
+            badge.innerText = "محظور";
+        } else {
+            badge.className = "user-badge-status user-status-active";
+            badge.innerText = "حساب موثق نشط";
+        }
+    }
+
+    window.saveUpdatedClientProfile = function() {
+        if (!activeClientSession) return;
+        const phoneKey = 'u_' + activeClientSession.phone;
+        const newName = (document.getElementById('profEditName').value || '').trim();
+        const newAddr = (document.getElementById('profEditAddress').value || '').trim();
+
+        if (!newName) return showToastMsg('يرجى إدخال الاسم');
+
+        if (registeredUsersMap[phoneKey]) {
+            registeredUsersMap[phoneKey].name = newName;
+            registeredUsersMap[phoneKey].address = newAddr;
+            if (window.cloudSaveUser) window.cloudSaveUser(phoneKey, registeredUsersMap[phoneKey]);
+        }
+
+        activeClientSession.name = newName;
+        activeClientSession.address = newAddr;
+        localStorage.setItem('cc_v4_client_session', JSON.stringify(activeClientSession));
+        localStorage.setItem('cc_v4_users', JSON.stringify(registeredUsersMap));
+
+        updateClientSessionState();
+        renderClientProfileScreen();
+        showToastMsg('تم تحديث بياناتك بنجاح');
+    };
+
+    /* إدارة المستخدمين داخل لوحة الأدمن والتحكم بالحظر */
+    function renderAdminUsersListView() {
+        const container = document.getElementById('adminUsersCardsList');
+        const countLabel = document.getElementById('adminUsersCountLabel');
+        if (!container) return;
+
+        const usersList = Object.values(registeredUsersMap);
+        if (countLabel) countLabel.innerText = `${usersList.length} عميل مسجل`;
+
+        const query = (document.getElementById('adminUsersSearchInput')?.value || '').trim().toLowerCase();
+        let filtered = usersList;
+        if (query) {
+            filtered = filtered.filter(u => (u.name || '').toLowerCase().includes(query) || (u.phone || '').includes(query));
+        }
+
+        if (filtered.length === 0) {
+            container.innerHTML = `<div style="text-align:center; padding:20px; color:var(--text-muted); font-size:13px;">لا يوجد مستخدمين مسجلين بعد</div>`;
+            return;
+        }
+
+        container.innerHTML = filtered.map(u => {
+            const isBanned = (u.isBanned === true);
+            return `
+                <div style="background:var(--surface); border:1px solid var(--border-light); border-radius:var(--radius-sm); padding:12px 14px; margin-bottom:8px; display:flex; justify-content:space-between; align-items:center;">
+                    <div>
+                        <div style="font-weight:800; font-size:14px; display:flex; align-items:center; gap:6px;">
+                            <span>${u.name || 'عميل'}</span>
+                            <span class="user-badge-status ${isBanned ? 'user-status-banned' : 'user-status-active'}">${isBanned ? 'محظور' : 'نشط'}</span>
+                        </div>
+                        <div style="font-size:12px; color:var(--text-muted); margin-top:2px;">
+                            هاتف: <span class="num-font" style="font-weight:700;">${u.phone}</span> | طلبات: <span class="num-font">${u.ordersCount || 0}</span>
+                            ${u.address ? ` | عنوان: ${u.address}` : ''}
+                        </div>
+                    </div>
+                    <div>
+                        <button class="btn-brand-outline" style="width:auto; padding:5px 12px; font-size:11px; font-weight:700; ${isBanned ? 'color:var(--success); border-color:var(--success);' : 'color:var(--danger); border-color:var(--danger);'}" onclick="toggleUserBanStatus('${u.id}')">
+                            ${isBanned ? 'إلغاء الحظر' : 'حظر العميل'}
+                        </button>
+                    </div>
+                </div>
+            `;
+        }).join('');
+    }
+
+    window.toggleUserBanStatus = function(phoneKey) {
+        const user = registeredUsersMap[phoneKey];
+        if (!user) return;
+        user.isBanned = !user.isBanned;
+
+        localStorage.setItem('cc_v4_users', JSON.stringify(registeredUsersMap));
+        if (window.cloudSaveUser) window.cloudSaveUser(phoneKey, user);
+
+        autoIncrementSystemVersion();
+        recordSystemAuditAction(user.isBanned ? "حظر مستخدم" : "فك حظر مستخدم", `المستخدم: ${user.name} (${user.phone})`);
+        renderAdminUsersListView();
+        updateBranchStatusUI();
+        showToastMsg(`تم ${user.isBanned ? 'حظر' : 'فك حظر'} العميل ${user.name}`);
+    };
 
     window.applyStoreConfigToUI = function() {
         const titleEl = document.getElementById('uiBrandTitle');
@@ -2111,7 +2522,6 @@
             sizeGroupEl.style.display = 'none';
         }
 
-        // نكهات الكريب والوافل بدون أسعار ظاهرة بجانب الاسم
         const isSweet = ["وافل", "كريب", "بان كيك"].includes(item.category);
         const sauceBox = document.getElementById('psSaucesContainer');
         const configuredSauces = storeConfig.pricingSettings?.sauces || DEFAULT_STORE_CONFIG.pricingSettings.sauces;
@@ -2449,6 +2859,12 @@
     };
 
     window.dispatchOrderToWhatsApp = function() {
+        // التحقق من الحظر الأمني
+        if (activeClientSession && registeredUsersMap[activeClientSession.phone]?.isBanned) {
+            showToastMsg("عذراً، حسابك محظور من قبل الإدارة");
+            return;
+        }
+
         const branchStatus = checkBranchOpenStatus(window.appState.cartBranch);
         if (!branchStatus.isOpen) {
             showToastMsg(`عذراً، ${branchStatus.message}`);
@@ -2480,6 +2896,15 @@
         siteStats.totalSales = parseFloat(((siteStats.totalSales || 0) + finalAmount).toFixed(2));
         localStorage.setItem('cc_v4_stats', JSON.stringify(siteStats));
         if (window.cloudUpdateStats) window.cloudUpdateStats(siteStats);
+
+        // تحديث إحصائيات حساب العميل المسجل
+        const phoneKey = 'u_' + clientPhone.replace(/\s+/g, '');
+        if (registeredUsersMap[phoneKey]) {
+            registeredUsersMap[phoneKey].ordersCount = (registeredUsersMap[phoneKey].ordersCount || 0) + 1;
+            registeredUsersMap[phoneKey].totalSpent = parseFloat(((registeredUsersMap[phoneKey].totalSpent || 0) + finalAmount).toFixed(2));
+            localStorage.setItem('cc_v4_users', JSON.stringify(registeredUsersMap));
+            if (window.cloudSaveUser) window.cloudSaveUser(phoneKey, registeredUsersMap[phoneKey]);
+        }
 
         if (appliedPromoObject && promoCodesList[appliedPromoObject.code]) {
             promoCodesList[appliedPromoObject.code].usedCount = (promoCodesList[appliedPromoObject.code].usedCount || 0) + 1;
@@ -2739,6 +3164,7 @@
             navigateRouter('screen-admin-dashboard');
             switchAdminTabPane('menu');
             renderAdminProductsManager();
+            renderAdminUsersListView();
             renderAdminOffersManager();
             renderAdminPromosManager();
             renderAdminPricingControlView();
@@ -2770,7 +3196,7 @@
             return;
         }
 
-        ['analytics', 'menu', 'offers', 'promos', 'pricingControl', 'store', 'delivery', 'developer', 'themes', 'auditLog', 'backup'].forEach(p => {
+        ['analytics', 'menu', 'users', 'offers', 'promos', 'pricingControl', 'store', 'delivery', 'developer', 'themes', 'auditLog', 'backup'].forEach(p => {
             const head = document.getElementById('tabHead' + p.charAt(0).toUpperCase() + p.slice(1));
             const pane = document.getElementById('pane' + p.charAt(0).toUpperCase() + p.slice(1));
             if (head) head.classList.toggle('active', p === paneId);
@@ -2779,6 +3205,8 @@
 
         if (paneId === 'analytics') {
             renderAnalyticsView();
+        } else if (paneId === 'users') {
+            renderAdminUsersListView();
         } else if (paneId === 'store') {
             renderAdminPaymentMethodsList();
         } else if (paneId === 'pricingControl') {
@@ -3432,6 +3860,7 @@
             products: productsList,
             promos: promoCodesList,
             offers: offersList,
+            users: registeredUsersMap,
             storeConfig: storeConfig
         };
         const blob = new Blob([JSON.stringify(backupPayload, null, 2)], { type: 'application/json' });
@@ -3465,6 +3894,10 @@
                         offersList = parsed.offers;
                         localStorage.setItem('cc_v4_offers', JSON.stringify(offersList));
                     }
+                    if (parsed.users) {
+                        registeredUsersMap = parsed.users;
+                        localStorage.setItem('cc_v4_users', JSON.stringify(registeredUsersMap));
+                    }
                     if (parsed.storeConfig) {
                         storeConfig = { ...storeConfig, ...parsed.storeConfig };
                         localStorage.setItem('cc_v4_config', JSON.stringify(storeConfig));
@@ -3477,11 +3910,12 @@
                     }
 
                     autoIncrementSystemVersion();
-                    recordSystemAuditAction("استيراد نسخة احتياطية", "استرجاع المنيو من ملف JSON");
+                    recordSystemAuditAction("استيراد نسخة احتياطية", "استرجاع المنيو والبيانات من ملف JSON");
                     renderCategoryChips();
                     renderMenuProducts();
                     renderAdminProductsManager();
                     renderAdminOffersManager();
+                    renderAdminUsersListView();
                     applyStoreConfigToUI();
                     showToastMsg("تم استيراد المنيو بنجاح");
                 }
@@ -3510,6 +3944,7 @@
         renderClientOffersView();
         refreshCartDockStatus();
         updateBranchStatusUI();
+        updateClientSessionState();
         startOffersCountdownEngine();
 
         setInterval(updateBranchStatusUI, 60000);
