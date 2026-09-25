@@ -411,7 +411,31 @@
             text-align: center; cursor: pointer;
         }
 
-        .cart-box-container { max-width: 580px; margin: 0 auto; width: 100%; padding: 16px 16px 140px; }
+        .cart-box-container { max-width: 620px; margin: 0 auto; width: 100%; padding: 12px 16px 140px; }
+        .cart-box-container > .section-card {
+            border-radius: 14px; padding: 17px; margin-bottom: 12px; box-shadow: var(--shadow-sm);
+        }
+        .cart-box-container > .section-card .section-title { font-size: 14px; margin-bottom: 13px; }
+        .checkout-heading {
+            max-width: 620px; margin: 0 auto; padding: 18px 16px 4px;
+            display: flex; align-items: flex-end; justify-content: space-between; gap: 12px;
+        }
+        .checkout-heading-kicker { font-size: 11px; color: var(--brand-accent); font-weight: 800; margin-bottom: 3px; }
+        .checkout-heading-title { font-size: 21px; font-weight: 800; letter-spacing: -0.3px; }
+        .checkout-heading-subtitle { font-size: 12px; color: var(--text-muted); margin-top: 4px; }
+        .checkout-heading-mark {
+            width: 42px; height: 42px; display:flex; align-items:center; justify-content:center;
+            border: 1px solid var(--border-light); border-radius: 13px; color: var(--brand-accent);
+            background: var(--surface); flex-shrink: 0;
+        }
+        .cart-summary-card { border-top: 3px solid var(--brand-accent) !important; }
+        .checkout-submit-area { display: flex; flex-direction: column; gap: 10px; padding-top: 2px; }
+        .profile-logout-btn {
+            color: var(--danger); border-color: rgba(239,68,68,0.4); background: var(--surface);
+            font-weight: 700; padding: 13px; border-radius: 12px; display:flex; align-items:center; justify-content:center; gap:8px;
+        }
+        .profile-account-actions { padding-top: 2px; }
+        .profile-account-actions-label { font-size:11px; color:var(--text-muted); text-align:center; margin-bottom:7px; }
         .section-card {
             background: var(--surface); border: 1px solid var(--border-light);
             border-radius: var(--radius-sm); padding: 16px; margin-bottom: 14px;
@@ -521,6 +545,7 @@
             border-bottom: 1px solid var(--border-light); flex-shrink: 0;
         }
         .screen-title { font-size: 16px; font-weight: 700; color: var(--text-main); }
+        .screen-subtitle { font-size: 10px; color: var(--text-muted); margin-top: 2px; font-weight: 500; }
 
         .toast-popup {
             position: fixed; top: 24px; left: 50%; transform: translate(-50%, -150%);
@@ -545,11 +570,24 @@
         /* شريط الأدمن */
         .admin-top-bar {
             background: var(--surface); border-bottom: 1px solid var(--border-light);
-            padding: 12px 18px; display: flex; align-items: center; justify-content: space-between;
+            padding: 13px 20px; display: flex; align-items: center; justify-content: space-between; gap: 14px;
+        }
+        .admin-branding { display:flex; align-items:center; gap:10px; min-width:0; }
+        .admin-brand-mark {
+            width:38px; height:38px; display:flex; align-items:center; justify-content:center;
+            border-radius:12px; background:var(--brand-accent-glow); color:var(--brand-accent);
+            border:1px solid var(--border-light); font-size:12px; font-weight:900; flex-shrink:0;
+        }
+        .admin-title { font-size:15px; font-weight:800; color:var(--text-main); line-height:1.25; }
+        .admin-subtitle { font-size:10px; color:var(--text-muted); margin-top:2px; white-space:nowrap; }
+        .admin-actions { display:flex; align-items:center; gap:10px; }
+        .admin-exit-btn {
+            width:auto; padding:7px 12px; font-size:11px; color:var(--danger);
+            border-color:rgba(239,68,68,0.35); white-space:nowrap;
         }
         .admin-user-badge {
             display: inline-flex; align-items: center; gap: 8px;
-            font-size: 14px; font-weight: 800; color: var(--text-main);
+            font-size: 12px; font-weight: 800; color: var(--text-main);
         }
         .admin-user-pill {
             padding: 3px 10px; border-radius: 12px; font-size: 11px; font-weight: 700;
@@ -558,17 +596,44 @@
         .pill-mgr { background: rgba(16, 185, 129, 0.12); color: var(--success); }
 
         .admin-nav-tabs {
-            display: flex; background: var(--surface); border-bottom: 1px solid var(--border-light);
-            overflow-x: auto; scrollbar-width: none; flex-shrink: 0;
+            display: flex; gap: 6px; padding: 8px 16px; background: var(--surface);
+            border-bottom: 1px solid var(--border-light); overflow-x: auto; scrollbar-width: none; flex-shrink: 0;
         }
         .admin-nav-tabs::-webkit-scrollbar { display: none; }
         .admin-tab-chip {
-            padding: 12px 16px; font-size: 13px; font-weight: 700; color: var(--text-muted);
-            cursor: pointer; border-bottom: 2px solid transparent; white-space: nowrap; display:flex; align-items:center; gap:6px;
+            padding: 9px 13px; font-size: 12px; font-weight: 700; color: var(--text-muted);
+            cursor: pointer; border: 1px solid transparent; border-radius: 9px; white-space: nowrap;
+            display:flex; align-items:center; gap:6px; transition:0.18s;
         }
-        .admin-tab-chip.active { color: var(--brand-accent); border-bottom-color: var(--brand-accent); }
-        .admin-pane { display: none; padding: 18px; }
+        .admin-tab-chip:hover { background:var(--segment-bg); color:var(--text-main); }
+        .admin-tab-chip.active { color: var(--brand-accent); background:var(--brand-accent-glow); border-color:rgba(37,99,235,0.16); }
+        .admin-dashboard-overview {
+            max-width: 980px; margin: 0 auto; padding: 18px 18px 8px;
+            display:flex; align-items:flex-end; justify-content:space-between; gap:14px;
+        }
+        .admin-overview-kicker { font-size:11px; color:var(--brand-accent); font-weight:800; margin-bottom:3px; }
+        .admin-overview-title { font-size:22px; font-weight:900; letter-spacing:-0.4px; }
+        .admin-overview-subtitle { font-size:12px; color:var(--text-muted); margin-top:4px; }
+        .admin-live-status {
+            display:inline-flex; align-items:center; gap:6px; border:1px solid var(--border-light);
+            background:var(--surface); color:var(--success); border-radius:999px; padding:6px 10px;
+            font-size:10px; font-weight:800; white-space:nowrap;
+        }
+        .admin-live-status::before { content:""; width:6px; height:6px; border-radius:50%; background:var(--success); }
+        .admin-quick-grid {
+            max-width: 980px; margin: 0 auto; padding: 8px 18px 16px;
+            display:grid; grid-template-columns:repeat(3, 1fr); gap:10px;
+        }
+        .admin-quick-card {
+            background:var(--surface); border:1px solid var(--border-light); border-radius:13px;
+            padding:12px 13px; box-shadow:var(--shadow-sm);
+        }
+        .admin-quick-label { font-size:10px; color:var(--text-muted); margin-bottom:4px; }
+        .admin-quick-value { font-size:19px; font-weight:800; color:var(--text-main); }
+        .admin-quick-value.accent { color:var(--brand-accent); }
+        .admin-pane { display: none; padding: 18px; max-width: 980px; margin: 0 auto; width: 100%; }
         .admin-pane.active { display: block; }
+        .admin-pane .section-card { border-radius:14px; box-shadow:var(--shadow-sm); }
 
         .stat-grid-modern {
             display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 10px; margin-bottom: 18px;
@@ -576,6 +641,34 @@
         .stat-card-pro {
             background: var(--surface); border: 1px solid var(--border-light); border-radius: var(--radius-sm);
             padding: 14px; position: relative; overflow: hidden; box-shadow: var(--shadow-sm); text-align: center;
+        }
+        .theme-swatch-grid {
+            display:grid; grid-template-columns:repeat(auto-fit, minmax(150px, 1fr)); gap:10px; margin-top:10px;
+        }
+        .admin-theme-card {
+            background:var(--surface); border:1px solid var(--border-light); border-radius:14px;
+            padding:10px; cursor:pointer; transition:0.18s; position:relative;
+        }
+        .admin-theme-card:hover { transform:translateY(-2px); box-shadow:var(--shadow-sm); }
+        .admin-theme-card.active { border-color:var(--brand-accent); box-shadow:0 0 0 2px var(--brand-accent-glow); }
+        .admin-theme-preview { height:54px; border-radius:10px; display:flex; align-items:flex-end; justify-content:space-between; padding:8px; margin-bottom:9px; }
+        .admin-theme-preview-dot { width:18px; height:18px; border-radius:6px; border:2px solid rgba(255,255,255,0.75); }
+        .admin-theme-preview-line { width:48px; height:5px; border-radius:99px; background:rgba(255,255,255,0.72); }
+        .admin-theme-name { font-size:12px; font-weight:800; color:var(--text-main); }
+        .admin-theme-desc { font-size:10px; color:var(--text-muted); margin-top:3px; line-height:1.4; }
+        .admin-theme-check {
+            position:absolute; top:14px; left:14px; width:20px; height:20px; border-radius:50%;
+            background:var(--surface); color:var(--brand-accent); display:flex; align-items:center; justify-content:center;
+            font-size:12px; font-weight:900; opacity:0; border:1px solid var(--border-light);
+        }
+        .admin-theme-card.active .admin-theme-check { opacity:1; }
+        .admin-theme-section-head { display:flex; align-items:flex-start; justify-content:space-between; gap:12px; }
+        .admin-theme-current {
+            font-size:10px; color:var(--brand-accent); background:var(--brand-accent-glow);
+            border:1px solid rgba(37,99,235,0.18); border-radius:999px; padding:5px 9px; white-space:nowrap;
+        }
+        .admin-theme-customizer {
+            margin-top:16px; padding-top:16px; border-top:1px solid var(--border-light);
         }
 
         .countdown-timer-box {
@@ -621,8 +714,84 @@
         .user-status-banned { background: rgba(239, 68, 68, 0.12); color: var(--danger); }
         
         .client-card-banner {
-            background: linear-gradient(135deg, var(--brand-accent), #1e293b);
-            color: #ffffff; border-radius: var(--radius-md); padding: 20px; margin-bottom: 14px;
+            background: var(--surface); color: var(--text-main); border: 1px solid var(--border-light);
+            border-right: 3px solid var(--brand-accent); border-radius: var(--radius-md); padding: 20px; margin-bottom: 14px;
+        }
+
+        /* تجربة العملاء والولاء - هوية فاخرة */
+        .customer-auth-intro {
+            color: var(--text-main); border: 1px solid var(--border-light); border-right: 3px solid var(--brand-accent);
+            border-radius: var(--radius-md); padding: 14px 16px; margin-bottom: 14px;
+            background: var(--surface);
+        }
+        .customer-profile-hero {
+            background: var(--surface); color: var(--text-main); border: 1px solid var(--border-light);
+            border-top: 3px solid var(--brand-accent); border-radius: var(--radius-md); padding: 18px;
+            box-shadow: var(--shadow-sm);
+        }
+        .customer-profile-top, .loyalty-card-top {
+            display: flex; justify-content: space-between; align-items: flex-start; gap: 12px;
+        }
+        .customer-avatar-mark {
+            width: 46px; height: 46px; border-radius: 15px; display: flex; align-items: center; justify-content: center;
+            background: var(--brand-accent-glow); border: 1px solid rgba(37,99,235,0.2);
+            color: var(--brand-accent); font-size: 21px; font-weight: 900; flex-shrink: 0;
+        }
+        .customer-profile-stats {
+            display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin-top: 18px;
+        }
+        .customer-profile-stat {
+            padding: 11px 12px; background: var(--segment-bg); border: 1px solid var(--border-light);
+            border-radius: 13px;
+        }
+        .customer-profile-stat span { display:block; font-size:11px; color:var(--text-muted); margin-bottom:3px; }
+        .customer-profile-stat strong { display:block; font-size:17px; }
+        .loyalty-card {
+            background: var(--surface); color: var(--text-main); border: 1px solid rgba(183,121,31,0.38);
+            border-right: 3px solid #b7791f; border-radius: var(--radius-md); padding: 18px;
+            box-shadow: var(--shadow-sm);
+        }
+        .loyalty-card-top { align-items: center; }
+        .loyalty-points-value { font-size: 30px; font-weight: 800; line-height: 1; color:#a16207; }
+        .loyalty-progress-track { height: 7px; border-radius: 99px; background: var(--segment-bg); overflow: hidden; margin: 16px 0 7px; }
+        .loyalty-progress-fill { height: 100%; border-radius: inherit; background: #d97706; transition: width 0.35s ease; }
+        .loyalty-note { font-size: 11px; font-weight: 600; color: var(--text-muted); }
+        .cart-auth-gate {
+            display: none; align-items: center; gap: 12px; padding: 14px; margin-bottom: 14px;
+            background: var(--surface);
+            border: 1px solid rgba(37,99,235,0.22); border-radius: var(--radius-md);
+        }
+        .cart-auth-gate-icon {
+            width: 38px; height: 38px; border-radius: 12px; display:flex; align-items:center; justify-content:center;
+            background: var(--brand-accent); color:#fff; flex-shrink:0;
+        }
+        .loyalty-admin-summary { display:grid; grid-template-columns:repeat(3, 1fr); gap:8px; margin-top:14px; }
+        .loyalty-admin-stat {
+            background: var(--segment-bg); border:1px solid var(--border-light); border-radius:12px; padding:10px 8px; text-align:center;
+        }
+        .loyalty-admin-stat strong { display:block; font-size:17px; color:var(--brand-accent); }
+        .loyalty-admin-stat span { display:block; font-size:10px; color:var(--text-muted); margin-top:2px; }
+        .admin-customer-card {
+            background:var(--surface); border:1px solid var(--border-light); border-radius:16px;
+            padding:14px; margin-bottom:10px; box-shadow:var(--shadow-sm);
+        }
+        .admin-customer-card-top { display:flex; justify-content:space-between; align-items:flex-start; gap:10px; }
+        .admin-customer-points {
+            display:inline-flex; align-items:center; gap:4px; padding:4px 8px; border-radius:999px;
+            background:rgba(217,119,6,0.12); color:#b45309; font-size:11px; font-weight:800;
+        }
+        .customer-page-stack { max-width: 540px; margin: 0 auto; display: flex; flex-direction: column; gap: 12px; }
+        .customer-page-stack .section-card { margin-bottom: 0; }
+        @media (max-width: 640px) {
+            .admin-top-bar { padding:11px 14px; }
+            .admin-user-badge { display:none; }
+            .admin-overview-title { font-size:19px; }
+            .admin-dashboard-overview { padding:16px 14px 8px; }
+            .admin-quick-grid { padding:8px 14px 14px; gap:7px; }
+            .admin-quick-card { padding:10px 8px; }
+            .admin-quick-value { font-size:16px; }
+            .admin-pane { padding:14px; }
+            .admin-nav-tabs { padding:7px 10px; }
         }
     </style>
 </head>
@@ -740,15 +909,42 @@
             <div class="header-btn" onclick="navigateRouter('screen-home')" style="width:34px; height:34px;">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
             </div>
-            <div class="screen-title">سلة المشتريات</div>
+            <div style="flex:1;">
+                <div class="screen-title">سلة المشتريات</div>
+                <div class="screen-subtitle">راجع طلبك واختر طريقة الاستلام المناسبة</div>
+            </div>
         </div>
 
         <div class="scrollable-content">
+            <div class="checkout-heading">
+                <div>
+                    <div class="checkout-heading-kicker">خطوة أخيرة</div>
+                    <div class="checkout-heading-title">إنهاء الطلب</div>
+                    <div class="checkout-heading-subtitle">بياناتك محفوظة تلقائيًا عند تسجيل الدخول.</div>
+                </div>
+                <div class="checkout-heading-mark">
+                    <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="20" r="1"></circle><circle cx="19" cy="20" r="1"></circle><path d="M3 4h2l2.4 11.2a2 2 0 0 0 2 1.6h7.8a2 2 0 0 0 1.9-1.4L21 8H6"></path></svg>
+                </div>
+            </div>
             <div class="cart-box-container">
                 
                 <div class="section-card">
-                    <div class="section-title">الأصناف المطلوبة</div>
+                    <div class="section-title">
+                        <span>محتويات السلة</span>
+                        <span style="font-size:11px; color:var(--text-muted); font-weight:600;">راجع الكمية قبل التأكيد</span>
+                    </div>
                     <div id="cartItemsList"></div>
+                </div>
+
+                <div class="cart-auth-gate" id="cartAuthGate">
+                    <div class="cart-auth-gate-icon">
+                        <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"></path><polyline points="10 17 15 12 10 7"></polyline><line x1="15" y1="12" x2="3" y2="12"></line></svg>
+                    </div>
+                    <div style="flex:1;">
+                        <div style="font-size:13px; font-weight:800; margin-bottom:3px;">أنشئ حسابك قبل تأكيد الطلب</div>
+                        <div style="font-size:11px; color:var(--text-muted); line-height:1.5;">حسابك يحفظ بياناتك ويضيف لك نقطة ولاء عن كل دينار تدفعه.</div>
+                    </div>
+                    <button class="btn-brand-solid" style="flex:none; padding:9px 12px; font-size:11px;" onclick="openOrderAuthGate()">تسجيل الدخول</button>
                 </div>
 
                 <div class="section-card">
@@ -796,8 +992,9 @@
                         <span id="cartUserAutofillBadge" style="font-size:11px; font-weight:700; color:var(--success); display:none;">✓ تم التعبئة من حسابك</span>
                     </div>
                     <div style="display:flex; flex-direction:column; gap:8px;">
-                        <input type="text" class="ios-input-field" id="cartClientName" placeholder="الاسم الكريم">
-                        <input type="tel" class="ios-input-field num-font" id="cartClientPhone" placeholder="رقم الهاتف الخلوي (079xxxxxxx)">
+                        <input type="text" class="ios-input-field" id="cartClientName" placeholder="الاسم الكريم" readonly>
+                        <input type="tel" class="ios-input-field num-font" id="cartClientPhone" placeholder="رقم الهاتف الخلوي (079xxxxxxx)" readonly>
+                        <div style="font-size:11px; color:var(--text-muted); line-height:1.5;">بيانات الطلب مرتبطة بحسابك لضمان حفظ نقاط الولاء وسجل الطلبات بشكل صحيح.</div>
                     </div>
                 </div>
 
@@ -807,7 +1004,7 @@
                     <div id="paymentOptionsContainer"></div>
                 </div>
 
-                <div class="section-card">
+                <div class="section-card cart-summary-card">
                     <div class="section-title">ملخص الحساب والفاتورة</div>
                     <div style="display:flex; justify-content:space-between; font-size:13px; font-weight:600; color:var(--text-muted); margin-bottom:8px;">
                         <span>مجموع الأصناف</span>
@@ -839,10 +1036,13 @@
                     <span id="branchClosedAlertMsg">عذراً، هذا الفرع مغلق حالياً ولا يستقبل الطلبات.</span>
                 </div>
 
+                <div class="checkout-submit-area">
                 <button class="btn-order-submit" id="btnWhatsAppSubmitOrder" onclick="dispatchOrderToWhatsApp()">
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
                     <span id="submitOrderBtnText">تأكيد وإرسال الطلب عبر واتساب</span>
                 </button>
+                <div style="text-align:center; font-size:11px; color:var(--text-muted);">بالضغط على التأكيد سيتم فتح واتساب لإرسال تفاصيل الطلب للفرع.</div>
+                </div>
 
             </div>
         </div>
@@ -1029,12 +1229,44 @@
     <!-- 9. لوحة الإدارة المتطورة بنظام iOS النظيف -->
     <div id="screen-admin-dashboard" class="app-screen">
         <header class="admin-top-bar">
-            <div class="admin-user-badge">
-                <span id="adminGreetingLabel">المطور</span>
-                <span class="admin-user-pill pill-dev" id="adminUserRoleTag">المطور</span>
+            <div class="admin-branding">
+                <div class="admin-brand-mark">CC</div>
+                <div>
+                    <div class="admin-title">لوحة التحكم</div>
+                    <div class="admin-subtitle">إدارة كافيه كورنر من مكان واحد</div>
+                </div>
             </div>
-            <button class="btn-brand-outline" style="padding:5px 12px; font-size:12px; color:var(--danger); border-color:var(--danger); width:auto;" onclick="exitAdminSession()">خروج</button>
+            <div class="admin-actions">
+                <div class="admin-user-badge">
+                    <span id="adminGreetingLabel">المطور</span>
+                    <span class="admin-user-pill pill-dev" id="adminUserRoleTag">المطور</span>
+                </div>
+                <button class="btn-brand-outline admin-exit-btn" onclick="exitAdminSession()">خروج</button>
+            </div>
         </header>
+
+        <div class="admin-dashboard-overview">
+            <div>
+                <div class="admin-overview-kicker">مركز الإدارة</div>
+                <div class="admin-overview-title">أهلاً بك في لوحة التحكم</div>
+                <div class="admin-overview-subtitle">تابع أداء الكافيه وعدّل التفاصيل بسرعة ووضوح.</div>
+            </div>
+            <span class="admin-live-status">النظام متصل</span>
+        </div>
+        <div class="admin-quick-grid">
+            <div class="admin-quick-card">
+                <div class="admin-quick-label">الطلبات المنفذة</div>
+                <div class="admin-quick-value accent num-font" id="adminQuickOrdersValue">0</div>
+            </div>
+            <div class="admin-quick-card">
+                <div class="admin-quick-label">المبيعات التقديرية</div>
+                <div class="admin-quick-value num-font" id="adminQuickSalesValue">0.00 د.أ</div>
+            </div>
+            <div class="admin-quick-card">
+                <div class="admin-quick-label">العملاء المسجلون</div>
+                <div class="admin-quick-value num-font" id="adminQuickUsersValue">0</div>
+            </div>
+        </div>
 
         <div class="admin-nav-tabs">
             <div class="admin-tab-chip active" id="tabHeadMenu" onclick="switchAdminTabPane('menu')">المنيو</div>
@@ -1073,6 +1305,20 @@
                     <input type="text" class="ios-input-field" id="adminUsersSearchInput" oninput="renderAdminUsersListView()" placeholder="بحث بالاسم أو رقم الهاتف..." style="margin-bottom:10px;">
                     <div style="font-size:11px; color:var(--text-muted); line-height:1.5;">
                         يمكنك الاطلاع على العملاء المسجلين، عدد طلباتهم، تاريخ تسجيلهم، وتفعيل أو حظر أي حساب بنقرة زر واحدة فوراً.
+                    </div>
+                    <div class="loyalty-admin-summary">
+                        <div class="loyalty-admin-stat">
+                            <strong class="num-font" id="adminTotalCustomersValue">0</strong>
+                            <span>إجمالي العملاء</span>
+                        </div>
+                        <div class="loyalty-admin-stat">
+                            <strong class="num-font" id="adminTotalPointsValue">0</strong>
+                            <span>نقاط ممنوحة</span>
+                        </div>
+                        <div class="loyalty-admin-stat">
+                            <strong class="num-font" id="adminTopCustomerValue">—</strong>
+                            <span>الأكثر ولاءً</span>
+                        </div>
                     </div>
                 </div>
                 <div id="adminUsersCardsList"></div>
@@ -1290,21 +1536,31 @@
             <!-- تبويب: الثيمات والتصميم (حصري للمطور) -->
             <div class="admin-pane" id="paneThemes">
                 <div class="section-card">
-                    <div class="section-title">نماذج الألوان الجاهزة</div>
+                    <div class="admin-theme-section-head">
+                        <div>
+                            <div class="section-title" style="margin-bottom:4px;">هوية الكافيه ومظهره</div>
+                            <div style="font-size:11px; color:var(--text-muted); line-height:1.5;">اختر مظهرًا جاهزًا يغيّر ألوان المنيو والحسابات ولوحة الإدارة للجميع.</div>
+                        </div>
+                        <span class="admin-theme-current" id="currentThemeLabel">أزرق ملكي</span>
+                    </div>
+                    <div class="section-title" style="margin-top:16px; margin-bottom:0;">الثيمات الجاهزة</div>
                     <div class="theme-swatch-grid" id="themePresetsGrid"></div>
 
-                    <div class="section-title" style="margin-top:14px;">تخصيص يدوي</div>
-                    <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:12px;">
-                        <div>
-                            <span style="font-size:11px; color:var(--text-muted);">لون العلامة:</span>
-                            <input type="color" id="pickerAccentColor" style="width:100%; height:38px; border-radius:6px; cursor:pointer;" value="#2563eb">
+                    <div class="admin-theme-customizer">
+                        <div class="section-title" style="margin-bottom:4px;">تخصيص يدوي</div>
+                        <div style="font-size:11px; color:var(--text-muted); margin-bottom:10px;">أنشئ تركيبة خاصة بالعلامة التجارية واحفظها سحابيًا.</div>
+                        <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:12px;">
+                            <div>
+                                <span style="font-size:11px; color:var(--text-muted);">لون العلامة:</span>
+                                <input type="color" id="pickerAccentColor" style="width:100%; height:38px; border-radius:6px; cursor:pointer;" value="#2563eb">
+                            </div>
+                            <div>
+                                <span style="font-size:11px; color:var(--text-muted);">لون الترويسة:</span>
+                                <input type="color" id="pickerPrimaryColor" style="width:100%; height:38px; border-radius:6px; cursor:pointer;" value="#0f172a">
+                            </div>
                         </div>
-                        <div>
-                            <span style="font-size:11px; color:var(--text-muted);">لون الترويسة:</span>
-                            <input type="color" id="pickerPrimaryColor" style="width:100%; height:38px; border-radius:6px; cursor:pointer;" value="#0f172a">
-                        </div>
+                        <button class="btn-brand-solid" onclick="applyAndSaveCustomTheme()">حفظ الثيم المخصص للجميع</button>
                     </div>
-                    <button class="btn-brand-solid" onclick="applyAndSaveCustomTheme()">تثبيت الثيم للجميع سحابياً</button>
                 </div>
             </div>
 
@@ -1418,8 +1674,7 @@
             <div class="screen-title">حساب العميل</div>
         </div>
         <div class="scrollable-content" style="padding: 20px 16px;">
-            <div class="section-card" style="max-width:420px; margin:20px auto 0; padding:24px 20px;">
-                
+            <div class="section-card" style="max-width:420px; margin:28px auto 0; padding:22px 20px;">
                 <div class="tabs-segment" style="margin-bottom:16px;">
                     <div class="tab-btn active" id="tabAuthLogin" onclick="switchAuthTabMode('login')">تسجيل الدخول</div>
                     <div class="tab-btn" id="tabAuthRegister" onclick="switchAuthTabMode('register')">إنشاء حساب جديد</div>
@@ -1465,20 +1720,45 @@
             <div class="screen-title">الملف الشخصي للعميل</div>
         </div>
         <div class="scrollable-content" style="padding: 16px;">
-            <div style="max-width:540px; margin:0 auto; display:flex; flex-direction:column; gap:12px;">
+            <div class="customer-page-stack">
                 
-                <div class="client-card-banner">
-                    <div style="display:flex; justify-content:space-between; align-items:flex-start;">
+                <div class="customer-profile-hero">
+                    <div class="customer-profile-top">
                         <div>
-                            <div style="font-size:18px; font-weight:800; margin-bottom:2px;" id="profDisplayName">اسم العميل</div>
-                            <div class="num-font" style="font-size:13px; opacity:0.85;" id="profDisplayPhone">079xxxxxxx</div>
+                            <div style="font-size:11px; font-weight:700; opacity:0.72; margin-bottom:5px;">عضوية كافيه كورنر</div>
+                            <div style="font-size:20px; font-weight:900; margin-bottom:2px;" id="profDisplayName">اسم العميل</div>
+                            <div class="num-font" style="font-size:13px; opacity:0.82;" id="profDisplayPhone">079xxxxxxx</div>
                         </div>
-                        <span class="user-badge-status user-status-active" id="profDisplayStatusBadge">حساب موثق</span>
+                        <div class="customer-avatar-mark" id="profAvatarMark">ك</div>
                     </div>
-                    <div style="margin-top:14px; padding-top:12px; border-top:1px solid rgba(255,255,255,0.2); display:flex; justify-content:space-between; font-size:12px;">
-                        <span>إجمالي الطلبات المنفذة:</span>
-                        <strong class="num-font" id="profDisplayOrdersCount">0 طلبات</strong>
+                    <div class="customer-profile-stats">
+                        <div class="customer-profile-stat">
+                            <span>الطلبات المنفذة</span>
+                            <strong class="num-font" id="profDisplayOrdersCount">0</strong>
+                        </div>
+                        <div class="customer-profile-stat">
+                            <span>إجمالي الإنفاق</span>
+                            <strong class="num-font" id="profDisplayTotalSpent">0.00 د.أ</strong>
+                        </div>
                     </div>
+                </div>
+
+                <div class="loyalty-card">
+                    <div class="loyalty-card-top">
+                        <div>
+                            <div style="font-size:11px; font-weight:800; opacity:0.75; margin-bottom:6px;">رصيد نقاط الولاء</div>
+                            <div class="loyalty-points-value num-font" id="profDisplayPoints">0</div>
+                            <div style="font-size:11px; font-weight:800; margin-top:5px;">نقطة</div>
+                        </div>
+                        <div style="font-size:26px;">✦</div>
+                    </div>
+                    <div class="loyalty-progress-track"><div class="loyalty-progress-fill" id="profLoyaltyProgress" style="width:0%;"></div></div>
+                    <div class="loyalty-note" id="profLoyaltyHint">كل دينار = نقطة ولاء. استمر بجمع نقاطك.</div>
+                </div>
+
+                <div class="section-card" style="padding:12px 14px; display:flex; align-items:center; gap:10px;">
+                    <span class="user-badge-status user-status-active" id="profDisplayStatusBadge">حساب موثق نشط</span>
+                    <span style="font-size:11px; color:var(--text-muted);">حسابك جاهز لحفظ طلباتك ونقاطك تلقائياً.</span>
                 </div>
 
                 <div class="section-card">
@@ -1496,7 +1776,13 @@
                     </div>
                 </div>
 
-                <button class="btn-brand-outline" style="color:var(--danger); border-color:var(--danger); font-weight:700;" onclick="logoutClientSession()">تسجيل الخروج من الحساب</button>
+                <div class="profile-account-actions">
+                    <div class="profile-account-actions-label">خيارات الحساب</div>
+                    <button class="btn-brand-outline profile-logout-btn" onclick="logoutClientSession()">
+                        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+                        <span>تسجيل الخروج</span>
+                    </button>
+                </div>
 
             </div>
         </div>
@@ -1524,7 +1810,7 @@
         <div class="sidebar-link" onclick="handleUserAccountHeaderClick(); closeSidebarDrawer();">
             <div class="sidebar-link-left">
                 <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
-                <span id="sidebarUserLinkText">حساب العميل</span>
+                <span id="sidebarUserLinkText">حسابي</span>
             </div>
         </div>
         <div class="sidebar-link" onclick="navigateRouter('screen-offers'); closeSidebarDrawer();">
@@ -1616,6 +1902,10 @@
             <span>المجموع النهائي:</span>
             <span class="num-font" id="receiptFinalTotal" style="color:var(--brand-accent);">0.00 د.أ</span>
         </div>
+        <div style="display:flex; justify-content:space-between; font-size:12px; font-weight:800; color:#b45309; background:rgba(217,119,6,0.1); border-radius:8px; padding:8px 10px; margin-top:10px;">
+            <span>نقاط الولاء المكتسبة:</span>
+            <span class="num-font" id="receiptEarnedPoints">0 نقطة</span>
+        </div>
 
         <div style="display:flex; flex-direction:column; gap:8px; margin-top:16px;">
             <button class="btn-brand-solid" onclick="shareOrCopyReceiptText()">مشاركة / نسخ الفاتورة</button>
@@ -1706,12 +1996,16 @@
     };
 
     const THEME_PRESETS = [
-        { id:"royal-blue", name:"أزرق ملكي", accent:"#2563eb", primary:"#0f172a" },
-        { id:"coffee-gold", name:"ذهبي قهوة", accent:"#d97706", primary:"#451a03" },
-        { id:"emerald-luxury", name:"زمرد أخضر", accent:"#059669", primary:"#064e3b" },
-        { id:"royal-violet", name:"أرجواني ملكي", accent:"#7c3aed", primary:"#2e1065" },
-        { id:"crimson-ruby", name:"ياقوتي كلاسيك", accent:"#dc2626", primary:"#450a0a" },
-        { id:"cyber-midnight", name:"فحم داكن", accent:"#38bdf8", primary:"#090d16" }
+        { id:"royal-blue", name:"أزرق ملكي", desc:"نظيف واحترافي", accent:"#2563eb", primary:"#0f172a" },
+        { id:"coffee-gold", name:"ذهبي قهوة", desc:"دافئ وفاخر", accent:"#d97706", primary:"#451a03" },
+        { id:"emerald-luxury", name:"زمرد أخضر", desc:"هادئ وطبيعي", accent:"#059669", primary:"#064e3b" },
+        { id:"royal-violet", name:"أرجواني ملكي", desc:"عصري ومميز", accent:"#7c3aed", primary:"#2e1065" },
+        { id:"crimson-ruby", name:"ياقوتي كلاسيك", desc:"قوي ولافت", accent:"#dc2626", primary:"#450a0a" },
+        { id:"cyber-midnight", name:"فحم داكن", desc:"تقني وهادئ", accent:"#38bdf8", primary:"#090d16" },
+        { id:"sandstone", name:"رملي فاخر", desc:"بسيط ودافئ", accent:"#c08457", primary:"#292524" },
+        { id:"olive-cream", name:"زيتوني هادئ", desc:"طبيعي ومريح", accent:"#65a30d", primary:"#1c2e1a" },
+        { id:"rose-noir", name:"وردي ليلي", desc:"ناعم وجريء", accent:"#e11d48", primary:"#3f0d24" },
+        { id:"aqua-slate", name:"أكوا سلايت", desc:"منعش وواضح", accent:"#0891b2", primary:"#082f49" }
     ];
 
     const ADDITIONS_MAP = {
@@ -1731,6 +2025,27 @@
         }
     }
 
+    function ensureUserLoyaltyFields(user) {
+        if (!user) return user;
+        const legacyPoints = Number(user.points || 0);
+        user.loyaltyPoints = Math.max(0, Math.floor(Number(user.loyaltyPoints ?? legacyPoints) || 0));
+        user.pointsEarned = Math.max(user.loyaltyPoints, Math.floor(Number(user.pointsEarned || user.loyaltyPoints) || 0));
+        user.totalSpent = parseFloat((Number(user.totalSpent || 0) || 0).toFixed(2));
+        user.ordersCount = Math.max(0, Number(user.ordersCount || 0) || 0);
+        return user;
+    }
+
+    function getActiveClientUser() {
+        if (!activeClientSession || !activeClientSession.phone) return null;
+        return ensureUserLoyaltyFields(registeredUsersMap['u_' + activeClientSession.phone]);
+    }
+
+    function getLoyaltyTier(points) {
+        if (points >= 500) return 'عضوية ذهبية';
+        if (points >= 150) return 'عضوية مميزة';
+        return 'عضوية أساسية';
+    }
+
     let productsList = safeGetJson('cc_v4_products', window.DEFAULT_CATALOG);
     let promoCodesList = safeGetJson('cc_v4_promos', {
         "CORNER20": { code: "CORNER20", discount: 20, minOrder: 0, usageLimit: 0, usedCount: 0, expiryDate: "", isActive: true }
@@ -1741,6 +2056,7 @@
     let siteStats = safeGetJson('cc_v4_stats', { visits: 0, orders: 0, totalSales: 0.0 });
     let registeredUsersMap = safeGetJson('cc_v4_users', {});
     let activeClientSession = safeGetJson('cc_v4_client_session', null);
+    Object.keys(registeredUsersMap).forEach(key => ensureUserLoyaltyFields(registeredUsersMap[key]));
 
     let activeSessionUser = null;
     let appliedPromoObject = null;
@@ -1841,7 +2157,8 @@
         const notice = document.getElementById('cartBranchStatusNotice');
 
         // التحقق من حالة حظر العميل
-        const isClientBanned = activeClientSession && registeredUsersMap[activeClientSession.phone]?.isBanned;
+        const activeUser = getActiveClientUser();
+        const isClientBanned = !!(activeUser && activeUser.isBanned);
 
         if (isClientBanned) {
             if (bannedAlertBox) bannedAlertBox.style.display = 'flex';
@@ -1951,6 +2268,7 @@
     window.onCloudUsers = (users) => {
         if (!users) return;
         registeredUsersMap = users;
+        Object.keys(registeredUsersMap).forEach(key => ensureUserLoyaltyFields(registeredUsersMap[key]));
         localStorage.setItem('cc_v4_users', JSON.stringify(registeredUsersMap));
         renderAdminUsersListView();
         updateClientSessionState();
@@ -1971,6 +2289,7 @@
             window.scrollTo(0, 0);
         }
         if (screenId === 'screen-cart') {
+            updateClientSessionState();
             applyClientAutofillToCart();
             renderCartContent();
             recalculateCartSummary();
@@ -2021,6 +2340,12 @@
         }
     };
 
+    window.openOrderAuthGate = function() {
+        switchAuthTabMode('login');
+        navigateRouter('screen-user-auth');
+        showToastMsg('سجّل دخولك أولاً لإتمام الطلب وحفظ نقاطك');
+    };
+
     window.switchAuthTabMode = function(mode) {
         currentAuthMode = mode;
         const isReg = (mode === 'register');
@@ -2069,6 +2394,8 @@
                 address: address,
                 ordersCount: 0,
                 totalSpent: 0.0,
+                loyaltyPoints: 0,
+                pointsEarned: 0,
                 createdAt: new Date().toLocaleDateString('ar-JO'),
                 isBanned: false
             };
@@ -2085,7 +2412,7 @@
             navigateRouter('screen-home');
 
         } else {
-            const user = registeredUsersMap[phoneKey];
+            const user = ensureUserLoyaltyFields(registeredUsersMap[phoneKey]);
             if (!user) {
                 errEl.innerText = 'الرقم غير مسجل. يرجى اختيار "إنشاء حساب جديد" أولاً';
                 return;
@@ -2119,38 +2446,68 @@
     function updateClientSessionState() {
         const dot = document.getElementById('headerUserOnlineDot');
         const sideText = document.getElementById('sidebarUserLinkText');
+        const authGate = document.getElementById('cartAuthGate');
+        const nameField = document.getElementById('cartClientName');
+        const phoneField = document.getElementById('cartClientPhone');
         if (activeClientSession) {
             if (dot) dot.style.display = 'block';
-            if (sideText) sideText.innerText = `حسابي (${activeClientSession.name})`;
+            if (sideText) sideText.innerText = 'حسابي';
+            if (authGate) authGate.style.display = 'none';
+            if (nameField) nameField.readOnly = true;
+            if (phoneField) phoneField.readOnly = true;
         } else {
             if (dot) dot.style.display = 'none';
-            if (sideText) sideText.innerText = 'حساب العميل (دخول)';
+            if (sideText) sideText.innerText = 'حسابي';
+            if (authGate) authGate.style.display = window.appState.cart.length ? 'flex' : 'none';
+            if (nameField) nameField.readOnly = true;
+            if (phoneField) phoneField.readOnly = true;
         }
         applyClientAutofillToCart();
         updateBranchStatusUI();
     }
 
     function applyClientAutofillToCart() {
-        if (!activeClientSession) return;
         const nameField = document.getElementById('cartClientName');
         const phoneField = document.getElementById('cartClientPhone');
         const addrField = document.getElementById('cartAddressInput');
         const badge = document.getElementById('cartUserAutofillBadge');
 
-        if (nameField && !nameField.value) nameField.value = activeClientSession.name || '';
-        if (phoneField && !phoneField.value) phoneField.value = activeClientSession.phone || '';
-        if (addrField && !addrField.value && activeClientSession.address) addrField.value = activeClientSession.address;
+        if (!activeClientSession) {
+            if (nameField) nameField.value = '';
+            if (phoneField) phoneField.value = '';
+            if (badge) badge.style.display = 'none';
+            return;
+        }
+
+        const user = getActiveClientUser();
+        if (nameField) nameField.value = user?.name || activeClientSession.name || '';
+        if (phoneField) phoneField.value = user?.phone || activeClientSession.phone || '';
+        if (addrField && !addrField.value && (user?.address || activeClientSession.address)) {
+            addrField.value = user?.address || activeClientSession.address;
+        }
         if (badge) badge.style.display = 'inline-block';
     }
 
     function renderClientProfileScreen() {
         if (!activeClientSession) return;
         const phoneKey = 'u_' + activeClientSession.phone;
-        const user = registeredUsersMap[phoneKey] || activeClientSession;
+        const user = ensureUserLoyaltyFields(registeredUsersMap[phoneKey] || activeClientSession);
+        const points = user.loyaltyPoints || 0;
+        const nextMilestone = points < 150 ? 150 : points < 500 ? 500 : Math.ceil((points + 1) / 250) * 250;
+        const previousMilestone = points < 150 ? 0 : points < 500 ? 150 : Math.floor(points / 250) * 250;
+        const progress = points >= 500 ? Math.min(100, ((points - previousMilestone) / Math.max(1, nextMilestone - previousMilestone)) * 100) : (points / Math.max(1, nextMilestone)) * 100;
 
         document.getElementById('profDisplayName').innerText = user.name || 'عميل كافيه كورنر';
         document.getElementById('profDisplayPhone').innerText = user.phone || '';
-        document.getElementById('profDisplayOrdersCount').innerText = `${user.ordersCount || 0} طلبات`;
+        document.getElementById('profDisplayOrdersCount').innerText = `${user.ordersCount || 0}`;
+        document.getElementById('profDisplayTotalSpent').innerText = `${(user.totalSpent || 0).toFixed(2)} د.أ`;
+        document.getElementById('profDisplayPoints').innerText = points.toLocaleString('ar-JO');
+        document.getElementById('profLoyaltyProgress').style.width = `${Math.max(3, Math.min(100, progress))}%`;
+        document.getElementById('profLoyaltyHint').innerText = points >= 500
+            ? `${getLoyaltyTier(points)} • أنت على بعد ${(nextMilestone - points).toLocaleString('ar-JO')} نقطة من المستوى التالي`
+            : `تبقى ${(nextMilestone - points).toLocaleString('ar-JO')} نقطة للوصول إلى ${nextMilestone.toLocaleString('ar-JO')} نقطة`;
+        const avatar = document.getElementById('profAvatarMark');
+        if (avatar) avatar.innerText = (user.name || 'ك').trim().charAt(0);
         document.getElementById('profEditName').value = user.name || '';
         document.getElementById('profEditAddress').value = user.address || '';
 
@@ -2194,8 +2551,22 @@
         const countLabel = document.getElementById('adminUsersCountLabel');
         if (!container) return;
 
-        const usersList = Object.values(registeredUsersMap);
+        const usersList = Object.values(registeredUsersMap).map(ensureUserLoyaltyFields);
+        const totalPoints = usersList.reduce((sum, u) => sum + (u.loyaltyPoints || 0), 0);
+        const topCustomer = [...usersList].sort((a, b) => (b.loyaltyPoints || 0) - (a.loyaltyPoints || 0))[0];
         if (countLabel) countLabel.innerText = `${usersList.length} عميل مسجل`;
+        const totalCustomersEl = document.getElementById('adminTotalCustomersValue');
+        const totalPointsEl = document.getElementById('adminTotalPointsValue');
+        const topCustomerEl = document.getElementById('adminTopCustomerValue');
+        const quickUsersEl = document.getElementById('adminQuickUsersValue');
+        if (totalCustomersEl) totalCustomersEl.innerText = usersList.length.toLocaleString('ar-JO');
+        if (totalPointsEl) totalPointsEl.innerText = totalPoints.toLocaleString('ar-JO');
+        if (quickUsersEl) quickUsersEl.innerText = usersList.length.toLocaleString('ar-JO');
+        if (topCustomerEl) {
+            topCustomerEl.innerText = topCustomer
+                ? `${(topCustomer.name || 'عميل').slice(0, 12)}`
+                : '—';
+        }
 
         const query = (document.getElementById('adminUsersSearchInput')?.value || '').trim().toLowerCase();
         let filtered = usersList;
@@ -2210,19 +2581,37 @@
 
         container.innerHTML = filtered.map(u => {
             const isBanned = (u.isBanned === true);
+            const points = u.loyaltyPoints || 0;
             return `
-                <div style="background:var(--surface); border:1px solid var(--border-light); border-radius:var(--radius-sm); padding:12px 14px; margin-bottom:8px; display:flex; justify-content:space-between; align-items:center;">
-                    <div>
-                        <div style="font-weight:800; font-size:14px; display:flex; align-items:center; gap:6px;">
-                            <span>${u.name || 'عميل'}</span>
-                            <span class="user-badge-status ${isBanned ? 'user-status-banned' : 'user-status-active'}">${isBanned ? 'محظور' : 'نشط'}</span>
+                <div class="admin-customer-card">
+                    <div class="admin-customer-card-top">
+                        <div style="min-width:0;">
+                            <div style="font-weight:800; font-size:14px; display:flex; align-items:center; flex-wrap:wrap; gap:6px;">
+                                <span>${u.name || 'عميل'}</span>
+                                <span class="user-badge-status ${isBanned ? 'user-status-banned' : 'user-status-active'}">${isBanned ? 'محظور' : 'نشط'}</span>
+                            </div>
+                            <div style="font-size:12px; color:var(--text-muted); margin-top:4px;">
+                                هاتف: <span class="num-font" style="font-weight:700;">${u.phone || '—'}</span>
+                            </div>
                         </div>
-                        <div style="font-size:12px; color:var(--text-muted); margin-top:2px;">
-                            هاتف: <span class="num-font" style="font-weight:700;">${u.phone}</span> | طلبات: <span class="num-font">${u.ordersCount || 0}</span>
-                            ${u.address ? ` | عنوان: ${u.address}` : ''}
+                        <span class="admin-customer-points">✦ <span class="num-font">${points.toLocaleString('ar-JO')}</span> نقطة</span>
+                    </div>
+                    <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:7px; margin:12px 0 11px;">
+                        <div style="background:var(--segment-bg); border-radius:10px; padding:8px;">
+                            <div style="font-size:10px; color:var(--text-muted);">الطلبات</div>
+                            <strong class="num-font" style="font-size:14px;">${u.ordersCount || 0}</strong>
+                        </div>
+                        <div style="background:var(--segment-bg); border-radius:10px; padding:8px;">
+                            <div style="font-size:10px; color:var(--text-muted);">الإنفاق</div>
+                            <strong class="num-font" style="font-size:14px;">${(u.totalSpent || 0).toFixed(2)}</strong>
+                        </div>
+                        <div style="background:var(--segment-bg); border-radius:10px; padding:8px;">
+                            <div style="font-size:10px; color:var(--text-muted);">العضوية</div>
+                            <strong style="font-size:11px;">${getLoyaltyTier(points)}</strong>
                         </div>
                     </div>
-                    <div>
+                    <div style="display:flex; justify-content:space-between; align-items:center; gap:8px;">
+                        <div style="font-size:11px; color:var(--text-muted);">${u.address ? `العنوان: ${u.address}` : `مسجل منذ ${u.createdAt || '—'}`}</div>
                         <button class="btn-brand-outline" style="width:auto; padding:5px 12px; font-size:11px; font-weight:700; ${isBanned ? 'color:var(--success); border-color:var(--success);' : 'color:var(--danger); border-color:var(--danger);'}" onclick="toggleUserBanStatus('${u.id}')">
                             ${isBanned ? 'إلغاء الحظر' : 'حظر العميل'}
                         </button>
@@ -2859,8 +3248,16 @@
     };
 
     window.dispatchOrderToWhatsApp = function() {
+        // لا يمكن إرسال أي طلب كضيف: الحساب هو مرجع سجل الطلبات ونقاط الولاء
+        const activeUser = getActiveClientUser();
+        if (!activeClientSession || !activeUser) {
+            showToastMsg("يجب تسجيل الدخول أو إنشاء حساب قبل إتمام الطلب");
+            openOrderAuthGate();
+            return;
+        }
+
         // التحقق من الحظر الأمني
-        if (activeClientSession && registeredUsersMap[activeClientSession.phone]?.isBanned) {
+        if (activeUser.isBanned) {
             showToastMsg("عذراً، حسابك محظور من قبل الإدارة");
             return;
         }
@@ -2872,8 +3269,8 @@
         }
 
         if (window.appState.cart.length === 0) return showToastMsg("السلة فارغة");
-        const clientName = document.getElementById('cartClientName').value.trim();
-        const clientPhone = document.getElementById('cartClientPhone').value.trim();
+        const clientName = activeUser.name || document.getElementById('cartClientName').value.trim();
+        const clientPhone = activeUser.phone || document.getElementById('cartClientPhone').value.trim();
         if (!clientName || !clientPhone) return showToastMsg("يرجى إدخال اسمك ورقم هاتفك");
 
         const branch = storeConfig.branches[window.appState.cartBranch] || DEFAULT_STORE_CONFIG.branches[0];
@@ -2897,13 +3294,24 @@
         localStorage.setItem('cc_v4_stats', JSON.stringify(siteStats));
         if (window.cloudUpdateStats) window.cloudUpdateStats(siteStats);
 
-        // تحديث إحصائيات حساب العميل المسجل
+        // تحديث إحصائيات حساب العميل المسجل ونقاط الولاء (كل دينار = نقطة)
         const phoneKey = 'u_' + clientPhone.replace(/\s+/g, '');
         if (registeredUsersMap[phoneKey]) {
-            registeredUsersMap[phoneKey].ordersCount = (registeredUsersMap[phoneKey].ordersCount || 0) + 1;
-            registeredUsersMap[phoneKey].totalSpent = parseFloat(((registeredUsersMap[phoneKey].totalSpent || 0) + finalAmount).toFixed(2));
+            const user = ensureUserLoyaltyFields(registeredUsersMap[phoneKey]);
+            const earnedPoints = Math.floor(finalAmount);
+            user.ordersCount += 1;
+            user.totalSpent = parseFloat((user.totalSpent + finalAmount).toFixed(2));
+            user.loyaltyPoints += earnedPoints;
+            user.pointsEarned += earnedPoints;
             localStorage.setItem('cc_v4_users', JSON.stringify(registeredUsersMap));
-            if (window.cloudSaveUser) window.cloudSaveUser(phoneKey, registeredUsersMap[phoneKey]);
+            if (window.cloudSaveUser) window.cloudSaveUser(phoneKey, user);
+            activeClientSession.name = user.name;
+            activeClientSession.address = user.address || activeClientSession.address || '';
+            localStorage.setItem('cc_v4_client_session', JSON.stringify(activeClientSession));
+        } else {
+            // لا نسمح بتسجيل طلب خارج الحساب حتى لو تم تعديل الحقول يدوياً
+            showToastMsg("تعذر ربط الطلب بحسابك، يرجى تسجيل الدخول من جديد");
+            return;
         }
 
         if (appliedPromoObject && promoCodesList[appliedPromoObject.code]) {
@@ -2929,7 +3337,8 @@
             subtotal,
             discountVal,
             deliveryFee,
-            finalAmount
+            finalAmount,
+            earnedPoints: Math.floor(finalAmount)
         };
 
         let msg = `*طلب جديد | ${storeConfig.brandTitle}*\n`;
@@ -2951,6 +3360,7 @@
         if (appliedPromoObject) msg += `خصم كود (${appliedPromoObject.code}): -${discountVal.toFixed(2)} د.أ\n`;
         if (window.appState.deliveryMode === 'delivery') msg += `أجور التوصيل: ${deliveryFee.toFixed(2)} د.أ (${townName})\n`;
         msg += `*الإجمالي المطلوب: ${finalAmount.toFixed(2)} د.أ*\n`;
+        msg += `نقاط الولاء المكتسبة: ${Math.floor(finalAmount)} نقطة\n`;
         msg += `طريقة الدفع: ${payLabel}\n`;
         msg += `---------------------------------\n`;
         msg += `اسم العميل: ${clientName}\n`;
@@ -3007,6 +3417,8 @@
         }
 
         document.getElementById('receiptSubtotal').innerText = d.subtotal.toFixed(2) + ' د.أ';
+        const receiptPointsEl = document.getElementById('receiptEarnedPoints');
+        if (receiptPointsEl) receiptPointsEl.innerText = `${(d.earnedPoints || 0).toLocaleString('ar-JO')} نقطة`;
         const discRow = document.getElementById('receiptDiscountRow');
         if (d.discountVal > 0) {
             discRow.style.display = 'flex';
@@ -3226,10 +3638,14 @@
         const vEl = document.getElementById('statVisitsTotal');
         const oEl = document.getElementById('statOrdersTotal');
         const sEl = document.getElementById('statSalesTotal');
+        const quickOrdersEl = document.getElementById('adminQuickOrdersValue');
+        const quickSalesEl = document.getElementById('adminQuickSalesValue');
 
         if (vEl) vEl.innerText = visits;
         if (oEl) oEl.innerText = orders;
         if (sEl) sEl.innerText = Number(sales).toFixed(2);
+        if (quickOrdersEl) quickOrdersEl.innerText = Number(orders).toLocaleString('ar-JO');
+        if (quickSalesEl) quickSalesEl.innerText = `${Number(sales).toFixed(2)} د.أ`;
     }
 
     window.clearSiteStatsData = function() {
@@ -3814,8 +4230,14 @@
         const currentThemeId = storeConfig.theme?.name || 'royal-blue';
 
         container.innerHTML = THEME_PRESETS.map(t => `
-            <div class="stat-card-pro ${t.id === currentThemeId ? 'active' : ''}" style="cursor:pointer; border-color:${t.id === currentThemeId ? 'var(--brand-accent)' : 'var(--border-light)'};" onclick="selectThemePreset('${t.id}')">
-                <div style="font-size:12px; font-weight:700;">${t.name}</div>
+            <div class="admin-theme-card ${t.id === currentThemeId ? 'active' : ''}" onclick="selectThemePreset('${t.id}')">
+                <div class="admin-theme-preview" style="background:${t.primary};">
+                    <span class="admin-theme-preview-dot" style="background:${t.accent};"></span>
+                    <span class="admin-theme-preview-line"></span>
+                </div>
+                <div class="admin-theme-name">${t.name}</div>
+                <div class="admin-theme-desc">${t.desc}</div>
+                <div class="admin-theme-check">✓</div>
             </div>
         `).join('');
 
@@ -3823,6 +4245,9 @@
             document.getElementById('pickerAccentColor').value = storeConfig.theme.accent;
             document.getElementById('pickerPrimaryColor').value = storeConfig.theme.primary;
         }
+        const currentLabel = document.getElementById('currentThemeLabel');
+        const currentPreset = THEME_PRESETS.find(t => t.id === currentThemeId);
+        if (currentLabel) currentLabel.innerText = currentPreset ? currentPreset.name : 'مخصص';
     }
 
     window.selectThemePreset = function(presetId) {
@@ -3851,6 +4276,7 @@
         autoIncrementSystemVersion();
         recordSystemAuditAction("تخصيص ألوان الثيم", `ألوان (${accent} / ${primary})`);
         applyStoreConfigToUI();
+        renderThemePresets();
         showToastMsg("تم تثبيت الألوان سحابياً");
     };
 
