@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<meta name="theme-color" content="#070b12">
+<title>ملاحة الأردن | BYD Destroyer 05</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Readex+Pro:wght@400;500;600;700&family=JetBrains+Mono:wght@600&family=Orbitron:wght@800&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<style>
+:root{--bg:#070b12;--panel:rgba(11,17,29,.94);--card:#121c30;--line:#22334f;--cyan:#00d2ff;--blue:#0a6cff;--green:#00e676;--red:#ff453a;--gold:#ffb300;--txt:#eef3fb;--mut:#8ea0bb;--r:16px}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent;user-select:none}
+html,body{margin:0;height:100%;overflow:hidden;background:var(--bg);color:var(--txt);font-family:'Readex Pro',system-ui,sans-serif;font-size:14px}
+button{font:inherit;color:inherit;border:0;cursor:pointer;background:none}
+input{font:inherit}
+#map{position:absolute;inset:0;z-index:1;background:#101a2c}
+.panel{background:var(--panel);backdrop-filter:blur(14px);border:1px solid var(--line);border-radius:var(--r);box-shadow:0 10px 30px rgba(0,0,0,.5)}
+.mono{font-family:'JetBrains Mono',monospace;direction:ltr;unicode-bidi:isolate}
+.hide{display:none!important}
+.btn{width:46px;height:46px;border-radius:13px;background:var(--card);border:1px solid var(--line);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;flex:none;transition:transform .12s,background .2s}
+.btn:active{transform:scale(.93)}.btn small{font-size:9px;color:var(--mut)}
+.btn.cy{color:var(--cyan)}.btn.gr{background:#0d8f57;border-color:#12b46f}.btn.bl{background:var(--blue);border-color:#3a8bff}
+/* top bar */
+#top{position:absolute;top:0;inset-inline:0;z-index:30;height:38px;padding:0 14px;padding-top:env(safe-area-inset-top);display:flex;align-items:center;justify-content:space-between;background:var(--panel);border-bottom:1px solid var(--line);font-size:12px}
+#top .g{display:flex;gap:10px;align-items:center}
+.chip{display:flex;gap:6px;align-items:center;background:#0b1424;border:1px solid var(--line);border-radius:10px;padding:3px 10px}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--mut)}.dot.ok{background:var(--green);box-shadow:0 0 8px var(--green)}.dot.bad{background:var(--red)}
+/* search column */
+#col{position:absolute;top:calc(48px + env(safe-area-inset-top));inset-inline:10px;z-index:20;display:flex;flex-direction:column;gap:8px;max-width:500px;margin-inline-start:auto}
+#sbar{padding:8px;display:flex;gap:8px;align-items:center}
+.inwrap{position:relative;flex:1}
+.inwrap input{width:100%;height:46px;border-radius:13px;background:#0b1424;border:1px solid var(--line);color:var(--txt);padding:0 38px;outline:0;user-select:text}
+.inwrap input:focus{border-color:var(--cyan)}
+.inwrap i{position:absolute;top:15px;color:var(--mut)}.inwrap .si{right:13px}.inwrap #clr{left:13px;cursor:pointer}
+.row{padding:11px 12px;display:flex;align-items:center;gap:10px;border-radius:12px;background:#0b1424;cursor:pointer;border:1px solid transparent}
+.row:hover,.row:active{border-color:var(--cyan)}
+.row b{font-weight:600;font-size:13px;display:block}.row span{color:var(--mut);font-size:11px}
+.row .ic{width:34px;height:34px;border-radius:10px;background:var(--bg);display:flex;align-items:center;justify-content:center;flex:none}
+.list{padding:6px;display:flex;flex-direction:column;gap:6px;max-height:44vh;overflow-y:auto;scrollbar-width:none}
+/* guidance */
+#guide{padding:12px 14px}
+#guide .h{display:flex;gap:12px;align-items:center}
+#arrow{width:56px;height:56px;border-radius:16px;background:linear-gradient(135deg,var(--blue),var(--cyan));color:#031018;font-size:26px;display:flex;align-items:center;justify-content:center;flex:none;transition:transform .3s}
+#gd{font-size:30px;font-weight:700;line-height:1}#gd small{font-size:13px;color:var(--cyan);margin-inline-start:5px}
+#gt{font-size:13px;font-weight:500;margin-top:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.stop{padding:8px 14px;border-radius:11px;background:rgba(255,69,58,.15);border:1px solid rgba(255,69,58,.5);color:#ffb4ae;font-weight:600}
+#gs{margin-top:10px;padding-top:9px;border-top:1px solid var(--line);display:flex;justify-content:space-between;font-size:12px}
+/* alerts */
+#radar{position:absolute;top:calc(56px + env(safe-area-inset-top));left:12px;z-index:40;background:#3a0d0a;border:2px solid var(--red);border-radius:var(--r);padding:10px 14px;display:flex;gap:12px;align-items:center;animation:pl 1s infinite alternate}
+@keyframes pl{to{box-shadow:0 0 26px rgba(255,69,58,.7)}}
+#radar .lim{background:var(--red);border-radius:20px;padding:2px 10px;font-weight:700}
+#target{position:absolute;bottom:88px;left:50%;transform:translateX(-50%);z-index:40;width:min(92vw,470px);padding:12px;display:flex;gap:10px;align-items:center}
+#target .t{flex:1;min-width:0}#target h4{margin:0;font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#target p{margin:3px 0 0;font-size:11px;color:var(--mut)}
+.go{background:var(--cyan);color:#031018;font-weight:700;border-radius:12px;padding:10px 16px;display:flex;gap:6px;align-items:center}
+.sq{width:38px;height:38px;border-radius:11px;background:var(--card);color:var(--mut)}.sq.on{color:var(--gold)}
+/* side controls */
+#side{position:absolute;left:10px;bottom:88px;z-index:20;display:flex;flex-direction:column;gap:8px;align-items:center}
+#spd{padding:10px 14px;text-align:center;min-width:90px}
+#sv{font-family:Orbitron,sans-serif;font-weight:800;font-size:38px;line-height:1;transition:color .2s}#sv.over{color:var(--red)}
+#spd small{color:var(--cyan);font-size:10px;font-weight:600;display:block;margin-top:4px}
+#lim{width:42px;height:42px;border-radius:50%;background:#fff;border:4px solid var(--red);color:#111;display:flex;align-items:center;justify-content:center;font-weight:700;margin:8px auto 0;font-size:13px}
+.zoom{display:flex;flex-direction:column;padding:3px}.zoom .btn{background:none;border:0}
+/* bottom bar */
+#bot{position:absolute;bottom:10px;inset-inline:10px;z-index:20;padding:10px 14px;display:flex;align-items:center;gap:12px}
+#bot .i{flex:1;min-width:0}#bot .k{font-size:11px;color:var(--cyan);display:flex;gap:8px;align-items:center}
+#street{font-weight:600;font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:2px}
+#toast{position:absolute;bottom:150px;left:50%;transform:translateX(-50%);z-index:60;background:#0b1424;border:1px solid var(--cyan);border-radius:14px;padding:9px 18px;font-size:13px;max-width:90vw;text-align:center}
+/* car marker */
+.car{position:relative;width:58px;height:72px;transition:transform .4s linear}
+.car svg{position:relative;filter:drop-shadow(0 8px 10px rgba(0,0,0,.7))}
+.pulse{position:absolute;inset:0;margin:auto;width:70px;height:70px;border-radius:50%;background:radial-gradient(circle,rgba(0,210,255,.4),transparent 70%);animation:pr 2.2s infinite}
+@keyframes pr{from{transform:scale(.6);opacity:1}to{transform:scale(1.7);opacity:0}}
+.flag{width:42px;height:42px;border-radius:50%;background:var(--red);border:3px solid #fff;color:#fff;display:flex;align-items:center;justify-content:center;box-shadow:0 0 18px rgba(255,69,58,.8)}
+.poi{width:30px;height:30px;border-radius:50%;background:var(--bg);border:2px solid;display:flex;align-items:center;justify-content:center;font-size:12px}
+.poi.radar{border-color:var(--red);color:#ff8a82}.poi.fuel{border-color:var(--gold);color:var(--gold)}
+@media(max-width:640px){#col{max-width:none}#top .hm{display:none}}
+</style>
+</head>
+<body>
+<div id="map"></div>
+ 
+<div id="top">
+  <div class="g"><b style="color:var(--cyan)">BYD DiLink</b><span class="chip hm"><i class="fas fa-bolt" style="color:var(--green)"></i>DM-i</span>
+    <span class="chip"><span class="dot" id="gpsDot"></span><span id="gpsTxt" class="mono" style="font-size:11px">GPS</span></span></div>
+  <div class="g">
+    <span class="chip"><i id="wi" class="fas fa-sun" style="color:var(--gold)"></i><b id="wt" class="mono">--°</b><span id="wc" class="hm" style="color:var(--mut);font-size:11px"></span></span>
+    <span class="chip"><i class="far fa-clock" style="color:var(--cyan)"></i><b id="clk" class="mono">--:--</b></span>
+  </div>
+</div>
+ 
+<div id="col">
+  <div id="sbar" class="panel">
+    <button class="btn cy" onclick="nav.cycleLayer()" title="نوع الخريطة"><i class="fas fa-layer-group"></i><small id="lname">طرقات</small></button>
+    <div class="inwrap"><i class="fas fa-search si"></i>
+      <input id="q" placeholder="ابحث عن شارع أو منطقة، أو الصق لوكيشن" autocomplete="off" oninput="nav.onInput(this.value)" onkeydown="if(event.key==='Enter')nav.search(this.value)">
+      <i class="fas fa-times-circle hide" id="clr" onclick="nav.clearSearch()"></i></div>
+    <button class="btn gr" onclick="nav.paste()" title="لصق لوكيشن"><i class="fab fa-whatsapp" style="font-size:18px"></i><small style="color:#fff">لصق</small></button>
+    <button class="btn bl" onclick="nav.drawer()" title="الأماكن"><i class="fas fa-diamond-turn-right"></i></button>
+  </div>
+  <div id="sug" class="panel list hide"></div>
+  <div id="guide" class="panel hide">
+    <div class="h"><div id="arrow"><i class="fas fa-arrow-up"></i></div>
+      <div style="flex:1;min-width:0"><div id="gd" class="mono">--<small>كم</small></div><div id="gt">المسار محدد</div></div>
+      <button class="stop" onclick="nav.stop()">إنهاء</button></div>
+    <div id="gs" class="mono"><span id="eta" style="color:var(--green)">--:--</span><span id="rd">-- كم</span><span id="rt">-- د</span></div>
+  </div>
+  <div id="dr" class="panel hide" style="overflow:hidden">
+    <div style="display:flex;gap:6px;padding:8px">
+      <button class="row" style="flex:1;justify-content:center" onclick="nav.tab('fav')"><i class="fas fa-star" style="color:var(--gold)"></i>المفضلة</button>
+      <button class="row" style="flex:1;justify-content:center" onclick="nav.tab('fuel')"><i class="fas fa-gas-pump" style="color:var(--gold)"></i>كازيات</button>
+      <button class="row" style="flex:1;justify-content:center" onclick="nav.tab('radar')"><i class="fas fa-camera" style="color:var(--red)"></i>رادارات</button>
+    </div>
+    <div id="pl" class="list"></div>
+  </div>
+</div>
+ 
+<div id="radar" class="hide"><i class="fas fa-camera-retro" style="font-size:22px"></i>
+  <div><div style="font-weight:600;font-size:13px" id="rn">رادار سرعة</div><div class="mono" style="font-size:12px;color:#ffb4ae">المسافة <b id="rdist" style="color:#fff">--</b></div></div><span class="lim mono" id="rl">80</span></div>
+ 
+<div id="target" class="panel hide">
+  <div class="ic" style="width:40px;height:40px;border-radius:12px;background:rgba(0,210,255,.15);color:var(--cyan);display:flex;align-items:center;justify-content:center"><i class="fas fa-location-dot"></i></div>
+  <div class="t"><h4 id="tt">موقع محدد</h4><p class="mono" id="tc"></p></div>
+  <button class="sq" id="favBtn" onclick="nav.toggleFav()" title="حفظ في المفضلة"><i class="fas fa-star"></i></button>
+  <button class="go" onclick="nav.goTarget()"><i class="fas fa-play"></i>انطلق</button>
+  <button class="sq" onclick="nav.cancelTarget()"><i class="fas fa-times"></i></button>
+</div>
+ 
+<aside id="side">
+  <div id="spd" class="panel"><div id="sv">0</div><small>كم/س</small><div id="lim" class="mono">--</div></div>
+  <button class="btn cy panel" id="followBtn" onclick="nav.recenter()" title="تتبع موقعي"><i class="fas fa-crosshairs" style="font-size:18px"></i></button>
+  <div class="panel zoom"><button class="btn" onclick="nav.map.zoomIn()"><i class="fas fa-plus"></i></button><button class="btn" onclick="nav.map.zoomOut()"><i class="fas fa-minus"></i></button></div>
+  <button class="btn cy panel" onclick="nav.toggleVoice()"><i class="fas fa-volume-high" id="vi"></i></button>
+  <button class="btn cy panel" onclick="nav.fullscreen()"><i class="fas fa-expand"></i></button>
+</aside>
+ 
+<footer id="bot" class="panel">
+  <span class="dot" id="pulse"></span>
+  <div class="i"><div class="k"><span>موقعك الحالي</span><span class="mono" id="coords" style="color:var(--mut)">--</span><span class="mono" id="acc" style="color:var(--mut)"></span></div>
+    <div id="street">جارٍ تحديد الموقع… انقر على الخريطة لاختيار وجهة</div></div>
+  <button class="row" style="flex:none;padding:9px 14px" onclick="nav.overview()"><i class="fas fa-expand" style="color:var(--cyan)"></i>كامل الأردن</button>
+</footer>
+<div id="toast" class="hide"></div>
+ 
+<script>
+const $=id=>document.getElementById(id);
+const POI=[
+ {id:'r1',type:'radar',name:'رادار نزول بليلا',lat:32.3610,lng:35.8810,limit:90,desc:'طريق إربد – عمان'},
+ {id:'r2',type:'radar',name:'رادار جرش الأهلية',lat:32.2280,lng:35.8860,limit:90,desc:'طريق عمان – إربد'},
+ {id:'r3',type:'radar',name:'رادار شارع الأردن',lat:32.0450,lng:35.9010,limit:80,desc:'تقاطع ياجوز'},
+ {id:'r4',type:'radar',name:'رادار طريق المطار',lat:31.7850,lng:35.9520,limit:100,desc:'جسر مادبا'},
+ {id:'r5',type:'radar',name:'رادار أوتوستراد الزرقاء',lat:32.0250,lng:36.0420,limit:80,desc:'عمان – الزرقاء'},
+ {id:'f1',type:'fuel',name:'كازية المناصير',lat:32.3250,lng:35.8850,desc:'طريق إربد السريع'},
+ {id:'f2',type:'fuel',name:'كازية جو بترول',lat:31.8340,lng:35.9120,desc:'طريق المطار'},
+ {id:'f3',type:'fuel',name:'كازية توتال',lat:32.0300,lng:36.0500,desc:'أوتوستراد الزرقاء'},
+ {id:'f4',type:'fuel',name:'كازية المناصير – العدسية',lat:31.8120,lng:35.6150,desc:'طريق البحر الميت'}
+];
+const ROUTERS=['https://router.project-osrm.org','https://routing.openstreetmap.de/routed-car'];
+const ARABIC_TURN={left:['انعطف يساراً',-90],right:['انعطف يميناً',90],'slight left':['انحرف قليلاً لليسار',-45],'slight right':['انحرف قليلاً لليمين',45],'sharp left':['انعطف بحدة لليسار',-135],'sharp right':['انعطف بحدة لليمين',135],uturn:['استدر للخلف',180],straight:['تابع للأمام',0]};
+const dbounce=(f,ms)=>{let t;return(...a)=>{clearTimeout(t);t=setTimeout(()=>f(...a),ms)}};
+async function getJSON(url,ms=7000){const r=await fetch(url,{signal:AbortSignal.timeout(ms)});if(!r.ok)throw new Error(r.status);return r.json()}
+const store={get:(k,d)=>{try{return JSON.parse(localStorage.getItem(k))??d}catch{return d}},set:(k,v)=>{try{localStorage.setItem(k,JSON.stringify(v))}catch{}}};
+ 
+class Audio_{
+ constructor(){this.on=true;this.ctx=null;this.voice=null;
+  if(speechSynthesis){const pick=()=>{this.voice=speechSynthesis.getVoices().find(v=>v.lang.startsWith('ar'))||null};pick();speechSynthesis.onvoiceschanged=pick}}
+ beep(){if(!this.on)return;try{const C=window.AudioContext||window.webkitAudioContext;this.ctx=this.ctx||new C();this.ctx.resume();const o=this.ctx.createOscillator(),g=this.ctx.createGain(),t=this.ctx.currentTime;o.frequency.setValueAtTime(980,t);o.frequency.setValueAtTime(1320,t+.1);g.gain.setValueAtTime(.3,t);g.gain.exponentialRampToValueAtTime(.001,t+.35);o.connect(g);g.connect(this.ctx.destination);o.start();o.stop(t+.35)}catch{}}
+ say(s){if(!this.on||!window.speechSynthesis)return;try{speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(s);u.lang='ar-SA';if(this.voice)u.voice=this.voice;u.rate=1;speechSynthesis.speak(u)}catch{}}
+}
+ 
+const nav={
+ map:null,car:null,acc:null,target:null,line:null,poiLayer:null,audio:new Audio_(),
+ layers:{},order:['osm','sat','dark','gmap'],cur:'osm',names:{osm:'طرقات',sat:'قمر صناعي',dark:'ليلي',gmap:'جوجل'},
+ pos:{lat:32.5568,lng:35.8469,heading:0,speed:0,acc:0,fix:false},
+ follow:true,dest:null,pending:null,route:null,steps:[],stepIdx:0,cum:[],idx:0,offCount:0,lastReroute:0,lastRadar:null,lastGeo:0,lastPos:null,favs:store.get('favs',[]),ptab:'fav',wake:null,
+ 
+ init(){
+  this.setupMap();this.clock();this.weather(this.pos.lat,this.pos.lng);setInterval(()=>this.weather(this.pos.lat,this.pos.lng),600000);
+  this.drawPOI();this.gps();this.tab('fav',true);this.geoName(this.pos.lat,this.pos.lng,true);
+  [200,800,2000].forEach(t=>setTimeout(()=>this.map.invalidateSize(),t));
+  addEventListener('resize',()=>this.map.invalidateSize());
+  if(matchMedia('(prefers-color-scheme: dark)').matches&&false)this.cycleLayer();
+ },
+ setupMap(){
+  this.map=L.map('map',{center:[this.pos.lat,this.pos.lng],zoom:14,zoomControl:false,attributionControl:false,maxBounds:[[28.8,34.4],[33.6,39.6]],maxBoundsViscosity:.7,zoomSnap:.5,fadeAnimation:true});
+  const T=(u,o={})=>L.tileLayer(u,{maxZoom:19,keepBuffer:6,updateWhenIdle:false,crossOrigin:true,...o});
+  this.layers.osm=T('https://tile.openstreetmap.org/{z}/{x}/{y}.png');
+  this.layers.sat=T('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}');
+  this.layers.dark=T('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',{subdomains:'abcd'});
+  this.layers.gmap=T('https://mt{s}.google.com/vt/lyrs=m&hl=ar&x={x}&y={y}&z={z}',{subdomains:'0123',maxZoom:20});
+  // إذا فشل تحميل بلاطات طبقة ننتقل تلقائياً للطبقة التالية
+  let errs=0;Object.entries(this.layers).forEach(([k,l])=>l.on('tileerror',()=>{if(k===this.cur&&++errs===12){errs=0;this.toast('تعذر تحميل الطبقة، جرّب طبقة أخرى');}}));
+  this.layers.osm.addTo(this.map);
+  this.poiLayer=L.layerGroup().addTo(this.map);
+  this.acc=L.circle([this.pos.lat,this.pos.lng],{radius:0,color:'#00d2ff',weight:1,fillOpacity:.08,interactive:false}).addTo(this.map);
+  const svg=`<div class="car" id="car"><div class="pulse"></div><svg width="46" height="66" viewBox="0 0 100 160" fill="none"><path d="M22 42C24 24 35 12 50 12s26 12 28 30l4 43c1 30-2 53-10 63-7 7-37 7-44 0-8-10-11-33-10-63z" fill="#b0bec5" stroke="#eceff1" stroke-width="3"/><path d="M28 48c2-13 10-20 22-20s20 7 22 20l2 47c0 17-6 27-24 27S26 112 26 95z" fill="#1e293b" stroke="#334155" stroke-width="2"/><path d="M30 46c3-10 10-14 20-14s17 4 20 14l-2 12c-10-2-26-2-36 0z" fill="#38bdf8" fill-opacity=".8"/><rect x="36" y="17" width="28" height="3" rx="1.5" fill="#00d2ff"/><path d="M26 142c10 3 38 3 48 0" stroke="#ff453a" stroke-width="4" stroke-linecap="round"/></svg></div>`;
+  this.car=L.marker([this.pos.lat,this.pos.lng],{icon:L.divIcon({className:'',html:svg,iconSize:[58,72],iconAnchor:[29,36]}),zIndexOffset:3000,interactive:false}).addTo(this.map);
+  this.map.on('dragstart',()=>{this.follow=false;$('followBtn').style.color='var(--mut)'});
+  this.map.on('click',e=>this.pick(e.latlng.lat,e.latlng.lng));
+ },
+ cycleLayer(){
+  const n=this.order[(this.order.indexOf(this.cur)+1)%this.order.length];
+  this.map.removeLayer(this.layers[this.cur]);this.layers[n].addTo(this.map);this.cur=n;
+  $('lname').textContent=this.names[n];this.toast('الخريطة: '+this.names[n]);
+ },
+ /* ---------- الساعة والطقس ---------- */
+ clock(){const f=new Intl.DateTimeFormat('en-GB',{timeZone:'Asia/Amman',hour:'2-digit',minute:'2-digit',hour12:false});const u=()=>$('clk').textContent=f.format(new Date());u();setInterval(u,10000)},
+ async weather(lat,lng){
+  try{
+   const d=await getJSON(`https://api.open-meteo.com/v1/forecast?latitude=${lat.toFixed(3)}&longitude=${lng.toFixed(3)}&current_weather=true&timezone=Asia%2FAmman`);
+   const c=d.current_weather,k=c.weathercode;let t='صافٍ',i='fa-sun',col='var(--gold)';
+   if(k>=1&&k<=3){t='غائم جزئياً';i='fa-cloud-sun'}else if(k>=45&&k<=48){t='ضباب';i='fa-smog';col='#cbd5e1'}
+   else if((k>=51&&k<=67)||(k>=80&&k<=82)){t='مطر';i='fa-cloud-rain';col='var(--cyan)'}else if(k>=71&&k<=77){t='ثلج';i='fa-snowflake';col='#bfdbfe'}else if(k>=95){t='عاصفة رعدية';i='fa-bolt'}
+   $('wt').textContent=Math.round(c.temperature)+'°C';$('wc').textContent=t;$('wi').className='fas '+i;$('wi').style.color=col;
+  }catch{$('wt').textContent='--°C';$('wc').textContent='الطقس غير متاح'}
+ },
+ /* ---------- GPS دقيق ---------- */
+ gps(){
+  if(!navigator.geolocation)return this.gpsState('bad','GPS غير مدعوم');
+  if(!isSecureContext)this.toast('التحديد الدقيق يتطلب فتح الصفحة عبر HTTPS');
+  this.gpsState('','بحث…');
+  navigator.geolocation.watchPosition(p=>this.onFix(p),e=>{
+   this.gpsState('bad',e.code===1?'الإذن مرفوض':'لا توجد إشارة');
+   if(e.code===1)this.toast('فعّل إذن الموقع للمتصفح من الإعدادات');
+  },{enableHighAccuracy:true,maximumAge:0,timeout:20000});
+ },
+ gpsState(c,t){$('gpsDot').className='dot '+c;$('gpsTxt').textContent=t;$('pulse').style.background=c==='ok'?'var(--cyan)':'var(--mut)'},
+ onFix(p){
+  const c=p.coords;if(!this.pos.fix===false&&c.accuracy>150)return; // تجاهل القراءات الضعيفة جداً
+  const prev=this.pos,first=!prev.fix;let h=prev.heading;
+  if(c.heading!=null&&!isNaN(c.heading)&&(c.speed||0)>1)h=c.heading;
+  else if(!first){const d=L.latLng(prev.lat,prev.lng).distanceTo([c.latitude,c.longitude]);if(d>6)h=this.bearing(prev.lat,prev.lng,c.latitude,c.longitude)}
+  const sp=c.speed!=null&&!isNaN(c.speed)?Math.max(0,Math.round(c.speed*3.6)):0;
+  this.pos={lat:c.latitude,lng:c.longitude,heading:h,speed:sp<3?0:sp,acc:c.accuracy,fix:true};
+  this.car.setLatLng([c.latitude,c.longitude]);this.acc.setLatLng([c.latitude,c.longitude]).setRadius(c.accuracy);
+  const el=$('car');if(el)el.style.transform=`rotate(${h}deg)`;
+  $('sv').textContent=this.pos.speed;$('coords').textContent=`${c.latitude.toFixed(5)}, ${c.longitude.toFixed(5)}`;$('acc').textContent=`±${Math.round(c.accuracy)}م`;
+  this.gpsState(c.accuracy<=30?'ok':'',c.accuracy<=30?'GPS دقيق':'GPS ضعيف');
+  if(first){this.map.setView([c.latitude,c.longitude],17);this.weather(c.latitude,c.longitude);this.toast('تم قفل موقع السيارة');this.keepAwake()}
+  else if(this.follow)this.map.panTo([c.latitude,c.longitude],{animate:true,duration:.6,easeLinearity:1});
+  if(first||Date.now()-this.lastGeo>15000&&L.latLng(c.latitude,c.longitude).distanceTo(this.lastPos||[0,0])>60){this.lastGeo=Date.now();this.lastPos=L.latLng(c.latitude,c.longitude);this.geoName(c.latitude,c.longitude,true)}
+  this.radars(c.latitude,c.longitude);
+  if(this.dest)this.progress(c.latitude,c.longitude);
+ },
+ bearing(a,b,c,d){const r=Math.PI/180,y=Math.sin((d-b)*r)*Math.cos(c*r),x=Math.cos(a*r)*Math.sin(c*r)-Math.sin(a*r)*Math.cos(c*r)*Math.cos((d-b)*r);return(Math.atan2(y,x)/r+360)%360},
+ async keepAwake(){try{if('wakeLock'in navigator)this.wake=await navigator.wakeLock.request('screen')}catch{}},
+ recenter(){this.follow=true;$('followBtn').style.color='var(--cyan)';this.map.setView([this.pos.lat,this.pos.lng],Math.max(this.map.getZoom(),16),{animate:true});if(!this.pos.fix)this.toast('ننتظر إشارة GPS…')},
+ async geoName(lat,lng,street){
+  try{
+   const d=await getJSON(`https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${lat}&lon=${lng}&zoom=17&accept-language=ar`);
+   const a=d.address||{},n=a.road||d.name||(d.display_name||'').split(',')[0],area=a.suburb||a.neighbourhood||a.city||a.town||a.village||a.county||'';
+   const s=[n,area].filter(Boolean).join(' – ')||'الأردن';
+   if(street)$('street').textContent=s;return s;
+  }catch{return null}
+ },
+ /* ---------- اختيار وجهة ---------- */
+ async pick(lat,lng,title){
+  this.pending={lat,lng,title:title||null};
+  if(this.target)this.map.removeLayer(this.target);
+  this.target=L.marker([lat,lng],{icon:L.divIcon({className:'',html:'<div class="flag"><i class="fas fa-flag-checkered"></i></div>',iconSize:[42,42],iconAnchor:[21,40]})}).addTo(this.map);
+  $('target').classList.remove('hide');$('tc').textContent=`${lat.toFixed(5)}, ${lng.toFixed(5)}`;
+  $('tt').textContent=title||'جارٍ معرفة الاسم…';this.favState();
+  if(!title){const n=await this.geoName(lat,lng);if(this.pending&&this.pending.lat===lat){this.pending.title=n||'وجهة على الخريطة';$('tt').textContent=this.pending.title;this.favState()}}
+ },
+ goTarget(){if(!this.pending)return;$('target').classList.add('hide');this.navTo(this.pending.lat,this.pending.lng,this.pending.title||'الوجهة')},
+ cancelTarget(){this.pending=null;if(this.target)this.map.removeLayer(this.target);this.target=null;$('target').classList.add('hide')},
+ favState(){const f=this.pending&&this.favs.some(x=>Math.abs(x.lat-this.pending.lat)<1e-5&&Math.abs(x.lng-this.pending.lng)<1e-5);$('favBtn').classList.toggle('on',!!f)},
+ toggleFav(){
+  const p=this.pending;if(!p)return;
+  const i=this.favs.findIndex(x=>Math.abs(x.lat-p.lat)<1e-5&&Math.abs(x.lng-p.lng)<1e-5);
+  if(i>=0){this.favs.splice(i,1);this.toast('أُزيلت من المفضلة')}else{this.favs.unshift({lat:p.lat,lng:p.lng,name:p.title||'موقع محفوظ'});this.favs=this.favs.slice(0,30);this.toast('حُفظت في المفضلة')}
+  store.set('favs',this.favs);this.favState();this.tab(this.ptab,true);
+ },
+ /* ---------- الملاحة والمسار ---------- */
+ async navTo(lat,lng,title){
+  this.dest={lat,lng,title};this.follow=true;
+  $('guide').classList.remove('hide');$('gt').textContent='جارٍ حساب أفضل مسار…';
+  this.audio.say('جارٍ حساب المسار إلى '+title);
+  const s=this.pos;
+  for(const base of ROUTERS){
+   try{
+    const d=await getJSON(`${base}/route/v1/driving/${s.lng},${s.lat};${lng},${lat}?overview=full&geometries=geojson&steps=true`,9000);
+    if(d.routes&&d.routes[0])return this.render(d.routes[0],title);
+   }catch(e){console.warn('router failed',base,e)}
+  }
+  this.line&&this.map.removeLayer(this.line);
+  this.route=null;this.drawLine([[s.lat,s.lng],[lat,lng]]);$('gt').textContent='مسار مباشر (تعذر الاتصال بخادم الطرق)';this.toast('تعذر حساب مسار الطرق، تم رسم خط مباشر');
+ },
+ render(r,title){
+  const pts=r.geometry.coordinates.map(c=>[c[1],c[0]]);this.route=pts;this.idx=0;this.offCount=0;
+  this.cum=[0];for(let i=1;i<pts.length;i++)this.cum.push(this.cum[i-1]+L.latLng(pts[i-1]).distanceTo(pts[i]));
+  this.steps=(r.legs[0].steps||[]).filter(s=>s.maneuver.type!=='depart');this.stepIdx=0;this.total=r.distance;
+  this.drawLine(pts);
+  const km=(r.distance/1000).toFixed(1),m=Math.round(r.duration/60);
+  this.setInfo(r.distance,r.duration);
+  const first=this.steps[0];this.showStep(first);
+  this.audio.say(`المسافة ${km} كيلومتر، الوقت ${m} دقيقة. ${this.stepText(first)}`);
+  this.toast(`المسار جاهز: ${km} كم – ${m} دقيقة`);
+ },
+ drawLine(pts){
+  if(this.line)this.map.removeLayer(this.line);
+  this.line=L.polyline(pts,{color:'#00d2ff',weight:8,opacity:.95,lineJoin:'round',lineCap:'round'}).addTo(this.map);
+  this.map.fitBounds(this.line.getBounds(),{padding:[80,80]});this.follow=false;setTimeout(()=>{if(this.dest&&this.pos.fix){this.follow=true;$('followBtn').style.color='var(--cyan)'}},4000);
+ },
+ setInfo(dist,dur){
+  const eta=new Date(Date.now()+dur*1000),f=new Intl.DateTimeFormat('en-GB',{timeZone:'Asia/Amman',hour:'2-digit',minute:'2-digit',hour12:false});
+  $('eta').textContent='وصول '+f.format(eta);$('rd').textContent=(dist/1000).toFixed(1)+' كم';$('rt').textContent=Math.max(1,Math.round(dur/60))+' د';
+ },
+ stepText(s){
+  if(!s)return'تابع حتى الوصول';
+  const m=s.maneuver,t=m.type,mod=m.modifier||'straight',road=s.name?` إلى ${s.name}`:'';
+  if(t==='arrive')return'وصلت إلى وجهتك';
+  if(t==='roundabout'||t==='rotary')return`ادخل الدوار وخذ المخرج ${m.exit||''}${road}`;
+  return`${(ARABIC_TURN[mod]||ARABIC_TURN.straight)[0]}${road}`;
+ },
+ showStep(s){
+  if(!s){$('gt').textContent='تابع حتى الوصول';return}
+  $('gt').textContent=this.stepText(s);
+  const mod=s.maneuver.type==='arrive'?'straight':(s.maneuver.modifier||'straight');
+  $('arrow').style.transform=`rotate(${(ARABIC_TURN[mod]||[0,0])[1]}deg)`;
+ },
+ progress(lat,lng){
+  const here=L.latLng(lat,lng);
+  if(here.distanceTo([this.dest.lat,this.dest.lng])<35){this.audio.say('وصلت إلى وجهتك: '+this.dest.title);this.toast('وصلت إلى وجهتك');return this.stop(true)}
+  if(!this.route){const d=here.distanceTo([this.dest.lat,this.dest.lng]);this.showDist(d);return}
+  // أقرب نقطة على المسار (بحث للأمام فقط)
+  let best=Infinity,bi=this.idx;const end=Math.min(this.route.length,this.idx+400);
+  for(let i=this.idx;i<end;i++){const d=here.distanceTo(this.route[i]);if(d<best){best=d;bi=i}}
+  if(best>70){
+    if(++this.offCount>=3&&Date.now()-this.lastReroute>15000){this.lastReroute=Date.now();this.audio.say('جارٍ إعادة حساب المسار');this.toast('خرجت عن المسار، إعادة الحساب…');this.navTo(this.dest.lat,this.dest.lng,this.dest.title)}
+    return;
+  }
+  this.offCount=0;this.idx=bi;
+  const remain=Math.max(0,this.total-this.cum[bi]);
+  const avg=Math.max(this.pos.speed,40)/3.6;this.setInfo(remain,remain/avg);
+  // الخطوة القادمة
+  const s=this.steps[this.stepIdx];
+  if(s){
+   const d=here.distanceTo([s.maneuver.location[1],s.maneuver.location[0]]);
+   this.showDist(d);
+   if(d<30&&this.stepIdx<this.steps.length-1){this.stepIdx++;const n=this.steps[this.stepIdx];this.showStep(n);this.audio.say(this.stepText(n))}
+   else if(d<250&&s._said!==1){s._said=1;this.audio.say(`بعد ${Math.round(d/10)*10} متر، ${this.stepText(s)}`)}
+  }
+ },
+ showDist(d){const k=d>=1000;$('gd').innerHTML=(k?(d/1000).toFixed(1):Math.round(d/5)*5)+`<small>${k?'كم':'م'}</small>`},
+ stop(silent){
+  this.dest=null;this.route=null;this.steps=[];
+  if(this.line)this.map.removeLayer(this.line);this.line=null;
+  if(this.target)this.map.removeLayer(this.target);this.target=null;
+  $('guide').classList.add('hide');if(!silent)this.toast('تم إنهاء الملاحة');
+  this.recenter();
+ },
+ /* ---------- البحث ---------- */
+ parseCoords(t){
+  let s=t;try{s=decodeURIComponent(t)}catch{}
+  const pats=[/!3d(-?\d+\.\d+)!4d(-?\d+\.\d+)/,/@(-?\d+\.\d+),(-?\d+\.\d+)/,/[?&](?:q|ll|query|destination)=(-?\d+\.\d+)[,+\s]+(-?\d+\.\d+)/,/^\s*(-?\d{1,2}\.\d+)\s*[,،\s]\s*(-?\d{1,3}\.\d+)\s*$/];
+  for(const p of pats){const m=s.match(p);if(m){const a=+m[1],b=+m[2];if(Math.abs(a)<=90&&Math.abs(b)<=180)return[a,b]}}
+  return null;
+ },
+ async find(q){
+  const vb='&viewbox=34.9,33.4,39.3,29.1&bounded=1';
+  try{
+   const r=await getJSON(`https://nominatim.openstreetmap.org/search?format=jsonv2&q=${encodeURIComponent(q)}&countrycodes=jo&limit=6&accept-language=ar${vb}`);
+   if(r.length)return r.map(i=>({lat:+i.lat,lng:+i.lon,name:i.display_name.split(',')[0],sub:i.display_name.split(',').slice(1,3).join('،')}));
+  }catch{}
+  try{ // خادم احتياطي
+   const r=await getJSON(`https://photon.komoot.io/api/?q=${encodeURIComponent(q)}&limit=6&lat=${this.pos.lat}&lon=${this.pos.lng}&lang=en`);
+   return r.features.filter(f=>f.properties.countrycode==='JO').map(f=>({lat:f.geometry.coordinates[1],lng:f.geometry.coordinates[0],name:f.properties.name||f.properties.street||'موقع',sub:[f.properties.city,f.properties.state].filter(Boolean).join('، ')}));
+  }catch{return[]}
+ },
+ onInput:dbounce(async function(v){
+  const c=$('clr'),box=$('sug');v=v.trim();c.classList.toggle('hide',!v);
+  if(v.length<3||nav.parseCoords(v)||/^https?:/.test(v)){box.classList.add('hide');return}
+  const res=await nav.find(v);
+  box.innerHTML='';if(!res.length){box.classList.add('hide');return}
+  res.slice(0,5).forEach(r=>{const d=document.createElement('div');d.className='row';d.innerHTML=`<div class="ic"><i class="fas fa-location-dot" style="color:var(--cyan)"></i></div><div style="min-width:0"><b>${r.name}</b><span>${r.sub}</span></div>`;d.onclick=()=>{box.classList.add('hide');$('q').value=r.name;nav.pickResult(r)};box.appendChild(d)});
+  box.classList.remove('hide');
+ },400),
+ pickResult(r){this.follow=false;this.map.setView([r.lat,r.lng],16);this.pick(r.lat,r.lng,r.name)},
+ async search(q){
+  q=q.trim();if(!q)return;$('sug').classList.add('hide');
+  const c=this.parseCoords(q);if(c){this.toast('تم التعرف على الإحداثيات');this.map.setView(c,16);return this.pick(c[0],c[1])}
+  if(/^https?:\/\//.test(q)){return this.toast('الرابط المختصر لا يحمل إحداثيات. افتحه في المتصفح ثم انسخ الرابط الكامل، أو الصق الإحداثيات')}
+  this.toast('جارٍ البحث…');const r=await this.find(q);
+  if(r.length)this.pickResult(r[0]);else this.toast('لم أجد الموقع، انقر مباشرة على الخريطة');
+ },
+ clearSearch(){$('q').value='';$('clr').classList.add('hide');$('sug').classList.add('hide')},
+ async paste(){
+  let t='';try{t=await navigator.clipboard.readText()}catch{}
+  if(!t)t=prompt('الصق رابط اللوكيشن أو الإحداثيات:')||'';
+  if(t.trim()){$('q').value=t;this.search(t)}
+ },
+ /* ---------- الأماكن والرادارات ---------- */
+ drawPOI(){
+  POI.forEach(p=>{const ic=L.divIcon({className:'',html:`<div class="poi ${p.type}"><i class="fas ${p.type==='radar'?'fa-camera':'fa-gas-pump'}"></i></div>`,iconSize:[30,30],iconAnchor:[15,15]});
+   L.marker([p.lat,p.lng],{icon:ic}).addTo(this.poiLayer).bindPopup(`<b>${p.name}</b><br>${p.desc||''}`)});
+ },
+ drawer(){$('dr').classList.toggle('hide')},
+ tab(t,keep){
+  this.ptab=t;const box=$('pl');box.innerHTML='';
+  const items=t==='fav'?this.favs.map(f=>({...f,type:'fav',desc:'مكان محفوظ'})):POI.filter(p=>p.type===t);
+  if(!items.length)box.innerHTML='<div style="padding:16px;text-align:center;color:var(--mut)">لا توجد أماكن محفوظة. اختر وجهة على الخريطة واضغط النجمة.</div>';
+  const dist=p=>L.latLng(this.pos.lat,this.pos.lng).distanceTo([p.lat,p.lng]);
+  items.sort((a,b)=>dist(a)-dist(b)).forEach(p=>{
+   const d=dist(p)/1000,ic=p.type==='radar'?['fa-camera','var(--red)']:p.type==='fuel'?['fa-gas-pump','var(--gold)']:['fa-star','var(--gold)'];
+   const r=document.createElement('div');r.className='row';
+   r.innerHTML=`<div class="ic"><i class="fas ${ic[0]}" style="color:${ic[1]}"></i></div><div style="flex:1;min-width:0"><b>${p.name}</b><span>${p.desc||''}</span></div><span class="mono">${d.toFixed(1)} كم</span>`;
+   r.onclick=()=>{$('dr').classList.add('hide');this.follow=false;this.map.setView([p.lat,p.lng],15);this.pick(p.lat,p.lng,p.name)};box.appendChild(r);
+  });
+  if(!keep)box.scrollTop=0;
+ },
+ radars(lat,lng){
+  const u=L.latLng(lat,lng);let best=null,md=Infinity;
+  POI.forEach(p=>{if(p.type!=='radar')return;const d=u.distanceTo([p.lat,p.lng]);if(d<md){md=d;best=p}});
+  const card=$('radar');
+  if(best&&md<650){
+   card.classList.remove('hide');$('rn').textContent=best.name;$('rl').textContent=best.limit;$('rdist').textContent=Math.round(md)+' م';$('lim').textContent=best.limit;
+   const over=this.pos.speed>best.limit;$('sv').classList.toggle('over',over);
+   if(md<400&&this.lastRadar!==best.id){this.lastRadar=best.id;this.audio.beep();this.audio.say(`انتبه، كاميرا سرعة بعد ${Math.round(md/10)*10} متر، السرعة ${best.limit}`)}
+  }else{card.classList.add('hide');$('lim').textContent='--';$('sv').classList.remove('over');if(md>1200)this.lastRadar=null}
+ },
+ overview(){this.follow=false;this.map.setView([31.25,36.5],8,{animate:true})},
+ toggleVoice(){this.audio.on=!this.audio.on;$('vi').className='fas '+(this.audio.on?'fa-volume-high':'fa-volume-xmark');if(!this.audio.on&&window.speechSynthesis)speechSynthesis.cancel();this.toast(this.audio.on?'تم تشغيل الصوت':'تم كتم الصوت')},
+ fullscreen(){const d=document;if(d.fullscreenElement)d.exitFullscreen();else d.documentElement.requestFullscreen?.().catch(()=>this.toast('الشاشة الكاملة غير مدعومة'))},
+ toast(m){const b=$('toast');b.textContent=m;b.classList.remove('hide');clearTimeout(this._t);this._t=setTimeout(()=>b.classList.add('hide'),3400)}
+};
+document.addEventListener('visibilitychange',()=>{if(!document.hidden&&nav.pos.fix)nav.keepAwake()});
+addEventListener('DOMContentLoaded',()=>nav.init());
+</script>
+</body>
+</html>
