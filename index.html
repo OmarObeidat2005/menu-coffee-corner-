@@ -24,7 +24,7 @@
     <!-- مكتبة تصدير الفاتورة كصورة عالية الدقة -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 
-    <!-- محرك Firebase السحابي للمزامنة اللحظية الفورية -->
+    <!-- محرك Firebase السحابي للمزامنة اللحظية المباشرة -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
         import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
@@ -95,6 +95,13 @@
                 onSnapshot(doc(db, 'artifacts', appId, 'public', 'data', 'stats', 'analytics'), (snap) => {
                     if (snap.exists() && window.onCloudStats) window.onCloudStats(snap.data());
                 }, () => {});
+
+                // 8. مزامنة سجل التدقيق
+                onSnapshot(collection(db, 'artifacts', appId, 'public', 'data', 'audit_logs'), (snap) => {
+                    const logs = [];
+                    snap.forEach(d => logs.push({ id: d.id, ...d.data() }));
+                    if (window.onCloudAuditLogs) window.onCloudAuditLogs(logs);
+                }, () => {});
             } catch (e) {}
         }
 
@@ -125,7 +132,7 @@
 
         window.cloudUpdateStats = async (statsData) => {
             if (!db) return;
-            try { await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'stats', 'analytics'), statsData, { merge: true }); } catch (e) {}
+            try { await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'stats', 'analytics'), statsData, { merge: true }); } catch(e){}
         };
 
         window.cloudSaveOffer = async (offer) => {
@@ -146,6 +153,14 @@
         window.cloudDeletePromo = async (code) => {
             if (!db) return;
             try { await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'promos', code)); } catch(e){}
+        };
+
+        window.cloudLogAudit = async (logEntry) => {
+            if (!db) return;
+            try {
+                const logId = 'log_' + Date.now() + '_' + Math.random().toString(36).substr(2, 4);
+                await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'audit_logs', logId), logEntry);
+            } catch(e){}
         };
 
         window.addEventListener('DOMContentLoaded', initCloudEngine);
@@ -430,7 +445,6 @@
         .theme-swatch-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(110px, 1fr)); gap: 8px; margin-top: 10px; }
         .admin-theme-card { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 10px; cursor: pointer; text-align: center; }
         .admin-theme-card.active { border-color: var(--brand-accent); box-shadow: 0 0 0 2px var(--brand-accent-glow); }
-        .order-admin-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 10px; margin-bottom: 8px; }
     </style>
 </head>
 <body>
@@ -463,7 +477,7 @@
             </div>
         </header>
 
-        <!-- بنر تتبع الطلب النشط بالرئيسية (يبقى ظاهراً طالما الطلب غير مكتمل) -->
+        <!-- بنر تتبع الطلب النشط بالرئيسية -->
         <div class="live-order-banner" id="homeLiveOrderBanner" onclick="navigateRouter('screen-tracker')">
             <div style="display:flex; align-items:center; gap:8px;">
                 <div style="width:8px; height:8px; border-radius:50%; background:#60a5fa; box-shadow:0 0 6px #60a5fa;"></div>
@@ -529,7 +543,7 @@
         </div>
     </div>
 
-    <!-- 3. سلة المشتريات وإنهاء الطلب -->
+    <!-- 3. شاشة السلة وإنهاء الطلب -->
     <div id="screen-cart" class="app-screen">
         <header class="header">
             <div class="header-btn" onclick="navigateRouter('screen-home')">✕</div>
@@ -612,7 +626,7 @@
         </div>
     </div>
 
-    <!-- 4. شاشة تتبع الطلب الذكية والمترابطة مع الأدمن -->
+    <!-- 4. شاشة تتبع الطلب الذكية والمترابطة -->
     <div id="screen-tracker" class="app-screen">
         <header class="header">
             <div class="header-btn" onclick="navigateRouter('screen-home')">✕</div>
@@ -931,7 +945,7 @@
         </div>
 
         <div class="scrollable-content">
-            <!-- تبويب الطلبات المباشرة (Live Orders) -->
+            <!-- تبويب الطلبات المباشرة -->
             <div class="admin-pane active" id="paneOrders">
                 <div class="section-card">
                     <div class="section-title"><span>الطلبات الواردة النشطة</span><span class="num-font" id="adminActiveCount">0</span></div>
@@ -1006,10 +1020,10 @@
                 </div>
             </div>
 
-            <!-- تبويب الثيمات الموسعة -->
+            <!-- تبويب الثيمات -->
             <div class="admin-pane" id="paneThemes">
                 <div class="section-card">
-                    <div class="section-title"><span>الثيمات والمظهر العالمي</span><span id="currentThemeLabel">أزرق ملكي</span></div>
+                    <div class="section-title"><span>الثيمات والمظهر</span><span id="currentThemeLabel">أزرق ملكي</span></div>
                     <div class="theme-swatch-grid" id="themePresetsGrid"></div>
                 </div>
             </div>
@@ -1264,10 +1278,10 @@
     let allOrdersMap = safeGetJson('cc_v4_orders_map', {});
     let currentTrackingOrderId = localStorage.getItem('cc_v4_active_order_id') || null;
 
-    let latestReceiptData = null;
+    let latestCompletedReceiptData = null;
     let authMode = 'login';
-    let secretClicks = 0;
-    let secretTimer = null;
+    let secretClickCount = 0;
+    let secretClickTimer = null;
     let appliedPromo = null;
 
     window.appState = {
@@ -1291,7 +1305,7 @@
         document.querySelectorAll('.app-screen').forEach(s => s.classList.remove('active'));
         const screen = document.getElementById(id);
         if (screen) { screen.classList.add('active'); window.scrollTo(0,0); }
-        if (id === 'screen-cart') { applyClientAutofillToCart(); renderCartContent(); recalculateCartSummary(); }
+        if (id === 'screen-cart') { renderCartContent(); recalculateCartSummary(); }
         else if (id === 'screen-tracker') { renderTracker(); }
         refreshDock();
         checkActiveOrderBanner();
@@ -1308,11 +1322,11 @@
     };
 
     window.handleSecretTrigger = function() {
-        secretClicks++;
-        clearTimeout(secretTimer);
-        secretTimer = setTimeout(() => secretClicks = 0, 1000);
-        if (secretClicks >= 4) {
-            secretClicks = 0;
+        secretClickCount++;
+        clearTimeout(secretClickTimer);
+        secretClickTimer = setTimeout(() => secretClickCount = 0, 1000);
+        if (secretClickCount >= 4) {
+            secretClickCount = 0;
             navigateRouter('screen-admin-login');
         }
     };
@@ -1334,7 +1348,7 @@
         if (lbl) lbl.innerText = `v${storeConfig.appVersionMajor || 8}.${storeConfig.appVersionMinor || 1}.0`;
     }
 
-    /* سحابة Firebase */
+    /* سحابة Firebase والمزامنة */
     window.onCloudProducts = (items) => { productsList = items; renderCategoryChips(); renderMenuProducts(); renderAdminMenu(); };
     window.onCloudOrders = (map) => { allOrdersMap = map; checkActiveOrderBanner(); renderTracker(); renderAdminOrders(); };
     window.onCloudUsers = (map) => { registeredUsersMap = map; renderAdminUsers(); };
@@ -1587,10 +1601,6 @@
         }
     }
 
-    function applyClientAutofillToCart() {
-        autofillUser();
-    }
-
     /* إنشاء الفواتير بتسلسل يبدأ من 1 مع رموز فخمة وتأكيد الطلب */
     window.dispatchOrderToWhatsApp = function() {
         if (window.appState.cart.length === 0) return showToast("السلة فارغة");
@@ -1645,7 +1655,7 @@
             if (window.cloudSaveUser) window.cloudSaveUser(uKey, registeredUsersMap[uKey]);
         }
 
-        latestReceiptData = payload;
+        latestCompletedReceiptData = payload;
 
         let msg = `*طلب جديد | كافيه كورنر ${typeEmoji}*\n`;
         msg += `رقم الفاتورة: *${ordId}*\nالعميل: ${name} (${phone})\nالفرع: ${branch.name}\nنوع الاستلام: ${isDelivery ? 'توصيل للبيت' : 'استلام من الفرع'}\n------------------\n`;
@@ -1728,7 +1738,7 @@
 
             if (navigator.share && window.File) {
                 canvas.toBlob(async (blob) => {
-                    const file = new File([blob], `Receipt_${latestReceiptData.id}.png`, { type: 'image/png' });
+                    const file = new File([blob], `Receipt_${latestCompletedReceiptData.id}.png`, { type: 'image/png' });
                     if (navigator.canShare({ files: [file] })) {
                         await navigator.share({ files: [file], title: 'فاتورة كافيه كورنر' });
                         btn.innerText = "تحميل الفاتورة كصورة (PNG)";
@@ -1748,16 +1758,16 @@
 
     function downloadFallback(url) {
         const a = document.createElement('a');
-        a.download = `فاتورة_${latestReceiptData?.id || 'Corner'}.png`;
+        a.download = `فاتورة_${latestCompletedReceiptData?.id || 'Corner'}.png`;
         a.href = url;
         a.click();
         showToast("تم تنزيل صورة الفاتورة في هاتفك!");
     }
 
     window.openReceiptModal = function() {
-        if (!latestReceiptData && currentTrackingOrderId) latestReceiptData = allOrdersMap[currentTrackingOrderId];
-        if (!latestReceiptData) return;
-        const d = latestReceiptData;
+        if (!latestCompletedReceiptData && currentTrackingOrderId) latestCompletedReceiptData = allOrdersMap[currentTrackingOrderId];
+        if (!latestCompletedReceiptData) return;
+        const d = latestCompletedReceiptData;
 
         document.getElementById('rcptOrderNum').innerText = d.id;
         document.getElementById('rcptClient').innerText = d.clientName;
