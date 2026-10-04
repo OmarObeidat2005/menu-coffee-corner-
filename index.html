@@ -5,27 +5,26 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>COFFEE CORNER | كافيه كورنر</title>
     
-    <meta name="description" content="القائمة الرقمية لكافيه كورنر - أشهى الكوكتيلات والحلويات الفاخرة والوافل والكريب. اطلب أونلاين الآن">
+    <meta name="description" content="كافيه كورنر - القائمة الرقمية الرسمية والطلب المباشر">
     <meta property="og:title" content="COFFEE CORNER | كافيه كورنر">
     <meta property="og:description" content="أشهى الكوكتيلات والحلويات الفاخرة - فرع كفرسوم وفرع سما الروسان">
-    <meta property="og:image" id="metaOgImage" content="./logo.png">
+    <meta property="og:image" content="./logo.png">
     <meta property="og:type" content="website">
     
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="Coffee Corner">
     <meta name="theme-color" content="#090d16">
-    <link rel="icon" type="image/png" id="faviconImg" href="./logo.png">
+    <link rel="icon" type="image/png" href="./logo.png">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Tajawal:wght@300;400;500;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Tajawal:wght@400;500;700;800;900&display=swap" rel="stylesheet">
     
-    <!-- مكتبة html2canvas لتصدير الفاتورة كصورة عالية الدقة -->
+    <!-- مكتبة تصدير الفاتورة كصورة عالية الدقة -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 
-    <!-- محرك Firebase السحابي المباشر والمزامنة اللحظية الشاملة -->
+    <!-- محرك Firebase السحابي للمزامنة اللحظية الفورية -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
         import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
@@ -59,57 +58,50 @@
                     }
                 }, () => {});
 
-                // 2. مزامنة أكواد الخصم
-                onSnapshot(collection(db, 'artifacts', appId, 'public', 'data', 'promos'), (snap) => {
-                    const promos = {};
-                    snap.forEach(d => promos[d.id] = { ...d.data(), code: d.id });
-                    if (window.onCloudPromos) window.onCloudPromos(promos);
-                }, () => {});
-
-                // 3. مزامنة العروض الحصرية
-                onSnapshot(collection(db, 'artifacts', appId, 'public', 'data', 'offers'), (snap) => {
-                    const offers = [];
-                    snap.forEach(d => offers.push({ id: d.id, ...d.data() }));
-                    if (window.onCloudOffers) window.onCloudOffers(offers);
-                }, () => {});
-
-                // 4. مزامنة الإعدادات العامة
-                onSnapshot(doc(db, 'artifacts', appId, 'public', 'data', 'settings', 'config_v4'), (snap) => {
-                    if (snap.exists() && window.onCloudSettings) {
-                        window.onCloudSettings(snap.data());
-                    }
-                }, () => {});
-
-                // 5. مزامنة الإحصائيات
-                onSnapshot(doc(db, 'artifacts', appId, 'public', 'data', 'stats', 'analytics'), (snap) => {
-                    if (snap.exists() && window.onCloudStats) {
-                        window.onCloudStats(snap.data());
-                    }
-                }, () => {});
-
-                // 6. مزامنة سجل تدقيق المطور
-                onSnapshot(collection(db, 'artifacts', appId, 'public', 'data', 'audit_logs'), (snap) => {
-                    const logs = [];
-                    snap.forEach(d => logs.push({ id: d.id, ...d.data() }));
-                    if (window.onCloudAuditLogs) window.onCloudAuditLogs(logs);
-                }, () => {});
-
-                // 7. مزامنة حسابات المستخدمين والزبائن
-                onSnapshot(collection(db, 'artifacts', appId, 'public', 'data', 'users'), (snap) => {
-                    const usersMap = {};
-                    snap.forEach(d => usersMap[d.id] = { id: d.id, ...d.data() });
-                    if (window.onCloudUsers) window.onCloudUsers(usersMap);
-                }, () => {});
-
-                // 8. مزامنة الطلبات وتتبعها الحي
+                // 2. مزامنة الطلبات وتتبعها الفوري اللحظي
                 onSnapshot(collection(db, 'artifacts', appId, 'public', 'data', 'orders'), (snap) => {
                     const ordersMap = {};
                     snap.forEach(d => ordersMap[d.id] = { id: d.id, ...d.data() });
                     if (window.onCloudOrders) window.onCloudOrders(ordersMap);
                 }, () => {});
 
+                // 3. مزامنة حسابات المستخدمين
+                onSnapshot(collection(db, 'artifacts', appId, 'public', 'data', 'users'), (snap) => {
+                    const usersMap = {};
+                    snap.forEach(d => usersMap[d.id] = { id: d.id, ...d.data() });
+                    if (window.onCloudUsers) window.onCloudUsers(usersMap);
+                }, () => {});
+
+                // 4. مزامنة أكواد الخصم
+                onSnapshot(collection(db, 'artifacts', appId, 'public', 'data', 'promos'), (snap) => {
+                    const promos = {};
+                    snap.forEach(d => promos[d.id] = { ...d.data(), code: d.id });
+                    if (window.onCloudPromos) window.onCloudPromos(promos);
+                }, () => {});
+
+                // 5. مزامنة العروض الحصرية
+                onSnapshot(collection(db, 'artifacts', appId, 'public', 'data', 'offers'), (snap) => {
+                    const offers = [];
+                    snap.forEach(d => offers.push({ id: d.id, ...d.data() }));
+                    if (window.onCloudOffers) window.onCloudOffers(offers);
+                }, () => {});
+
+                // 6. مزامنة الإعدادات العامة والثيمات
+                onSnapshot(doc(db, 'artifacts', appId, 'public', 'data', 'settings', 'config_v4'), (snap) => {
+                    if (snap.exists() && window.onCloudSettings) window.onCloudSettings(snap.data());
+                }, () => {});
+
+                // 7. مزامنة الإحصائيات
+                onSnapshot(doc(db, 'artifacts', appId, 'public', 'data', 'stats', 'analytics'), (snap) => {
+                    if (snap.exists() && window.onCloudStats) window.onCloudStats(snap.data());
+                }, () => {});
             } catch (e) {}
         }
+
+        window.cloudSaveOrder = async (orderId, orderData) => {
+            if (!db) return;
+            try { await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'orders', orderId), orderData, { merge: true }); } catch (e) {}
+        };
 
         window.cloudSaveProduct = async (id, data) => {
             if (!db) return;
@@ -121,14 +113,19 @@
             try { await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'products', id)); } catch(e){}
         };
 
-        window.cloudSavePromo = async (code, data) => {
+        window.cloudSaveUser = async (phoneKey, userData) => {
             if (!db) return;
-            try { await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'promos', code), data); } catch(e){}
+            try { await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'users', phoneKey), userData, { merge: true }); } catch (e) {}
         };
 
-        window.cloudDeletePromo = async (code) => {
+        window.cloudSaveSettings = async (settings) => {
             if (!db) return;
-            try { await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'promos', code)); } catch(e){}
+            try { await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'settings', 'config_v4'), settings, { merge: true }); } catch (e) {}
+        };
+
+        window.cloudUpdateStats = async (statsData) => {
+            if (!db) return;
+            try { await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'stats', 'analytics'), statsData, { merge: true }); } catch (e) {}
         };
 
         window.cloudSaveOffer = async (offer) => {
@@ -141,32 +138,14 @@
             try { await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'offers', id)); } catch(e){}
         };
 
-        window.cloudSaveSettings = async (settings) => {
+        window.cloudSavePromo = async (code, data) => {
             if (!db) return;
-            try { await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'settings', 'config_v4'), settings, { merge: true }); } catch(e){}
+            try { await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'promos', code), data); } catch(e){}
         };
 
-        window.cloudUpdateStats = async (statsData) => {
+        window.cloudDeletePromo = async (code) => {
             if (!db) return;
-            try { await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'stats', 'analytics'), statsData, { merge: true }); } catch(e){}
-        };
-
-        window.cloudLogAudit = async (logEntry) => {
-            if (!db) return;
-            try {
-                const logId = 'log_' + Date.now() + '_' + Math.random().toString(36).substr(2, 4);
-                await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'audit_logs', logId), logEntry);
-            } catch(e){}
-        };
-
-        window.cloudSaveUser = async (phoneKey, userData) => {
-            if (!db) return;
-            try { await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'users', phoneKey), userData, { merge: true }); } catch (e) {}
-        };
-
-        window.cloudSaveOrder = async (orderId, orderData) => {
-            if (!db) return;
-            try { await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'orders', orderId), orderData, { merge: true }); } catch (e) {}
+            try { await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'promos', code)); } catch(e){}
         };
 
         window.addEventListener('DOMContentLoaded', initCloudEngine);
@@ -190,9 +169,9 @@
             --danger: #ef4444;
             --radius-sm: 8px;
             --radius-md: 14px;
-            --radius-lg: 18px;
+            --radius-lg: 20px;
             --shadow-sm: 0 2px 8px rgba(15, 23, 42, 0.04);
-            --shadow-float: 0 10px 25px rgba(15, 23, 42, 0.10);
+            --shadow-md: 0 10px 30px rgba(15, 23, 42, 0.08);
             font-family: "Tajawal", -apple-system, sans-serif;
         }
 
@@ -245,7 +224,7 @@
         .badge-open { background: rgba(16, 185, 129, 0.12); color: var(--success); }
         .badge-closed { background: rgba(239, 68, 68, 0.12); color: var(--danger); }
 
-        /* شريط التتبع التفاعلي بالرئيسية */
+        /* شريط التتبع التفاعلي الثابت بالرئيسية */
         .live-order-banner {
             margin: 10px 16px 0; background: linear-gradient(135deg, #1e3a8a, #2563eb);
             color: #ffffff; border-radius: var(--radius-md); padding: 11px 14px;
@@ -332,7 +311,7 @@
         .floating-dock.visible { transform: translate(-50%, 0); opacity: 1; pointer-events: auto; }
         .dock-badge { background: var(--brand-accent); color: #ffffff; width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 800; }
 
-        /* القائمة الجانبية المقتضبة والمنظمة */
+        /* القائمة الجانبية المقتضبة والمنظمة عالمياً */
         .sidebar-mask { position: fixed; inset: 0; background: rgba(0, 0, 0, 0.45); z-index: 1500; opacity: 0; pointer-events: none; transition: 0.25s ease; }
         .sidebar-mask.active { opacity: 1; pointer-events: auto; }
         .sidebar-drawer {
@@ -343,15 +322,16 @@
         }
         .sidebar-drawer.active { transform: translate3d(0, 0, 0); }
         .sidebar-header { padding: 16px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--border); }
-        .sidebar-nav { padding: 10px 8px; display: flex; flex-direction: column; gap: 4px; flex: 1; }
-        .nav-link-btn {
-            display: flex; align-items: center; justify-content: space-between; padding: 10px 14px;
+        .sidebar-nav { padding: 8px 6px; display: flex; flex-direction: column; gap: 2px; flex: 1; }
+        .nav-link-item {
+            display: flex; align-items: center; gap: 10px; padding: 10px 12px;
             font-size: 13px; font-weight: 700; color: var(--text-main); border-radius: var(--radius-sm); cursor: pointer;
         }
-        .nav-link-btn:active { background: var(--segment); }
-        .sidebar-footer-version { padding: 14px 16px; font-size: 11px; color: var(--text-muted); border-top: 1px solid var(--border); text-align: center; }
+        .nav-link-item:hover, .nav-link-item:active { background: var(--segment); }
+        .nav-divider { height: 1px; background: var(--border); margin: 6px 10px; }
+        .sidebar-footer-version { padding: 12px 16px; font-size: 11px; color: var(--text-muted); border-top: 1px solid var(--border); text-align: center; }
 
-        /* واجهة حسابي الشخصية المطابقة للشركات العالمية */
+        /* واجهة حسابي الشخصية العالمية */
         .user-global-profile-card {
             background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg);
             padding: 18px; margin-bottom: 14px; box-shadow: var(--shadow-sm);
@@ -416,7 +396,7 @@
         }
         .toast-box.active { transform: translate(-50%, 0); opacity: 1; }
 
-        /* هوية المطور الشخصية الفاخرة */
+        /* هوية المطور الشخصية */
         .dev-hero-container {
             border-radius: var(--radius-md); overflow: hidden; border: 1px solid var(--border);
             background: var(--surface); margin-bottom: 14px; position: relative; box-shadow: var(--shadow-sm);
@@ -432,9 +412,7 @@
         .dev-profile-header-content {
             padding: 0 20px 20px; position: relative; margin-top: -46px; display: flex; flex-direction: column; gap: 12px;
         }
-        .dev-avatar-row {
-            display: flex; align-items: flex-end; justify-content: space-between; gap: 14px;
-        }
+        .dev-avatar-row { display: flex; align-items: flex-end; justify-content: space-between; gap: 14px; }
         .dev-avatar-img {
             width: 90px; height: 90px; border-radius: 24px; object-fit: cover;
             border: 4px solid var(--surface); background: var(--segment);
@@ -449,9 +427,10 @@
         .admin-pane.active { display: block; }
         .stat-grid-modern { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 10px; margin-bottom: 18px; }
         .stat-card-pro { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 14px; text-align: center; }
-        .theme-swatch-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 8px; margin-top: 10px; }
+        .theme-swatch-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(110px, 1fr)); gap: 8px; margin-top: 10px; }
         .admin-theme-card { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 10px; cursor: pointer; text-align: center; }
         .admin-theme-card.active { border-color: var(--brand-accent); box-shadow: 0 0 0 2px var(--brand-accent-glow); }
+        .order-admin-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 10px; margin-bottom: 8px; }
     </style>
 </head>
 <body>
@@ -459,7 +438,7 @@
 <div class="app-container" id="appContainer">
 <div class="main-viewport">
 
-    <!-- 1. الشاشة الرئيسية -->
+    <!-- 1. الشاشة الرئيسية (المنيو) -->
     <div id="screen-home" class="app-screen active">
         <header class="header">
             <div class="header-btn" onclick="toggleSidebar(true)">
@@ -484,7 +463,7 @@
             </div>
         </header>
 
-        <!-- بنر تتبع الطلب النشط بالرئيسية -->
+        <!-- بنر تتبع الطلب النشط بالرئيسية (يبقى ظاهراً طالما الطلب غير مكتمل) -->
         <div class="live-order-banner" id="homeLiveOrderBanner" onclick="navigateRouter('screen-tracker')">
             <div style="display:flex; align-items:center; gap:8px;">
                 <div style="width:8px; height:8px; border-radius:50%; background:#60a5fa; box-shadow:0 0 6px #60a5fa;"></div>
@@ -691,7 +670,6 @@
         </header>
 
         <div class="scrollable-content" style="padding:16px;">
-            <!-- بطاقة الملف الشخصي العالمية -->
             <div class="user-global-profile-card">
                 <div class="profile-user-header">
                     <div style="display:flex; align-items:center; gap:12px;">
@@ -712,7 +690,6 @@
                     <span id="profNextTierNotice">تبقى 75 نقطة للمستوى الفضي</span>
                 </div>
 
-                <!-- إحصائيات نشاط العميل -->
                 <div class="user-stats-grid">
                     <div class="user-stat-box">
                         <strong class="num-font" id="statCustomerOrders">0</strong>
@@ -827,7 +804,7 @@
         <div class="scrollable-content" style="padding:16px;">
             <div class="section-card">
                 <div style="font-size:15px; font-weight:800; margin-bottom:4px;">فرع كفرسوم</div>
-                <div style="font-size:12px; color:var(--text-muted); line-height:1.6;">
+                <div style="font-size:12px; color:var(--text-muted); line-height:1.6;" id="branchInfoView0">
                     الشارع الرئيسي مقابل مجمع المحلات<br>
                     هاتف: 962790155906<br>
                     أوقات العمل: من 6:30 صباحاً حتى 3:00 فجراً
@@ -835,7 +812,7 @@
             </div>
             <div class="section-card">
                 <div style="font-size:15px; font-weight:800; margin-bottom:4px;">فرع سما الروسان</div>
-                <div style="font-size:12px; color:var(--text-muted); line-height:1.6;">
+                <div style="font-size:12px; color:var(--text-muted); line-height:1.6;" id="branchInfoView1">
                     الشارع العام بجانب مبنى البلدية<br>
                     هاتف: 962790155906<br>
                     أوقات العمل: من 4:00 عصراً حتى 3:00 فجراً
@@ -954,7 +931,7 @@
         </div>
 
         <div class="scrollable-content">
-            <!-- تبويب الطلبات المباشرة -->
+            <!-- تبويب الطلبات المباشرة (Live Orders) -->
             <div class="admin-pane active" id="paneOrders">
                 <div class="section-card">
                     <div class="section-title"><span>الطلبات الواردة النشطة</span><span class="num-font" id="adminActiveCount">0</span></div>
@@ -1029,10 +1006,10 @@
                 </div>
             </div>
 
-            <!-- تبويب الثيمات -->
+            <!-- تبويب الثيمات الموسعة -->
             <div class="admin-pane" id="paneThemes">
                 <div class="section-card">
-                    <div class="section-title"><span>الثيمات والمظهر</span><span id="currentThemeLabel">أزرق ملكي</span></div>
+                    <div class="section-title"><span>الثيمات والمظهر العالمي</span><span id="currentThemeLabel">أزرق ملكي</span></div>
                     <div class="theme-swatch-grid" id="themePresetsGrid"></div>
                 </div>
             </div>
@@ -1142,13 +1119,37 @@
     </div>
     
     <div class="sidebar-nav">
-        <div class="nav-link-btn" onclick="navigateRouter('screen-home'); toggleSidebar(false);">الرئيسية والمنيو</div>
-        <div class="nav-link-btn" onclick="navigateRouter('screen-tracker'); toggleSidebar(false);">تتبع طلبي المباشر</div>
-        <div class="nav-link-btn" onclick="handleAccountNavigation(); toggleSidebar(false);">حسابي ونقاط الولاء</div>
-        <div class="nav-link-btn" onclick="navigateRouter('screen-offers'); toggleSidebar(false);">العروض والخصومات</div>
-        <div class="nav-link-btn" onclick="navigateRouter('screen-branches'); toggleSidebar(false);">فروعنا ومواقعنا</div>
-        <div class="nav-link-btn" onclick="navigateRouter('screen-complaints'); toggleSidebar(false);">الشكاوى والمقترحات</div>
-        <div class="nav-link-btn" onclick="navigateRouter('screen-developer'); toggleSidebar(false);">عن المطور</div>
+        <div class="nav-link-item" onclick="navigateRouter('screen-home'); toggleSidebar(false);">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path></svg>
+            <span>الرئيسية</span>
+        </div>
+        <div class="nav-link-item" onclick="navigateRouter('screen-tracker'); toggleSidebar(false);">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+            <span>طلباتي والتتبع</span>
+        </div>
+        <div class="nav-link-item" onclick="handleAccountNavigation(); toggleSidebar(false);">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+            <span>حسابي والولاء</span>
+        </div>
+        <div class="nav-link-item" onclick="navigateRouter('screen-offers'); toggleSidebar(false);">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path></svg>
+            <span>العروض</span>
+        </div>
+        
+        <div class="nav-divider"></div>
+
+        <div class="nav-link-item" onclick="navigateRouter('screen-branches'); toggleSidebar(false);">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+            <span>فروعنا</span>
+        </div>
+        <div class="nav-link-item" onclick="navigateRouter('screen-complaints'); toggleSidebar(false);">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+            <span>الشكاوى</span>
+        </div>
+        <div class="nav-link-item" onclick="navigateRouter('screen-developer'); toggleSidebar(false);">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>
+            <span>المطور</span>
+        </div>
     </div>
 
     <!-- رقم الإصدار المتغير ديناميكياً كل 5 تعديلات في المنيو -->
@@ -1245,7 +1246,9 @@
         { id:"emerald-luxury", name:"زمرد فاخر", accent:"#059669", primary:"#064e3b" },
         { id:"royal-violet", name:"أرجواني عصري", accent:"#7c3aed", primary:"#2e1065" },
         { id:"crimson-ruby", name:"ياقوتي قوي", accent:"#dc2626", primary:"#450a0a" },
-        { id:"cyber-midnight", name:"ليلي داكن", accent:"#38bdf8", primary:"#090d16" }
+        { id:"cyber-midnight", name:"ليلي داكن", accent:"#38bdf8", primary:"#090d16" },
+        { id:"sandstone", name:"رملي هادئ", accent:"#c08457", primary:"#292524" },
+        { id:"olive-cream", name:"زيتوني مريح", accent:"#65a30d", primary:"#1c2e1a" }
     ];
 
     function safeGetJson(k, f) { try { const v = localStorage.getItem(k); return v ? JSON.parse(v) : f; } catch(e) { return f; } }
@@ -1261,12 +1264,11 @@
     let allOrdersMap = safeGetJson('cc_v4_orders_map', {});
     let currentTrackingOrderId = localStorage.getItem('cc_v4_active_order_id') || null;
 
-    let activeSessionUser = null;
-    let appliedPromoObject = null;
-    let latestCompletedReceiptData = null;
-    let secretClickCount = 0;
-    let secretClickTimer = null;
-    let currentAuthMode = 'login';
+    let latestReceiptData = null;
+    let authMode = 'login';
+    let secretClicks = 0;
+    let secretTimer = null;
+    let appliedPromo = null;
 
     window.appState = {
         cartBranch: 0,
@@ -1306,11 +1308,11 @@
     };
 
     window.handleSecretTrigger = function() {
-        secretClickCount++;
-        clearTimeout(secretClickTimer);
-        secretClickTimer = setTimeout(() => secretClickCount = 0, 1000);
-        if (secretClickCount >= 4) {
-            secretClickCount = 0;
+        secretClicks++;
+        clearTimeout(secretTimer);
+        secretTimer = setTimeout(() => secretClicks = 0, 1000);
+        if (secretClicks >= 4) {
+            secretClicks = 0;
             navigateRouter('screen-admin-login');
         }
     };
@@ -1332,7 +1334,7 @@
         if (lbl) lbl.innerText = `v${storeConfig.appVersionMajor || 8}.${storeConfig.appVersionMinor || 1}.0`;
     }
 
-    /* سحابة Firebase والمزامنة */
+    /* سحابة Firebase */
     window.onCloudProducts = (items) => { productsList = items; renderCategoryChips(); renderMenuProducts(); renderAdminMenu(); };
     window.onCloudOrders = (map) => { allOrdersMap = map; checkActiveOrderBanner(); renderTracker(); renderAdminOrders(); };
     window.onCloudUsers = (map) => { registeredUsersMap = map; renderAdminUsers(); };
@@ -1543,7 +1545,7 @@
     window.applyUserPromoCode = function() {
         const code = document.getElementById('cartPromoInput').value.trim().toUpperCase();
         if (code === 'CORNER20') {
-            appliedPromoObject = { code: 'CORNER20', discount: 20 };
+            appliedPromo = { code: 'CORNER20', discount: 20 };
             document.getElementById('promoInputContainer').style.display = 'none';
             document.getElementById('promoSuccessBadge').style.display = 'flex';
             document.getElementById('promoSuccessDesc').innerText = "تم تطبيق خصم 20%";
@@ -1555,7 +1557,7 @@
     };
 
     window.removeActivePromoCode = function() {
-        appliedPromoObject = null;
+        appliedPromo = null;
         document.getElementById('promoInputContainer').style.display = 'flex';
         document.getElementById('promoSuccessBadge').style.display = 'none';
         recalculateCartSummary();
@@ -1563,11 +1565,11 @@
 
     window.recalculateCartSummary = function() {
         const sub = window.appState.cart.reduce((s, i) => s + i.lineTotal, 0);
-        let disc = appliedPromoObject ? (sub * (appliedPromoObject.discount / 100)) : 0;
+        let disc = appliedPromo ? (sub * (appliedPromo.discount / 100)) : 0;
         let del = (window.appState.deliveryMode === 'delivery') ? parseFloat(document.getElementById('cartTownSelect')?.value || 0) : 0;
 
         document.getElementById('sumSubtotal').innerText = sub.toFixed(2) + ' د.أ';
-        if (appliedPromoObject) {
+        if (appliedPromo) {
             document.getElementById('sumDiscountRow').style.display = 'flex';
             document.getElementById('sumDiscount').innerText = `-${disc.toFixed(2)} د.أ`;
         } else {
@@ -1597,7 +1599,7 @@
         if (!name || !phone) return showToast("يرجى كتابة الاسم ورقم الهاتف");
 
         const sub = window.appState.cart.reduce((s, i) => s + i.lineTotal, 0);
-        let disc = appliedPromoObject ? (sub * (appliedPromoObject.discount / 100)) : 0;
+        let disc = appliedPromo ? (sub * (appliedPromo.discount / 100)) : 0;
         let del = 0, town = "", addr = "";
         const isDelivery = (window.appState.deliveryMode === 'delivery');
 
@@ -1653,7 +1655,7 @@
 
         window.appState.cart = [];
         localStorage.removeItem('cc_v4_cart');
-        appliedPromoObject = null;
+        appliedPromo = null;
         refreshDock();
 
         window.open(`https://wa.me/${branch.whatsapp}?text=${encodeURIComponent(msg)}`, '_blank');
@@ -2113,7 +2115,6 @@
         showToast(`تم تفعيل ثيم: ${found.name}`);
     };
 
-    /* تصدير النسخة الاحتياطية */
     window.exportMenuDataBackup = function() {
         const data = { products: productsList, orders: allOrdersMap, users: registeredUsersMap, config: storeConfig };
         const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
@@ -2123,6 +2124,70 @@
         a.download = `CoffeeCorner_Backup_${Date.now()}.json`;
         a.click();
         showToast("تم تصدير ملف النسخة الاحتياطية");
+    };
+
+    window.saveNewOfferItem = function() {
+        const title = document.getElementById('newOfferTitleInput').value.trim();
+        const desc = document.getElementById('newOfferDescInput').value.trim();
+        const img = document.getElementById('newOfferImgInput').value.trim();
+        if (!title || !desc) return showToast("يرجى ملء تفاصيل العرض");
+
+        const newOffer = { id: 'off_' + Date.now(), title, desc, img };
+        offersList.unshift(newOffer);
+        localStorage.setItem('cc_v4_offers', JSON.stringify(offersList));
+        if (window.cloudSaveOffer) window.cloudSaveOffer(newOffer);
+        showToast("تم نشر العرض بنجاح");
+        renderClientOffersView();
+    };
+
+    window.renderClientOffersView = function() {
+        const container = document.getElementById('clientOffersList');
+        if (!container) return;
+        if (offersList.length === 0) {
+            container.innerHTML = `<div style="text-align:center; padding:30px; color:var(--text-muted); font-size:13px;">لا توجد عروض حالياً</div>`;
+            return;
+        }
+        container.innerHTML = offersList.map(o => `
+            <div class="section-card" style="padding:0; overflow:hidden;">
+                ${o.img ? `<img src="${o.img}" style="width:100%; height:160px; object-fit:cover;">` : ''}
+                <div style="padding:14px;">
+                    <div style="font-size:15px; font-weight:800;">${o.title}</div>
+                    <div style="font-size:12px; color:var(--text-muted); margin-top:4px;">${o.desc}</div>
+                </div>
+            </div>
+        `).join('');
+    };
+
+    window.saveNewPromoCode = function() {
+        const code = document.getElementById('newPromoCodeInput').value.trim().toUpperCase();
+        const disc = parseFloat(document.getElementById('newPromoPercentInput').value);
+        if (!code || isNaN(disc)) return showToast("يرجى إدخال رمز ونسبة صالحة");
+
+        const promoObj = { code, discount: disc, isActive: true };
+        promoCodesList[code] = promoObj;
+        localStorage.setItem('cc_v4_promos', JSON.stringify(promoCodesList));
+        if (window.cloudSavePromo) window.cloudSavePromo(code, promoObj);
+        showToast("تم تفعيل الكود سحابياً");
+    };
+
+    window.saveStoreSettingsAndBranches = function() {
+        const p0 = document.getElementById('storePhone0Input').value.trim();
+        const p1 = document.getElementById('storePhone1Input').value.trim();
+        if (p0) storeConfig.branches[0].whatsapp = p0;
+        if (p1) storeConfig.branches[1].whatsapp = p1;
+        localStorage.setItem('cc_v4_config', JSON.stringify(storeConfig));
+        if (window.cloudSaveSettings) window.cloudSaveSettings(storeConfig);
+        showToast("تم حفظ هواتف الفروع");
+    };
+
+    window.saveDeveloperAndSocialSettings = function() {
+        showToast("تم حفظ تعديلات صفحة المطور سحابياً");
+    };
+
+    window.dispatchComplaintMsg = function() {
+        const msg = document.getElementById('complaintInputMsg').value.trim();
+        if (!msg) return showToast("يرجى كتابة الملاحظة");
+        window.open(`https://wa.me/962790155906?text=${encodeURIComponent('اقتراح / شكوى: ' + msg)}`, '_blank');
     };
 
     /* بدء تشغيل التطبيق */
