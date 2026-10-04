@@ -5,26 +5,27 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>COFFEE CORNER | كافيه كورنر</title>
     
-    <meta name="description" content="كافيه كورنر - القائمة الرقمية الرسمية والطلب المباشر">
+    <meta name="description" content="القائمة الرقمية لكافيه كورنر - أشهى الكوكتيلات والحلويات الفاخرة والوافل والكريب. اطلب أونلاين الآن">
     <meta property="og:title" content="COFFEE CORNER | كافيه كورنر">
     <meta property="og:description" content="أشهى الكوكتيلات والحلويات الفاخرة - فرع كفرسوم وفرع سما الروسان">
-    <meta property="og:image" content="./logo.png">
+    <meta property="og:image" id="metaOgImage" content="./logo.png">
     <meta property="og:type" content="website">
     
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Coffee Corner">
     <meta name="theme-color" content="#090d16">
-    <link rel="icon" type="image/png" href="./logo.png">
+    <link rel="icon" type="image/png" id="faviconImg" href="./logo.png">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Tajawal:wght@400;500;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Tajawal:wght@300;400;500;700;800;900&display=swap" rel="stylesheet">
     
-    <!-- مكتبة تصدير الفاتورة كصورة عالية الدقة -->
+    <!-- مكتبة html2canvas لتصدير الفاتورة كصورة عالية الدقة -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 
-    <!-- محرك Firebase السحابي للمزامنة اللحظية المباشرة -->
+    <!-- محرك Firebase السحابي المباشر والمزامنة اللحظية الشاملة -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
         import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
@@ -58,31 +59,57 @@
                     }
                 }, () => {});
 
-                // 2. مزامنة الطلبات الحية
-                onSnapshot(collection(db, 'artifacts', appId, 'public', 'data', 'orders'), (snap) => {
-                    const ordersMap = {};
-                    snap.forEach(d => ordersMap[d.id] = { id: d.id, ...d.data() });
-                    if (window.onCloudOrders) window.onCloudOrders(ordersMap);
+                // 2. مزامنة أكواد الخصم
+                onSnapshot(collection(db, 'artifacts', appId, 'public', 'data', 'promos'), (snap) => {
+                    const promos = {};
+                    snap.forEach(d => promos[d.id] = { ...d.data(), code: d.id });
+                    if (window.onCloudPromos) window.onCloudPromos(promos);
                 }, () => {});
 
-                // 3. مزامنة المستخدمين
+                // 3. مزامنة العروض الحصرية
+                onSnapshot(collection(db, 'artifacts', appId, 'public', 'data', 'offers'), (snap) => {
+                    const offers = [];
+                    snap.forEach(d => offers.push({ id: d.id, ...d.data() }));
+                    if (window.onCloudOffers) window.onCloudOffers(offers);
+                }, () => {});
+
+                // 4. مزامنة الإعدادات العامة
+                onSnapshot(doc(db, 'artifacts', appId, 'public', 'data', 'settings', 'config_v4'), (snap) => {
+                    if (snap.exists() && window.onCloudSettings) {
+                        window.onCloudSettings(snap.data());
+                    }
+                }, () => {});
+
+                // 5. مزامنة الإحصائيات
+                onSnapshot(doc(db, 'artifacts', appId, 'public', 'data', 'stats', 'analytics'), (snap) => {
+                    if (snap.exists() && window.onCloudStats) {
+                        window.onCloudStats(snap.data());
+                    }
+                }, () => {});
+
+                // 6. مزامنة سجل تدقيق المطور
+                onSnapshot(collection(db, 'artifacts', appId, 'public', 'data', 'audit_logs'), (snap) => {
+                    const logs = [];
+                    snap.forEach(d => logs.push({ id: d.id, ...d.data() }));
+                    if (window.onCloudAuditLogs) window.onCloudAuditLogs(logs);
+                }, () => {});
+
+                // 7. مزامنة حسابات المستخدمين والزبائن
                 onSnapshot(collection(db, 'artifacts', appId, 'public', 'data', 'users'), (snap) => {
                     const usersMap = {};
                     snap.forEach(d => usersMap[d.id] = { id: d.id, ...d.data() });
                     if (window.onCloudUsers) window.onCloudUsers(usersMap);
                 }, () => {});
 
-                // 4. مزامنة الإعدادات العامة وتسلسل الفواتير
-                onSnapshot(doc(db, 'artifacts', appId, 'public', 'data', 'settings', 'config_v4'), (snap) => {
-                    if (snap.exists() && window.onCloudSettings) window.onCloudSettings(snap.data());
+                // 8. مزامنة الطلبات وتتبعها الحي
+                onSnapshot(collection(db, 'artifacts', appId, 'public', 'data', 'orders'), (snap) => {
+                    const ordersMap = {};
+                    snap.forEach(d => ordersMap[d.id] = { id: d.id, ...d.data() });
+                    if (window.onCloudOrders) window.onCloudOrders(ordersMap);
                 }, () => {});
+
             } catch (e) {}
         }
-
-        window.cloudSaveOrder = async (orderId, orderData) => {
-            if (!db) return;
-            try { await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'orders', orderId), orderData, { merge: true }); } catch (e) {}
-        };
 
         window.cloudSaveProduct = async (id, data) => {
             if (!db) return;
@@ -94,14 +121,52 @@
             try { await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'products', id)); } catch(e){}
         };
 
+        window.cloudSavePromo = async (code, data) => {
+            if (!db) return;
+            try { await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'promos', code), data); } catch(e){}
+        };
+
+        window.cloudDeletePromo = async (code) => {
+            if (!db) return;
+            try { await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'promos', code)); } catch(e){}
+        };
+
+        window.cloudSaveOffer = async (offer) => {
+            if (!db) return;
+            try { await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'offers', offer.id || ('off_' + Date.now())), offer); } catch(e){}
+        };
+
+        window.cloudDeleteOffer = async (id) => {
+            if (!db) return;
+            try { await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'offers', id)); } catch(e){}
+        };
+
+        window.cloudSaveSettings = async (settings) => {
+            if (!db) return;
+            try { await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'settings', 'config_v4'), settings, { merge: true }); } catch(e){}
+        };
+
+        window.cloudUpdateStats = async (statsData) => {
+            if (!db) return;
+            try { await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'stats', 'analytics'), statsData, { merge: true }); } catch(e){}
+        };
+
+        window.cloudLogAudit = async (logEntry) => {
+            if (!db) return;
+            try {
+                const logId = 'log_' + Date.now() + '_' + Math.random().toString(36).substr(2, 4);
+                await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'audit_logs', logId), logEntry);
+            } catch(e){}
+        };
+
         window.cloudSaveUser = async (phoneKey, userData) => {
             if (!db) return;
             try { await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'users', phoneKey), userData, { merge: true }); } catch (e) {}
         };
 
-        window.cloudSaveSettings = async (settings) => {
+        window.cloudSaveOrder = async (orderId, orderData) => {
             if (!db) return;
-            try { await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'settings', 'config_v4'), settings, { merge: true }); } catch (e) {}
+            try { await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'orders', orderId), orderData, { merge: true }); } catch (e) {}
         };
 
         window.addEventListener('DOMContentLoaded', initCloudEngine);
@@ -125,9 +190,9 @@
             --danger: #ef4444;
             --radius-sm: 8px;
             --radius-md: 14px;
-            --radius-lg: 20px;
+            --radius-lg: 18px;
             --shadow-sm: 0 2px 8px rgba(15, 23, 42, 0.04);
-            --shadow-md: 0 10px 30px rgba(15, 23, 42, 0.08);
+            --shadow-float: 0 10px 25px rgba(15, 23, 42, 0.10);
             font-family: "Tajawal", -apple-system, sans-serif;
         }
 
@@ -150,11 +215,12 @@
         button, input, select, textarea { border: 0; outline: none; background: none; font-family: inherit; }
 
         .app-container { width: 100%; max-width: 860px; margin: 0 auto; min-height: 100vh; display: flex; flex-direction: column; position: relative; }
+        .main-viewport { flex: 1; display: flex; flex-direction: column; width: 100%; }
         .app-screen { display: none; flex-direction: column; width: 100%; min-height: 100vh; background: var(--bg-color); }
         .app-screen.active { display: flex !important; }
         .scrollable-content { flex: 1; padding-bottom: 130px; }
 
-        /* الترويسة العلوية */
+        /* الترويسة الرئيسية */
         .header {
             position: sticky; top: 0; z-index: 100;
             background: var(--header-bg); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
@@ -350,17 +416,48 @@
         }
         .toast-box.active { transform: translate(-50%, 0); opacity: 1; }
 
-        /* لوحة الأدمن */
+        /* هوية المطور الشخصية الفاخرة */
+        .dev-hero-container {
+            border-radius: var(--radius-md); overflow: hidden; border: 1px solid var(--border);
+            background: var(--surface); margin-bottom: 14px; position: relative; box-shadow: var(--shadow-sm);
+        }
+        .dev-cover-banner {
+            width: 100%; height: 160px; background-size: cover; background-position: center;
+            position: relative; background-color: var(--brand-primary);
+        }
+        .dev-cover-overlay {
+            position: absolute; inset: 0;
+            background: linear-gradient(180deg, rgba(15, 23, 42, 0.2) 0%, rgba(15, 23, 42, 0.85) 100%);
+        }
+        .dev-profile-header-content {
+            padding: 0 20px 20px; position: relative; margin-top: -46px; display: flex; flex-direction: column; gap: 12px;
+        }
+        .dev-avatar-row {
+            display: flex; align-items: flex-end; justify-content: space-between; gap: 14px;
+        }
+        .dev-avatar-img {
+            width: 90px; height: 90px; border-radius: 24px; object-fit: cover;
+            border: 4px solid var(--surface); background: var(--segment);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15); flex-shrink: 0;
+        }
+
+        /* لوحة الأدمن الشاملة */
         .admin-nav-tabs { display: flex; gap: 6px; padding: 8px 14px; background: var(--surface); border-bottom: 1px solid var(--border); overflow-x: auto; scrollbar-width: none; }
-        .admin-tab { padding: 6px 12px; font-size: 11px; font-weight: 700; color: var(--text-muted); border-radius: 6px; cursor: pointer; white-space: nowrap; }
+        .admin-tab { padding: 8px 12px; font-size: 11px; font-weight: 700; color: var(--text-muted); border-radius: 6px; cursor: pointer; white-space: nowrap; }
         .admin-tab.active { background: var(--brand-accent-glow); color: var(--brand-accent); }
-        .admin-pane { display: none; padding: 14px; }
+        .admin-pane { display: none; padding: 14px; max-width: 980px; margin: 0 auto; width: 100%; }
         .admin-pane.active { display: block; }
+        .stat-grid-modern { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 10px; margin-bottom: 18px; }
+        .stat-card-pro { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 14px; text-align: center; }
+        .theme-swatch-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 8px; margin-top: 10px; }
+        .admin-theme-card { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 10px; cursor: pointer; text-align: center; }
+        .admin-theme-card.active { border-color: var(--brand-accent); box-shadow: 0 0 0 2px var(--brand-accent-glow); }
     </style>
 </head>
 <body>
 
 <div class="app-container" id="appContainer">
+<div class="main-viewport">
 
     <!-- 1. الشاشة الرئيسية -->
     <div id="screen-home" class="app-screen active">
@@ -536,7 +633,7 @@
         </div>
     </div>
 
-    <!-- 4. شاشة تتبع الطلب الذكية والمترابطة -->
+    <!-- 4. شاشة تتبع الطلب الذكية والمترابطة مع الأدمن -->
     <div id="screen-tracker" class="app-screen">
         <header class="header">
             <div class="header-btn" onclick="navigateRouter('screen-home')">✕</div>
@@ -710,11 +807,134 @@
         </div>
     </div>
 
-    <!-- 7. لوحة تحكم الأدمن الشاملة والجديدة -->
+    <!-- 7. شاشة العروض والخصومات -->
+    <div id="screen-offers" class="app-screen">
+        <header class="header">
+            <div class="header-btn" onclick="navigateRouter('screen-home')">✕</div>
+            <div style="font-size:16px; font-weight:800;">العروض والخصومات الحصرية</div>
+            <div style="width:38px;"></div>
+        </header>
+        <div class="scrollable-content" style="padding:16px;" id="clientOffersList"></div>
+    </div>
+
+    <!-- 8. شاشة فروعنا ومواقعنا -->
+    <div id="screen-branches" class="app-screen">
+        <header class="header">
+            <div class="header-btn" onclick="navigateRouter('screen-home')">✕</div>
+            <div style="font-size:16px; font-weight:800;">فروعنا ومواقعنا</div>
+            <div style="width:38px;"></div>
+        </header>
+        <div class="scrollable-content" style="padding:16px;">
+            <div class="section-card">
+                <div style="font-size:15px; font-weight:800; margin-bottom:4px;">فرع كفرسوم</div>
+                <div style="font-size:12px; color:var(--text-muted); line-height:1.6;">
+                    الشارع الرئيسي مقابل مجمع المحلات<br>
+                    هاتف: 962790155906<br>
+                    أوقات العمل: من 6:30 صباحاً حتى 3:00 فجراً
+                </div>
+            </div>
+            <div class="section-card">
+                <div style="font-size:15px; font-weight:800; margin-bottom:4px;">فرع سما الروسان</div>
+                <div style="font-size:12px; color:var(--text-muted); line-height:1.6;">
+                    الشارع العام بجانب مبنى البلدية<br>
+                    هاتف: 962790155906<br>
+                    أوقات العمل: من 4:00 عصراً حتى 3:00 فجراً
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 9. شاشة الشكاوى والمقترحات -->
+    <div id="screen-complaints" class="app-screen">
+        <header class="header">
+            <div class="header-btn" onclick="navigateRouter('screen-home')">✕</div>
+            <div style="font-size:16px; font-weight:800;">الشكاوى والمقترحات</div>
+            <div style="width:38px;"></div>
+        </header>
+        <div class="scrollable-content" style="padding:16px;">
+            <div class="section-card" style="max-width:500px; margin:0 auto;">
+                <textarea class="ios-textarea-field" id="complaintInputMsg" placeholder="اكتب اقتراحك أو ملاحظتك الكريمة للإدارة المباشرة..." style="height:110px; margin-bottom:12px;"></textarea>
+                <button class="btn-brand-solid" onclick="dispatchComplaintMsg()">إرسال للإدارة عبر واتساب</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 10. شاشة المطور الأصلية (المهندس عمر عبيدات) -->
+    <div id="screen-developer" class="app-screen">
+        <header class="header">
+            <div class="header-btn" onclick="navigateRouter('screen-home')">✕</div>
+            <div style="font-size:16px; font-weight:800;">عن المطور</div>
+            <div style="width:38px;"></div>
+        </header>
+        <div class="scrollable-content" style="padding:20px 16px;">
+            <div style="max-width:540px; margin:0 auto; display:flex; flex-direction:column; gap:14px;">
+                <div class="dev-hero-container">
+                    <div class="dev-cover-banner" id="uiDevCoverBg"><div class="dev-cover-overlay"></div></div>
+                    <div class="dev-profile-header-content">
+                        <div class="dev-avatar-row">
+                            <img src="https://www.instagram.com/p/DY2jpFQjSkB/media/?size=l" id="uiDevPhoto" class="dev-avatar-img" onerror="this.src='https://placehold.co/400x400/2563eb/ffffff?text=Omar+Obeidat'">
+                            <span style="font-size:11px; font-weight:800; padding:4px 10px; border-radius:14px; background:rgba(16, 185, 129, 0.12); color:var(--success);">مهندس معتمد</span>
+                        </div>
+                        <div>
+                            <h1 style="font-size:20px; font-weight:900;" id="uiDevName">المهندس عمر عبيدات</h1>
+                            <div style="font-size:12px; font-weight:700; color:var(--brand-accent);" id="uiDevTitle">Software Engineer & Systems Architect</div>
+                        </div>
+                        <p style="font-size:12px; color:var(--text-muted); line-height:1.6;" id="uiDevBio">
+                            مهندس برمجيات متخصص في بناء وتطوير المنظومات الرقمية المتقدمة وتصميم البنى السحابية الآمنة وقواعد البيانات اللحظية وفق أرقى المعايير العالمية.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="section-card" style="padding:16px;">
+                    <div style="font-size:13px; font-weight:800; margin-bottom:10px; color:var(--text-main);">مجالات الاختصاص والخبرة</div>
+                    <div style="display:flex; flex-direction:column; gap:8px;">
+                        <div style="padding:8px 10px; background:var(--segment); border-radius:var(--radius-sm); font-size:12px;">
+                            <strong>تطوير الأنظمة السحابية المتكاملة</strong>
+                            <div style="font-size:11px; color:var(--text-muted); margin-top:2px;">بناء حلول برمجية متطورة تعتمد على المزامنة اللحظية والسرعة الفائقة.</div>
+                        </div>
+                        <div style="padding:8px 10px; background:var(--segment); border-radius:var(--radius-sm); font-size:12px;">
+                            <strong>هندسة واجهات المستخدم الحديثة</strong>
+                            <div style="font-size:11px; color:var(--text-muted); margin-top:2px;">تصميم واجهات أنيقة وعصرية تحاكي أحدث معايير Apple iOS وتطبيقات التوصيل العالمية.</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+                    <a href="https://wa.me/962796433698" target="_blank" class="btn-brand-solid" style="text-decoration:none; background:#10b981;">واتساب المطور</a>
+                    <a href="https://www.instagram.com/o_yd" target="_blank" class="btn-brand-outline" style="text-decoration:none;" id="uiDevIgLink">إنستغرام @o_yd</a>
+                </div>
+
+                <div style="text-align:center; font-size:11px; color:var(--text-muted); font-weight:600; padding:6px 0;">
+                    جميع الحقوق محفوظة للمهندس عمر عبيدات © 2026
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 11. بوابة الدخول الإداري -->
+    <div id="screen-admin-login" class="app-screen">
+        <header class="header">
+            <div class="header-btn" onclick="navigateRouter('screen-home')">✕</div>
+            <div style="font-size:15px; font-weight:900;">بوابة الإدارة</div>
+            <div style="width:38px;"></div>
+        </header>
+        <div class="scrollable-content" style="padding:20px;">
+            <div class="section-card" style="max-width:320px; margin:40px auto 0; text-align:center;">
+                <div style="font-size:13px; font-weight:800; margin-bottom:12px;">رمز المرور الإداري المعتمد</div>
+                <input type="password" class="ios-input-field num-font" id="adminPin" placeholder="••••••••" style="text-align:center; letter-spacing:4px; margin-bottom:12px;">
+                <button class="btn-brand-solid" onclick="attemptAdminLogin()">دخول للوحة التحكم</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 12. لوحة تحكم الأدمن الشاملة والكاملة -->
     <div id="screen-admin-dashboard" class="app-screen">
         <header class="header">
-            <div style="font-size:15px; font-weight:900;">لوحة الإدارة السحابية</div>
-            <button class="btn-brand-outline" style="width:auto; padding:4px 10px; font-size:11px; color:var(--danger); border-color:var(--danger);" onclick="exitAdmin()">خروج</button>
+            <div>
+                <div style="font-size:15px; font-weight:900;">لوحة الإدارة السحابية</div>
+                <div style="font-size:11px; color:var(--text-muted);"><span id="adminGreetingLabel">المطور</span> | كافيه كورنر</div>
+            </div>
+            <button class="btn-brand-outline" style="width:auto; padding:5px 12px; font-size:11px; color:var(--danger); border-color:var(--danger);" onclick="exitAdmin()">خروج</button>
         </header>
 
         <div class="admin-nav-tabs">
@@ -722,6 +942,15 @@
             <div class="admin-tab" id="tabMenu" onclick="switchAdminTab('menu')">المنيو والأصناف</div>
             <div class="admin-tab" id="tabUsers" onclick="switchAdminTab('users')">العملاء والرقابة والحظر</div>
             <div class="admin-tab" id="tabPricing" onclick="switchAdminTab('pricing')">فروقات الأسعار والأحجام</div>
+            <div class="admin-tab" id="tabOffers" onclick="switchAdminTab('offers')">العروض والتايمر</div>
+            <div class="admin-tab" id="tabPromos" onclick="switchAdminTab('promos')">أكواد الخصم</div>
+            <div class="admin-tab" id="tabAnalytics" onclick="switchAdminTab('analytics')">الإحصائيات الحقيقية</div>
+            <div class="admin-tab" id="tabThemes" onclick="switchAdminTab('themes')">الثيمات والمظهر</div>
+            <div class="admin-tab" id="tabStore" onclick="switchAdminTab('store')">الفروع والدفع</div>
+            <div class="admin-tab" id="tabDelivery" onclick="switchAdminTab('delivery')">أسعار التوصيل</div>
+            <div class="admin-tab" id="tabDeveloper" onclick="switchAdminTab('developer')">صفحة المطور</div>
+            <div class="admin-tab" id="tabAuditLog" onclick="switchAdminTab('auditLog')">سجل العمليات</div>
+            <div class="admin-tab" id="tabBackup" onclick="switchAdminTab('backup')">نسخ واستيراد JSON</div>
         </div>
 
         <div class="scrollable-content">
@@ -736,7 +965,10 @@
             <!-- تبويب المنيو -->
             <div class="admin-pane" id="paneMenu">
                 <div class="section-card">
-                    <div class="section-title"><span>قائمة الأصناف</span><button class="btn-brand-solid" style="width:auto; padding:4px 10px; font-size:11px;" onclick="promptNewProduct()">+ صنف جديد</button></div>
+                    <div class="section-title">
+                        <span>قائمة الأصناف</span>
+                        <button class="btn-brand-solid" style="width:auto; padding:5px 12px; font-size:11px;" onclick="openProductEditorModal(null)">+ صنف جديد</button>
+                    </div>
                     <div id="adminMenuList"></div>
                 </div>
             </div>
@@ -744,7 +976,7 @@
             <!-- تبويب العملاء -->
             <div class="admin-pane" id="paneUsers">
                 <div class="section-card">
-                    <div class="section-title">حسابات العملاء والرقابة</div>
+                    <div class="section-title"><span>حسابات العملاء والرقابة</span><span class="num-font" id="adminUsersCountLabel">0 عميل</span></div>
                     <div id="adminUsersList"></div>
                 </div>
             </div>
@@ -752,29 +984,149 @@
             <!-- تبويب الأسعار -->
             <div class="admin-pane" id="panePricing">
                 <div class="section-card">
-                    <div class="section-title">فروقات أسعار الأحجام</div>
+                    <div class="section-title">فروقات أسعار الأحجام والإضافات</div>
                     <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px;">
-                        <div><span style="font-size:10px;">فارق الوسط:</span><input type="number" step="0.25" class="ios-input-field num-font" id="admMedExtra" value="0.50"></div>
-                        <div><span style="font-size:10px;">فارق الكبير:</span><input type="number" step="0.25" class="ios-input-field num-font" id="admLrgExtra" value="1.00"></div>
+                        <div><span style="font-size:11px; color:var(--text-muted); font-weight:700;">فارق الوسط:</span><input type="number" step="0.25" class="ios-input-field num-font" id="admMedExtra" value="0.50"></div>
+                        <div><span style="font-size:11px; color:var(--text-muted); font-weight:700;">فارق الكبير:</span><input type="number" step="0.25" class="ios-input-field num-font" id="admLrgExtra" value="1.00"></div>
                     </div>
-                    <button class="btn-brand-solid" style="margin-top:8px;" onclick="saveAdminPricing()">حفظ الأسعار</button>
+                    <button class="btn-brand-solid" style="margin-top:10px;" onclick="saveAdminPricing()">حفظ الأسعار</button>
+                </div>
+            </div>
+
+            <!-- تبويب العروض الذكية -->
+            <div class="admin-pane" id="paneOffers">
+                <div class="section-card">
+                    <div class="section-title">إضافة عرض جديد بمؤقت حي</div>
+                    <div style="display:flex; flex-direction:column; gap:8px;">
+                        <input type="text" class="ios-input-field" id="newOfferTitleInput" placeholder="عنوان العرض">
+                        <textarea class="ios-textarea-field" id="newOfferDescInput" placeholder="تفاصيل العرض..."></textarea>
+                        <input type="text" class="ios-input-field num-font" id="newOfferImgInput" placeholder="رابط صورة العرض (URL)">
+                        <button class="btn-brand-solid" onclick="saveNewOfferItem()">نشر وجدولة العرض</button>
+                    </div>
+                </div>
+                <div id="adminOffersManagerList"></div>
+            </div>
+
+            <!-- تبويب أكواد الخصم -->
+            <div class="admin-pane" id="panePromos">
+                <div class="section-card">
+                    <div class="section-title">إصدار كود خصم جديد</div>
+                    <div style="display:flex; flex-direction:column; gap:8px;">
+                        <input type="text" class="ios-input-field num-font" id="newPromoCodeInput" placeholder="رمز الكود (مثال: CORNER20)" style="text-transform:uppercase;">
+                        <input type="number" class="ios-input-field num-font" id="newPromoPercentInput" placeholder="نسبة الخصم % (مثال: 20)">
+                        <button class="btn-brand-solid" onclick="saveNewPromoCode()">تفعيل الكود سحابياً</button>
+                    </div>
+                </div>
+                <div id="adminPromosManagerList"></div>
+            </div>
+
+            <!-- تبويب الإحصائيات الحقيقية -->
+            <div class="admin-pane" id="paneAnalytics">
+                <div class="stat-grid-modern">
+                    <div class="stat-card-pro"><div style="font-size:11px; color:var(--text-muted);">الزيارات الفعلية</div><div class="num-font" style="font-size:22px; font-weight:900;" id="statVisitsTotal">0</div></div>
+                    <div class="stat-card-pro"><div style="font-size:11px; color:var(--text-muted);">الطلبات المنفذة</div><div class="num-font" style="font-size:22px; font-weight:900;" id="statOrdersTotal">0</div></div>
+                    <div class="stat-card-pro" style="grid-column:span 2;"><div style="font-size:11px; color:var(--text-muted);">إجمالي المبيعات التقديرية (د.أ)</div><div class="num-font" style="font-size:24px; font-weight:900; color:var(--brand-accent);" id="statSalesTotal">0.00</div></div>
+                </div>
+            </div>
+
+            <!-- تبويب الثيمات -->
+            <div class="admin-pane" id="paneThemes">
+                <div class="section-card">
+                    <div class="section-title"><span>الثيمات والمظهر</span><span id="currentThemeLabel">أزرق ملكي</span></div>
+                    <div class="theme-swatch-grid" id="themePresetsGrid"></div>
+                </div>
+            </div>
+
+            <!-- تبويب الفروع والدفع -->
+            <div class="admin-pane" id="paneStore">
+                <div class="section-card">
+                    <div class="section-title">أرقام هواتف وواتساب الفروع للطلبات</div>
+                    <div style="display:flex; flex-direction:column; gap:8px;">
+                        <div>
+                            <span style="font-size:11px; color:var(--text-muted); font-weight:700;">واتساب فرع كفرسوم:</span>
+                            <input type="text" class="ios-input-field num-font" id="storePhone0Input" placeholder="962790155906">
+                        </div>
+                        <div>
+                            <span style="font-size:11px; color:var(--text-muted); font-weight:700;">واتساب فرع سما الروسان:</span>
+                            <input type="text" class="ios-input-field num-font" id="storePhone1Input" placeholder="962790155906">
+                        </div>
+                        <button class="btn-brand-solid" onclick="saveStoreSettingsAndBranches()">حفظ هواتف الفروع</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- تبويب أسعار التوصيل -->
+            <div class="admin-pane" id="paneDelivery">
+                <div class="section-card">
+                    <div class="section-title">المناطق وأسعار التوصيل</div>
+                    <div id="adminTownsManagerList"></div>
+                </div>
+            </div>
+
+            <!-- تبويب صفحة المطور -->
+            <div class="admin-pane" id="paneDeveloper">
+                <div class="section-card">
+                    <div class="section-title">بيانات المطور وهوية المحل</div>
+                    <div style="display:flex; flex-direction:column; gap:8px;">
+                        <input type="text" class="ios-input-field" id="editDevNameInput" placeholder="اسم المطور">
+                        <input type="text" class="ios-input-field" id="editDevTitleInput" placeholder="المسمى المهني">
+                        <input type="text" class="ios-input-field num-font" id="editDevPhotoInput" placeholder="رابط صورة المطور الشخصية">
+                        <textarea class="ios-textarea-field" id="editDevBioInput" placeholder="النبذة المهنية"></textarea>
+                        <input type="text" class="ios-input-field num-font" id="editDevPhoneInput" placeholder="رقم واتساب المطور">
+                        <input type="text" class="ios-input-field num-font" id="editDevIgInput" placeholder="رابط إنستغرام المطور">
+                        <button class="btn-brand-solid" onclick="saveDeveloperAndSocialSettings()">حفظ التعديلات سحابياً</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- تبويب سجل العمليات -->
+            <div class="admin-pane" id="paneAuditLog">
+                <div class="section-card">
+                    <div class="section-title">سجل العمليات والرقابة</div>
+                    <div id="adminAuditLogsList"></div>
+                </div>
+            </div>
+
+            <!-- تبويب النسخ الاحتياطي -->
+            <div class="admin-pane" id="paneBackup">
+                <div class="section-card">
+                    <div class="section-title">النسخ الاحتياطي السحابي</div>
+                    <button class="btn-brand-solid" onclick="exportMenuDataBackup()">تصدير نسخة احتياطية (JSON)</button>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- 8. بوابة الدخول الإداري -->
-    <div id="screen-admin-login" class="app-screen">
+    <!-- 13. محرر الأصناف الشامل -->
+    <div id="screen-product-editor" class="app-screen" style="z-index:1800;">
         <header class="header">
-            <div class="header-btn" onclick="navigateRouter('screen-home')">✕</div>
-            <div style="font-size:15px; font-weight:900;">بوابة الإدارة</div>
+            <div class="header-btn" onclick="navigateRouter('screen-admin-dashboard')">✕</div>
+            <div style="font-size:15px; font-weight:900;" id="productEditorHeader">تعديل الصنف</div>
             <div style="width:38px;"></div>
         </header>
-        <div class="scrollable-content" style="padding:20px;">
-            <div class="section-card" style="max-width:320px; margin:40px auto 0; text-align:center;">
-                <div style="font-size:13px; font-weight:800; margin-bottom:12px;">رمز المرور الإداري المعتمد</div>
-                <input type="password" class="ios-input-field num-font" id="adminPin" placeholder="••••••••" style="text-align:center; letter-spacing:4px; margin-bottom:12px;">
-                <button class="btn-brand-solid" onclick="attemptAdminLogin()">دخول للوحة التحكم</button>
+        <div class="scrollable-content" style="padding:16px;">
+            <div class="section-card" style="max-width:500px; margin:0 auto; display:flex; flex-direction:column; gap:10px;">
+                <input type="hidden" id="editProductIdField">
+                <input type="text" class="ios-input-field" id="editProductNameField" placeholder="اسم الصنف">
+                <select class="ios-input-field" id="editProductCatField">
+                    <option value="كوكتيلات">كوكتيلات</option>
+                    <option value="ميلك شيك">ميلك شيك</option>
+                    <option value="ستيم بارد">ستيم بارد</option>
+                    <option value="ستيم ساخن">ستيم ساخن</option>
+                    <option value="وافل">وافل</option>
+                    <option value="كريب">كريب</option>
+                    <option value="بان كيك">بان كيك</option>
+                    <option value="كنافة">كنافة</option>
+                    <option value="آيس كريم">آيس كريم</option>
+                </select>
+                <input type="number" step="0.01" class="ios-input-field num-font" id="editProductPriceField" placeholder="السعر">
+                <textarea class="ios-textarea-field" id="editProductDescField" placeholder="الوصف"></textarea>
+                <input type="text" class="ios-input-field num-font" id="editProductImgField" placeholder="رابط الصورة">
+                <div style="display:flex; justify-content:space-between; align-items:center;">
+                    <span>تفعيل خيارات الأحجام (صغير، وسط، كبير):</span>
+                    <input type="checkbox" id="editProductHasSizesToggle">
+                </div>
+                <button class="btn-brand-solid" onclick="saveProductEditorChanges()">حفظ الصنف</button>
             </div>
         </div>
     </div>
@@ -793,7 +1145,10 @@
         <div class="nav-link-btn" onclick="navigateRouter('screen-home'); toggleSidebar(false);">الرئيسية والمنيو</div>
         <div class="nav-link-btn" onclick="navigateRouter('screen-tracker'); toggleSidebar(false);">تتبع طلبي المباشر</div>
         <div class="nav-link-btn" onclick="handleAccountNavigation(); toggleSidebar(false);">حسابي ونقاط الولاء</div>
-        <div class="nav-link-btn" onclick="navigateRouter('screen-cart'); toggleSidebar(false);">سلة المشتريات</div>
+        <div class="nav-link-btn" onclick="navigateRouter('screen-offers'); toggleSidebar(false);">العروض والخصومات</div>
+        <div class="nav-link-btn" onclick="navigateRouter('screen-branches'); toggleSidebar(false);">فروعنا ومواقعنا</div>
+        <div class="nav-link-btn" onclick="navigateRouter('screen-complaints'); toggleSidebar(false);">الشكاوى والمقترحات</div>
+        <div class="nav-link-btn" onclick="navigateRouter('screen-developer'); toggleSidebar(false);">عن المطور</div>
     </div>
 
     <!-- رقم الإصدار المتغير ديناميكياً كل 5 تعديلات في المنيو -->
@@ -848,52 +1203,75 @@
 </div>
 
 <div class="toast-box" id="systemToast">تم</div>
+</div>
 
 <script>
     // كتالوج الأصناف الكامل الأصلي
     window.DEFAULT_CATALOG = [
-        { id:"p1", name:"كوكتيل إمبراطور فواكه", category:"كوكتيلات", price:2.50, desc:"مزيج قطع فواكه طازجة مع القشطة والمكسرات", img:"https://images.unsplash.com/photo-1577805947697-89e18249d767?w=400&q=80", isAvailable:true, hasSizes:true },
-        { id:"p2", name:"وافل بلجيكي أصلي", category:"وافل", price:2.50, desc:"وافل دافئ مقرمش غني بأشهى الصوصات", img:"https://images.unsplash.com/photo-1562376552-0d160a2f238d?w=400&q=80", isAvailable:true, hasSizes:false },
-        { id:"p3", name:"كريب فيتوتشيني فاخر", category:"كريب", price:3.00, desc:"شرائح كريب رقيقة طازجة مع النوتيلا واللوتس", img:"https://images.unsplash.com/photo-1519676867240-f03562e64548?w=400&q=80", isAvailable:true, hasSizes:false },
-        { id:"p4", name:"ميلك شيك أوريو", category:"ميلك شيك", price:2.00, desc:"مخفوق الحليب والآيس كريم مع بسكويت الأوريو", img:"https://images.unsplash.com/photo-1572490122747-3968b75cc699?w=400&q=80", isAvailable:true, hasSizes:true },
-        { id:"p5", name:"بان كيك كلاسيك", category:"بان كيك", price:2.00, desc:"طبقات بان كيك هشة مع صوصك المفضل", img:"https://images.unsplash.com/photo-1528207776546-384cb11312b2?w=400&q=80", isAvailable:true, hasSizes:false },
-        { id:"p6", name:"كنافة نابلسية بالجبن", category:"كنافة", price:3.00, desc:"كنافة سخنة بالجبن البلدي المذاب", img:"https://images.unsplash.com/photo-1628198642220-4bf63f25c755?w=400&q=80", isAvailable:true, hasSizes:false },
-        { id:"p7", name:"آيس كوفي منعش", category:"ستيم بارد", price:1.50, desc:"إسبريسو مثلج مع حليب ناعم", img:"https://images.unsplash.com/photo-1461023058943-0708e52150fe?w=400&q=80", isAvailable:true, hasSizes:true },
-        { id:"p8", name:"موكا حار فاخر", category:"ستيم ساخن", price:2.00, desc:"قهوة ساخنة غنية بالشوكولاتة", img:"https://images.unsplash.com/photo-1517701550927-30cf4be1aaf9?w=400&q=80", isAvailable:true, hasSizes:true },
-        { id:"p9", name:"آيس كريم فانيليا", category:"آيس كريم", price:1.00, desc:"كرة آيس كريم إيطالية نقية", img:"https://images.unsplash.com/photo-1570197781417-0a52375c020b?w=400&q=80", isAvailable:true, hasSizes:false }
+        { id:"p1", name:"كوكتيل إمبراطور فواكه", category:"كوكتيلات", price:2.50, desc:"مزيج قطع فواكه طازجة مع القشطة والمكسرات", img:"https://images.unsplash.com/photo-1577805947697-89e18249d767?w=400&q=80", isAvailable:true, hasSizes:true, mediumAdd:0.50, largeAdd:1.00 },
+        { id:"p2", name:"وافل بلجيكي أصلي", category:"وافل", price:2.50, desc:"وافل دافئ مقرمش غني بأشهى النكهات والصوصات", img:"https://images.unsplash.com/photo-1562376552-0d160a2f238d?w=400&q=80", isAvailable:true, hasSizes:false },
+        { id:"p3", name:"كريب فيتوتشيني فاخر", category:"كريب", price:3.00, desc:"شرائح كريب رقيقة طازجة مع نكهاتك المفضلة", img:"https://images.unsplash.com/photo-1519676867240-f03562e64548?w=400&q=80", isAvailable:true, hasSizes:false },
+        { id:"p4", name:"ميلك شيك أوريو", category:"ميلك شيك", price:2.00, desc:"مخفوق الحليب والآيس كريم مع بسكويت الأوريو", img:"https://images.unsplash.com/photo-1572490122747-3968b75cc699?w=400&q=80", isAvailable:true, hasSizes:true, mediumAdd:0.50, largeAdd:1.00 },
+        { id:"p5", name:"بان كيك كلاسيك", category:"بان كيك", price:2.00, desc:"طبقات بان كيك هشة وطرية مع صوصك المفضل", img:"https://images.unsplash.com/photo-1528207776546-384cb11312b2?w=400&q=80", isAvailable:true, hasSizes:false },
+        { id:"p6", name:"كنافة نابلسية بالجبن", category:"كنافة", price:3.00, desc:"كنافة سخنة متبلة بالسمن والجبن المذوب", img:"https://images.unsplash.com/photo-1628198642220-4bf63f25c755?w=400&q=80", isAvailable:true, hasSizes:false },
+        { id:"p7", name:"آيس كوفي منعش", category:"ستيم بارد", price:1.50, desc:"شوت إسبريسو مزدوج مثلج مع حليب ناعم", img:"https://images.unsplash.com/photo-1461023058943-0708e52150fe?w=400&q=80", isAvailable:true, hasSizes:true, mediumAdd:0.50, largeAdd:1.00 },
+        { id:"p8", name:"موكا حار فاخر", category:"ستيم ساخن", price:2.00, desc:"مزيج قهوة ساخنة غنية بالشوكولاتة والكريما", img:"https://images.unsplash.com/photo-1517701550927-30cf4be1aaf9?w=400&q=80", isAvailable:true, hasSizes:true, mediumAdd:0.50, largeAdd:1.00 },
+        { id:"p9", name:"آيس كريم فانيليا", category:"آيس كريم", price:1.00, desc:"كرة آيس كريم إيطالية غنية بالفانيليا النقية", img:"https://images.unsplash.com/photo-1570197781417-0a52375c020b?w=400&q=80", isAvailable:true, hasSizes:false }
     ];
 
-    const STORE_CONFIG = {
+    const DEFAULT_STORE_CONFIG = {
+        appVersionMajor: 8,
+        appVersionMinor: 1,
+        menuEditCount: 0,
+        lastInvoiceNumber: 0,
         branches: {
-            0: { name: "فرع كفرسوم", whatsapp: "962790155906", towns: { "كفرسوم": 1.0, "سمر": 1.25, "سحم": 1.5, "حبراص": 1.25, "يبلا": 1.5 } },
-            1: { name: "فرع سما الروسان", whatsapp: "962790155906", towns: { "سما الروسان": 1.0, "حبراص": 1.25, "حاتم": 1.5 } }
+            0: { name: "فرع كفرسوم", whatsapp: "962790155906", hours: "من 6:30 صباحاً حتى 3:00 فجراً يومياً.", towns: { "كفرسوم": 1.0, "سمر": 1.25, "سحم": 1.5, "حبراص": 1.25, "يبلا": 1.5, "الرفيد": 1.5, "حرثا": 1.5, "المزيريب": 1.5, "عقربا": 2.0, "حاتم": 1.75, "ملكا": 2.0, "أم قيس": 2.5, "المنصورة": 2.0 } },
+            1: { name: "فرع سما الروسان", whatsapp: "962790155906", hours: "من 4:00 عصراً حتى 3:00 فجراً يومياً.", towns: { "سما الروسان": 1.0, "حبراص": 1.25, "حاتم": 1.5, "كفرسوم": 1.5, "إبدر": 1.75, "المخيبة": 2.5 } }
         },
         paymentMethods: [
-            { id: "cash", name: "دفع نقدي (كاش)" },
-            { id: "cliq", name: "كليك (CliQ)" }
-        ]
+            { id: "cash", name: "دفع نقدي (كاش)", enabled: true },
+            { id: "cliq", name: "كليك (CliQ)", enabled: true }
+        ],
+        pricingSettings: {
+            mediumAdd: 0.50, largeAdd: 1.00, additionsPrice: 0.50,
+            sauces: { "نوتيلا": { name: "نوتيلا", price: 0.50 }, "لوتس": { name: "لوتس", price: 0.75 }, "كيندر": { name: "كيندر", price: 0.75 }, "بستاشيو": { name: "بستاشيو", price: 1.00 } }
+        },
+        theme: { name: "royal-blue", accent: "#2563eb", primary: "#0f172a" }
     };
 
-    function safeJson(k, fallback) {
-        try { const v = localStorage.getItem(k); return v ? JSON.parse(v) : fallback; } catch(e) { return fallback; }
-    }
+    const THEME_PRESETS = [
+        { id:"royal-blue", name:"أزرق ملكي", accent:"#2563eb", primary:"#0f172a" },
+        { id:"coffee-gold", name:"ذهبي كافيه", accent:"#d97706", primary:"#451a03" },
+        { id:"emerald-luxury", name:"زمرد فاخر", accent:"#059669", primary:"#064e3b" },
+        { id:"royal-violet", name:"أرجواني عصري", accent:"#7c3aed", primary:"#2e1065" },
+        { id:"crimson-ruby", name:"ياقوتي قوي", accent:"#dc2626", primary:"#450a0a" },
+        { id:"cyber-midnight", name:"ليلي داكن", accent:"#38bdf8", primary:"#090d16" }
+    ];
 
-    let productsList = safeJson('cc_v4_products', window.DEFAULT_CATALOG);
-    let registeredUsersMap = safeJson('cc_v4_users', {});
-    let activeClientSession = safeJson('cc_v4_client_session', null);
-    let allOrdersMap = safeJson('cc_v4_orders_map', {});
+    function safeGetJson(k, f) { try { const v = localStorage.getItem(k); return v ? JSON.parse(v) : f; } catch(e) { return f; } }
+
+    let productsList = safeGetJson('cc_v4_products', window.DEFAULT_CATALOG);
+    let promoCodesList = safeGetJson('cc_v4_promos', { "CORNER20": { code: "CORNER20", discount: 20, minOrder: 0, usageLimit: 0, usedCount: 0, isActive: true } });
+    let offersList = safeGetJson('cc_v4_offers', []);
+    let storeConfig = safeGetJson('cc_v4_config', DEFAULT_STORE_CONFIG);
+    let auditLogsList = safeGetJson('cc_v4_audit_logs', []);
+    let siteStats = safeGetJson('cc_v4_stats', { visits: 0, orders: 0, totalSales: 0.0 });
+    let registeredUsersMap = safeGetJson('cc_v4_users', {});
+    let activeClientSession = safeGetJson('cc_v4_client_session', null);
+    let allOrdersMap = safeGetJson('cc_v4_orders_map', {});
     let currentTrackingOrderId = localStorage.getItem('cc_v4_active_order_id') || null;
-    let storeConfig = safeJson('cc_v4_config', { appVersionMajor: 8, appVersionMinor: 1, menuEditCount: 0 });
-    let latestReceiptData = null;
-    let authMode = 'login';
-    let secretClicks = 0;
-    let secretTimer = null;
-    let appliedPromo = null;
+
+    let activeSessionUser = null;
+    let appliedPromoObject = null;
+    let latestCompletedReceiptData = null;
+    let secretClickCount = 0;
+    let secretClickTimer = null;
+    let currentAuthMode = 'login';
 
     window.appState = {
         cartBranch: 0,
         currentCategory: "الكل",
-        cart: safeJson('cc_v4_cart', []),
+        cart: safeGetJson('cc_v4_cart', []),
         deliveryMode: "delivery",
         paymentMethod: "cash",
         selectedProduct: null,
@@ -911,7 +1289,7 @@
         document.querySelectorAll('.app-screen').forEach(s => s.classList.remove('active'));
         const screen = document.getElementById(id);
         if (screen) { screen.classList.add('active'); window.scrollTo(0,0); }
-        if (id === 'screen-cart') { renderCartContent(); recalculateCartSummary(); }
+        if (id === 'screen-cart') { applyClientAutofillToCart(); renderCartContent(); recalculateCartSummary(); }
         else if (id === 'screen-tracker') { renderTracker(); }
         refreshDock();
         checkActiveOrderBanner();
@@ -924,15 +1302,15 @@
 
     window.toggleDarkMode = function() {
         document.body.classList.toggle('dark-mode');
-        localStorage.setItem('cc_dark', document.body.classList.contains('dark-mode'));
+        localStorage.setItem('cc_theme', document.body.classList.contains('dark-mode') ? 'dark' : 'light');
     };
 
     window.handleSecretTrigger = function() {
-        secretClicks++;
-        clearTimeout(secretTimer);
-        secretTimer = setTimeout(() => secretClicks = 0, 1000);
-        if (secretClicks >= 4) {
-            secretClicks = 0;
+        secretClickCount++;
+        clearTimeout(secretClickTimer);
+        secretClickTimer = setTimeout(() => secretClickCount = 0, 1000);
+        if (secretClickCount >= 4) {
+            secretClickCount = 0;
             navigateRouter('screen-admin-login');
         }
     };
@@ -954,8 +1332,8 @@
         if (lbl) lbl.innerText = `v${storeConfig.appVersionMajor || 8}.${storeConfig.appVersionMinor || 1}.0`;
     }
 
-    /* سحابة Firebase */
-    window.onCloudProducts = (items) => { productsList = items; renderCategoryChips(); renderMenuProducts(); };
+    /* سحابة Firebase والمزامنة */
+    window.onCloudProducts = (items) => { productsList = items; renderCategoryChips(); renderMenuProducts(); renderAdminMenu(); };
     window.onCloudOrders = (map) => { allOrdersMap = map; checkActiveOrderBanner(); renderTracker(); renderAdminOrders(); };
     window.onCloudUsers = (map) => { registeredUsersMap = map; renderAdminUsers(); };
     window.onCloudSettings = (cfg) => { storeConfig = { ...storeConfig, ...cfg }; updateVersionDisplay(); };
@@ -1145,7 +1523,7 @@
 
     function populateTowns() {
         const sel = document.getElementById('cartTownSelect');
-        const b = STORE_CONFIG.branches[window.appState.cartBranch];
+        const b = storeConfig.branches[window.appState.cartBranch];
         sel.innerHTML = Object.entries(b.towns).map(([t, fee]) => `
             <option value="${fee}" data-town="${t}">${t} (${parseFloat(fee).toFixed(2)} د.أ)</option>
         `).join('');
@@ -1154,7 +1532,7 @@
 
     function renderPaymentMethods() {
         const container = document.getElementById('paymentOptionsContainer');
-        container.innerHTML = STORE_CONFIG.paymentMethods.map(m => `
+        container.innerHTML = storeConfig.paymentMethods.map(m => `
             <label class="custom-row" onclick="window.appState.paymentMethod='${m.id}'">
                 <div style="font-size:12px; font-weight:700;">${m.name}</div>
                 <input type="radio" name="pay" ${window.appState.paymentMethod === m.id ? 'checked' : ''}>
@@ -1165,7 +1543,7 @@
     window.applyUserPromoCode = function() {
         const code = document.getElementById('cartPromoInput').value.trim().toUpperCase();
         if (code === 'CORNER20') {
-            appliedPromo = { code: 'CORNER20', discount: 20 };
+            appliedPromoObject = { code: 'CORNER20', discount: 20 };
             document.getElementById('promoInputContainer').style.display = 'none';
             document.getElementById('promoSuccessBadge').style.display = 'flex';
             document.getElementById('promoSuccessDesc').innerText = "تم تطبيق خصم 20%";
@@ -1177,7 +1555,7 @@
     };
 
     window.removeActivePromoCode = function() {
-        appliedPromo = null;
+        appliedPromoObject = null;
         document.getElementById('promoInputContainer').style.display = 'flex';
         document.getElementById('promoSuccessBadge').style.display = 'none';
         recalculateCartSummary();
@@ -1185,11 +1563,11 @@
 
     window.recalculateCartSummary = function() {
         const sub = window.appState.cart.reduce((s, i) => s + i.lineTotal, 0);
-        let disc = appliedPromo ? (sub * (appliedPromo.discount / 100)) : 0;
+        let disc = appliedPromoObject ? (sub * (appliedPromoObject.discount / 100)) : 0;
         let del = (window.appState.deliveryMode === 'delivery') ? parseFloat(document.getElementById('cartTownSelect')?.value || 0) : 0;
 
         document.getElementById('sumSubtotal').innerText = sub.toFixed(2) + ' د.أ';
-        if (appliedPromo) {
+        if (appliedPromoObject) {
             document.getElementById('sumDiscountRow').style.display = 'flex';
             document.getElementById('sumDiscount').innerText = `-${disc.toFixed(2)} د.أ`;
         } else {
@@ -1207,6 +1585,10 @@
         }
     }
 
+    function applyClientAutofillToCart() {
+        autofillUser();
+    }
+
     /* إنشاء الفواتير بتسلسل يبدأ من 1 مع رموز فخمة وتأكيد الطلب */
     window.dispatchOrderToWhatsApp = function() {
         if (window.appState.cart.length === 0) return showToast("السلة فارغة");
@@ -1215,7 +1597,7 @@
         if (!name || !phone) return showToast("يرجى كتابة الاسم ورقم الهاتف");
 
         const sub = window.appState.cart.reduce((s, i) => s + i.lineTotal, 0);
-        let disc = appliedPromo ? (sub * (appliedPromo.discount / 100)) : 0;
+        let disc = appliedPromoObject ? (sub * (appliedPromoObject.discount / 100)) : 0;
         let del = 0, town = "", addr = "";
         const isDelivery = (window.appState.deliveryMode === 'delivery');
 
@@ -1234,7 +1616,7 @@
         const ordId = `#CC-${formattedNumber}`;
         const typeEmoji = isDelivery ? '🛵' : '🛍️';
 
-        const branch = STORE_CONFIG.branches[window.appState.cartBranch];
+        const branch = storeConfig.branches[window.appState.cartBranch];
 
         const payload = {
             id: ordId, clientName: name, clientPhone: phone, branchName: branch.name,
@@ -1271,7 +1653,7 @@
 
         window.appState.cart = [];
         localStorage.removeItem('cc_v4_cart');
-        appliedPromo = null;
+        appliedPromoObject = null;
         refreshDock();
 
         window.open(`https://wa.me/${branch.whatsapp}?text=${encodeURIComponent(msg)}`, '_blank');
@@ -1306,7 +1688,7 @@
         const isDelivery = (ord.deliveryMode === 'delivery');
 
         document.getElementById('trackerOrderId').innerText = ord.id;
-        document.getElementById('trackerDeliveryMode').innerText = isDelivery ? 'توصيل للبيت 🛵' : 'استلام من الفرع 🛍️️';
+        document.getElementById('trackerDeliveryMode').innerText = isDelivery ? 'توصيل للبيت 🛵' : 'استلام من الفرع 🛍';
 
         if (isDelivery) {
             document.getElementById('step3Label').innerText = "خرج مع الكابتن للتوصيل";
@@ -1542,6 +1924,7 @@
             renderAdminOrders();
             renderAdminMenu();
             renderAdminUsers();
+            renderThemePresets();
             showToast("أهلاً بك في لوحة الإدارة");
         } else {
             showToast("الرمز غير صحيح");
@@ -1571,7 +1954,7 @@
                         <span>${o.id} - ${o.clientName}</span>
                         <span style="color:var(--brand-accent);">${isDelivery ? '🛵 توصيل' : '🛍️ استلام'}</span>
                     </div>
-                    <div style="font-size:10px; color:var(--text-muted); margin:4px 0;">${o.items.map(i => `${i.qty}x${i.name}`).join(' | ')}</div>
+                    <div style="font-size:10px; color:var(--text-muted); margin:4px 0;">${o.items.map(i => `${i.qty}x ${i.name}`).join(' | ')}</div>
                     <div style="display:flex; justify-content:space-between; align-items:center; margin-top:6px;">
                         <span class="num-font" style="font-size:12px; font-weight:800;">${o.total.toFixed(2)} د.أ</span>
                         <div style="display:flex; gap:4px;">
@@ -1601,10 +1984,66 @@
         container.innerHTML = productsList.map(p => `
             <div style="display:flex; justify-content:space-between; align-items:center; padding:8px 0; border-bottom:1px solid var(--border);">
                 <div><strong>${p.name}</strong> <span style="font-size:11px; color:var(--text-muted);">(${p.price} د.أ)</span></div>
-                <button class="btn-brand-outline" style="width:auto; padding:3px 8px; font-size:10px; color:var(--danger);" onclick="deleteProduct('${p.id}')">حذف</button>
+                <div style="display:flex; gap:6px;">
+                    <button class="btn-brand-outline" style="width:auto; padding:3px 8px; font-size:10px;" onclick="openProductEditorModal('${p.id}')">تعديل</button>
+                    <button class="btn-brand-outline" style="width:auto; padding:3px 8px; font-size:10px; color:var(--danger);" onclick="deleteProduct('${p.id}')">حذف</button>
+                </div>
             </div>
         `).join('');
     }
+
+    window.openProductEditorModal = function(productId) {
+        if (productId) {
+            const p = productsList.find(x => x.id === productId);
+            document.getElementById('editProductIdField').value = p.id;
+            document.getElementById('editProductNameField').value = p.name;
+            document.getElementById('editProductCatField').value = p.category;
+            document.getElementById('editProductPriceField').value = p.price;
+            document.getElementById('editProductDescField').value = p.desc;
+            document.getElementById('editProductImgField').value = p.img;
+            document.getElementById('editProductHasSizesToggle').checked = (p.hasSizes === true);
+            document.getElementById('productEditorHeader').innerText = "تعديل الصنف";
+        } else {
+            document.getElementById('editProductIdField').value = "";
+            document.getElementById('editProductNameField').value = "";
+            document.getElementById('editProductPriceField').value = "";
+            document.getElementById('editProductDescField').value = "";
+            document.getElementById('editProductImgField').value = "";
+            document.getElementById('productEditorHeader').innerText = "إضافة صنف جديد";
+        }
+        navigateRouter('screen-product-editor');
+    };
+
+    window.saveProductEditorChanges = function() {
+        const id = document.getElementById('editProductIdField').value;
+        const name = document.getElementById('editProductNameField').value.trim();
+        const cat = document.getElementById('editProductCatField').value;
+        const price = parseFloat(document.getElementById('editProductPriceField').value);
+        const desc = document.getElementById('editProductDescField').value.trim();
+        const img = document.getElementById('editProductImgField').value.trim() || 'https://placehold.co/400x400/e2e8f0/475569?text=Coffee';
+        const hasSizes = document.getElementById('editProductHasSizesToggle').checked;
+
+        if (!name || isNaN(price)) return showToast("يرجى إدخال اسم وسعر صالحين");
+
+        const targetId = id || ('prod_' + Date.now());
+        const productPayload = { name, category: cat, price, desc, img, isAvailable: true, hasSizes };
+
+        if (id) {
+            const idx = productsList.findIndex(x => x.id === id);
+            if (idx !== -1) productsList[idx] = { ...productsList[idx], ...productPayload };
+        } else {
+            productsList.unshift({ id: targetId, ...productPayload });
+        }
+
+        localStorage.setItem('cc_v4_products', JSON.stringify(productsList));
+        trackMenuModifications();
+        renderCategoryChips();
+        renderMenuProducts();
+        renderAdminMenu();
+        navigateRouter('screen-admin-dashboard');
+        if (window.cloudSaveProduct) window.cloudSaveProduct(targetId, productPayload);
+        showToast("تم حفظ الصنف بنجاح");
+    };
 
     window.deleteProduct = function(id) {
         productsList = productsList.filter(x => x.id !== id);
@@ -1615,22 +2054,6 @@
         renderCategoryChips();
         renderMenuProducts();
         showToast("تم حذف الصنف");
-    };
-
-    window.promptNewProduct = function() {
-        const name = prompt("اسم الصنف الجديد:");
-        if (!name) return;
-        const price = parseFloat(prompt("السعر بالدينار:", "2.00")) || 2.00;
-        const cat = prompt("التصنيف (كوكتيلات، وافل، كريب، إلخ):", "كوكتيلات");
-        const p = { id: 'p_' + Date.now(), name, price, category: cat, isAvailable: true, img: 'https://placehold.co/100x100/e2e8f0/475569?text=Coffee' };
-        productsList.unshift(p);
-        localStorage.setItem('cc_v4_products', JSON.stringify(productsList));
-        if (window.cloudSaveProduct) window.cloudSaveProduct(p.id, p);
-        trackMenuModifications();
-        renderAdminMenu();
-        renderCategoryChips();
-        renderMenuProducts();
-        showToast("تمت إضافة الصنف وتحديث الإصدار");
     };
 
     function renderAdminUsers() {
@@ -1656,12 +2079,55 @@
     };
 
     window.saveAdminPricing = function() {
+        const med = parseFloat(document.getElementById('admMedExtra').value) || 0.5;
+        const lrg = parseFloat(document.getElementById('admLrgExtra').value) || 1.0;
+        storeConfig.pricingSettings.mediumAdd = med;
+        storeConfig.pricingSettings.largeAdd = lrg;
+        localStorage.setItem('cc_v4_config', JSON.stringify(storeConfig));
+        if (window.cloudSaveSettings) window.cloudSaveSettings(storeConfig);
         showToast("تم حفظ إعدادات الأسعار");
+    };
+
+    function renderThemePresets() {
+        const grid = document.getElementById('themePresetsGrid');
+        if (!grid) return;
+        const current = storeConfig.theme?.name || 'royal-blue';
+        grid.innerHTML = THEME_PRESETS.map(t => `
+            <div class="admin-theme-card ${t.id === current ? 'active' : ''}" onclick="applyTheme('${t.id}')">
+                <div style="font-weight:800; font-size:12px;">${t.name}</div>
+                <div style="height:6px; background:${t.accent}; border-radius:4px; margin-top:6px;"></div>
+            </div>
+        `).join('');
+    }
+
+    window.applyTheme = function(tId) {
+        const found = THEME_PRESETS.find(x => x.id === tId);
+        if (!found) return;
+        storeConfig.theme = found;
+        document.documentElement.style.setProperty('--brand-accent', found.accent);
+        document.documentElement.style.setProperty('--brand-primary', found.primary);
+        document.getElementById('currentThemeLabel').innerText = found.name;
+        localStorage.setItem('cc_v4_config', JSON.stringify(storeConfig));
+        if (window.cloudSaveSettings) window.cloudSaveSettings(storeConfig);
+        renderThemePresets();
+        showToast(`تم تفعيل ثيم: ${found.name}`);
+    };
+
+    /* تصدير النسخة الاحتياطية */
+    window.exportMenuDataBackup = function() {
+        const data = { products: productsList, orders: allOrdersMap, users: registeredUsersMap, config: storeConfig };
+        const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `CoffeeCorner_Backup_${Date.now()}.json`;
+        a.click();
+        showToast("تم تصدير ملف النسخة الاحتياطية");
     };
 
     /* بدء تشغيل التطبيق */
     document.addEventListener('DOMContentLoaded', () => {
-        if (localStorage.getItem('cc_dark') === 'true') document.body.classList.add('dark-mode');
+        if (localStorage.getItem('cc_theme') === 'dark') document.body.classList.add('dark-mode');
         renderCategoryChips();
         renderMenuProducts();
         refreshDock();
