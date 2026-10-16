@@ -17,6 +17,10 @@
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800;900&family=Tajawal:wght@400;500;700;800;900&display=swap" rel="stylesheet">
     
     <link rel="stylesheet" href="style.css">
+
+    <!-- مكتبات المزامنة السحابية اللحظية Firebase Live Cloud Engine -->
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
 </head>
 <body>
 
@@ -703,8 +707,11 @@
             <div class="admin-pane active" id="paneLiveOrders">
                 <div class="clean-card">
                     <div class="clean-title">
-                        <span>طلبات الزبائن النشطة</span>
+                        <span>طلبات الزبائن النشطة (سحابياً)</span>
                         <span class="num-font" id="adminActiveOrdersCount">0 طلب</span>
+                    </div>
+                    <div style="font-size:11px; color:var(--text-secondary); margin-bottom:10px;">
+                        * الطلبات المكتملة تختفي وتؤرشف تلقائياً بعد 15 دقيقة للحفاظ على نظافة وترتيب اللوحة.
                     </div>
                     <div id="adminLiveOrdersContainer"></div>
                 </div>
