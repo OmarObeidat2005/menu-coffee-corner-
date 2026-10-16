@@ -12,11 +12,11 @@
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="theme-color" content="#0c0806">
+<meta name="theme-color" content="#0c0a09">
 <link rel="icon" type="image/png" href="./logo.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Tajawal:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Tajawal:wght@400;500;700;800;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -36,13 +36,13 @@
 <div id="uiCurrentBranchStatusBadge" class="header-hours-badge badge-open">مفتوح الآن</div>
 </div>
 </div>
-<button class="header-btn" onclick="toggleAppTheme()" title="تبديل المظهر" aria-label="تبديل المظهر">
-<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+<button class="header-btn" onclick="navigateRouter('screen-order-tracking')" title="تتبع طلبي" aria-label="تتبع طلبي">
+<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
 </button>
 </header>
 <div class="search-container">
 <div class="search-bar">
-<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--text-secondary)" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--text-dim)" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
 <input type="text" class="search-input" id="menuSearchInput" oninput="renderMenuProducts()" placeholder="ابحث في القائمة...">
 </div>
 </div>
@@ -51,90 +51,99 @@
 <div class="product-grid" id="menuGridContainer"></div>
 </div>
 </div>
-<!-- 2. شاشة حسابي المنظمة -->
+<!-- 2. شاشة حسابي المتميزة المنظمة -->
 <div id="screen-user-profile" class="app-screen">
 <header class="header">
 <button class="header-btn" onclick="navigateRouter('screen-home')" aria-label="عودة">
 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
 </button>
-<div style="font-weight:700; font-size:14.5px;">حسابي</div>
+<div style="font-weight:800; font-size:15px; color:var(--brand-gold);">عضوية العميل</div>
 <div style="width:38px;"></div>
 </header>
-<div class="scrollable-content" style="padding: 14px 16px;">
-<div style="max-width: 540px; margin: 0 auto;">
-<!-- الكرت العلوي المنظم -->
-<div class="profile-overview-card">
-<div class="profile-header-row">
-<div class="profile-clean-avatar" id="profAvatarWrap">
+<div class="scrollable-content">
+<div style="max-width: 500px; margin: 0 auto;">
+<!-- هوية العضوية التنفيذية -->
+<div class="member-hero-card">
+<div class="member-identity-row">
+<div class="member-avatar" id="profAvatarWrap">
 <span id="profAvatarInitials">ع</span>
 </div>
-<div style="flex:1;">
-<div class="profile-clean-name" id="profDisplayName">العميل العزيز</div>
-<div class="profile-clean-sub" id="profDisplayPhone">079xxxxxxx</div>
+<div class="member-details">
+<div class="member-name" id="profDisplayName">العميل العزيز</div>
+<div class="member-phone num-font" id="profDisplayPhone">079xxxxxxx</div>
+<div class="member-tier-pill" id="profTierBadge">عضوية برونزية</div>
 </div>
 </div>
-<div class="clean-stats-grid">
-<div class="clean-stat-box">
-<div class="clean-stat-val num-font" id="profDisplayPoints">0</div>
-<div class="clean-stat-label">نقاط الولاء</div>
+<div class="member-stats-row">
+<div class="member-stat-cell">
+<div class="member-stat-number num-font" id="profDisplayPoints">0</div>
+<div class="member-stat-label">نقاط الولاء</div>
 </div>
-<div class="clean-stat-box">
-<div class="clean-stat-val num-font" id="profDisplayOrdersCount">0</div>
-<div class="clean-stat-label">إجمالي الطلبات</div>
+<div class="member-stat-cell">
+<div class="member-stat-number num-font" id="profDisplayOrdersCount">0</div>
+<div class="member-stat-label">الطلبات</div>
 </div>
-<div class="clean-stat-box">
-<div class="clean-stat-val num-font" id="profDisplayTotalSpent">0.00 د.أ</div>
-<div class="clean-stat-label">مجموع الإنفاق</div>
+<div class="member-stat-cell">
+<div class="member-stat-number num-font" id="profDisplayTotalSpent">0.00 د.أ</div>
+<div class="member-stat-label">إجمالي الإنفاق</div>
 </div>
 </div>
-<div class="badges-clean-wrap" id="profBadgesRow"></div>
+<div class="member-progress-block">
+<div style="display:flex; justify-content:space-between; font-size:11px; font-weight:700; color:var(--text-secondary);">
+<span>المسار للترقية الذهبية</span>
+<span class="num-font" id="profPointsGoalLabel">0 / 50 نقطة</span>
 </div>
-<!-- تحديث البيانات -->
+<div class="member-progress-bar">
+<div class="member-progress-fill" id="profProgressBar" style="width: 0%;"></div>
+</div>
+</div>
+</div>
+<!-- تحديث البيانات الهادئ بدون خلفيات فاقعة -->
 <div class="clean-card">
-<div class="clean-title">تعديل بيانات الحساب</div>
-<div style="display:flex; flex-direction:column; gap:10px;">
+<div class="clean-title">البيانات الشخصية المحفوظة</div>
+<div style="display:flex; flex-direction:column; gap:12px;">
 <div>
-<span style="font-size:11px; font-weight:600; color:var(--text-secondary);">الصورة الشخصية:</span>
-<div style="display:flex; gap:8px; align-items:center; margin-top:4px;">
+<span style="font-size:11.5px; font-weight:700; color:var(--text-secondary);">الصورة الشخصية:</span>
+<div style="display:flex; gap:10px; align-items:center; margin-top:6px;">
 <input type="file" id="userProfileFileInput" accept="image/*" style="display:none;" onchange="handleImageUploadDirect(event, 'userAvatarDataUrlInput', 'previewUserAvatarUI')">
 <button type="button" class="btn-brand-outline" onclick="document.getElementById('userProfileFileInput').click()">اختيار صورة</button>
-<img id="previewUserAvatarUI" src="" style="width:34px; height:34px; border-radius:50%; object-fit:cover; display:none;" alt="معاينة">
+<img id="previewUserAvatarUI" src="" style="width:36px; height:36px; border-radius:50%; object-fit:cover; display:none; border:1px solid var(--brand-gold);" alt="معاينة">
 </div>
 <input type="hidden" id="userAvatarDataUrlInput">
 </div>
 <div>
-<span style="font-size:11px; font-weight:600; color:var(--text-secondary);">الاسم:</span>
-<input type="text" class="ios-input-field" id="profEditName">
+<span style="font-size:11.5px; font-weight:700; color:var(--text-secondary);">الاسم:</span>
+<input type="text" class="ios-input-field" id="profEditName" placeholder="الاسم الكامل">
 </div>
 <div>
-<span style="font-size:11px; font-weight:600; color:var(--text-secondary);">العنوان المعتاد للتوصيل:</span>
-<input type="text" class="ios-input-field" id="profEditAddress" placeholder="الحي، الشارع، المعلم">
+<span style="font-size:11.5px; font-weight:700; color:var(--text-secondary);">العنوان المعتاد:</span>
+<input type="text" class="ios-input-field" id="profEditAddress" placeholder="الحي، المعلم، الشارع">
 </div>
-<button class="btn-brand-solid" onclick="saveUpdatedClientProfile()">تثبيت التعديلات</button>
+<button class="btn-brand-solid" style="margin-top:4px;" onclick="saveUpdatedClientProfile()">تثبيت التعديلات</button>
 </div>
 </div>
-<!-- الطلبات السابقة -->
+<!-- سجل الطلبات السابقة -->
 <div class="clean-card">
-<div class="clean-title">سجل الطلبات السابقة</div>
+<div class="clean-title">سجل الطلبات الأخير</div>
 <div id="profCustomerOrdersHistoryList"></div>
 </div>
-<button class="btn-brand-outline" style="width:100%; color:var(--danger); border-color:var(--danger); font-weight:600; padding:10px;" onclick="logoutClientSession()">
+<button class="btn-brand-outline" style="width:100%; color:var(--status-danger); border-color:rgba(239, 68, 68, 0.4); font-weight:700; padding:11px;" onclick="logoutClientSession()">
 تسجيل الخروج من الحساب
 </button>
 </div>
 </div>
 </div>
-<!-- 3. شاشة شاركنا بصورة مع خيار الحذف ومعاينة كاملة -->
+<!-- 3. شاشة شاركنا بصورة (معاينة كاملة وحذف فوري) -->
 <div id="screen-moments" class="app-screen">
 <header class="header">
 <button class="header-btn" onclick="navigateRouter('screen-home')" aria-label="عودة">
 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
 </button>
-<div style="font-weight:700; font-size:14.5px;">تجارب الزبائن</div>
-<button class="btn-brand-solid" style="padding: 6px 12px; font-size: 11px;" onclick="openNewMomentModal()">+ نشر تجربة</button>
+<div style="font-weight:800; font-size:15px;">تجارب الزبائن</div>
+<button class="btn-brand-solid" style="padding: 6px 14px; font-size: 11.5px;" onclick="openNewMomentModal()">+ نشر تجربة</button>
 </header>
-<div class="scrollable-content" style="padding: 14px 16px;">
-<div style="max-width: 520px; margin: 0 auto;" id="communityFeedContainer"></div>
+<div class="scrollable-content">
+<div style="max-width: 500px; margin: 0 auto;" id="communityFeedContainer"></div>
 </div>
 </div>
 <!-- 4. شاشة تتبع طلبي -->
@@ -143,11 +152,11 @@
 <button class="header-btn" onclick="navigateRouter('screen-home')" aria-label="عودة">
 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
 </button>
-<div style="font-weight:700; font-size:14.5px;">تتبع طلبي</div>
+<div style="font-weight:800; font-size:15px;">تتبع طلبي</div>
 <div style="width:38px;"></div>
 </header>
-<div class="scrollable-content" style="padding: 16px;">
-<div style="max-width: 520px; margin: 0 auto;" id="activeOrderTrackingView"></div>
+<div class="scrollable-content">
+<div style="max-width: 500px; margin: 0 auto;" id="activeOrderTrackingView"></div>
 </div>
 </div>
 <!-- 5. شاشة العروض -->
@@ -156,88 +165,99 @@
 <button class="header-btn" onclick="navigateRouter('screen-home')" aria-label="عودة">
 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
 </button>
-<div style="font-weight:700; font-size:14.5px;">العروض</div>
+<div style="font-weight:800; font-size:15px;">العروض الحالية</div>
 <div style="width:38px;"></div>
 </header>
-<div class="scrollable-content" style="padding: 16px;">
-<div style="max-width: 520px; margin: 0 auto;" id="clientOffersListContainer"></div>
+<div class="scrollable-content">
+<div style="max-width: 500px; margin: 0 auto;" id="clientOffersListContainer"></div>
 </div>
 </div>
-<!-- 6. شاشة طريقة الاستخدام المنظمة -->
+<!-- 6. شاشة طريقة الاستخدام -->
 <div id="screen-usage-guide" class="app-screen">
 <header class="header">
 <button class="header-btn" onclick="navigateRouter('screen-home')" aria-label="عودة">
 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
 </button>
-<div style="font-weight:700; font-size:14.5px;">طريقة الاستخدام</div>
+<div style="font-weight:800; font-size:15px;">طريقة الاستخدام</div>
 <div style="width:38px;"></div>
 </header>
-<div class="scrollable-content" style="padding: 16px;">
-<div style="max-width: 520px; margin: 0 auto;">
+<div class="scrollable-content">
+<div style="max-width: 500px; margin: 0 auto;">
 <div class="clean-card">
-<div class="clean-title">خطوات الاستخدام والطلب</div>
+<div class="clean-title">خطوات الاستخدام والطلب الذكي</div>
 <div class="usage-step-item">
-<div class="usage-step-title">1. تسجيل الحساب وتجميع الأوسمة</div>
-<div class="usage-step-desc">سجّل برقم هاتفك لربط طلباتك ونقاط الولاء تلقائياً، والحصول على أوسمة تميز عند تكرار الطلب.</div>
-</div>
-<div class="usage-step-item">
-<div class="usage-step-title">2. اختيار الأصناف والمكس الذكي</div>
-<div class="usage-step-desc">اختر مشروباتك بالحجم المناسب، أو اجمع نكهات متعددة للوافل والكريب مع احتساب سعر النكهة الأعلى فقط دون تكلفة إضافية.</div>
+<div class="usage-step-title">1. تسجيل الحساب وتجميع النقاط</div>
+<div class="usage-step-desc">سجّل برقم هاتفك لربط طلباتك ونقاط الولاء تلقائياً، والترقية نحو مستويات العضوية الخاصة مع كل دينار تنفقه.</div>
 </div>
 <div class="usage-step-item">
-<div class="usage-step-title">3. تأكيد الطلب وتتبعه مباشرة</div>
-<div class="usage-step-desc">أرسل تفاصيل طلبك مباشرة للفرع عبر واتساب، ثم تابع مراحل تحضيره خطوة بخطوة من شاشة "تتبع طلبي".</div>
+<div class="usage-step-title">2. اختيار الأصناف والمكس الذكي للحلويات</div>
+<div class="usage-step-desc">اختر مشروباتك بالحجم المطلوب، أو اجمع حتى 3 نكهات للوافل والكريب مع احتساب سعر النكهة الأعلى فقط دون أي تكلفة خفية.</div>
 </div>
 <div class="usage-step-item">
-<div class="usage-step-title">4. مشاركة تجربتك بصورة</div>
-<div class="usage-step-desc">التقط صورة لطلبك وشاركها في مجتمع الكافيه مع تقييمك بالنجوم لتحصل على تفاعل وإعجابات الزبائن.</div>
+<div class="usage-step-title">3. إرسال الطلب والتتبع اللحظي</div>
+<div class="usage-step-desc">أرسل تفاصيل طلبك مباشرة للفرع عبر واتساب بضغطة زر، ثم تابع مراحل تحضيره خطوة بخطوة من شاشة "تتبع طلبي".</div>
+</div>
+<div class="usage-step-item">
+<div class="usage-step-title">4. مشاركة تجربتك بالصور</div>
+<div class="usage-step-desc">التقط صورة لطلبك وشاركها في مجتمع الكافيه مع تقييمك بالنجوم، واستمتع بتفاعل وإعجابات مجتمع عشاق القهوة.</div>
 </div>
 </div>
 </div>
 </div>
 </div>
-<!-- 7. شاشة المطور المنظمة -->
+<!-- 7. شاشة المطور الفاخرة المتميزة (المهندس عمر عبيدات) -->
 <div id="screen-developer" class="app-screen">
 <header class="header">
 <button class="header-btn" onclick="navigateRouter('screen-home')" aria-label="عودة">
 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
 </button>
-<div style="font-weight:700; font-size:14.5px;">المطور</div>
+<div style="font-weight:800; font-size:15px; color:var(--brand-gold);">الملف الهندسي للمطور</div>
 <div style="width:38px;"></div>
 </header>
-<div class="scrollable-content" style="padding: 16px;">
-<div style="max-width: 520px; margin: 0 auto;">
-<div class="developer-clean-card">
-<div class="developer-img-wrap">
+<div class="scrollable-content">
+<div style="max-width: 500px; margin: 0 auto;">
+<div class="developer-executive-card">
+<div class="developer-portrait-frame">
 <img src="" id="uiDevPhoto" onerror="this.src='https://placehold.co/400x400/18110b/ffffff?text=Omar'" alt="صورة المطور">
 </div>
-<div class="developer-name" id="uiDevName">المهندس عمر عبيدات</div>
-<div class="developer-role" id="uiDevRole">Lead Systems Architect & Full-Stack Engineer</div>
-<p class="developer-bio" id="uiDevBio">
-تصميم وتطوير البنية البرمجية الشاملة لكافيه كورنر بنظام فوري للطلبات والمزامنة السحابية والتتبع المباشر.
+<div class="developer-headline" id="uiDevName">المهندس عمر عبيدات</div>
+<div class="developer-subhead" id="uiDevRole">Lead Systems Architect & Full-Stack Engineer</div>
+<div class="developer-competencies">
+<span class="competency-tag">High-Performance Web</span>
+<span class="competency-tag">Real-Time State Sync</span>
+<span class="competency-tag">Mobile UX Architecture</span>
+<span class="competency-tag">POS & Live Telemetry</span>
+</div>
+<p class="developer-statement" id="uiDevBio">
+تخطيط وتطوير المنظومة البرمجية المتكاملة لكافيه كورنر بنظام فوري ذكي، يتضمن معالجة متقدمة لرفع وضغط الصور من الهواتف، تتبع حي لمراحل التحضير، ومحرك بيانات تفاعلي لحسابات العملاء.
 </p>
-<div class="developer-links-row">
-<a href="" target="_blank" id="btnDevWhatsappLink" class="btn-brand-solid">واتساب المطور</a>
-<a href="" target="_blank" id="btnDevInstaLink" class="btn-brand-outline">إنستغرام</a>
+<div class="dev-terminal-box">
+<div>$ system.status: operational [v7.7.0]</div>
+<div>$ latency: 18ms | cloud_sync: active</div>
+<div>$ architecture: Zero-Glitch Mobile Native</div>
+</div>
+<div class="developer-actions">
+<a href="" target="_blank" id="btnDevWhatsappLink" class="btn-brand-solid">تواصل عبر واتساب</a>
+<a href="" target="_blank" id="btnDevInstaLink" class="btn-brand-outline">إنستغرام المطور</a>
 </div>
 </div>
 </div>
 </div>
 </div>
-<!-- 8. تفاصيل المنتج -->
+<!-- 8. تفاصيل المنتج والتخصيص -->
 <div id="screen-product" class="app-screen">
-<div style="max-width:540px; margin:0 auto; width:100%; display:flex; flex-direction:column; min-height:100vh; position:relative;">
+<div style="max-width:500px; margin:0 auto; width:100%; display:flex; flex-direction:column; min-height:100vh; position:relative;">
 <button class="header-btn" style="position:absolute; top:12px; right:12px; z-index:10;" onclick="navigateRouter('screen-home')" aria-label="إغلاق">
 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
 </button>
-<div class="scrollable-content">
+<div class="scrollable-content" style="padding:0 0 100px;">
 <div style="width:100%; height:240px; background:#000; display:flex; align-items:center; justify-content:center;">
 <img src="" id="psHeroImg" style="max-width:100%; max-height:240px; object-fit:contain;" alt="صورة الصنف">
 </div>
 <div style="padding: 16px;">
 <h1 style="font-size:18px; font-weight:800; margin-bottom:4px;" id="psTitle">اسم الصنف</h1>
 <p style="font-size:12px; color:var(--text-secondary); line-height:1.5;" id="psDesc">الوصف</p>
-<div class="num-font" style="font-size:17px; font-weight:800; color:var(--brand-accent); margin-top:6px;" id="psBasePrice">0.00 د.أ</div>
+<div class="num-font" style="font-size:17px; font-weight:800; color:var(--brand-gold); margin-top:6px;" id="psBasePrice">0.00 د.أ</div>
 </div>
 <div class="clean-card" style="margin: 0 16px 12px;" id="psSizeGroup">
 <div class="clean-title">الحجم المطلوب</div>
@@ -255,8 +275,8 @@
 <textarea class="ios-textarea-field" id="psNotes" placeholder="مثال: سكر خفيف، بدون ثلج..."></textarea>
 </div>
 </div>
-<div style="position:sticky; bottom:0; padding:10px 16px calc(12px + env(safe-area-inset-bottom, 10px)); background:var(--header-bg); border-top:1px solid var(--border-light); display:flex; gap:10px;">
-<div style="display:flex; align-items:center; background:var(--segment-bg); border-radius:var(--radius-sm); border:1px solid var(--border-light);">
+<div style="position:sticky; bottom:0; padding:10px 16px calc(12px + env(safe-area-inset-bottom, 10px)); background:var(--bg-surface); border-top:1px solid var(--border-subtle); display:flex; gap:10px; z-index:100;">
+<div style="display:flex; align-items:center; background:var(--bg-card); border-radius:var(--radius-sm); border:1px solid var(--border-subtle);">
 <button class="header-btn" style="width:34px; height:34px;" onclick="adjustProductQty(-1)">−</button>
 <div class="num-font" style="font-size:14px; font-weight:800; min-width:34px; text-align:center;" id="psQtyDisplay">1</div>
 <button class="header-btn" style="width:34px; height:34px;" onclick="adjustProductQty(1)">+</button>
@@ -273,30 +293,30 @@
 <button class="header-btn" onclick="navigateRouter('screen-home')" aria-label="عودة">
 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
 </button>
-<div style="font-weight:700; font-size:14.5px;">سلة المشتريات</div>
+<div style="font-weight:800; font-size:15px;">سلة المشتريات</div>
 <div style="width:38px;"></div>
 </header>
-<div class="scrollable-content" style="padding: 14px 16px;">
-<div style="max-width: 540px; margin: 0 auto;">
+<div class="scrollable-content">
+<div style="max-width: 500px; margin: 0 auto;">
 <div class="clean-card">
 <div class="clean-title">الأصناف المطلوبة</div>
 <div id="cartItemsList"></div>
 </div>
 <div class="clean-card">
 <div class="clean-title">فرع الطلب</div>
-<div style="display:flex; gap:6px; margin-bottom:10px;">
+<div style="display:flex; gap:6px; margin-bottom:12px;">
 <button class="btn-brand-outline" style="flex:1;" id="btnBranch0" onclick="switchCartBranch(0)">كفرسوم</button>
 <button class="btn-brand-outline" style="flex:1;" id="btnBranch1" onclick="switchCartBranch(1)">سما الروسان</button>
 </div>
 <div class="clean-title">طريقة الاستلام</div>
-<div style="display:flex; gap:6px; margin-bottom:10px;">
+<div style="display:flex; gap:6px; margin-bottom:12px;">
 <button class="btn-brand-outline" style="flex:1;" id="btnModeDelivery" onclick="switchDeliveryMode('delivery')">توصيل</button>
 <button class="btn-brand-outline" style="flex:1;" id="btnModePickup" onclick="switchDeliveryMode('pickup')">استلام من الفرع</button>
 </div>
 <div id="deliveryFieldsArea">
 <div style="display:flex; flex-direction:column; gap:8px;">
 <select class="ios-input-field" id="cartTownSelect" onchange="recalculateCartSummary()"></select>
-<input type="text" class="ios-input-field" id="cartAddressInput" placeholder="تفاصيل العنوان">
+<input type="text" class="ios-input-field" id="cartAddressInput" placeholder="تفاصيل العنوان (الحي، المعلم)">
 </div>
 </div>
 </div>
@@ -308,13 +328,13 @@
 <div class="clean-title">كود الخصم</div>
 <div style="display:flex; gap:8px;" id="promoInputContainer">
 <input type="text" class="ios-input-field num-font" id="cartPromoInput" placeholder="رمز الخصم" style="text-transform:uppercase;">
-<button class="btn-brand-solid" style="padding:0 14px;" onclick="applyUserPromoCode()">تطبيق</button>
+<button class="btn-brand-solid" style="padding:0 16px;" onclick="applyUserPromoCode()">تطبيق</button>
 </div>
-<div id="promoSuccessBadge" style="display:none; justify-content:space-between; margin-top:8px; font-size:12px; font-weight:700; color:var(--brand-accent);">
+<div id="promoSuccessBadge" style="display:none; justify-content:space-between; margin-top:8px; font-size:12px; font-weight:700; color:var(--brand-gold);">
 <span id="promoSuccessDesc"></span>
-<span style="color:var(--danger); cursor:pointer;" onclick="removeActivePromoCode()">إلغاء</span>
+<span style="color:var(--status-danger); cursor:pointer;" onclick="removeActivePromoCode()">إلغاء</span>
 </div>
-<div id="promoErrorAlert" style="font-size:11.5px; color:var(--danger); margin-top:4px;"></div>
+<div id="promoErrorAlert" style="font-size:11.5px; color:var(--status-danger); margin-top:4px;"></div>
 </div>
 <div class="clean-card">
 <div class="clean-title">بيانات العميل</div>
@@ -329,7 +349,7 @@
 <span>مجموع الأصناف</span>
 <span class="num-font" id="sumSubtotal">0.00 د.أ</span>
 </div>
-<div style="display:none; justify-content:space-between; font-size:12.5px; color:var(--success); margin-bottom:6px;" id="sumDiscountRow">
+<div style="display:none; justify-content:space-between; font-size:12.5px; color:var(--status-success); margin-bottom:6px;" id="sumDiscountRow">
 <span>الخصم</span>
 <span class="num-font" id="sumDiscount">-0.00 د.أ</span>
 </div>
@@ -337,12 +357,12 @@
 <span>أجور التوصيل</span>
 <span class="num-font" id="sumDelivery">0.00 د.أ</span>
 </div>
-<div style="display:flex; justify-content:space-between; font-size:15px; font-weight:800; border-top:1px solid var(--border-light); padding-top:8px;">
+<div style="display:flex; justify-content:space-between; font-size:15px; font-weight:800; border-top:1px solid var(--border-subtle); padding-top:8px;">
 <span>الإجمالي</span>
-<span class="num-font" id="sumTotal" style="color:var(--brand-accent);">0.00 د.أ</span>
+<span class="num-font" id="sumTotal" style="color:var(--brand-gold);">0.00 د.أ</span>
 </div>
 </div>
-<button class="btn-brand-solid" style="width:100%; padding:12px;" onclick="dispatchOrderAndInitiateTracking()">
+<button class="btn-brand-solid" style="width:100%; padding:13px;" onclick="dispatchOrderAndInitiateTracking()">
 تأكيد وإرسال الطلب عبر واتساب
 </button>
 </div>
@@ -354,10 +374,10 @@
 <button class="header-btn" onclick="navigateRouter('screen-home')" aria-label="عودة">
 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
 </button>
-<div style="font-weight:700; font-size:14.5px;">تسجيل الدخول</div>
+<div style="font-weight:800; font-size:15px;">تسجيل الدخول</div>
 <div style="width:38px;"></div>
 </header>
-<div class="scrollable-content" style="padding: 16px;">
+<div class="scrollable-content">
 <div class="clean-card" style="max-width:380px; margin:20px auto 0;">
 <div style="display:flex; gap:6px; margin-bottom:14px;">
 <button class="btn-brand-outline" style="flex:1;" id="tabAuthLogin" onclick="switchAuthTabMode('login')">تسجيل الدخول</button>
@@ -365,34 +385,34 @@
 </div>
 <div id="authRegisterExtraFields" style="display:none; flex-direction:column; gap:8px; margin-bottom:8px;">
 <div>
-<span style="font-size:11px; font-weight:600; color:var(--text-secondary);">الاسم الكريم:</span>
+<span style="font-size:11px; font-weight:700; color:var(--text-secondary);">الاسم الكريم:</span>
 <input type="text" class="ios-input-field" id="authInputName" placeholder="الاسم الكامل">
 </div>
 <div>
-<span style="font-size:11px; font-weight:600; color:var(--text-secondary);">العنوان المعتاد:</span>
-<input type="text" class="ios-input-field" id="authInputAddress" placeholder="الحي، الشارع، المعلم">
+<span style="font-size:11px; font-weight:700; color:var(--text-secondary);">العنوان المعتاد:</span>
+<input type="text" class="ios-input-field" id="authInputAddress" placeholder="الحي، المعلم">
 </div>
 </div>
 <div style="display:flex; flex-direction:column; gap:8px; margin-bottom:12px;">
 <div>
-<span style="font-size:11px; font-weight:600; color:var(--text-secondary);">رقم الهاتف:</span>
+<span style="font-size:11px; font-weight:700; color:var(--text-secondary);">رقم الهاتف:</span>
 <input type="tel" class="ios-input-field num-font" id="authInputPhone" placeholder="079xxxxxxx">
 </div>
 <div>
-<span style="font-size:11px; font-weight:600; color:var(--text-secondary);">رمز المرور (PIN):</span>
+<span style="font-size:11px; font-weight:700; color:var(--text-secondary);">رمز المرور (PIN):</span>
 <input type="password" class="ios-input-field num-font" id="authInputPin" placeholder="••••">
 </div>
 </div>
 <button class="btn-brand-solid" style="width:100%;" id="authSubmitBtn" onclick="handleAuthSubmitAction()">دخول</button>
-<div id="authStatusAlert" style="font-size:11.5px; font-weight:600; text-align:center; color:var(--danger); margin-top:8px;"></div>
+<div id="authStatusAlert" style="font-size:11.5px; font-weight:700; text-align:center; color:var(--status-danger); margin-top:8px;"></div>
 </div>
 </div>
 </div>
 <!-- 11. لوحة الإدارة -->
 <div id="screen-admin-dashboard" class="app-screen">
 <header class="header">
-<span style="font-size:13.5px; font-weight:800;" id="adminGreetingLabel">لوحة الإدارة</span>
-<button class="btn-brand-outline" style="padding:4px 8px; font-size:11px; color:var(--danger); border-color:var(--danger);" onclick="exitAdminSession()">خروج</button>
+<span style="font-size:14px; font-weight:800; color:var(--brand-gold);" id="adminGreetingLabel">لوحة الإدارة</span>
+<button class="btn-brand-outline" style="padding:4px 8px; font-size:11px; color:var(--status-danger); border-color:var(--status-danger);" onclick="exitAdminSession()">خروج</button>
 </header>
 <div class="admin-nav-tabs">
 <div class="admin-tab-chip active" id="tabHeadLiveOrders" onclick="switchAdminTabPane('liveOrders')">الطلبات</div>
@@ -431,18 +451,18 @@
 </div>
 </div>
 <div class="admin-pane" id="paneAnalytics">
-<div class="clean-stats-grid" style="margin-bottom:12px;">
-<div class="clean-stat-box">
-<div class="clean-stat-val num-font" id="statRealRevenue">0.00 د.أ</div>
-<div class="clean-stat-label">المبيعات</div>
+<div class="member-stats-row" style="margin-bottom:12px;">
+<div class="member-stat-cell">
+<div class="member-stat-number num-font" id="statRealRevenue">0.00 د.أ</div>
+<div class="member-stat-label">المبيعات</div>
 </div>
-<div class="clean-stat-box">
-<div class="clean-stat-val num-font" id="statRealOrdersCount">0</div>
-<div class="clean-stat-label">الطلبات</div>
+<div class="member-stat-cell">
+<div class="member-stat-number num-font" id="statRealOrdersCount">0</div>
+<div class="member-stat-label">الطلبات</div>
 </div>
-<div class="clean-stat-box">
-<div class="clean-stat-val num-font" id="statRealAverageTicket">0.00 د.أ</div>
-<div class="clean-stat-label">متوسط الطلب</div>
+<div class="member-stat-cell">
+<div class="member-stat-number num-font" id="statRealAverageTicket">0.00 د.أ</div>
+<div class="member-stat-label">متوسط الطلب</div>
 </div>
 </div>
 <div class="clean-card">
@@ -549,10 +569,10 @@
 <button class="header-btn" onclick="navigateRouter('screen-home')" aria-label="عودة">
 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
 </button>
-<div style="font-weight:700; font-size:14.5px;">بوابة الإدارة</div>
+<div style="font-weight:800; font-size:15px;">بوابة الإدارة</div>
 <div style="width:38px;"></div>
 </header>
-<div class="scrollable-content" style="padding: 20px;">
+<div class="scrollable-content">
 <div class="clean-card" style="max-width:340px; margin:40px auto 0; text-align:center;">
 <div style="font-size:15px; font-weight:800; margin-bottom:12px;">تسجيل دخول الإدارة</div>
 <div style="display:flex; flex-direction:column; gap:10px; margin-bottom:12px;">
@@ -572,10 +592,10 @@
 <button class="header-btn" onclick="navigateRouter('screen-admin-dashboard')" aria-label="عودة">
 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
 </button>
-<div style="font-weight:700; font-size:14.5px;" id="productEditorHeader">تعديل الصنف</div>
+<div style="font-weight:800; font-size:15px;" id="productEditorHeader">تعديل الصنف</div>
 <div style="width:38px;"></div>
 </header>
-<div class="scrollable-content" style="padding: 16px;">
+<div class="scrollable-content">
 <div class="clean-card" style="max-width:440px; margin:0 auto;">
 <input type="hidden" id="editProductIdField">
 <div style="display:flex; flex-direction:column; gap:8px;">
@@ -623,27 +643,26 @@
 <div id="modal-new-moment" class="modal-backdrop">
 <div class="modal-dialog-box">
 <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
-<div style="font-weight:700; font-size:14px; color:var(--brand-accent);">مشاركة تجربة وصورة</div>
+<div style="font-weight:800; font-size:15px; color:var(--brand-gold);">مشاركة تجربة وصورة</div>
 <button onclick="closeNewMomentModal()" aria-label="إغلاق">
 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
 </button>
 </div>
-<div style="display:flex; flex-direction:column; gap:10px;">
+<div style="display:flex; flex-direction:column; gap:12px;">
 <div>
-<span style="font-size:11px; font-weight:600; color:var(--text-secondary);">صورتك في الكافيه:</span>
-<div style="display:flex; gap:8px; align-items:center; margin-top:4px;">
+<span style="font-size:11.5px; font-weight:700; color:var(--text-secondary);">صورتك في الكافيه:</span>
+<div style="display:flex; gap:8px; align-items:center; margin-top:6px;">
 <input type="file" id="momentPhotoFileInput" accept="image/*" style="display:none;" onchange="handleImageUploadDirect(event, 'momentPhotoDataUrlInput', 'previewMomentPhoto')">
 <button type="button" class="btn-brand-outline" onclick="document.getElementById('momentPhotoFileInput').click()">اختيار صورة من هاتفي</button>
 </div>
-<!-- صندوق المعاينة الكاملة للصورة قبل النشر -->
 <div class="upload-preview-box" id="momentPreviewBox">
 <img id="previewMomentPhoto" src="" alt="معاينة كاملة للصورة">
 </div>
 <input type="hidden" id="momentPhotoDataUrlInput">
 </div>
 <div>
-<span style="font-size:11px; font-weight:600; color:var(--text-secondary);">التقييم:</span>
-<div style="display:flex; gap:6px; font-size:22px; cursor:pointer; color:#eab308; margin-top:2px;" id="momentStarRatingPickers">
+<span style="font-size:11.5px; font-weight:700; color:var(--text-secondary);">التقييم:</span>
+<div style="display:flex; gap:6px; font-size:24px; cursor:pointer; color:#eab308; margin-top:2px;" id="momentStarRatingPickers">
 <span onclick="setMomentStarRating(1)">★</span>
 <span onclick="setMomentStarRating(2)">★</span>
 <span onclick="setMomentStarRating(3)">★</span>
@@ -652,71 +671,64 @@
 </div>
 </div>
 <div>
-<span style="font-size:11px; font-weight:600; color:var(--text-secondary);">الصنف أو الفرع:</span>
-<input type="text" class="ios-input-field" id="momentItemOrBranchInput" placeholder="مثال: وافل نوتيلا في فرع كفرسوم">
+<span style="font-size:11.5px; font-weight:700; color:var(--text-secondary);">الصنف أو الفرع:</span>
+<input type="text" class="ios-input-field" id="momentItemOrBranchInput" placeholder="مثال: وافل بلجيكي في فرع كفرسوم">
 </div>
 <div>
-<span style="font-size:11px; font-weight:600; color:var(--text-secondary);">رأيك وتجربتك:</span>
-<textarea class="ios-textarea-field" id="momentCommentInput" placeholder="اكتب تعليقك..."></textarea>
+<span style="font-size:11.5px; font-weight:700; color:var(--text-secondary);">رأيك وتجربتك:</span>
+<textarea class="ios-textarea-field" id="momentCommentInput" placeholder="اكتب انطباعك عن الجودة والخدمة..."></textarea>
 </div>
 <button class="btn-brand-solid" onclick="submitNewCustomerMoment()">نشر في المجتمع</button>
 </div>
 </div>
 </div>
 </div>
-<!-- القائمة الجانبية بالترتيب الدقيق المطلوب -->
+<!-- القائمة الجانبية بالترتيب الدقيق المعتمد -->
 <div class="sidebar-mask" id="sidebarMask" onclick="closeSidebarDrawer()"></div>
 <div class="sidebar-drawer" id="sidebarDrawer">
 <div class="sidebar-top">
-<div style="font-size:14px; font-weight:800; color:var(--brand-accent);">COFFEE CORNER</div>
+<div style="font-size:15px; font-weight:800; color:var(--brand-gold);">COFFEE CORNER</div>
 <button class="header-btn" onclick="closeSidebarDrawer()" style="width:32px; height:32px;" aria-label="إغلاق">
 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
 </button>
 </div>
 <div class="sidebar-items">
-<!-- 1. الصفحة الرئيسية -->
 <div class="sidebar-link" onclick="navigateRouter('screen-home'); closeSidebarDrawer();">
 <span>الصفحة الرئيسية</span>
 </div>
-<!-- 2. حسابي -->
 <div class="sidebar-link" onclick="handleUserAccountHeaderClick(); closeSidebarDrawer();">
 <span>حسابي</span>
 </div>
-<!-- 3. شاركنا بصورة -->
 <div class="sidebar-link" onclick="navigateRouter('screen-moments'); closeSidebarDrawer();">
 <span>شاركنا بصورة</span>
 </div>
-<!-- 4. تتبع طلبي -->
 <div class="sidebar-link" onclick="navigateRouter('screen-order-tracking'); closeSidebarDrawer();">
 <span>تتبع طلبي</span>
 </div>
-<!-- 5. العروض -->
 <div class="sidebar-link" onclick="navigateRouter('screen-offers'); closeSidebarDrawer();">
 <span>العروض</span>
 </div>
-<!-- 6. طريقة الاستخدام -->
 <div class="sidebar-link" onclick="navigateRouter('screen-usage-guide'); closeSidebarDrawer();">
 <span>طريقة الاستخدام</span>
 </div>
-<!-- 7. المطور -->
 <div class="sidebar-link" onclick="navigateRouter('screen-developer'); closeSidebarDrawer();">
 <span>المطور</span>
 </div>
 </div>
-<!-- رقم الإصدار من تحت -->
 <div class="sidebar-version-badge">
-الإصدار: <span class="num-font" id="sidebarVersionLabel">v7.6.0</span>
+الإصدار: <span class="num-font" id="sidebarVersionLabel">v7.7.1</span>
 </div>
 </div>
 <div class="floating-dock" id="floatingCartDock" onclick="navigateRouter('screen-cart')">
-<div style="display:flex; align-items:center; gap:8px;">
+<div style="display:flex; align-items:center; gap:10px;">
 <div class="dock-badge num-font" id="dockBadgeCount">0</div>
-<div style="font-size:13px; font-weight:700;">عرض السلة</div>
+<div style="font-size:13.5px; font-weight:800;">عرض السلة</div>
 </div>
-<div style="font-size:13.5px; font-weight:800;" class="num-font" id="dockPriceTotal">0.00 د.أ</div>
+<div style="font-size:14px; font-weight:800;" class="num-font" id="dockPriceTotal">0.00 د.أ</div>
 </div>
 <div class="toast-popup" id="systemToast">تم</div>
 </div>
 <script src="app.js"></script>
+<script src="experience.js"></script>
 </body>
 </html>
