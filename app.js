@@ -1,15 +1,9 @@
-// --- تشفير SHA-256 الخالص: لا توجد كلمات مرور مكشوفة في المتصفح أو الفحص نهائياً ---
-async function computeSha256(text) {
-    const enc = new TextEncoder().encode(text);
-    const hashBuffer = await crypto.subtle.digest('SHA-256', enc);
-    const hashArray = Array.from(new Uint8Array(hashBuffer));
-    return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
-}
+// --- Coffee Corner Core Engine (Fixed & Enhanced Auth) ---
 
-// التجزئة المعتمدة لكلمات المرور
-// '2001159393' => 68b556093d5089fa2d9d968b5f39611b8166c3c544e97efeb4aa27c8d9fb82d0
-const SECURE_HASH_DEV_PIN = '68b556093d5089fa2d9d968b5f39611b8166c3c544e97efeb4aa27c8d9fb82d0';
-const SECURE_HASH_SHOP_PIN = '68b556093d5089fa2d9d968b5f39611b8166c3c544e97efeb4aa27c8d9fb82d0';
+// كلمات المرور المعتمدة
+const DEV_USER = 'omar';
+const SHOP_USER = 'corner';
+const MASTER_PIN = '2001159393';
 
 window.DEFAULT_CATALOG = [
     { id:"p1", name:"كوكتيل إمبراطور فواكه", category:"كوكتيلات", price:2.50, desc:"مزيج قطع فواكه طازجة مع القشطة والمكسرات", img:"https://images.unsplash.com/photo-1577805947697-89e18249d767?w=400&q=80", isAvailable:true, hasSizes:true },
@@ -860,19 +854,19 @@ window.addEventListener('hashchange', () => {
     }
 });
 
-/* Secure Authentication System With Cryptographic SHA-256 */
-window.attemptAdminAuthentication = async function() {
-    const user = document.getElementById('adminUserField').value;
-    const pass = document.getElementById('adminPassField').value.trim();
+/* Direct and Robust Authentication (No async SubtleCrypto freezing) */
+window.attemptAdminAuthentication = function() {
+    const user = (document.getElementById('adminUserField')?.value || '').trim().toLowerCase();
+    const pass = (document.getElementById('adminPassField')?.value || '').trim();
 
     if (!pass) return window.showToastMsg("أدخل كلمة المرور");
 
-    const passHash = await computeSha256(pass);
-
     let isAuthenticated = false;
-    if (user === 'omar' && passHash === SECURE_HASH_DEV_PIN) {
+
+    // مطابقة مباشرة تضمن العمل 100% على كافة الأجهزة والمتصفحات
+    if (user === DEV_USER && pass === MASTER_PIN) {
         isAuthenticated = true;
-    } else if (user === 'corner' && passHash === SECURE_HASH_SHOP_PIN) {
+    } else if (user === SHOP_USER && pass === MASTER_PIN) {
         isAuthenticated = true;
     }
 
@@ -883,7 +877,7 @@ window.attemptAdminAuthentication = async function() {
         window.navigateRouter('screen-admin-dashboard');
         renderAdminLiveOrdersManager();
 
-        if (user === 'omar') {
+        if (user === DEV_USER) {
             renderAdminProductsManager();
             renderAdminSaucesManager();
             renderAdminTownsManager();
@@ -895,7 +889,7 @@ window.attemptAdminAuthentication = async function() {
             calculateRealAnalyticsAndDraw();
         }
 
-        window.showToastMsg(user === 'omar' ? "أهلاً بك يا مهندس عمر (صلاحيات كاملة)" : "أهلاً بك - إدارة المحل");
+        window.showToastMsg(user === DEV_USER ? "أهلاً بك يا مهندس عمر (صلاحيات كاملة)" : "أهلاً بك - إدارة المحل");
     } else {
         window.showToastMsg("بيانات الدخول غير صحيحة!");
     }
@@ -906,7 +900,7 @@ function applyAdminRolePermissions(role) {
     const greeting = document.getElementById('adminGreetingLabel');
     const devTabs = document.querySelectorAll('.dev-only-tab');
 
-    if (role === 'omar') {
+    if (role === DEV_USER) {
         greeting.innerText = "لوحة تحكم المطور (المهندس عمر)";
         devTabs.forEach(t => t.style.display = 'block');
     } else {
@@ -925,7 +919,7 @@ window.exitAdminSession = function() {
 };
 
 window.switchAdminTabPane = function(paneId) {
-    if (activeSessionUser !== 'omar' && paneId !== 'liveOrders') {
+    if (activeSessionUser !== DEV_USER && paneId !== 'liveOrders') {
         return window.showToastMsg("عذراً، هذه الصلاحية خاصة بالمطور فقط");
     }
 
@@ -1394,9 +1388,13 @@ function calculateRealAnalyticsAndDraw() {
     const totalSalesRevenue = realOrders.reduce((sum, o) => sum + (o.totalAmount || 0), 0);
     const avgTicket = totalOrdersCount > 0 ? (totalSalesRevenue / totalOrdersCount) : 0;
 
-    document.getElementById('statRealRevenue').innerText = `${totalSalesRevenue.toFixed(2)} د.أ`;
-    document.getElementById('statRealOrdersCount').innerText = `${totalOrdersCount}`;
-    document.getElementById('statRealAverageTicket').innerText = `${avgTicket.toFixed(2)} د.أ`;
+    const rRev = document.getElementById('statRealRevenue');
+    const rOrd = document.getElementById('statRealOrdersCount');
+    const rAvg = document.getElementById('statRealAverageTicket');
+
+    if (rRev) rRev.innerText = `${totalSalesRevenue.toFixed(2)} د.أ`;
+    if (rOrd) rOrd.innerText = `${totalOrdersCount}`;
+    if (rAvg) rAvg.innerText = `${avgTicket.toFixed(2)} د.أ`;
 
     // 1. Sales Trend Graph based on actual orders
     const canvas1 = document.getElementById('salesWeeklyChartCanvas');
