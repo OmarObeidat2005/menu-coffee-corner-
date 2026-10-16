@@ -33,9 +33,66 @@ const DEFAULT_SETTINGS = {
     devName: "المهندس عمر عبيدات",
     devRole: "Lead Systems Architect & Full-Stack Engineer",
     devPhoto: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&q=80",
-    devBio: "تصميم وهندسة المنظومة الرقمية الشاملة لكافيه كورنر مع نظام تتبع الطلبات والمزامنة السحابية اللحظية.",
+    devBio: "تصميم وهندسة المنظومة الرقمية الشاملة لكافيه كورنر بنظام فوري ذكي، يشمل إدارة الطلبات، ومزامنة السحابة، والتحكم بالأسعار والنكهات مباشرة من الهاتف.",
     devWhatsapp: "962796433698",
     devInsta: "https://www.instagram.com/o_yd"
+};
+
+// --- محرك ضغط وقراءة الصور المرفوعة من الهاتف مباشرة ---
+window.handleImageUploadDirect = function(event, targetInputId, previewImgId) {
+    const file = event.target.files && event.target.files[0];
+    if (!file) return;
+
+    if (!file.type.startsWith('image/')) {
+        return window.showToastMsg("يرجى اختيار ملف صورة صالح");
+    }
+
+    window.showToastMsg("جاري معالجة الصورة من الهاتف...");
+
+    const reader = new FileReader();
+    reader.onload = function(e) {
+        const img = new Image();
+        img.onload = function() {
+            // تصغير الصورة للحفاظ على سرعة المتصفح وقاعدة البيانات (حد أقصى 600 بكسل بجودة عالية)
+            const canvas = document.createElement('canvas');
+            const maxDimension = 600;
+            let width = img.width;
+            let height = img.height;
+
+            if (width > height) {
+                if (width > maxDimension) {
+                    height = Math.round((height * maxDimension) / width);
+                    width = maxDimension;
+                }
+            } else {
+                if (height > maxDimension) {
+                    width = Math.round((width * maxDimension) / height);
+                    height = maxDimension;
+                }
+            }
+
+            canvas.width = width;
+            canvas.height = height;
+            const ctx = canvas.getContext('2d');
+            ctx.drawImage(img, 0, 0, width, height);
+
+            // استخراج الصورة مضغوطة بتنسيق خفيف وسريع
+            const compressedDataUrl = canvas.toDataURL('image/jpeg', 0.82);
+
+            const inputField = document.getElementById(targetInputId);
+            if (inputField) inputField.value = compressedDataUrl;
+
+            const previewEl = document.getElementById(previewImgId);
+            if (previewEl) {
+                previewEl.src = compressedDataUrl;
+                previewEl.style.display = 'block';
+            }
+
+            window.showToastMsg("تمت معالجة الصورة بنجاح");
+        };
+        img.src = e.target.result;
+    };
+    reader.readAsDataURL(file);
 };
 
 let BRANCHES_DATA = {
@@ -1135,9 +1192,22 @@ function loadDeveloperAndBrandSettingsIntoUI() {
     document.getElementById('cfgBrandSubInput').value = storeSettings.brandSub || '';
     document.getElementById('cfgBrandLogoInput').value = storeSettings.logoUrl || '';
 
+    const previewLogo = document.getElementById('previewHeaderLogoAdmin');
+    if (previewLogo && storeSettings.logoUrl) {
+        previewLogo.src = storeSettings.logoUrl;
+        previewLogo.style.display = 'block';
+    }
+
     document.getElementById('cfgDevNameInput').value = storeSettings.devName || '';
     document.getElementById('cfgDevRoleInput').value = storeSettings.devRole || '';
     document.getElementById('cfgDevPhotoInput').value = storeSettings.devPhoto || '';
+
+    const previewDev = document.getElementById('previewDevPhotoAdmin');
+    if (previewDev && storeSettings.devPhoto) {
+        previewDev.src = storeSettings.devPhoto;
+        previewDev.style.display = 'block';
+    }
+
     document.getElementById('cfgDevBioInput').value = storeSettings.devBio || '';
     document.getElementById('cfgDevWhatsappInput').value = storeSettings.devWhatsapp || '';
     document.getElementById('cfgDevInstaInput').value = storeSettings.devInsta || '';
@@ -1263,6 +1333,7 @@ function renderAdminProductsManager() {
 }
 
 window.openProductEditorModal = function(id) {
+    const previewEl = document.getElementById('previewProductImgAdmin');
     if (id) {
         const p = productsList.find(x => x.id === id);
         document.getElementById('editProductIdField').value = p.id;
@@ -1271,6 +1342,10 @@ window.openProductEditorModal = function(id) {
         document.getElementById('editProductPriceField').value = p.price;
         document.getElementById('editProductDescField').value = p.desc;
         document.getElementById('editProductImgField').value = p.img;
+        if (previewEl) {
+            previewEl.src = p.img;
+            previewEl.style.display = 'block';
+        }
     } else {
         document.getElementById('editProductIdField').value = '';
         document.getElementById('editProductNameField').value = '';
@@ -1278,6 +1353,7 @@ window.openProductEditorModal = function(id) {
         document.getElementById('editProductPriceField').value = '';
         document.getElementById('editProductDescField').value = '';
         document.getElementById('editProductImgField').value = '';
+        if (previewEl) previewEl.style.display = 'none';
     }
     window.navigateRouter('screen-product-editor');
 };
