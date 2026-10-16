@@ -756,7 +756,7 @@ container.innerHTML = `
 ￼
 ￼
 ￼
-<div class="num-font" style="font-weight:700; font-size:12.5px;">{order.timestamp}</div>
+￼{order.timestamp}</div>
 </div>
 </div>
 <div style="display:flex; flex-direction:column; gap:10px; margin-bottom:16px;">
