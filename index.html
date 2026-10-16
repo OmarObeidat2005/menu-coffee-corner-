@@ -538,8 +538,13 @@
                             <input type="text" class="ios-input-field" id="cfgBrandSubInput">
                         </div>
                         <div>
-                            <span style="font-size:12px; font-weight:700; color:var(--text-secondary);">رابط لوجو الكافيه (URL):</span>
-                            <input type="text" class="ios-input-field num-font" id="cfgBrandLogoInput">
+                            <span style="font-size:12px; font-weight:700; color:var(--text-secondary);">شعار الكافيه (اللوجو):</span>
+                            <div style="display:flex; gap:8px; align-items:center; margin-top:4px;">
+                                <input type="file" id="cfgBrandLogoFileInput" accept="image/*" style="display:none;" onchange="handleImageUploadDirect(event, 'cfgBrandLogoInput', 'previewHeaderLogoAdmin')">
+                                <button type="button" class="btn-brand-outline" style="padding:7px 12px; font-size:12px;" onclick="document.getElementById('cfgBrandLogoFileInput').click()">رفع لوجو من الهاتف</button>
+                                <img id="previewHeaderLogoAdmin" src="" style="width:36px; height:36px; border-radius:50%; object-fit:cover; border:1px solid var(--border-light); display:none;">
+                            </div>
+                            <input type="text" class="ios-input-field num-font" id="cfgBrandLogoInput" placeholder="أو ضع رابط مباشر" style="margin-top:6px; font-size:11px;">
                         </div>
                         <button class="btn-brand-solid" onclick="saveHeaderBrandSettings()">حفظ الترويسة</button>
                     </div>
@@ -557,8 +562,13 @@
                             <input type="text" class="ios-input-field" id="cfgDevRoleInput">
                         </div>
                         <div>
-                            <span style="font-size:12px; font-weight:700; color:var(--text-secondary);">رابط صورة المطور الشخصية:</span>
-                            <input type="text" class="ios-input-field num-font" id="cfgDevPhotoInput">
+                            <span style="font-size:12px; font-weight:700; color:var(--text-secondary);">صورة المطور الشخصية:</span>
+                            <div style="display:flex; gap:8px; align-items:center; margin-top:4px;">
+                                <input type="file" id="cfgDevPhotoFileInput" accept="image/*" style="display:none;" onchange="handleImageUploadDirect(event, 'cfgDevPhotoInput', 'previewDevPhotoAdmin')">
+                                <button type="button" class="btn-brand-outline" style="padding:7px 12px; font-size:12px;" onclick="document.getElementById('cfgDevPhotoFileInput').click()">رفع صورتي من الهاتف</button>
+                                <img id="previewDevPhotoAdmin" src="" style="width:36px; height:36px; border-radius:50%; object-fit:cover; border:1px solid var(--brand-accent); display:none;">
+                            </div>
+                            <input type="text" class="ios-input-field num-font" id="cfgDevPhotoInput" placeholder="أو ضع رابط صورة مباشر" style="margin-top:6px; font-size:11px;">
                         </div>
                         <div>
                             <span style="font-size:12px; font-weight:700; color:var(--text-secondary);">النبذة المهنية:</span>
@@ -684,8 +694,13 @@
                         <textarea class="ios-textarea-field" id="editProductDescField" style="height:65px;"></textarea>
                     </div>
                     <div>
-                        <span style="font-size:11px; color:var(--text-secondary); font-weight:700;">رابط الصورة:</span>
-                        <input type="text" class="ios-input-field num-font" id="editProductImgField">
+                        <span style="font-size:11px; color:var(--text-secondary); font-weight:700;">صورة الصنف:</span>
+                        <div style="display:flex; gap:8px; align-items:center; margin-top:4px;">
+                            <input type="file" id="editProductFileInput" accept="image/*" style="display:none;" onchange="handleImageUploadDirect(event, 'editProductImgField', 'previewProductImgAdmin')">
+                            <button type="button" class="btn-brand-outline" style="padding:7px 12px; font-size:12px;" onclick="document.getElementById('editProductFileInput').click()">رفع صورة من هاتفي</button>
+                            <img id="previewProductImgAdmin" src="" style="width:40px; height:40px; border-radius:var(--radius-sm); object-fit:cover; border:1px solid var(--border-light); display:none;">
+                        </div>
+                        <input type="text" class="ios-input-field num-font" id="editProductImgField" placeholder="أو ضع رابط صورة مباشر" style="margin-top:6px; font-size:11px;">
                     </div>
                     <button class="btn-brand-solid" onclick="saveProductEditorChanges()">حفظ التعديلات</button>
                 </div>
