@@ -27,85 +27,9 @@ logoUrl: "./logo.png",
 devName: "المهندس عمر عبيدات",
 devRole: "Lead Systems Architect & Full-Stack Engineer",
 devPhoto: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&q=80",
-devBio: "تصميم وتطوير المنظومة الرقمية الشاملة لكافيه كورنر بنظام فوري ذكي لإدارة الطلبات، ومجتمع الصور، ومزامنة الأسعار وتتبع الحالات لحظياً.",
+devBio: "تخطيط وتطوير المنظومة البرمجية المتكاملة لكافيه كورنر بنظام فوري ذكي، يتضمن معالجة متقدمة لرفع وضغط الصور من الهواتف، تتبع حي لمراحل التحضير، ومحرك بيانات تفاعلي لحسابات العملاء.",
 devWhatsapp: "962796433698",
 devInsta: "https://www.instagram.com/o_yd"
-};
-const DEFAULT_MOMENTS = [
-{
-id: "m1",
-authorPhone: "0790000000",
-authorName: "أحمد الروسان",
-rating: 5,
-target: "وافل بلجيكي نوتيلا ولوتس",
-text: "أفضل وافل بالمنطقة بدون منازع، القرمشة خرافية والصوصات موزونة 100%.",
-img: "https://images.unsplash.com/photo-1562376552-0d160a2f238d?w=800&q=80",
-likes: 18,
-likedBy: [],
-timestamp: "أمس"
-},
-{
-id: "m2",
-authorPhone: "0791111111",
-authorName: "سارة عبيدات",
-rating: 5,
-target: "آيس كوفي دبل شوت",
-text: "انتعاش الصباح في فرع كفرسوم.. القهوة موزونة والخدمة ممتازة وسريعة.",
-img: "https://images.unsplash.com/photo-1461023058943-0708e52150fe?w=800&q=80",
-likes: 24,
-likedBy: [],
-timestamp: "منذ يومين"
-}
-];
-// دالة رفع الصور وضغطها بذكاء مع تفعيل صندوق المعاينة الفوري
-window.handleImageUploadDirect = function(event, targetInputId, previewImgId) {
-const file = event.target.files && event.target.files[0];
-if (!file) return;
-if (!file.type.startsWith('image/')) {
-return window.showToastMsg("يرجى اختيار ملف صورة صالح");
-}
-window.showToastMsg("جاري معالجة الصورة...");
-const reader = new FileReader();
-reader.onload = function(e) {
-const img = new Image();
-img.onload = function() {
-const canvas = document.createElement('canvas');
-const maxDimension = 720; // دقة ممتازة مع حجم خفيف جداً
-let width = img.width;
-let height = img.height;
-if (width > height) {
-if (width > maxDimension) {
-height = Math.round((height * maxDimension) / width);
-width = maxDimension;
-}
-} else {
-if (height > maxDimension) {
-width = Math.round((width * maxDimension) / height);
-height = maxDimension;
-}
-}
-canvas.width = width;
-canvas.height = height;
-const ctx = canvas.getContext('2d');
-ctx.drawImage(img, 0, 0, width, height);
-const compressedDataUrl = canvas.toDataURL('image/jpeg', 0.8);
-const inputField = document.getElementById(targetInputId);
-if (inputField) inputField.value = compressedDataUrl;
-const previewEl = document.getElementById(previewImgId);
-if (previewEl) {
-previewEl.src = compressedDataUrl;
-previewEl.style.display = 'block';
-}
-// إظهار صندوق معاينة الصور في نافذة إضافة المنشور
-const previewBox = document.getElementById('momentPreviewBox');
-if (previewBox && previewImgId === 'previewMomentPhoto') {
-previewBox.style.display = 'flex';
-}
-window.showToastMsg("تم تجهيز الصورة بنجاح");
-};
-img.src = e.target.result;
-};
-reader.readAsDataURL(file);
 };
 let BRANCHES_DATA = {
 0: {
@@ -133,19 +57,16 @@ function safeSet(key, value) {
 try {
 localStorage.setItem(key, JSON.stringify(value));
 return true;
-} catch (e) {
-return false;
-}
+} catch (e) { return false; }
 }
 let productsList = safeGet('cc_products', null) || window.DEFAULT_CATALOG;
 let saucesList = safeGet('cc_sauces', DEFAULT_SAUCES);
 let promoCodesList = safeGet('cc_promos', { "CORNER20": { code: "CORNER20", discount: 20 } });
 let registeredUsersMap = safeGet('cc_users', {});
 let activeClientSession = safeGet('cc_client_session', null);
-let appSystemVersion = localStorage.getItem('cc_version') || 'v7.6.0';
+let appSystemVersion = localStorage.getItem('cc_version') || 'v7.7.1';
 let activeOrdersList = safeGet('cc_orders', []);
 let storeSettings = safeGet('cc_store_settings', DEFAULT_SETTINGS);
-let communityMomentsList = safeGet('cc_moments', DEFAULT_MOMENTS);
 let offersList = safeGet('cc_offers', [
 { id: "off1", title: "عرض الويك إند الذهبي", desc: "وافل بلجيكي مع أي ميلك شيك بخصم 20%", img: "https://images.unsplash.com/photo-1562376552-0d160a2f238d?w=600&q=80" }
 ]);
@@ -154,7 +75,6 @@ let appliedPromoObject = null;
 let currentAuthMode = 'login';
 let secretClickCount = 0;
 let secretClickTimer = null;
-let currentSelectedMomentStars = 5;
 window.appState = {
 cartBranch: 0,
 currentCategory: "الكل",
@@ -189,7 +109,7 @@ if (parts.length === 3) {
 parts[2] = parseInt(parts[2]) + 1;
 appSystemVersion = 'v' + parts.join('.');
 } else {
-appSystemVersion = 'v7.6.1';
+appSystemVersion = 'v7.7.2';
 }
 localStorage.setItem('cc_version', appSystemVersion);
 updateVersionBadgeUI();
@@ -203,7 +123,7 @@ const t = document.getElementById('systemToast');
 if (!t) return;
 t.innerText = msg;
 t.classList.add('active');
-setTimeout(() => t.classList.remove('active'), 2000);
+setTimeout(() => t.classList.remove('active'), 2200);
 };
 window.navigateRouter = function(screenId) {
 document.querySelectorAll('.app-screen').forEach(s => s.classList.remove('active'));
@@ -223,7 +143,9 @@ renderClientOrderTrackingView();
 } else if (screenId === 'screen-offers') {
 renderClientOffersScreen();
 } else if (screenId === 'screen-moments') {
-renderCommunityMomentsFeed();
+if (window.renderCommunityMomentsFeed) window.renderCommunityMomentsFeed();
+} else if (screenId === 'screen-user-profile') {
+if (window.renderClientProfileScreen) window.renderClientProfileScreen();
 } else {
 refreshCartDockStatus();
 }
@@ -236,11 +158,6 @@ document.getElementById('sidebarDrawer').classList.add('active');
 window.closeSidebarDrawer = function() {
 document.getElementById('sidebarMask').classList.remove('active');
 document.getElementById('sidebarDrawer').classList.remove('active');
-};
-window.toggleAppTheme = function() {
-document.body.classList.toggle('dark-mode');
-const isDark = document.body.classList.contains('dark-mode');
-localStorage.setItem('cc_theme', isDark ? 'dark' : 'light');
 };
 window.renderCategoryChips = function() {
 const cats = ["الكل", ...new Set(productsList.map(p => p.category))];
@@ -285,11 +202,11 @@ const isSweet = ["وافل", "كريب", "بان كيك", "كنافة"].includes
 const hasSizes = (item.hasSizes !== false && !isSweet);
 document.getElementById('psSizeGroup').style.display = hasSizes ? 'block' : 'none';
 if (hasSizes) {
-document.getElementById('psSizeOptionsContainer').innerHTML = ⁠<label style="display:flex; justify-content:space-between; align-items:center; padding:8px 0; cursor:pointer;" onclick="updateProductModalPricing()"> <span style="font-size:13px;">صغير (عادي)</span> <input type="radio" name="size" value="small" checked> </label> <label style="display:flex; justify-content:space-between; align-items:center; padding:8px 0; cursor:pointer;" onclick="updateProductModalPricing()"> <span style="font-size:13px;">وسط (+0.50 د.أ)</span> <input type="radio" name="size" value="medium"> </label> <label style="display:flex; justify-content:space-between; align-items:center; padding:8px 0; cursor:pointer;" onclick="updateProductModalPricing()"> <span style="font-size:13px;">كبير (+1.00 د.أ)</span> <input type="radio" name="size" value="large"> </label>⁠;
+document.getElementById('psSizeOptionsContainer').innerHTML = ⁠<label style="display:flex; justify-content:space-between; align-items:center; padding:9px 0; cursor:pointer;" onclick="updateProductModalPricing()"> <span style="font-size:13px; font-weight:700;">صغير (عادي)</span> <input type="radio" name="size" value="small" checked> </label> <label style="display:flex; justify-content:space-between; align-items:center; padding:9px 0; cursor:pointer;" onclick="updateProductModalPricing()"> <span style="font-size:13px; font-weight:700;">وسط (+0.50 د.أ)</span> <input type="radio" name="size" value="medium"> </label> <label style="display:flex; justify-content:space-between; align-items:center; padding:9px 0; cursor:pointer;" onclick="updateProductModalPricing()"> <span style="font-size:13px; font-weight:700;">كبير (+1.00 د.أ)</span> <input type="radio" name="size" value="large"> </label>⁠;
 }
 document.getElementById('psSaucesContainer').style.display = isSweet ? 'block' : 'none';
 if (isSweet) {
-document.getElementById('psSaucesList').innerHTML = saucesList.filter(s => s.enabled !== false).map(s => ⁠<label style="display:flex; justify-content:space-between; align-items:center; padding:8px 0; cursor:pointer;" onclick="handleSauceCheckLimit(this)"> <div> <span style="font-size:13px;">${s.name}</span> <span style="font-size:11px; color:var(--text-secondary); margin-right:4px;" class="num-font">(+${parseFloat(s.price).toFixed(2)} د.أ)</span> </div> <input type="checkbox" class="sauce-toggle-cb" value="${s.name}" data-price="${s.price}"> </label>⁠).join('');
+document.getElementById('psSaucesList').innerHTML = saucesList.filter(s => s.enabled !== false).map(s => ⁠<label style="display:flex; justify-content:space-between; align-items:center; padding:9px 0; cursor:pointer;" onclick="handleSauceCheckLimit(this)"> <div> <span style="font-size:13px; font-weight:700;">${s.name}</span> <span style="font-size:11px; color:var(--text-secondary); margin-right:4px;" class="num-font">(+${parseFloat(s.price).toFixed(2)} د.أ)</span> </div> <input type="checkbox" class="sauce-toggle-cb" value="${s.name}" data-price="${s.price}"> </label>⁠).join('');
 }
 updateProductModalPricing();
 window.navigateRouter('screen-product');
@@ -382,12 +299,12 @@ function renderCartContent() {
 const container = document.getElementById('cartItemsList');
 if (!container) return;
 if (!window.appState.cart.length) {
-container.innerHTML = ⁠<div style="text-align:center; padding:12px; color:var(--text-secondary); font-size:12.5px;">السلة فارغة حالياً</div>⁠;
+container.innerHTML = ⁠<div style="text-align:center; padding:16px; color:var(--text-secondary); font-size:13px;">السلة فارغة حالياً</div>⁠;
 return;
 }
-container.innerHTML = window.appState.cart.map((item, idx) => ⁠<div style="display:flex; justify-content:space-between; align-items:flex-start; padding:8px 0; border-bottom:1px dashed var(--border-light);"> <div> <div style="font-weight:700; font-size:13px;">${item.qty}x ${item.name}</div> <div style="font-size:11px; color:var(--text-secondary);">${item.sizeName !== 'قياسي' ?⁠الحجم: ${item.sizeName}⁠: ''} ${item.sauceName ?⁠(نكهة: ${item.sauceName})⁠: ''}</div> ${item.notes ?⁠<div style="font-size:10.5px; color:var(--text-tertiary);">ملاحظة: ${item.notes}</div>⁠: ''} </div> <div style="text-align:left;"> <div class="num-font" style="font-weight:700; color:var(--brand-accent); font-size:13px;">${item.lineTotal.toFixed(2)} د.أ</div> <span style="color:var(--danger); font-size:11px; cursor:pointer;" onclick="removeCartItem(${idx})">حذف</span> </div> </div>⁠).join('');
+container.innerHTML = window.appState.cart.map((item, idx) => ⁠<div style="display:flex; justify-content:space-between; align-items:flex-start; padding:10px 0; border-bottom:1px dashed var(--border-subtle);"> <div> <div style="font-weight:800; font-size:13.5px;">${item.qty}x ${item.name}</div> <div style="font-size:11.5px; color:var(--text-secondary);">${item.sizeName !== 'قياسي' ?⁠الحجم: ${item.sizeName}⁠: ''} ${item.sauceName ?⁠(نكهة: ${item.sauceName})⁠: ''}</div> ${item.notes ?⁠<div style="font-size:11px; color:var(--text-dim);">ملاحظة: ${item.notes}</div>⁠: ''} </div> <div style="text-align:left;"> <div class="num-font" style="font-weight:800; color:var(--brand-gold); font-size:13.5px;">${item.lineTotal.toFixed(2)} د.أ</div> <span style="color:var(--status-danger); font-size:11.5px; font-weight:700; cursor:pointer;" onclick="removeCartItem(${idx})">حذف</span> </div> </div>⁠).join('');
 populateTownDropdown();
-updateClientSessionState();
+if (window.updateClientSessionState) window.updateClientSessionState();
 }
 window.removeCartItem = function(idx) {
 window.appState.cart.splice(idx, 1);
@@ -407,7 +324,7 @@ function renderCartPaymentOptions() {
 const container = document.getElementById('cartPaymentMethodsGroup');
 if (!container) return;
 const b = BRANCHES_DATA[window.appState.cartBranch] || BRANCHES_DATA[0];
-container.innerHTML = ⁠<label style="display:flex; justify-content:space-between; align-items:center; padding:6px 0; cursor:pointer;" onclick="setCartPaymentMethod('cliq')"> <div> <div style="font-weight:700; font-size:12.5px;">كليك (CliQ - ${b.cliqName})</div> <div style="font-size:11px; color:var(--text-secondary);" class="num-font">الرقم: ${b.cliqNum}</div> </div> <input type="radio" name="cart_pay" ${window.appState.paymentMethod === 'cliq' ? 'checked' : ''}> </label> <label style="display:flex; justify-content:space-between; align-items:center; padding:6px 0; cursor:pointer;" onclick="setCartPaymentMethod('cash')"> <div> <div style="font-weight:700; font-size:12.5px;">دفع نقدي (كاش)</div> <div style="font-size:11px; color:var(--text-secondary);">عند الاستلام</div> </div> <input type="radio" name="cart_pay" ${window.appState.paymentMethod === 'cash' ? 'checked' : ''}> </label>⁠;
+container.innerHTML = ⁠<label style="display:flex; justify-content:space-between; align-items:center; padding:8px 0; cursor:pointer;" onclick="setCartPaymentMethod('cliq')"> <div> <div style="font-weight:800; font-size:13px;">كليك (CliQ - ${b.cliqName})</div> <div style="font-size:11.5px; color:var(--text-secondary);" class="num-font">الرقم: ${b.cliqNum}</div> </div> <input type="radio" name="cart_pay" ${window.appState.paymentMethod === 'cliq' ? 'checked' : ''}> </label> <label style="display:flex; justify-content:space-between; align-items:center; padding:8px 0; cursor:pointer;" onclick="setCartPaymentMethod('cash')"> <div> <div style="font-weight:800; font-size:13px;">دفع نقدي (كاش)</div> <div style="font-size:11.5px; color:var(--text-secondary);">عند الاستلام</div> </div> <input type="radio" name="cart_pay" ${window.appState.paymentMethod === 'cash' ? 'checked' : ''}> </label>⁠;
 }
 window.setCartPaymentMethod = function(method) {
 window.appState.paymentMethod = method;
@@ -415,16 +332,16 @@ renderCartPaymentOptions();
 };
 window.switchCartBranch = function(b) {
 window.appState.cartBranch = b;
-document.getElementById('btnBranch0').style.background = (b === 0) ? 'var(--segment-bg)' : 'transparent';
-document.getElementById('btnBranch1').style.background = (b === 1) ? 'var(--segment-bg)' : 'transparent';
+document.getElementById('btnBranch0').style.background = (b === 0) ? 'var(--bg-elevated)' : 'transparent';
+document.getElementById('btnBranch1').style.background = (b === 1) ? 'var(--bg-elevated)' : 'transparent';
 populateTownDropdown();
 renderCartPaymentOptions();
 updateBranchStatusBadges();
 };
 window.switchDeliveryMode = function(m) {
 window.appState.deliveryMode = m;
-document.getElementById('btnModeDelivery').style.background = (m === 'delivery') ? 'var(--segment-bg)' : 'transparent';
-document.getElementById('btnModePickup').style.background = (m === 'pickup') ? 'var(--segment-bg)' : 'transparent';
+document.getElementById('btnModeDelivery').style.background = (m === 'delivery') ? 'var(--bg-elevated)' : 'transparent';
+document.getElementById('btnModePickup').style.background = (m === 'pickup') ? 'var(--bg-elevated)' : 'transparent';
 document.getElementById('deliveryFieldsArea').style.display = (m === 'delivery') ? 'block' : 'none';
 recalculateCartSummary();
 };
@@ -508,16 +425,6 @@ localStorage.setItem('cc_latest_order_id', orderNumber);
 activeUser.ordersCount = (activeUser.ordersCount || 0) + 1;
 activeUser.totalSpent = parseFloat(((activeUser.totalSpent || 0) + total).toFixed(2));
 activeUser.loyaltyPoints = (activeUser.loyaltyPoints || 0) + Math.floor(total);
-if (!activeUser.badges) activeUser.badges = [];
-if (activeUser.ordersCount >= 3 && !activeUser.badges.includes("رائد الكورنر")) {
-activeUser.badges.push("رائد الكورنر");
-}
-if (activeUser.ordersCount >= 7 && !activeUser.badges.includes("العميل الذهبي")) {
-activeUser.badges.push("العميل الذهبي");
-}
-if (activeUser.ordersCount >= 15 && !activeUser.badges.includes("سفير الكورنر")) {
-activeUser.badges.push("سفير الكورنر");
-}
 safeSet('cc_users', registeredUsersMap);
 let msg = ⁠*طلب جديد | ${storeSettings.brandTitle}*\nرقم الطلب: ${orderNumber}\nالفرع: ${branch.name}\nالعميل: ${activeUser.name} (${activeUser.phone})\n----------------\n⁠;
 window.appState.cart.forEach((i, idx) => {
@@ -538,256 +445,36 @@ if (!container) return;
 const latestId = localStorage.getItem('cc_latest_order_id');
 const order = activeOrdersList.find(o => o.orderId === latestId);
 if (!order) {
-container.innerHTML = ⁠<div class="clean-card" style="text-align:center; padding:30px 16px;"> <div style="font-weight:700; font-size:14px; margin-bottom:6px;">لا يوجد طلبات نشطة حالياً</div> <div style="font-size:11.5px; color:var(--text-secondary); margin-bottom:12px;">عند إرسال طلب جديد، ستظهر مراحل تحضيره هنا مباشرة.</div> <button class="btn-brand-solid" onclick="navigateRouter('screen-home')">الذهاب للمنيو</button> </div>⁠;
+container.innerHTML = ⁠<div class="clean-card" style="text-align:center; padding:34px 16px;"> <div style="font-weight:800; font-size:15px; margin-bottom:6px;">لا يوجد طلبات نشطة حالياً</div> <div style="font-size:12px; color:var(--text-secondary); margin-bottom:14px;">عند إرسال طلب جديد، ستظهر مراحل تحضيره هنا مباشرة.</div> <button class="btn-brand-solid" onclick="navigateRouter('screen-home')">الذهاب للمنيو</button> </div>⁠;
 return;
 }
 const isDelivery = order.deliveryMode === 'delivery';
 const status = order.status;
 container.innerHTML = `
 <div class="clean-card">
-<div style="display:flex; justify-content:space-between; margin-bottom:12px; padding-bottom:8px; border-bottom:1px solid var(--border-light);">
+<div style="display:flex; justify-content:space-between; margin-bottom:14px; padding-bottom:10px; border-bottom:1px solid var(--border-subtle);">
 <div>
 <span style="font-size:11px; color:var(--text-secondary);">رقم الطلب:</span>
-<div class="num-font" style="font-weight:800; color:var(--brand-accent);">￼
+<div class="num-font" style="font-weight:800; color:var(--brand-gold);">￼
 ￼
 ￼
 ￼
 ￼{order.timestamp}</div>
 </div>
 </div>
-<div style="display:flex; flex-direction:column; gap:8px; margin-bottom:14px;">
-<div style="font-size:12.5px; font-weight:700; color:${status === 'received' ? 'var(--brand-accent)' : 'inherit'};">1. تم استلام الطلب</div>
-<div style="font-size:12.5px; font-weight:700; color:${status === 'preparing' ? 'var(--brand-accent)' : 'inherit'};">2. جاري التحضير</div>
-<div style="font-size:12.5px; font-weight:700; color:${['on_the_way', 'ready_pickup'].includes(status) ? 'var(--brand-accent)' : 'inherit'};">3. ${isDelivery ? 'في طريق التوصيل إليك' : 'جاهز للاستلام من الفرع'}</div>
-<div style="font-size:12.5px; font-weight:700; color:${status === 'completed' ? 'var(--success)' : 'inherit'};">4. تم التسليم بنجاح</div>
+<div style="display:flex; flex-direction:column; gap:10px; margin-bottom:16px;">
+<div style="font-size:13px; font-weight:800; color:${status === 'received' ? 'var(--brand-gold)' : 'inherit'};">1. تم استلام الطلب بنجاح</div>
+<div style="font-size:13px; font-weight:800; color:${status === 'preparing' ? 'var(--brand-gold)' : 'inherit'};">2. جاري التحضير في الكافيه</div>
+<div style="font-size:13px; font-weight:800; color:${['on_the_way', 'ready_pickup'].includes(status) ? 'var(--brand-gold)' : 'inherit'};">3. ${isDelivery ? 'في طريق التوصيل إليك' : 'جاهز للاستلام من الفرع'}</div>
+<div style="font-size:13px; font-weight:800; color:${status === 'completed' ? 'var(--status-success)' : 'inherit'};">4. تم التسليم بنجاح</div>
 </div>
-<div style="font-size:12px; line-height:1.6; border-top:1px solid var(--border-light); padding-top:8px;">
+<div style="font-size:12.5px; line-height:1.7; border-top:1px solid var(--border-subtle); padding-top:10px;">
 <div>الفرع: <strong>￼
 ￼{order.totalAmount.toFixed(2)} د.أ</strong></div>
 </div>
 </div>
 `;
 }
-window.handleUserAccountHeaderClick = function() {
-if (activeClientSession) {
-renderClientProfileScreen();
-window.navigateRouter('screen-user-profile');
-} else {
-window.switchAuthTabMode('login');
-window.navigateRouter('screen-user-auth');
-}
-};
-window.switchAuthTabMode = function(mode) {
-currentAuthMode = mode;
-const isReg = (mode === 'register');
-document.getElementById('tabAuthLogin').style.background = !isReg ? 'var(--segment-bg)' : 'transparent';
-document.getElementById('tabAuthRegister').style.background = isReg ? 'var(--segment-bg)' : 'transparent';
-document.getElementById('authRegisterExtraFields').style.display = isReg ? 'flex' : 'none';
-document.getElementById('authSubmitBtn').innerText = isReg ? 'إنشاء حساب جديد' : 'دخول';
-document.getElementById('authStatusAlert').innerText = '';
-};
-window.handleAuthSubmitAction = function() {
-const phone = (document.getElementById('authInputPhone').value || '').trim().replace(/\s+/g, '');
-const pin = (document.getElementById('authInputPin').value || '').trim();
-const errEl = document.getElementById('authStatusAlert');
-errEl.innerText = '';
-if (!phone || phone.length < 9) return errEl.innerText = 'يرجى إدخال رقم هاتف صحيح';
-if (!pin || pin.length < 3) return errEl.innerText = 'رمز المرور لا يقل عن 3 خانات';
-const phoneKey = 'u_' + phone;
-if (currentAuthMode === 'register') {
-const name = (document.getElementById('authInputName').value || '').trim();
-const address = (document.getElementById('authInputAddress').value || '').trim();
-if (!name) return errEl.innerText = 'يرجى كتابة الاسم';
-if (registeredUsersMap[phoneKey]) return errEl.innerText = 'الرقم مسجل مسبقاً، سجّل الدخول مباشرة';
-const newUser = {
-id: phoneKey, name, phone, pin, address,
-avatar: "",
-badges: ["عضو جديد"],
-ordersCount: 0, totalSpent: 0.0, loyaltyPoints: 10, isBanned: false
-};
-registeredUsersMap[phoneKey] = newUser;
-safeSet('cc_users', registeredUsersMap);
-activeClientSession = { phone, name, address };
-safeSet('cc_client_session', activeClientSession);
-updateClientSessionState();
-window.showToastMsg(⁠أهلاً بك يا ${name}⁠);
-window.navigateRouter('screen-home');
-} else {
-const user = registeredUsersMap[phoneKey];
-if (!user) return errEl.innerText = 'الرقم غير مسجل. اختر حساب جديد';
-if (user.pin !== pin) return errEl.innerText = 'رمز المرور غير صحيح';
-if (user.isBanned) return errEl.innerText = 'عذراً، هذا الحساب محظور من الإدارة';
-activeClientSession = { phone, name: user.name, address: user.address || '' };
-safeSet('cc_client_session', activeClientSession);
-updateClientSessionState();
-window.showToastMsg(⁠مرحباً يا ${user.name}⁠);
-window.navigateRouter('screen-home');
-}
-};
-window.logoutClientSession = function() {
-activeClientSession = null;
-localStorage.removeItem('cc_client_session');
-updateClientSessionState();
-window.showToastMsg('تم تسجيل الخروج');
-window.navigateRouter('screen-home');
-};
-function updateClientSessionState() {
-const nameField = document.getElementById('cartClientName');
-const phoneField = document.getElementById('cartClientPhone');
-if (activeClientSession) {
-if (nameField) nameField.value = activeClientSession.name || '';
-if (phoneField) phoneField.value = activeClientSession.phone || '';
-} else {
-if (nameField) nameField.value = '';
-if (phoneField) phoneField.value = '';
-}
-}
-function renderClientProfileScreen() {
-if (!activeClientSession) return;
-const phoneKey = 'u_' + activeClientSession.phone;
-const user = registeredUsersMap[phoneKey] || activeClientSession;
-document.getElementById('profDisplayName').innerText = user.name || 'العميل العزيز';
-document.getElementById('profDisplayPhone').innerText = user.phone || '';
-document.getElementById('profDisplayOrdersCount').innerText = user.ordersCount || 0;
-document.getElementById('profDisplayPoints').innerText = user.loyaltyPoints || 0;
-document.getElementById('profDisplayTotalSpent').innerText = ⁠${(user.totalSpent || 0).toFixed(2)} د.أ⁠;
-document.getElementById('profEditName').value = user.name || '';
-document.getElementById('profEditAddress').value = user.address || '';
-const avatarWrap = document.getElementById('profAvatarWrap');
-if (user.avatar) {
-avatarWrap.innerHTML = ⁠<img src="${user.avatar}" alt="${user.name}">⁠;
-} else {
-avatarWrap.innerHTML = ⁠<span>${(user.name || 'ع').charAt(0)}</span>⁠;
-}
-const badgesRow = document.getElementById('profBadgesRow');
-const badges = user.badges || ["عضو جديد"];
-badgesRow.innerHTML = badges.map(b => ⁠<span class="clean-badge active">${b}</span>⁠).join('');
-const historyContainer = document.getElementById('profCustomerOrdersHistoryList');
-const userOrders = activeOrdersList.filter(o => o.customerPhone === user.phone);
-if (!userOrders.length) {
-historyContainer.innerHTML = ⁠<div style="text-align:center; padding:10px; color:var(--text-secondary); font-size:12px;">لا يوجد طلبات سابقة مسجلة</div>⁠;
-} else {
-historyContainer.innerHTML = userOrders.map(o => ⁠<div style="display:flex; justify-content:space-between; align-items:center; padding:6px 0; border-bottom:1px dashed var(--border-light); font-size:12px;"> <div> <strong>طلب #${o.orderId}</strong> <div style="color:var(--text-secondary); font-size:11px;">${o.branchName} - ${o.items.length} أصناف</div> </div> <div class="num-font" style="font-weight:700; color:var(--brand-accent);">${o.totalAmount.toFixed(2)} د.أ</div> </div>⁠).join('');
-}
-}
-window.saveUpdatedClientProfile = function() {
-if (!activeClientSession) return;
-const phoneKey = 'u_' + activeClientSession.phone;
-const newName = (document.getElementById('profEditName').value || '').trim();
-const newAddr = (document.getElementById('profEditAddress').value || '').trim();
-const avatarData = document.getElementById('userAvatarDataUrlInput').value;
-if (!newName) return window.showToastMsg('يرجى كتابة الاسم');
-if (registeredUsersMap[phoneKey]) {
-registeredUsersMap[phoneKey].name = newName;
-registeredUsersMap[phoneKey].address = newAddr;
-if (avatarData) registeredUsersMap[phoneKey].avatar = avatarData;
-}
-activeClientSession.name = newName;
-activeClientSession.address = newAddr;
-safeSet('cc_client_session', activeClientSession);
-safeSet('cc_users', registeredUsersMap);
-updateClientSessionState();
-renderClientProfileScreen();
-window.showToastMsg('تم حفظ البيانات بنجاح');
-};
-/* مجتمع شاركنا بصورة - ظهور كامل للصور وميزة الحذف */
-window.renderCommunityMomentsFeed = function() {
-const feed = document.getElementById('communityFeedContainer');
-if (!feed) return;
-const currentPhone = activeClientSession ? activeClientSession.phone : null;
-if (!communityMomentsList.length) {
-feed.innerHTML = ⁠<div class="clean-card" style="text-align:center; padding:24px;"><div style="font-weight:700;">لا توجد مشاركات، شاركنا أول تجربة!</div></div>⁠;
-return;
-}
-feed.innerHTML = communityMomentsList.map(m => {
-const isAuthor = currentPhone && (m.authorPhone === currentPhone);
-const stars = "★".repeat(m.rating || 5);
-return ⁠<div class="moment-post-card"> ${m.img ?⁠
-<div class="moment-img-container">
-<img src="${m.img}" class="moment-post-img" loading="lazy" alt="تجربة العميل">
-</div>
-⁠: ''} <div class="moment-post-body"> <div class="moment-post-header"> <div> <div class="moment-post-author">${m.authorName}</div> <div class="moment-post-meta">${m.target || 'تجربة كافيه كورنر'} • ${m.timestamp}</div> </div> <div style="color:#eab308; font-size:13px;">${stars}</div> </div> <div class="moment-post-text">${m.text}</div> <div class="moment-post-actions"> <div style="font-size:12px; font-weight:600; cursor:pointer;" onclick="toggleLikeMoment('${m.id}')"> ❤️ <span class="num-font">${m.likes || 0}</span> إعجاب </div> ${isAuthor ?⁠
-<button class="btn-brand-outline" style="padding:2px 8px; font-size:10.5px; color:var(--danger); border-color:var(--danger);" onclick="deleteMyMoment('${m.id}')">
-حذف مشاركتي
-</button>
-⁠: ''} </div> </div> </div>⁠;
-}).join('');
-};
-window.openNewMomentModal = function() {
-if (!activeClientSession) {
-window.showToastMsg("يرجى تسجيل الدخول أولاً لتتمكن من مشاركة صورتك");
-window.navigateRouter('screen-user-auth');
-return;
-}
-// تصفير المعاينة السابقة
-document.getElementById('momentPhotoDataUrlInput').value = '';
-const prev = document.getElementById('previewMomentPhoto');
-if (prev) { prev.src = ''; prev.style.display = 'none'; }
-const pBox = document.getElementById('momentPreviewBox');
-if (pBox) pBox.style.display = 'none';
-document.getElementById('modal-new-moment').classList.add('active');
-};
-window.closeNewMomentModal = function() {
-document.getElementById('modal-new-moment').classList.remove('active');
-};
-window.setMomentStarRating = function(stars) {
-currentSelectedMomentStars = stars;
-const spans = document.querySelectorAll('#momentStarRatingPickers span');
-spans.forEach((s, idx) => {
-s.style.opacity = (idx < stars) ? '1' : '0.3';
-});
-};
-window.submitNewCustomerMoment = function() {
-if (!activeClientSession) return;
-const user = registeredUsersMap['u_' + activeClientSession.phone] || activeClientSession;
-const photoData = document.getElementById('momentPhotoDataUrlInput').value;
-const itemOrBranch = document.getElementById('momentItemOrBranchInput').value.trim();
-const comment = document.getElementById('momentCommentInput').value.trim();
-if (!comment) return window.showToastMsg("اكتب تعليقك أو انطباعك عن التجربة");
-const newMoment = {
-id: "m_" + Date.now(),
-authorPhone: user.phone || activeClientSession.phone,
-authorName: user.name || "عميل كورنر",
-rating: currentSelectedMomentStars,
-target: itemOrBranch || "تجربة مميزة",
-text: comment,
-img: photoData || "",
-likes: 0,
-likedBy: [],
-timestamp: "الآن"
-};
-communityMomentsList.unshift(newMoment);
-safeSet('cc_moments', communityMomentsList);
-closeNewMomentModal();
-renderCommunityMomentsFeed();
-autoIncrementVersion();
-window.showToastMsg("تم نشر تجربتك بنجاح!");
-};
-window.deleteMyMoment = function(id) {
-if (!confirm("هل أنت متأكد من حذف مشاركتك؟")) return;
-communityMomentsList = communityMomentsList.filter(m => m.id !== id);
-safeSet('cc_moments', communityMomentsList);
-renderCommunityMomentsFeed();
-window.showToastMsg("تم حذف المشاركة");
-};
-window.toggleLikeMoment = function(momentId) {
-if (!activeClientSession) {
-return window.showToastMsg("سجل دخولك للتفاعل مع المشاركات");
-}
-const m = communityMomentsList.find(x => x.id === momentId);
-if (!m) return;
-const userId = 'u_' + activeClientSession.phone;
-if (!m.likedBy) m.likedBy = [];
-if (m.likedBy.includes(userId)) {
-m.likedBy = m.likedBy.filter(u => u !== userId);
-m.likes = Math.max(0, (m.likes || 1) - 1);
-} else {
-m.likedBy.push(userId);
-m.likes = (m.likes || 0) + 1;
-}
-safeSet('cc_moments', communityMomentsList);
-renderCommunityMomentsFeed();
-};
 window.handleSecretAdminTrigger = function() {
 secretClickCount++;
 clearTimeout(secretClickTimer);
@@ -815,7 +502,7 @@ renderAdminTownsManager();
 renderAdminUsersListView();
 renderAdminPromosManager();
 renderAdminOffersListManager();
-renderAdminMomentsManager();
+if (window.renderAdminMomentsManager) window.renderAdminMomentsManager();
 loadDeveloperAndBrandSettingsIntoUI();
 calculateRealAnalyticsAndDraw();
 }
@@ -851,7 +538,7 @@ const paneEl = document.getElementById('pane' + paneId.charAt(0).toUpperCase() +
 if (tabEl) tabEl.classList.add('active');
 if (paneEl) paneEl.classList.add('active');
 if (paneId === 'analytics') {
-setTimeout(calculateRealAnalyticsAndDraw, 40);
+setTimeout(calculateRealAnalyticsAndDraw, 50);
 }
 };
 function renderAdminLiveOrdersManager() {
@@ -860,10 +547,10 @@ const countBadge = document.getElementById('adminActiveOrdersCount');
 if (!container) return;
 if (countBadge) countBadge.innerText = ⁠${activeOrdersList.length} طلب⁠;
 if (!activeOrdersList.length) {
-container.innerHTML = ⁠<div style="text-align:center; padding:12px; color:var(--text-secondary); font-size:12px;">لا يوجد طلبات نشطة</div>⁠;
+container.innerHTML = ⁠<div style="text-align:center; padding:14px; color:var(--text-secondary); font-size:12.5px;">لا يوجد طلبات نشطة</div>⁠;
 return;
 }
-container.innerHTML = activeOrdersList.map(o => ⁠<div style="border:1px solid var(--border-light); border-radius:var(--radius-sm); padding:10px; margin-bottom:8px;"> <div style="display:flex; justify-content:space-between; margin-bottom:4px;"> <span class="num-font" style="font-weight:800; color:var(--brand-accent);">${o.orderId}</span> <span style="font-size:11px; font-weight:600;">${o.branchName} • ${o.timestamp}</span> </div> <div style="font-size:12px; margin-bottom:4px;"> <strong>${o.customerName}</strong> (${o.customerPhone}) - <span class="num-font">${o.totalAmount.toFixed(2)} د.أ</span> </div> <div style="display:flex; gap:4px; flex-wrap:wrap; margin-top:6px;"> <button class="btn-brand-outline" style="padding:2px 6px; font-size:10.5px;" onclick="setOrderStatusByAdmin('${o.orderId}', 'received')">استلام</button> <button class="btn-brand-outline" style="padding:2px 6px; font-size:10.5px;" onclick="setOrderStatusByAdmin('${o.orderId}', 'preparing')">تحضير</button> <button class="btn-brand-outline" style="padding:2px 6px; font-size:10.5px;" onclick="setOrderStatusByAdmin('${o.orderId}', '${o.deliveryMode === 'delivery' ? 'on_the_way' : 'ready_pickup'}')">${o.deliveryMode === 'delivery' ? 'في الطريق' : 'جاهز'}</button> <button class="btn-brand-outline" style="padding:2px 6px; font-size:10.5px; color:var(--success); border-color:var(--success);" onclick="setOrderStatusByAdmin('${o.orderId}', 'completed')">مكتمل</button> </div> </div>⁠).join('');
+container.innerHTML = activeOrdersList.map(o => ⁠<div style="border:1px solid var(--border-subtle); background:var(--bg-card); border-radius:var(--radius-sm); padding:12px; margin-bottom:10px;"> <div style="display:flex; justify-content:space-between; margin-bottom:4px;"> <span class="num-font" style="font-weight:800; color:var(--brand-gold);">${o.orderId}</span> <span style="font-size:11.5px; font-weight:700;">${o.branchName} • ${o.timestamp}</span> </div> <div style="font-size:12.5px; margin-bottom:6px;"> <strong>${o.customerName}</strong> (${o.customerPhone}) - <span class="num-font" style="color:var(--brand-gold);">${o.totalAmount.toFixed(2)} د.أ</span> </div> <div style="display:flex; gap:6px; flex-wrap:wrap; margin-top:8px;"> <button class="btn-brand-outline" style="padding:3px 8px; font-size:11px;" onclick="setOrderStatusByAdmin('${o.orderId}', 'received')">استلام</button> <button class="btn-brand-outline" style="padding:3px 8px; font-size:11px;" onclick="setOrderStatusByAdmin('${o.orderId}', 'preparing')">تحضير</button> <button class="btn-brand-outline" style="padding:3px 8px; font-size:11px;" onclick="setOrderStatusByAdmin('${o.orderId}', '${o.deliveryMode === 'delivery' ? 'on_the_way' : 'ready_pickup'}')">${o.deliveryMode === 'delivery' ? 'في الطريق' : 'جاهز'}</button> <button class="btn-brand-outline" style="padding:3px 8px; font-size:11px; color:var(--status-success); border-color:var(--status-success);" onclick="setOrderStatusByAdmin('${o.orderId}', 'completed')">مكتمل</button> </div> </div>⁠).join('');
 }
 window.setOrderStatusByAdmin = function(orderId, status) {
 const o = activeOrdersList.find(x => x.orderId === orderId);
@@ -876,26 +563,10 @@ renderClientOrderTrackingView();
 }
 window.showToastMsg("تم تحديث حالة الطلب");
 };
-function renderAdminMomentsManager() {
-const container = document.getElementById('adminMomentsListContainer');
-if (!container) return;
-if (!communityMomentsList.length) {
-container.innerHTML = ⁠<div style="text-align:center; padding:10px; color:var(--text-secondary); font-size:12px;">لا توجد مشاركات</div>⁠;
-return;
-}
-container.innerHTML = communityMomentsList.map(m => ⁠<div style="display:flex; justify-content:space-between; align-items:center; padding:8px 0; border-bottom:1px solid var(--border-light); font-size:12px;"> <div> <strong>${m.authorName}</strong> (${m.rating}★) <div style="color:var(--text-secondary); font-size:11px;">${m.text}</div> </div> <button class="btn-brand-outline" style="padding:2px 6px; font-size:10.5px; color:var(--danger); border-color:var(--danger);" onclick="deleteMomentAdmin('${m.id}')">حذف</button> </div>⁠).join('');
-}
-window.deleteMomentAdmin = function(id) {
-communityMomentsList = communityMomentsList.filter(m => m.id !== id);
-safeSet('cc_moments', communityMomentsList);
-renderAdminMomentsManager();
-renderCommunityMomentsFeed();
-window.showToastMsg("تم حذف المشاركة من الأدمن");
-};
 function renderAdminSaucesManager() {
 const container = document.getElementById('adminSaucesSettingsList');
 if (!container) return;
-container.innerHTML = saucesList.map(s => ⁠<div style="display:flex; justify-content:space-between; align-items:center; padding:8px 0; border-bottom:1px solid var(--border-light); font-size:12.5px;"> <div>${s.name} (<span class="num-font">${parseFloat(s.price).toFixed(2)} د.أ</span>)</div> <div style="display:flex; gap:4px;"> <input type="number" step="0.25" class="ios-input-field num-font" value="${s.price}" style="width:60px; padding:2px 4px; font-size:11px;" onchange="updateSaucePriceAdmin('${s.id}', this.value)"> <button class="btn-brand-outline" style="padding:2px 6px; font-size:10.5px; color:var(--danger); border-color:var(--danger);" onclick="deleteSauceAdmin('${s.id}')">حذف</button> </div> </div>⁠).join('');
+container.innerHTML = saucesList.map(s => ⁠<div style="display:flex; justify-content:space-between; align-items:center; padding:10px 0; border-bottom:1px solid var(--border-subtle); font-size:13px;"> <div>${s.name} (<span class="num-font">${parseFloat(s.price).toFixed(2)} د.أ</span>)</div> <div style="display:flex; gap:6px;"> <input type="number" step="0.25" class="ios-input-field num-font" value="${s.price}" style="width:65px; padding:3px 6px; font-size:11.5px;" onchange="updateSaucePriceAdmin('${s.id}', this.value)"> <button class="btn-brand-outline" style="padding:3px 8px; font-size:11px; color:var(--status-danger); border-color:var(--status-danger);" onclick="deleteSauceAdmin('${s.id}')">حذف</button> </div> </div>⁠).join('');
 }
 window.updateSaucePriceAdmin = function(id, val) {
 const s = saucesList.find(x => x.id === id);
@@ -928,7 +599,7 @@ const container = document.getElementById('adminTownsRatesList');
 if (!container) return;
 const b = BRANCHES_DATA[window.appState.cartBranch] || BRANCHES_DATA[0];
 const towns = b.towns || {};
-container.innerHTML = Object.entries(towns).map(([t, fee]) => ⁠<div style="display:flex; justify-content:space-between; align-items:center; padding:6px 0; border-bottom:1px solid var(--border-light); font-size:12px;"> <div>${t} (${parseFloat(fee).toFixed(2)} د.أ)</div> <button class="btn-brand-outline" style="padding:2px 6px; font-size:10.5px; color:var(--danger); border-color:var(--danger);" onclick="deleteTownRateAdmin('${t}')">حذف</button> </div>⁠).join('');
+container.innerHTML = Object.entries(towns).map(([t, fee]) => ⁠<div style="display:flex; justify-content:space-between; align-items:center; padding:8px 0; border-bottom:1px solid var(--border-subtle); font-size:12.5px;"> <div>${t} (${parseFloat(fee).toFixed(2)} د.أ)</div> <button class="btn-brand-outline" style="padding:3px 8px; font-size:11px; color:var(--status-danger); border-color:var(--status-danger);" onclick="deleteTownRateAdmin('${t}')">حذف</button> </div>⁠).join('');
 }
 window.saveTownRateAdmin = function() {
 const name = (document.getElementById('newTownNameInput').value || '').trim();
@@ -950,7 +621,7 @@ window.showToastMsg("تم حذف المنطقة");
 function renderAdminProductsManager() {
 const container = document.getElementById('adminProductsControlList');
 if (!container) return;
-container.innerHTML = productsList.map(p => ⁠<div style="display:flex; justify-content:space-between; align-items:center; padding:8px 0; border-bottom:1px solid var(--border-light); font-size:12.5px;"> <div> <strong>${p.name}</strong> (${parseFloat(p.price).toFixed(2)} د.أ) <div style="color:var(--text-secondary); font-size:11px;">${p.category}</div> </div> <div style="display:flex; gap:4px;"> <button class="btn-brand-outline" style="padding:2px 6px; font-size:10.5px;" onclick="openProductEditorModal('${p.id}')">تعديل</button> <button class="btn-brand-outline" style="padding:2px 6px; font-size:10.5px; color:var(--danger); border-color:var(--danger);" onclick="deleteProductFromCatalog('${p.id}')">حذف</button> </div> </div>⁠).join('');
+container.innerHTML = productsList.map(p => ⁠<div style="display:flex; justify-content:space-between; align-items:center; padding:10px 0; border-bottom:1px solid var(--border-subtle); font-size:13px;"> <div> <strong>${p.name}</strong> (${parseFloat(p.price).toFixed(2)} د.أ) <div style="color:var(--text-secondary); font-size:11.5px;">${p.category}</div> </div> <div style="display:flex; gap:6px;"> <button class="btn-brand-outline" style="padding:3px 8px; font-size:11px;" onclick="openProductEditorModal('${p.id}')">تعديل</button> <button class="btn-brand-outline" style="padding:3px 8px; font-size:11px; color:var(--status-danger); border-color:var(--status-danger);" onclick="deleteProductFromCatalog('${p.id}')">حذف</button> </div> </div>⁠).join('');
 }
 window.openProductEditorModal = function(id) {
 const previewEl = document.getElementById('previewProductImgAdmin');
@@ -1065,19 +736,19 @@ function renderClientOffersScreen() {
 const container = document.getElementById('clientOffersListContainer');
 if (!container) return;
 if (!offersList.length) {
-container.innerHTML = ⁠<div class="clean-card" style="text-align:center; padding:24px;">لا توجد عروض حالياً</div>⁠;
+container.innerHTML = ⁠<div class="clean-card" style="text-align:center; padding:28px;">لا توجد عروض حالياً</div>⁠;
 return;
 }
-container.innerHTML = offersList.map(o => ⁠<div class="clean-card" style="padding:0; overflow:hidden; margin-bottom:12px;"> ${o.img ?⁠<img src="${o.img}" style="width:100%; height:180px; object-fit:cover;" onerror="this.style.display='none'">⁠: ''} <div style="padding:14px;"> <div style="font-size:15px; font-weight:800; margin-bottom:4px;">${o.title}</div> <div style="font-size:12px; color:var(--text-secondary); line-height:1.5;">${o.desc}</div> </div> </div>⁠).join('');
+container.innerHTML = offersList.map(o => ⁠<div class="clean-card" style="padding:0; overflow:hidden; margin-bottom:14px;"> ${o.img ?⁠<img src="${o.img}" style="width:100%; height:190px; object-fit:cover;" onerror="this.style.display='none'">⁠: ''} <div style="padding:16px;"> <div style="font-size:15px; font-weight:800; margin-bottom:4px;">${o.title}</div> <div style="font-size:12px; color:var(--text-secondary); line-height:1.55;">${o.desc}</div> </div> </div>⁠).join('');
 }
 function renderAdminOffersListManager() {
 const container = document.getElementById('adminOffersListView');
 if (!container) return;
 if (!offersList.length) {
-container.innerHTML = ⁠<div style="text-align:center; padding:8px; color:var(--text-secondary); font-size:12px;">لا يوجد عروض</div>⁠;
+container.innerHTML = ⁠<div style="text-align:center; padding:10px; color:var(--text-secondary); font-size:12px;">لا يوجد عروض</div>⁠;
 return;
 }
-container.innerHTML = offersList.map(o => ⁠<div style="display:flex; justify-content:space-between; align-items:center; padding:8px 0; border-bottom:1px solid var(--border-light); font-size:12px;"> <div> <strong>${o.title}</strong> <div style="color:var(--text-secondary); font-size:11px;">${o.desc}</div> </div> <button class="btn-brand-outline" style="padding:2px 6px; font-size:10.5px; color:var(--danger); border-color:var(--danger);" onclick="deleteOfferAdmin('${o.id}')">حذف</button> </div>⁠).join('');
+container.innerHTML = offersList.map(o => ⁠<div style="display:flex; justify-content:space-between; align-items:center; padding:8px 0; border-bottom:1px solid var(--border-subtle); font-size:12.5px;"> <div> <strong>${o.title}</strong> <div style="color:var(--text-secondary); font-size:11px;">${o.desc}</div> </div> <button class="btn-brand-outline" style="padding:3px 8px; font-size:11px; color:var(--status-danger); border-color:var(--status-danger);" onclick="deleteOfferAdmin('${o.id}')">حذف</button> </div>⁠).join('');
 }
 window.saveNewOfferAdmin = function() {
 const title = (document.getElementById('newOfferTitleInput').value || '').trim();
@@ -1104,7 +775,7 @@ function renderAdminUsersListView() {
 const container = document.getElementById('adminUsersCardsList');
 if (!container) return;
 const users = Object.values(registeredUsersMap);
-container.innerHTML = users.map(u => ⁠<div style="padding:8px 0; border-bottom:1px solid var(--border-light); display:flex; justify-content:space-between; align-items:center; font-size:12px;"> <div> <strong>${u.name}</strong> (${u.phone}) <div style="color:var(--text-secondary); font-size:11px;">طلبات: ${u.ordersCount || 0} • ${u.isBanned ? '<span style="color:var(--danger);">محظور</span>' : '<span style="color:var(--success);">نشط</span>'}</div> </div> <button class="btn-brand-outline" style="padding:2px 6px; font-size:10.5px; ${u.isBanned ? 'color:var(--success); border-color:var(--success);' : 'color:var(--danger); border-color:var(--danger);'}" onclick="toggleUserBanStatus('${u.id}')"> ${u.isBanned ? 'إلغاء الحظر' : 'حظر'} </button> </div>⁠).join('');
+container.innerHTML = users.map(u => ⁠<div style="padding:10px 0; border-bottom:1px solid var(--border-subtle); display:flex; justify-content:space-between; align-items:center; font-size:12.5px;"> <div> <strong>${u.name}</strong> (${u.phone}) <div style="color:var(--text-secondary); font-size:11px;">طلبات: ${u.ordersCount || 0} • ${u.isBanned ? '<span style="color:var(--status-danger);">محظور</span>' : '<span style="color:var(--status-success);">نشط</span>'}</div> </div> <button class="btn-brand-outline" style="padding:3px 8px; font-size:11px; ${u.isBanned ? 'color:var(--status-success); border-color:var(--status-success);' : 'color:var(--status-danger); border-color:var(--status-danger);'}" onclick="toggleUserBanStatus('${u.id}')"> ${u.isBanned ? 'إلغاء الحظر' : 'حظر'} </button> </div>⁠).join('');
 }
 window.toggleUserBanStatus = function(phoneKey) {
 const user = registeredUsersMap[phoneKey];
@@ -1128,7 +799,7 @@ window.showToastMsg("تم حفظ الكود");
 function renderAdminPromosManager() {
 const container = document.getElementById('adminPromosManagerList');
 if (!container) return;
-container.innerHTML = Object.values(promoCodesList).map(p => ⁠<div style="display:flex; justify-content:space-between; align-items:center; padding:6px 0; border-bottom:1px solid var(--border-light); font-size:12px;"> <strong>${p.code} (${p.discount}%)</strong> <button class="btn-brand-outline" style="padding:2px 6px; font-size:10.5px; color:var(--danger); border-color:var(--danger);" onclick="deletePromoCode('${p.code}')">حذف</button> </div>⁠).join('');
+container.innerHTML = Object.values(promoCodesList).map(p => ⁠<div style="display:flex; justify-content:space-between; align-items:center; padding:8px 0; border-bottom:1px solid var(--border-subtle); font-size:12.5px;"> <strong>${p.code} (${p.discount}%)</strong> <button class="btn-brand-outline" style="padding:3px 8px; font-size:11px; color:var(--status-danger); border-color:var(--status-danger);" onclick="deletePromoCode('${p.code}')">حذف</button> </div>⁠).join('');
 }
 window.deletePromoCode = function(c) {
 delete promoCodesList[c];
@@ -1152,7 +823,7 @@ const canvas1 = document.getElementById('salesWeeklyChartCanvas');
 if (canvas1) {
 const ctx = canvas1.getContext('2d');
 const dpr = window.devicePixelRatio || 1;
-const w = canvas1.clientWidth || 480;
+const w = canvas1.clientWidth || 460;
 const h = canvas1.clientHeight || 160;
 canvas1.width = w * dpr;
 canvas1.height = h * dpr;
@@ -1183,28 +854,27 @@ ctx.quadraticCurveTo(pts[i-1].x, pts[i-1].y, xc, yc);
 }
 ctx.lineTo(pts[pts.length - 1].x, pts[pts.length - 1].y);
 ctx.strokeStyle = '#c59b63';
-ctx.lineWidth = 2;
+ctx.lineWidth = 2.5;
 ctx.stroke();
 pts.forEach((p, idx) => {
 ctx.beginPath();
-ctx.arc(p.x, p.y, 3, 0, Math.PI * 2);
+ctx.arc(p.x, p.y, 3.5, 0, Math.PI * 2);
 ctx.fillStyle = '#c59b63';
 ctx.fill();
-ctx.fillStyle = '#888';
-ctx.font = '10px Tajawal';
+ctx.fillStyle = '#a3998f';
+ctx.font = '10.5px Tajawal';
 ctx.textAlign = 'center';
-ctx.fillText(days[idx], p.x, h - 4);
+ctx.fillText(days[idx], p.x, h - 3);
 });
 }
 }
 document.addEventListener('DOMContentLoaded', () => {
-if (localStorage.getItem('cc_theme') === 'dark') document.body.classList.add('dark-mode');
 updateVersionBadgeUI();
 applyLiveSettingsToDOM();
 updateBranchStatusBadges();
 window.renderCategoryChips();
 window.renderMenuProducts();
-updateClientSessionState();
+if (window.updateClientSessionState) window.updateClientSessionState();
 refreshCartDockStatus();
 setInterval(updateBranchStatusBadges, 60000);
 });
