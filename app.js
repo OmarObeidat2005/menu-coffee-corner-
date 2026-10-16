@@ -30,7 +30,7 @@ const DEFAULT_SETTINGS = {
     devName: "المهندس عمر عبيدات",
     devRole: "Lead Systems Architect & Full-Stack Engineer",
     devPhoto: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&q=80",
-    devBio: "تصميم وهندسة المنظومة الرقمية الشاملة لكافيه كورنر بنظام فوري ذكي، يشمل إدارة الطلبات ومجتمع الصور، ومزامنة السحابة، والتحكم بالأسعار والنكهات وشعارات الدفع مباشرة من الهاتف.",
+    devBio: "تصميم وهندسة المنظومة الرقمية الشاملة لكافيه كورنر بنظام فوري ذكي، يشمل إدارة الطلبات ومجتمع الصور، والتحكم بالأسعار والنكهات وشعارات الدفع مباشرة من الهاتف.",
     devWhatsapp: "962796433698",
     devInsta: "https://www.instagram.com/o_yd"
 };
@@ -76,7 +76,6 @@ window.handleImageUploadDirect = function(event, targetInputId, previewImgId) {
     reader.onload = function(e) {
         const img = new Image();
         img.onload = function() {
-            // تصغير الصورة لأبعاد خفيفة جداً لتحافظ على السرعة وتمنع استهلاك الذاكرة
             const canvas = document.createElement('canvas');
             const maxDimension = 360;
             let width = img.width;
@@ -123,8 +122,8 @@ let BRANCHES_DATA = {
         whatsapp: "962790155906", 
         cliqName: "Orange Money",
         cliqNum: "0770155906",
-        openHour: 6.5,  // 6:30 ص
-        closeHour: 3.0, // 3:00 فجراً
+        openHour: 6.5,
+        closeHour: 3.0,
         towns: { "كفرسوم": 1.0, "سمر": 1.25, "سحم": 1.5, "حبراص": 1.25, "يبلا": 1.5, "الرفيد": 1.5, "حرثا": 1.5, "المزيريب": 1.5, "عقربا": 2.0, "حاتم": 1.75, "ملكا": 2.0, "أم قيس": 2.5, "المنصورة": 2.0 } 
     },
     1: { 
@@ -132,8 +131,8 @@ let BRANCHES_DATA = {
         whatsapp: "962790155906", 
         cliqName: "Zain Cash",
         cliqNum: "0790155906",
-        openHour: 16.0, // 4:00 عصراً
-        closeHour: 3.0, // 3:00 فجراً
+        openHour: 16.0,
+        closeHour: 3.0,
         towns: { "سما الروسان": 1.0, "حبراص": 1.25, "حاتم": 1.5, "كفرسوم": 1.5, "إبدر": 1.75, "المخيبة": 2.5 } 
     }
 };
@@ -155,7 +154,12 @@ function safeSet(key, value) {
     }
 }
 
-let productsList = safeGet('cc_products', window.DEFAULT_CATALOG);
+let productsList = safeGet('cc_products', null);
+if (!productsList || !Array.isArray(productsList) || productsList.length === 0) {
+    productsList = window.DEFAULT_CATALOG;
+    safeSet('cc_products', productsList);
+}
+
 let saucesList = safeGet('cc_sauces', DEFAULT_SAUCES);
 let promoCodesList = safeGet('cc_promos', { "CORNER20": { code: "CORNER20", discount: 20 } });
 let registeredUsersMap = safeGet('cc_users', {});
@@ -196,12 +200,10 @@ function checkBranchIsOpen(branchId) {
     const now = new Date();
     const currentHour = now.getHours() + (now.getMinutes() / 60);
 
-    // فرع كفرسوم: 6:30 صباحاً حتى 3:00 فجراً
     if (branchId === 0) {
         if (currentHour >= 6.5 || currentHour < 3.0) return true;
         return false;
     }
-    // فرع سما الروسان: 4:00 عصراً حتى 3:00 فجراً
     if (branchId === 1) {
         if (currentHour >= 16.0 || currentHour < 3.0) return true;
         return false;
@@ -210,20 +212,6 @@ function checkBranchIsOpen(branchId) {
 }
 
 function updateBranchStatusBadges() {
-    const open0 = checkBranchIsOpen(0);
-    const open1 = checkBranchIsOpen(1);
-
-    const b0Badge = document.getElementById('badgeBranch0Status');
-    const b1Badge = document.getElementById('badgeBranch1Status');
-    if (b0Badge) {
-        b0Badge.innerText = open0 ? "مفتوح الآن" : "مغلق حالياً";
-        b0Badge.className = `header-hours-badge ${open0 ? 'badge-open' : 'badge-closed'}`;
-    }
-    if (b1Badge) {
-        b1Badge.innerText = open1 ? "مفتوح الآن" : "مغلق حالياً";
-        b1Badge.className = `header-hours-badge ${open1 ? 'badge-open' : 'badge-closed'}`;
-    }
-
     const currentBranchOpen = checkBranchIsOpen(window.appState.cartBranch);
     const topBadge = document.getElementById('uiCurrentBranchStatusBadge');
     if (topBadge) {
@@ -276,8 +264,6 @@ window.navigateRouter = function(screenId) {
         renderClientOffersScreen();
     } else if (screenId === 'screen-moments') {
         renderCommunityMomentsFeed();
-    } else if (screenId === 'screen-branches') {
-        updateBranchStatusBadges();
     } else {
         refreshCartDockStatus();
     }
@@ -300,7 +286,7 @@ window.toggleAppTheme = function() {
     localStorage.setItem('cc_theme', isDark ? 'dark' : 'light');
 };
 
-/* Onboarding Slider */
+/* Onboarding Slider (طريقة الاستخدام) */
 window.openOnboardingModal = function() {
     currentGuideStepIndex = 0;
     updateGuideStepDisplay();
@@ -353,12 +339,28 @@ window.selectMenuCat = function(c) {
 
 window.renderMenuProducts = function() {
     const q = (document.getElementById('menuSearchInput')?.value || '').trim().toLowerCase();
+    
+    if (!productsList || !Array.isArray(productsList) || productsList.length === 0) {
+        productsList = window.DEFAULT_CATALOG;
+        safeSet('cc_products', productsList);
+    }
+    
     let list = productsList;
-    if (window.appState.currentCategory !== "الكل") list = list.filter(p => p.category === window.appState.currentCategory);
-    if (q) list = list.filter(p => p.name.toLowerCase().includes(q) || (p.desc || '').toLowerCase().includes(q));
+    if (window.appState.currentCategory && window.appState.currentCategory !== "الكل") {
+        list = list.filter(p => p.category === window.appState.currentCategory);
+    }
+    if (q) {
+        list = list.filter(p => (p.name || '').toLowerCase().includes(q) || (p.desc || '').toLowerCase().includes(q));
+    }
 
     const grid = document.getElementById('menuGridContainer');
     if (!grid) return;
+    
+    if (list.length === 0) {
+        grid.innerHTML = `<div style="grid-column: 1/-1; text-align: center; padding: 40px 16px; color: var(--text-secondary); font-size: 13.5px; font-weight: 700;">لا توجد أصناف مطابقة للبحث</div>`;
+        return;
+    }
+
     grid.innerHTML = list.map(item => `
         <div class="product-card ${item.isAvailable === false ? 'out-of-stock' : ''}" onclick="${item.isAvailable !== false ? `openProductCustomizer('${item.id}')` : `showToastMsg('غير متوفر حالياً')`}">
             <img src="${item.img}" class="product-img" loading="lazy" onerror="this.src='https://placehold.co/400x400/18110b/ffffff?text=Coffee'">
@@ -374,7 +376,6 @@ window.renderMenuProducts = function() {
     `).join('');
 };
 
-/* Product Customizer & Highest Sauce Calculation */
 window.openProductCustomizer = function(id) {
     const item = productsList.find(x => x.id === id);
     if (!item) return;
@@ -724,7 +725,6 @@ window.dispatchOrderAndInitiateTracking = function() {
     activeUser.totalSpent = parseFloat(((activeUser.totalSpent || 0) + total).toFixed(2));
     activeUser.loyaltyPoints = (activeUser.loyaltyPoints || 0) + Math.floor(total);
 
-    // احتساب وسام التميز التفاعلي
     if (!activeUser.badges) activeUser.badges = [];
     if (activeUser.ordersCount >= 3 && !activeUser.badges.includes("رائد الكورنر")) {
         activeUser.badges.push("رائد الكورنر");
@@ -756,7 +756,6 @@ window.dispatchOrderAndInitiateTracking = function() {
     window.showToastMsg("تم إرسال الطلب، وبدء التتبع الحي");
 };
 
-/* Live Order Tracker */
 function renderClientOrderTrackingView() {
     const container = document.getElementById('activeOrderTrackingView');
     if (!container) return;
@@ -918,23 +917,25 @@ window.logoutClientSession = function() {
 };
 
 function updateClientSessionState() {
-    const dot = document.getElementById('headerUserOnlineDot');
+    const dotSidebar = document.getElementById('sidebarUserOnlineDot');
     const authGate = document.getElementById('cartAuthGate');
     const nameField = document.getElementById('cartClientName');
     const phoneField = document.getElementById('cartClientPhone');
     
     if (activeClientSession) {
-        if (dot) dot.style.display = 'block';
+        if (dotSidebar) dotSidebar.style.display = 'block';
         if (authGate) authGate.style.display = 'none';
         if (nameField) nameField.value = activeClientSession.name || '';
         if (phoneField) phoneField.value = activeClientSession.phone || '';
-        document.getElementById('cartUserAutofillBadge').style.display = 'inline-block';
+        const badge = document.getElementById('cartUserAutofillBadge');
+        if (badge) badge.style.display = 'inline-block';
     } else {
-        if (dot) dot.style.display = 'none';
+        if (dotSidebar) dotSidebar.style.display = 'none';
         if (authGate) authGate.style.display = window.appState.cart.length ? 'flex' : 'none';
         if (nameField) nameField.value = '';
         if (phoneField) phoneField.value = '';
-        document.getElementById('cartUserAutofillBadge').style.display = 'none';
+        const badge = document.getElementById('cartUserAutofillBadge');
+        if (badge) badge.style.display = 'none';
     }
 }
 
@@ -951,9 +952,7 @@ function renderClientProfileScreen() {
     document.getElementById('profEditName').value = user.name || '';
     document.getElementById('profEditBio').value = user.bio || '';
     document.getElementById('profEditAddress').value = user.address || '';
-    document.getElementById('profIsPublicCheckbox').checked = user.isPublic !== false;
 
-    // الصورة الشخصية
     const avatarWrap = document.getElementById('profAvatarWrap');
     if (user.avatar) {
         avatarWrap.innerHTML = `<img src="${user.avatar}" alt="${user.name}">`;
@@ -961,7 +960,6 @@ function renderClientProfileScreen() {
         avatarWrap.innerHTML = `<span>${(user.name || 'ع').charAt(0)}</span>`;
     }
 
-    // الأوسمة التفاعلية
     const badgesRow = document.getElementById('profBadgesRow');
     const count = user.ordersCount || 0;
     let badges = user.badges || ["عضو جديد"];
@@ -996,7 +994,6 @@ window.saveUpdatedClientProfile = function() {
     const newName = (document.getElementById('profEditName').value || '').trim();
     const newBio = (document.getElementById('profEditBio').value || '').trim();
     const newAddr = (document.getElementById('profEditAddress').value || '').trim();
-    const isPublic = document.getElementById('profIsPublicCheckbox').checked;
     const avatarData = document.getElementById('userAvatarDataUrlInput').value;
 
     if (!newName) return window.showToastMsg('يرجى كتابة الاسم');
@@ -1005,7 +1002,6 @@ window.saveUpdatedClientProfile = function() {
         registeredUsersMap[phoneKey].name = newName;
         registeredUsersMap[phoneKey].bio = newBio;
         registeredUsersMap[phoneKey].address = newAddr;
-        registeredUsersMap[phoneKey].isPublic = isPublic;
         if (avatarData) registeredUsersMap[phoneKey].avatar = avatarData;
     }
 
@@ -1108,7 +1104,6 @@ window.submitNewCustomerMoment = function() {
     communityMomentsList.unshift(newMoment);
     safeSet('cc_moments', communityMomentsList);
 
-    // إضافة وسام "صانع الذوق" للزبون
     if (user.badges && !user.badges.includes("صانع الذوق")) {
         user.badges.push("صانع الذوق");
         safeSet('cc_users', registeredUsersMap);
@@ -1224,7 +1219,6 @@ window.switchAdminTabPane = function(paneId) {
     }
 };
 
-/* Admin Live Orders */
 function renderAdminLiveOrdersManager() {
     const container = document.getElementById('adminLiveOrdersContainer');
     const countBadge = document.getElementById('adminActiveOrdersCount');
@@ -1335,7 +1329,6 @@ window.deleteCustomPaymentMethod = function(id) {
     window.showToastMsg("تم حذف طريقة الدفع");
 };
 
-/* Admin Moments Moderation */
 function renderAdminMomentsManager() {
     const container = document.getElementById('adminMomentsListContainer');
     const badge = document.getElementById('adminMomentsCountBadge');
@@ -1415,7 +1408,6 @@ window.promptNewSauceAddition = function() {
     window.showToastMsg("تمت إضافة النكهة بنجاح");
 };
 
-/* Delivery rates */
 window.switchAdminTownsBranch = function(b) {
     adminActiveTownBranch = b;
     document.getElementById('btnAdminTownsBranch0').classList.toggle('active', b === 0);
@@ -1457,7 +1449,6 @@ window.deleteTownRateAdmin = function(t) {
     window.showToastMsg("تم حذف المنطقة");
 };
 
-/* Products catalog */
 function renderAdminProductsManager() {
     const container = document.getElementById('adminProductsControlList');
     if (!container) return;
@@ -1538,7 +1529,6 @@ window.deleteProductFromCatalog = function(id) {
     window.showToastMsg("تم حذف الصنف بنجاح");
 };
 
-/* Developer & Header Settings */
 function loadDeveloperAndBrandSettingsIntoUI() {
     document.getElementById('cfgBrandTitleInput').value = storeSettings.brandTitle || '';
     document.getElementById('cfgBrandSubInput').value = storeSettings.brandSub || '';
@@ -1587,7 +1577,7 @@ window.saveDeveloperProfileSettings = function() {
     safeSet('cc_store_settings', storeSettings);
     applyLiveSettingsToDOM();
     autoIncrementVersion();
-    window.showToastMsg("تم حفظ صفحة المطور سحابياً");
+    window.showToastMsg("تم حفظ صفحة المطور بنجاح");
 };
 
 function applyLiveSettingsToDOM() {
@@ -1598,9 +1588,22 @@ function applyLiveSettingsToDOM() {
     if (bt) bt.innerText = storeSettings.brandTitle;
     if (bs) bs.innerText = storeSettings.brandSub;
     if (hl && storeSettings.logoUrl) hl.src = storeSettings.logoUrl;
+
+    const devNameEl = document.getElementById('uiDevName');
+    const devRoleEl = document.getElementById('uiDevRole');
+    const devBioEl = document.getElementById('uiDevBio');
+    const devPhotoEl = document.getElementById('uiDevPhoto');
+    const devWaBtn = document.getElementById('btnDevWhatsappLink');
+    const devInstaBtn = document.getElementById('btnDevInstaLink');
+
+    if (devNameEl) devNameEl.innerText = storeSettings.devName;
+    if (devRoleEl) devRoleEl.innerText = storeSettings.devRole;
+    if (devBioEl) devBioEl.innerText = storeSettings.devBio;
+    if (devPhotoEl && storeSettings.devPhoto) devPhotoEl.src = storeSettings.devPhoto;
+    if (devWaBtn) devWaBtn.href = `https://wa.me/${storeSettings.devWhatsapp || '962796433698'}`;
+    if (devInstaBtn) devInstaBtn.href = storeSettings.devInsta || 'https://www.instagram.com/o_yd';
 }
 
-/* Offers Feature */
 function renderClientOffersScreen() {
     const container = document.getElementById('clientOffersListContainer');
     if (!container) return;
@@ -1663,7 +1666,6 @@ window.deleteOfferAdmin = function(id) {
     window.showToastMsg("تم حذف العرض");
 };
 
-/* Users & Ban */
 function renderAdminUsersListView() {
     const container = document.getElementById('adminUsersCardsList');
     if (!container) return;
@@ -1693,7 +1695,6 @@ window.toggleUserBanStatus = function(phoneKey) {
     window.showToastMsg(`تم تحديث حالة العميل`);
 };
 
-/* Promos */
 window.saveNewPromoCode = function() {
     const code = (document.getElementById('newPromoCodeInput').value || '').trim().toUpperCase();
     const disc = parseFloat(document.getElementById('newPromoPercentInput').value) || 0;
@@ -1739,7 +1740,6 @@ function calculateRealAnalyticsAndDraw() {
     if (rOrd) rOrd.innerText = `${totalOrdersCount}`;
     if (rAvg) rAvg.innerText = `${avgTicket.toFixed(2)} د.أ`;
 
-    // 1. رسم منحنى المبيعات الأسبوعي
     const canvas1 = document.getElementById('salesWeeklyChartCanvas');
     if (canvas1) {
         const ctx = canvas1.getContext('2d');
@@ -1817,7 +1817,6 @@ function calculateRealAnalyticsAndDraw() {
         });
     }
 
-    // 2. توزيع الفئات
     const canvas2 = document.getElementById('categoryDistributionCanvas');
     if (canvas2) {
         const ctx2 = canvas2.getContext('2d');
@@ -1879,6 +1878,12 @@ function calculateRealAnalyticsAndDraw() {
 
 document.addEventListener('DOMContentLoaded', () => {
     if (localStorage.getItem('cc_theme') === 'dark') document.body.classList.add('dark-mode');
+    
+    if (!productsList || !Array.isArray(productsList) || productsList.length === 0) {
+        productsList = window.DEFAULT_CATALOG;
+        safeSet('cc_products', productsList);
+    }
+    
     updateVersionBadgeUI();
     applyLiveSettingsToDOM();
     updateBranchStatusBadges();
@@ -1887,10 +1892,5 @@ document.addEventListener('DOMContentLoaded', () => {
     updateClientSessionState();
     refreshCartDockStatus();
 
-    if (!localStorage.getItem('cc_onboarding_shown')) {
-        setTimeout(window.openOnboardingModal, 700);
-    }
-
-    // فحص دوري لمواعيد العمل كل دقيقة
     setInterval(updateBranchStatusBadges, 60000);
 });
