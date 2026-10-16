@@ -28,7 +28,6 @@
 <div class="app-container" id="appContainer">
 <div class="main-viewport">
     
-    <!-- 1. الشاشة الرئيسية -->
     <div id="screen-home" class="app-screen active">
         <header class="header">
             <button class="header-btn" onclick="openSidebarDrawer()" title="القائمة" aria-label="القائمة">
@@ -44,9 +43,14 @@
                 </div>
             </div>
             
-            <button class="header-btn" onclick="navigateRouter('screen-order-tracking')" title="تتبع طلبي" aria-label="تتبع طلبي">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
-            </button>
+            <div style="display:flex; gap:6px;">
+                <button class="header-btn" onclick="toggleThemeMode()" title="المظهر" aria-label="تبديل المظهر">
+                    <svg id="themeToggleIcon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+                </button>
+                <button class="header-btn" onclick="navigateRouter('screen-order-tracking')" title="تتبع طلبي" aria-label="تتبع طلبي">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                </button>
+            </div>
         </header>
 
         <div class="search-container">
@@ -63,7 +67,6 @@
         </div>
     </div>
 
-    <!-- 2. شاشة حسابي المنظمة والراقية -->
     <div id="screen-user-profile" class="app-screen">
         <header class="header">
             <button class="header-btn" onclick="navigateRouter('screen-home')" aria-label="عودة">
@@ -114,6 +117,16 @@
                     </div>
                 </div>
 
+                <!-- خزانة الشارات التفاعلية للعميل -->
+                <div class="clean-card">
+                    <div class="clean-title">
+                        <span>شارات الإنجاز والتميز</span>
+                        <span style="font-size:11px; color:var(--brand-gold);" id="profUnlockedBadgesCount">0 مكتملة</span>
+                    </div>
+                    <div style="font-size:11px; color:var(--text-secondary); margin-bottom:8px;">تظهر الشارات في ملفك للجميع عند التفاعل في مجتمع الكافيه.</div>
+                    <div class="badges-vault-grid" id="profUserBadgesGrid"></div>
+                </div>
+
                 <div class="clean-card">
                     <div class="clean-title">البيانات الشخصية المحفوظة</div>
                     <div style="display:flex; flex-direction:column; gap:12px;">
@@ -151,7 +164,6 @@
         </div>
     </div>
 
-    <!-- 3. شاشة شاركنا بصورة (معاينة كاملة وحذف فوري) -->
     <div id="screen-moments" class="app-screen">
         <header class="header">
             <button class="header-btn" onclick="navigateRouter('screen-home')" aria-label="عودة">
@@ -166,7 +178,6 @@
         </div>
     </div>
 
-    <!-- 4. شاشة تتبع طلبي -->
     <div id="screen-order-tracking" class="app-screen">
         <header class="header">
             <button class="header-btn" onclick="navigateRouter('screen-home')" aria-label="عودة">
@@ -181,7 +192,6 @@
         </div>
     </div>
 
-    <!-- 5. شاشة العروض -->
     <div id="screen-offers" class="app-screen">
         <header class="header">
             <button class="header-btn" onclick="navigateRouter('screen-home')" aria-label="عودة">
@@ -196,7 +206,6 @@
         </div>
     </div>
 
-    <!-- 6. شاشة طريقة الاستخدام -->
     <div id="screen-usage-guide" class="app-screen">
         <header class="header">
             <button class="header-btn" onclick="navigateRouter('screen-home')" aria-label="عودة">
@@ -212,8 +221,8 @@
                     <div class="clean-title">خطوات الاستخدام والطلب الذكي</div>
                     
                     <div class="usage-step-item">
-                        <div class="usage-step-title">1. تسجيل الحساب وتجميع النقاط</div>
-                        <div class="usage-step-desc">سجّل برقم هاتفك لربط طلباتك ونقاط الولاء تلقائياً، والترقية نحو مستويات العضوية الخاصة مع كل دينار تنفقه.</div>
+                        <div class="usage-step-title">1. تسجيل الحساب وتجميع النقاط والشارات</div>
+                        <div class="usage-step-desc">سجّل برقم هاتفك لربط طلباتك ونقاط الولاء تلقائياً، وافتح شارات الإنجازات النخبوية مع كل طلب تنفذه.</div>
                     </div>
 
                     <div class="usage-step-item">
@@ -223,7 +232,7 @@
 
                     <div class="usage-step-item">
                         <div class="usage-step-title">3. إرسال الطلب والتتبع اللحظي</div>
-                        <div class="usage-step-desc">أرسل تفاصيل طلبك مباشرة للفرع عبر واتساب بضغطة زر، ثم تابع مراحل تحضيره خطوة بخطوة من شاشة "تتبع طلبي".</div>
+                        <div class="usage-step-desc">أرسل تفاصيل طلبك مباشرة للفرع عبر واتساب بضغطة زر، ثم تابع مراحل تحضيره خطوة بخطوة واحصل على فاتورة قابلة للتحميل.</div>
                     </div>
 
                     <div class="usage-step-item">
@@ -235,7 +244,6 @@
         </div>
     </div>
 
-    <!-- 7. شاشة المطور الفاخرة (المهندس عمر عبيدات) -->
     <div id="screen-developer" class="app-screen">
         <header class="header">
             <button class="header-btn" onclick="navigateRouter('screen-home')" aria-label="عودة">
@@ -267,9 +275,9 @@
                     </p>
 
                     <div class="dev-terminal-box">
-                        <div>$ system.status: operational [v7.7.3]</div>
-                        <div>$ latency: 18ms | cloud_sync: active</div>
-                        <div>$ architecture: Zero-Glitch Mobile Native</div>
+                        <div>$ system.status: operational [v7.8.0]</div>
+                        <div>$ security_level: AES_SHA256_Enforced</div>
+                        <div>$ live_telemetry: Active_WebAudio_Ready</div>
                     </div>
 
                     <div class="developer-actions">
@@ -281,7 +289,6 @@
         </div>
     </div>
 
-    <!-- 8. تفاصيل المنتج والتخصيص -->
     <div id="screen-product" class="app-screen">
         <div style="max-width:500px; margin:0 auto; width:100%; display:flex; flex-direction:column; min-height:100vh; position:relative;">
             <button class="header-btn" style="position:absolute; top:12px; right:12px; z-index:10;" onclick="navigateRouter('screen-home')" aria-label="إغلاق">
@@ -330,7 +337,6 @@
         </div>
     </div>
 
-    <!-- 9. شاشة السلة -->
     <div id="screen-cart" class="app-screen">
         <header class="header">
             <button class="header-btn" onclick="navigateRouter('screen-home')" aria-label="عودة">
@@ -369,7 +375,7 @@
                 </div>
 
                 <div class="clean-card">
-                    <div class="clean-title">طريقة الدفع</div>
+                    <div class="clean-title">طريقة الدفع المعتمدة</div>
                     <div id="cartPaymentMethodsGroup" style="display:flex; flex-direction:column; gap:6px;"></div>
                 </div>
 
@@ -421,7 +427,6 @@
         </div>
     </div>
 
-    <!-- 10. شاشة تسجيل الدخول وإنشاء الحساب -->
     <div id="screen-user-auth" class="app-screen">
         <header class="header">
             <button class="header-btn" onclick="navigateRouter('screen-home')" aria-label="عودة">
@@ -466,20 +471,27 @@
         </div>
     </div>
 
-    <!-- 11. لوحة الإدارة -->
     <div id="screen-admin-dashboard" class="app-screen">
         <header class="header">
-            <span style="font-size:14px; font-weight:800; color:var(--brand-gold);" id="adminGreetingLabel">لوحة الإدارة</span>
-            <button class="btn-brand-outline" style="padding:4px 8px; font-size:11px; color:var(--status-danger); border-color:var(--status-danger);" onclick="exitAdminSession()">خروج</button>
+            <div style="display:flex; align-items:center; gap:8px;">
+                <span style="font-size:14px; font-weight:800; color:var(--brand-gold);" id="adminGreetingLabel">لوحة الإدارة</span>
+                <span id="adminLiveChimeIndicator" style="display:inline-block; width:8px; height:8px; border-radius:50%; background:var(--status-success); box-shadow:0 0 6px var(--status-success);" title="التنبيه الصوتي مفعل"></span>
+            </div>
+            <div style="display:flex; gap:6px;">
+                <button class="btn-brand-outline" style="padding:4px 8px; font-size:11px;" onclick="toggleAdminOrderSound()" id="btnAdminSoundToggle">صوت الطلبات: يعمل</button>
+                <button class="btn-brand-outline" style="padding:4px 8px; font-size:11px; color:var(--status-danger); border-color:var(--status-danger);" onclick="exitAdminSession()">خروج</button>
+            </div>
         </header>
 
         <div class="admin-nav-tabs">
-            <div class="admin-tab-chip active" id="tabHeadLiveOrders" onclick="switchAdminTabPane('liveOrders')">الطلبات</div>
+            <div class="admin-tab-chip active" id="tabHeadLiveOrders" onclick="switchAdminTabPane('liveOrders')">الطلبات الحية</div>
+            <div class="admin-tab-chip dev-only-tab" id="tabHeadBadges" onclick="switchAdminTabPane('badges')">إدارة الشارات</div>
+            <div class="admin-tab-chip dev-only-tab" id="tabHeadPayments" onclick="switchAdminTabPane('payments')">طرق دفع الفروع</div>
+            <div class="admin-tab-chip dev-only-tab" id="tabHeadThemes" onclick="switchAdminTabPane('themes')">الثيمات والهوية</div>
             <div class="admin-tab-chip dev-only-tab" id="tabHeadMenu" onclick="switchAdminTabPane('menu')">المنيو</div>
             <div class="admin-tab-chip dev-only-tab" id="tabHeadSauces" onclick="switchAdminTabPane('sauces')">النكهات</div>
             <div class="admin-tab-chip dev-only-tab" id="tabHeadAnalytics" onclick="switchAdminTabPane('analytics')">الإحصائيات</div>
             <div class="admin-tab-chip dev-only-tab" id="tabHeadDelivery" onclick="switchAdminTabPane('delivery')">التوصيل</div>
-            <div class="admin-tab-chip dev-only-tab" id="tabHeadPayments" onclick="switchAdminTabPane('payments')">طرق الدفع</div>
             <div class="admin-tab-chip dev-only-tab" id="tabHeadDeveloperSettings" onclick="switchAdminTabPane('developerSettings')">المطور والترويسة</div>
             <div class="admin-tab-chip dev-only-tab" id="tabHeadMomentsAdmin" onclick="switchAdminTabPane('momentsAdmin')">مراجعات الصور</div>
             <div class="admin-tab-chip dev-only-tab" id="tabHeadUsers" onclick="switchAdminTabPane('users')">العملاء</div>
@@ -488,6 +500,7 @@
         </div>
 
         <div class="scrollable-content">
+            <!-- تبويب الطلبات الحية مع التنبيه الصوتي -->
             <div class="admin-pane active" id="paneLiveOrders">
                 <div class="clean-card">
                     <div class="clean-title">
@@ -498,6 +511,84 @@
                 </div>
             </div>
 
+            <!-- تبويب إدارة الشارات النخبوية والتصميم التلقائي -->
+            <div class="admin-pane" id="paneBadges">
+                <div class="clean-card">
+                    <div class="clean-title">إصدار وتصميم شارة جديدة تلقائياً</div>
+                    <div style="display:flex; flex-direction:column; gap:8px;">
+                        <input type="text" class="ios-input-field" id="newBadgeNameInput" placeholder="اسم الشارة (مثال: محب الموكا)">
+                        <input type="text" class="ios-input-field" id="newBadgeIconInput" placeholder="أيقونة أو رمز الشارة (مثال: ☕ أو 👑 أو ⭐)">
+                        <input type="text" class="ios-input-field" id="newBadgeCriteriaInput" placeholder="شرط الاستحقاق (مثال: عند إتمام 5 طلبات)">
+                        <input type="number" class="ios-input-field num-font" id="newBadgeRequiredOrdersInput" placeholder="عدد الطلبات المطلوبة لفتحها تلقائياً (0 = يدوي)">
+                        <button class="btn-brand-solid" onclick="saveNewAdminBadgeTrophy()">توليد وتعميم الشارة فورياً</button>
+                    </div>
+                </div>
+                <div class="clean-card">
+                    <div class="clean-title">الشارات المعتمدة بالنظام</div>
+                    <div id="adminBadgesListContainer"></div>
+                </div>
+            </div>
+
+            <!-- تبويب طرق الدفع المستقلة والشعارات لكل فرع -->
+            <div class="admin-pane" id="panePayments">
+                <div class="clean-card">
+                    <div class="clean-title">
+                        <span>إضافة طريقة دفع لفرع محدد</span>
+                        <span style="font-size:11px; color:var(--text-secondary);">مع رفع شعار من الهاتف</span>
+                    </div>
+                    <div style="display:flex; flex-direction:column; gap:8px;">
+                        <select class="ios-input-field" id="adminNewPayBranchSelect">
+                            <option value="0">فرع كفرسوم فقط</option>
+                            <option value="1">فرع سما الروسان فقط</option>
+                            <option value="all">كلا الفرعين معاً</option>
+                        </select>
+                        <input type="text" class="ios-input-field" id="adminNewPayNameInput" placeholder="اسم الطريقة (مثال: كليك Zain Cash)">
+                        <input type="text" class="ios-input-field num-font" id="adminNewPayDetailsInput" placeholder="الرقم أو الحساب (مثال: 079xxxxxxx)">
+                        <div>
+                            <span style="font-size:11px; font-weight:700; color:var(--text-secondary);">شعار طريقة الدفع:</span>
+                            <div style="display:flex; gap:8px; align-items:center; margin-top:4px;">
+                                <input type="file" id="payMethodLogoFileInput" accept="image/*" style="display:none;" onchange="handleImageUploadDirect(event, 'payMethodLogoDataUrlInput', 'previewPayMethodLogoUI')">
+                                <button type="button" class="btn-brand-outline" onclick="document.getElementById('payMethodLogoFileInput').click()">رفع شعار من الهاتف</button>
+                                <img id="previewPayMethodLogoUI" src="" style="width:36px; height:36px; border-radius:6px; object-fit:contain; display:none; background:#fff; padding:2px;" alt="شعار الدفع">
+                            </div>
+                            <input type="hidden" id="payMethodLogoDataUrlInput">
+                        </div>
+                        <button class="btn-brand-solid" onclick="saveNewBranchPaymentMethod()">حفظ وتثبيت طريقة الدفع</button>
+                    </div>
+                </div>
+                <div class="clean-card">
+                    <div class="clean-title">طرق الدفع المفعلة بالفروع</div>
+                    <div id="adminBranchPaymentsListView"></div>
+                </div>
+            </div>
+
+            <!-- تبويب تخصيص الثيمات والهوية -->
+            <div class="admin-pane" id="paneThemes">
+                <div class="clean-card">
+                    <div class="clean-title">الثيمات والهوية المعتمدة</div>
+                    <div style="display:flex; flex-direction:column; gap:10px;">
+                        <div>
+                            <span style="font-size:11.5px; font-weight:700; color:var(--text-secondary);">اختر الثيم العام للكافيه:</span>
+                            <select class="ios-input-field" id="adminThemeSelectPicker" onchange="changeStoreGlobalTheme(this.value)">
+                                <option value="espresso-gold">إسبريسو وذهب فاخر (الافتراضي الرسمي)</option>
+                                <option value="royal-emerald">الزمرد الملكي والقهوة</option>
+                                <option value="midnight-titanium">تيتانيوم أسود نقي</option>
+                                <option value="warm-cappuccino">كابتشينو دافئ وخشبي</option>
+                            </select>
+                        </div>
+                        <div>
+                            <span style="font-size:11.5px; font-weight:700; color:var(--text-secondary);">اللون الرئيسي المخصص (HEX):</span>
+                            <div style="display:flex; gap:8px; align-items:center;">
+                                <input type="color" id="adminCustomColorPicker" value="#c59b63" style="width:44px; height:38px; border-radius:6px; cursor:pointer;" onchange="document.getElementById('adminCustomColorHexInput').value = this.value">
+                                <input type="text" class="ios-input-field num-font" id="adminCustomColorHexInput" value="#c59b63" style="flex:1;">
+                                <button class="btn-brand-solid" onclick="applyCustomStoreColorDirect()">تطبيق فوري</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- بقية التبويبات المحصنة -->
             <div class="admin-pane" id="paneMenu">
                 <button class="btn-brand-solid" style="margin-bottom:10px;" onclick="openProductEditorModal(null)">+ صنف جديد</button>
                 <div id="adminProductsControlList"></div>
@@ -543,19 +634,6 @@
                         <button class="btn-brand-solid" onclick="saveTownRateAdmin()">حفظ</button>
                     </div>
                     <div id="adminTownsRatesList"></div>
-                </div>
-            </div>
-
-            <div class="admin-pane" id="panePayments">
-                <div class="clean-card">
-                    <div class="clean-title">بيانات كليك (CliQ) لكل فرع</div>
-                    <div style="display:flex; flex-direction:column; gap:8px;">
-                        <input type="text" class="ios-input-field" id="cfgCliqName0" placeholder="محفظة كفرسوم">
-                        <input type="text" class="ios-input-field num-font" id="cfgCliqNum0" placeholder="رقم كفرسوم">
-                        <input type="text" class="ios-input-field" id="cfgCliqName1" placeholder="محفظة سما الروسان">
-                        <input type="text" class="ios-input-field num-font" id="cfgCliqNum1" placeholder="رقم سما الروسان">
-                        <button class="btn-brand-solid" onclick="saveAdminPaymentSettings()">حفظ بيانات كليك</button>
-                    </div>
                 </div>
             </div>
 
@@ -635,7 +713,6 @@
         </div>
     </div>
 
-    <!-- 12. شاشة الدخول للإدارة -->
     <div id="screen-admin-login" class="app-screen">
         <header class="header">
             <button class="header-btn" onclick="navigateRouter('screen-home')" aria-label="عودة">
@@ -646,7 +723,7 @@
         </header>
         <div class="scrollable-content">
             <div class="clean-card" style="max-width:340px; margin:40px auto 0; text-align:center;">
-                <div style="font-size:15px; font-weight:800; margin-bottom:12px;">تسجيل دخول الإدارة</div>
+                <div style="font-size:15px; font-weight:800; margin-bottom:12px;">تسجيل دخول الإدارة المشفر</div>
                 <div style="display:flex; flex-direction:column; gap:10px; margin-bottom:12px;">
                     <select class="ios-input-field" id="adminUserField" style="text-align:center; font-weight:700;">
                         <option value="omar">المطور</option>
@@ -654,12 +731,11 @@
                     </select>
                     <input type="password" class="ios-input-field num-font" id="adminPassField" placeholder="••••••••••" style="text-align:center;">
                 </div>
-                <button class="btn-brand-solid" style="width:100%;" onclick="attemptAdminAuthentication()">دخول</button>
+                <button class="btn-brand-solid" style="width:100%;" onclick="attemptAdminAuthentication()">دخول آمن</button>
             </div>
         </div>
     </div>
 
-    <!-- 13. محرر الأصناف -->
     <div id="screen-product-editor" class="app-screen" style="z-index:1800;">
         <header class="header">
             <button class="header-btn" onclick="navigateRouter('screen-admin-dashboard')" aria-label="عودة">
@@ -713,7 +789,6 @@
         </div>
     </div>
 
-    <!-- نافذة نشر تجربة جديدة مع المعاينة الكاملة للصورة -->
     <div id="modal-new-moment" class="modal-backdrop">
         <div class="modal-dialog-box">
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
@@ -762,9 +837,65 @@
         </div>
     </div>
 
+    <div id="modal-digital-receipt" class="modal-backdrop">
+        <div class="modal-dialog-box" style="padding:14px; background:transparent; border:none; box-shadow:none;">
+            <div class="receipt-paper-box" id="receiptRenderableCard">
+                <div class="receipt-brand-head">
+                    <div style="font-size:18px; font-weight:900; letter-spacing:0.5px;" id="recBrandTitle">COFFEE CORNER</div>
+                    <div style="font-size:11px; color:#6b6257; margin-top:2px;">إيصال طلب إلكتروني موثق</div>
+                    <div style="font-size:12px; font-weight:800; color:#c59b63; margin-top:4px;" class="num-font" id="recOrderId">#ORD-0000</div>
+                    <div style="font-size:10.5px; color:#8c8274; margin-top:2px;" id="recTimestamp">الوقت</div>
+                </div>
+
+                <div style="font-size:11.5px; margin-bottom:10px; line-height:1.7;">
+                    <div>العميل: <strong id="recClientName">العميل</strong></div>
+                    <div>الهاتف: <strong class="num-font" id="recClientPhone">079xxxxxxx</strong></div>
+                    <div>الفرع: <strong id="recBranchName">كفرسوم</strong></div>
+                    <div>الاستلام: <strong id="recDeliveryMode">توصيل</strong></div>
+                    <div id="recAddressLineWrap">العنوان: <strong id="recAddressLine">العنوان</strong></div>
+                    <div>طريقة الدفع: <strong id="recPayMethod">كليك</strong></div>
+                </div>
+
+                <div id="recItemsListLines" style="margin-bottom:10px;"></div>
+
+                <div style="font-size:12px; color:#5c5449; line-height:1.7;">
+                    <div style="display:flex; justify-content:space-between;">
+                        <span>المجموع الجزئي:</span>
+                        <span class="num-font" id="recSubtotal">0.00 د.أ</span>
+                    </div>
+                    <div style="display:none; justify-content:space-between; color:#059669;" id="recDiscountRow">
+                        <span>الخصم المطبق:</span>
+                        <span class="num-font" id="recDiscount">-0.00 د.أ</span>
+                    </div>
+                    <div style="display:flex; justify-content:space-between;" id="recDeliveryRow">
+                        <span>أجور التوصيل:</span>
+                        <span class="num-font" id="recDelivery">0.00 د.أ</span>
+                    </div>
+                </div>
+
+                <div class="receipt-total-block">
+                    <span>الإجمالي النهائي:</span>
+                    <span class="num-font" id="recTotalAmount">0.00 د.أ</span>
+                </div>
+
+                <div style="text-align:center; margin-top:14px; font-size:10px; color:#8c8274;">
+                    شكراً لاختياركم كافيه كورنر • نتمنى لكم تجربة مميزة!
+                </div>
+            </div>
+
+            <div style="display:flex; gap:8px; margin-top:12px; max-width:380px; margin-left:auto; margin-right:auto;">
+                <button class="btn-brand-solid" style="flex:1;" onclick="downloadReceiptAsImage()">
+                    تحميل الفاتورة كصورة (PNG)
+                </button>
+                <button class="btn-brand-outline" style="background:#ffffff; color:#1a1714;" onclick="closeDigitalReceiptModal()">
+                    إغلاق
+                </button>
+            </div>
+        </div>
+    </div>
+
 </div>
 
-<!-- القائمة الجانبية بالترتيب الدقيق المعتمد -->
 <div class="sidebar-mask" id="sidebarMask" onclick="closeSidebarDrawer()"></div>
 <div class="sidebar-drawer" id="sidebarDrawer">
     <div class="sidebar-top">
@@ -779,7 +910,7 @@
             <span>الصفحة الرئيسية</span>
         </div>
         <div class="sidebar-link" onclick="handleUserAccountHeaderClick(); closeSidebarDrawer();">
-            <span>حسابي</span>
+            <span>حسابي والشارات</span>
         </div>
         <div class="sidebar-link" onclick="navigateRouter('screen-moments'); closeSidebarDrawer();">
             <span>شاركنا بصورة</span>
@@ -796,10 +927,13 @@
         <div class="sidebar-link" onclick="navigateRouter('screen-developer'); closeSidebarDrawer();">
             <span>المطور</span>
         </div>
+        <div class="sidebar-link" onclick="toggleThemeMode(); closeSidebarDrawer();">
+            <span id="sidebarThemeModeText">تبديل للمظهر الفاتح</span>
+        </div>
     </div>
 
     <div class="sidebar-version-badge">
-        الإصدار: <span class="num-font" id="sidebarVersionLabel">v7.7.3</span>
+        الإصدار: <span class="num-font" id="sidebarVersionLabel">v7.8.0</span>
     </div>
 </div>
 
