@@ -78,7 +78,6 @@ function safeGet(key, fallback) {
         const val = localStorage.getItem(key);
         if (!val) return fallback;
         const parsed = JSON.parse(val);
-        // إذا كانت مصفوفة وفارغة نرجع القيمة الأصلية المضمونة
         if (Array.isArray(fallback) && Array.isArray(parsed) && parsed.length === 0) {
             return fallback;
         }
@@ -93,7 +92,7 @@ function safeSet(key, value) {
     } catch (e) { return false; }
 }
 
-// تحميل الأصناف مع فحص صارم يمنع المنيو الفارغ تماماً
+// تحميل الأصناف مع فحص صارم ومباشر لمنع أي فراغ
 let productsList = safeGet('cc_products', window.DEFAULT_CATALOG);
 if (!Array.isArray(productsList) || productsList.length === 0) {
     productsList = [...window.DEFAULT_CATALOG];
@@ -355,7 +354,6 @@ window.closeSidebarDrawer = function() {
 };
 
 window.renderCategoryChips = function() {
-    // التأكد من توفر الأصناف
     if (!productsList || productsList.length === 0) {
         productsList = [...window.DEFAULT_CATALOG];
     }
@@ -413,7 +411,10 @@ window.renderMenuProducts = function() {
 };
 
 window.openProductCustomizer = function(id) {
-    const item = productsList.find(x => x.id === id);
+    let item = productsList.find(x => x.id === id);
+    if (!item) {
+        item = window.DEFAULT_CATALOG.find(x => x.id === id);
+    }
     if (!item) return;
     window.appState.selectedProduct = item;
     window.appState.productModalQty = 1;
@@ -1712,7 +1713,8 @@ function renderAdminProductsManager() {
 window.openProductEditorModal = function(id) {
     const previewEl = document.getElementById('previewProductImgAdmin');
     if (id) {
-        const p = productsList.find(x => x.id === id);
+        let p = productsList.find(x => x.id === id);
+        if (!p) p = window.DEFAULT_CATALOG.find(x => x.id === id);
         document.getElementById('editProductIdField').value = p.id;
         document.getElementById('editProductNameField').value = p.name;
         document.getElementById('editProductCatField').value = p.category;
@@ -2057,7 +2059,8 @@ function pollNewOrdersTelemetry() {
     }
 }
 
-document.addEventListener('DOMContentLoaded', () => {
+// تشغيل فوري ومضمون فور تحميل المستند
+function bootstrapMenuNow() {
     applyThemeToDOM();
     updateVersionBadgeUI();
     applyLiveSettingsToDOM();
@@ -2069,7 +2072,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
     updateClientSessionState();
     refreshCartDockStatus();
+}
 
-    setInterval(updateBranchStatusBadges, 60000);
-    setInterval(pollNewOrdersTelemetry, 5000);
-});
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', bootstrapMenuNow);
+} else {
+    bootstrapMenuNow();
+}
+
+setInterval(updateBranchStatusBadges, 60000);
+setInterval(pollNewOrdersTelemetry, 5000);
