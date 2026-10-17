@@ -16,7 +16,8 @@
 
     <style>
         /* =========================================================
-           COFFEE CORNER PRO — COMPLETE PRODUCTION MASTER STYLESHEET
+           COFFEE CORNER PRO — CLEAN PRODUCTION STYLESHEET
+           خالٍ تماماً من الإيموجيز ويعتمد على أيقونات SVG وتناسق الجوال
            ========================================================= */
         :root {
             --bg-main: #fbfbf9;
@@ -94,6 +95,14 @@
             display: inline-block;
         }
 
+        .svg-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            vertical-align: middle;
+            flex-shrink: 0;
+        }
+
         .app-container {
             width: 100%;
             max-width: 500px;
@@ -105,7 +114,6 @@
             box-shadow: 0 0 35px rgba(0,0,0,0.05);
         }
 
-        /* قواعد الشاشات النظيفة لمنع التداخل نهائياً */
         .app-screen {
             display: none !important;
             width: 100%;
@@ -257,7 +265,7 @@
             font-weight: 900;
         }
 
-        /* شبكة الأصناف المزدوجة المعتمدة */
+        /* شبكة الأصناف */
         .product-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
@@ -329,7 +337,7 @@
             font-weight: 800;
         }
 
-        /* شبكة لوحة الإدارة السداسية الشاملة */
+        /* شبكة لوحة الإدارة */
         .admin-hub-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
@@ -464,7 +472,7 @@
             height: 70px;
         }
 
-        /* بطاقة العضوية التنفيذية (مع تمييز المطور الفاخر) */
+        /* بطاقة العضوية التنفيذية */
         .membership-passport-card {
             background: linear-gradient(135deg, #1b1612 0%, #2a221b 100%);
             border: 1.5px solid rgba(197, 155, 99, 0.4);
@@ -607,7 +615,7 @@
             border-bottom: 3px solid var(--brand-gold);
         }
 
-        /* العداد التنازلي للتجهيز */
+        /* العداد التنازلي للتجهيز للزبون والأدمن */
         .prep-timer-box {
             background: linear-gradient(135deg, rgba(197, 155, 99, 0.12), rgba(197, 155, 99, 0.04));
             border: 1.5px solid var(--brand-gold);
@@ -628,6 +636,25 @@
             margin: 4px 0;
         }
         .prep-timer-box.delayed .prep-timer-digits {
+            color: var(--status-warning);
+        }
+
+        /* تايمر الأدمن داخل الكرت */
+        .admin-order-timer-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            background: var(--brand-gold-glow);
+            border: 1px solid var(--brand-gold);
+            color: var(--brand-gold);
+            padding: 3px 8px;
+            border-radius: var(--radius-sm);
+            font-size: 11px;
+            font-weight: 800;
+        }
+        .admin-order-timer-chip.delayed {
+            background: rgba(245, 158, 11, 0.15);
+            border-color: var(--status-warning);
             color: var(--status-warning);
         }
 
@@ -767,7 +794,7 @@
         }
         .toast-popup.active { transform: translate(-50%, 0); opacity: 1; }
 
-        /* صفحة المطور Developer Hub الداكنة */
+        /* صفحة المطور Developer Hub */
         #screen-developer {
             background-color: #080D16 !important;
             color: #F4F7FB !important;
@@ -923,7 +950,7 @@
         </div>
     </div>
 
-    <!-- 4. شاشة تتبع طلبي والفاتورة مع عداد التجهيز والتعويض التلقائي -->
+    <!-- 4. شاشة تتبع طلبي والفاتورة مع عداد التجهيز للزبون -->
     <div id="screen-order-tracking" class="app-screen">
         <header class="header">
             <button class="header-btn" onclick="navigateRouter('screen-home')" aria-label="عودة">✕</button>
@@ -967,7 +994,7 @@
                     <div class="passport-user-info">
                         <div class="passport-user-name" id="profDisplayName">المهندس عمر عبيدات</div>
                         <div class="passport-user-bio" id="profBioDesc">محب للقهوة والمذاق الرفيع في كافيه كورنر ومطور هذا النظام.</div>
-                        <div style="font-size:10px; color:var(--brand-gold); margin-top:3px;" id="profBirthdayText">تاريخ الميلاد: 2005-01-01</div>
+                        <div style="font-size:10.5px; color:var(--brand-gold); margin-top:3px;" id="profBirthdayText">تاريخ الميلاد: 2005-01-01</div>
                     </div>
                 </div>
                 <div class="passport-stats-grid">
@@ -989,7 +1016,7 @@
             <!-- زر وصول مباشر للوحة الإدارة للمطور -->
             <div id="devProfileAccessBtnRow" style="display:block; margin-bottom:12px;">
                 <button class="btn-brand-solid" style="background:#55DDF3; color:#080D16;" onclick="navigateRouter('screen-admin-dashboard'); backToAdminMainHub();">
-                    دخول مباشر للوحة الإدارة (صلاحيات المطور الكاملة) ⚡
+                    دخول مباشر للوحة الإدارة (صلاحيات المطور الكاملة)
                 </button>
             </div>
 
@@ -1056,12 +1083,12 @@
                     <div style="font-size:11px; color:var(--text-secondary);">حدد الحجم للمشروبات، أو النكهات والمكس الذكي للحلويات (وافل، كريب، كنافة، بان كيك).</div>
                 </div>
                 <div style="padding: 8px 0; border-bottom: 1px solid var(--border-subtle);">
-                    <div style="font-size:13px; font-weight:900; color:var(--brand-gold);">2. تحديد طريقة الاستلام والتوصيل</div>
-                    <div style="font-size:11px; color:var(--text-secondary);">اختر منطقتك السكنية أو استلم طلبك مباشرة من الفرع.</div>
+                    <div style="font-size:13px; font-weight:900; color:var(--brand-gold);">2. تحديد نوع الاستلام (توصيل للبيت أو استلام من الفرع)</div>
+                    <div style="font-size:11px; color:var(--text-secondary);">اختر قريتك السكنية لحساب التوصيل، أو اختر الاستلام المباشر من الفرع أو الجلسة بالصالة.</div>
                 </div>
                 <div style="padding: 8px 0;">
-                    <div style="font-size:13px; font-weight:900; color:var(--brand-gold);">3. جمع واستبدال النقاط</div>
-                    <div style="font-size:11px; color:var(--text-secondary);">مع كل طلب تكسب نقاط ولاء لاستبدالها بطلبات مجانية فورية أو تأجيلها.</div>
+                    <div style="font-size:13px; font-weight:900; color:var(--brand-gold);">3. الإرسال عبر الواتساب وجمع النقاط</div>
+                    <div style="font-size:11px; color:var(--text-secondary);">يرسل الطلب كرسالة فورية منظمة للفرع، وتجمع نقاطك تلقائياً لاستبدالها بطلبات مجانية.</div>
                 </div>
             </div>
         </div>
@@ -1166,7 +1193,7 @@
         </div>
     </div>
 
-    <!-- 11. شاشة سلة المشتريات -->
+    <!-- 11. شاشة سلة المشتريات (تنسيق منفصل بين التوصيل والفرع) -->
     <div id="screen-cart" class="app-screen">
         <header class="header">
             <button class="header-btn" onclick="navigateRouter('screen-home')" aria-label="عودة">✕</button>
@@ -1182,22 +1209,34 @@
 
             <div class="clean-card">
                 <div class="clean-title">فرع الطلب</div>
-                <div style="display:flex; gap:6px; margin-bottom:10px;">
+                <div style="display:flex; gap:6px; margin-bottom:12px;">
                     <button class="btn-brand-outline active" style="flex:1;" id="btnBranch0" onclick="switchCartBranch(0)">كفرسوم</button>
                     <button class="btn-brand-outline" style="flex:1;" id="btnBranch1" onclick="switchCartBranch(1)">سما الروسان</button>
                 </div>
 
                 <div class="clean-title">طريقة الاستلام</div>
-                <div style="display:flex; gap:6px; margin-bottom:10px;">
-                    <button class="btn-brand-outline active" style="flex:1;" id="btnModeDelivery" onclick="switchDeliveryMode('delivery')">توصيل</button>
-                    <button class="btn-brand-outline" style="flex:1;" id="btnModePickup" onclick="switchDeliveryMode('pickup')">من الفرع</button>
+                <div style="display:flex; gap:6px; margin-bottom:12px;">
+                    <button class="btn-brand-outline active" style="flex:1;" id="btnModeDelivery" onclick="switchDeliveryMode('delivery')">توصيل للبيت</button>
+                    <button class="btn-brand-outline" style="flex:1;" id="btnModePickup" onclick="switchDeliveryMode('pickup')">من الفرع / صالة</button>
                 </div>
 
+                <!-- قسم التوصيل المستقل -->
                 <div id="deliveryFieldsArea">
+                    <div style="font-size:11px; color:var(--text-secondary); margin-bottom:6px;">حدد البلدة السكنية والعنوان:</div>
                     <div style="display:flex; flex-direction:column; gap:8px;">
                         <select class="ios-input-field" id="cartTownSelect" onchange="recalculateCartSummary()"></select>
-                        <input type="text" class="ios-input-field" id="cartAddressInput" placeholder="تفاصيل العنوان (الحي، المعلم)">
+                        <input type="text" class="ios-input-field" id="cartAddressInput" placeholder="تفاصيل العنوان (الحي، قرب مسجد/معلم)">
                     </div>
+                </div>
+
+                <!-- قسم الاستلام من الفرع المستقل -->
+                <div id="pickupFieldsArea" style="display:none;">
+                    <div style="font-size:11px; color:var(--text-secondary); margin-bottom:6px;">نوع الطلب داخل الفرع:</div>
+                    <div style="display:flex; gap:6px; margin-bottom:8px;">
+                        <button class="btn-brand-outline active" style="flex:1;" id="btnPickupTakeaway" onclick="setPickupSubtype('takeaway')">استلام سفري</button>
+                        <button class="btn-brand-outline" style="flex:1;" id="btnPickupDinein" onclick="setPickupSubtype('dinein')">جلسة بالصالة</button>
+                    </div>
+                    <input type="text" class="ios-input-field" id="cartTableNumInput" placeholder="رقم الطاولة في الصالة (إن وجد)" style="display:none;">
                 </div>
             </div>
 
@@ -1243,8 +1282,8 @@
                 </div>
             </div>
 
-            <button class="btn-brand-solid" style="padding:12px;" onclick="dispatchOrderAndInitiateTracking()">
-                تأكيد وإرسال الطلب أونلاين عبر واتساب
+            <button class="btn-brand-solid" style="padding:12px; background:#25D366; color:#ffffff;" onclick="dispatchOrderAndInitiateTracking()">
+                تأكيد وإرسال الطلب مباشرة عبر واتساب
             </button>
         </div>
     </div>
@@ -1391,7 +1430,7 @@
             <div id="subView-orders" class="admin-sub-view">
                 <button class="btn-brand-outline" style="margin-bottom:10px;" onclick="backToAdminMainHub()">← العودة للوحة الرئيسية</button>
                 <div class="clean-card">
-                    <div class="clean-title">الطلبات الواردة الحية (تختفي تلقائياً بعد 10 دقائق من الإكمال أو الإلغاء)</div>
+                    <div class="clean-title">الطلبات الواردة الحية (مع تايمر التحضير الحي لكل طلب)</div>
                     <div id="adminLiveOrdersContainer"></div>
                 </div>
             </div>
@@ -1575,7 +1614,7 @@
     <div class="receipt-modal-backdrop" id="modalAdminSetPrepTime">
         <div class="clean-card" style="width:100%; max-width:340px; text-align:center;">
             <div style="font-size:15px; font-weight:900; color:var(--brand-gold); margin-bottom:6px;">تحديد مدة تحضير الطلب</div>
-            <div style="font-size:12px; color:var(--text-secondary); margin-bottom:12px;">حدد بالدقائق المدة المتوقعة لتجهيز هذا الطلب لتبدأ بالعد التنازلي للزبون:</div>
+            <div style="font-size:12px; color:var(--text-secondary); margin-bottom:12px;">حدد بالدقائق المدة المتوقعة لتجهيز هذا الطلب لتبدأ بالعد التنازلي للزبون والإدارة:</div>
             <input type="hidden" id="prepOrderTargetId">
             <div style="display:flex; gap:6px; margin-bottom:12px;">
                 <button class="btn-brand-outline" style="flex:1;" onclick="setOrderPrepMinutesVal(10)">10 د</button>
@@ -1584,7 +1623,7 @@
                 <button class="btn-brand-outline" style="flex:1;" onclick="setOrderPrepMinutesVal(30)">30 د</button>
             </div>
             <input type="number" class="ios-input-field num-font" id="customPrepMinutesInput" placeholder="أو اكتب عدد الدقائق يدوياً" style="text-align:center; margin-bottom:10px;">
-            <button class="btn-brand-solid" onclick="confirmStartOrderPrepTimer()">بدء التحضير وبث العداد للزبون</button>
+            <button class="btn-brand-solid" onclick="confirmStartOrderPrepTimer()">بدء التحضير وبث العداد فوراً</button>
             <button class="header-btn" style="width:100%; border:none; margin-top:4px;" onclick="document.getElementById('modalAdminSetPrepTime').classList.remove('active')">إلغاء</button>
         </div>
     </div>
@@ -1604,7 +1643,7 @@
                 </div>
                 <div style="font-size:11.5px; color:#222; border-bottom:1px solid #eee; padding-bottom:6px; margin-bottom:8px;">
                     <div><strong>العميل:</strong> <span id="rcptCustomerName">--</span> (<span class="num-font" id="rcptCustomerPhone">--</span>)</div>
-                    <div><strong>نوع الاستلام:</strong> <span id="rcptDeliveryMode">--</span></div>
+                    <div><strong>طريقة الاستلام:</strong> <span id="rcptDeliveryMode">--</span></div>
                     <div id="rcptAddressRow" style="display:none;"><strong>العنوان:</strong> <span id="rcptAddress">--</span></div>
                     <div><strong>طريقة الدفع:</strong> <span id="rcptPaymentMethod">--</span></div>
                 </div>
@@ -1637,8 +1676,8 @@
             </div>
 
             <div style="padding:12px; background:#fbf8f5; border-top:1px solid #eee; display:flex; gap:8px;">
-                <button class="btn-brand-solid" style="flex:1; padding:8px; font-size:11px;" onclick="exportReceiptAsImagePNG()">حفظ الفاتورة كصورة 📷</button>
-                <button class="btn-brand-outline" style="flex:1; padding:8px; font-size:11px;" onclick="shareReceiptNative()">مشاركة الفاتورة ↗</button>
+                <button class="btn-brand-solid" style="flex:1; padding:8px; font-size:11px;" onclick="exportReceiptAsImagePNG()">حفظ الفاتورة كصورة</button>
+                <button class="btn-brand-outline" style="flex:1; padding:8px; font-size:11px;" onclick="shareReceiptNative()">مشاركة الفاتورة</button>
                 <button class="header-btn" style="width:36px; height:36px;" onclick="document.getElementById('modalReceiptViewer').classList.remove('active')">✕</button>
             </div>
         </div>
@@ -1864,7 +1903,7 @@
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
         </div>
         <div style="font-size:11px; color:var(--text-dim);">
-            <span>الإصدار </span><span class="num-font">7.4.8</span>
+            <span>الإصدار </span><span class="num-font">7.4.9</span>
         </div>
     </div>
 </div>
@@ -1956,6 +1995,7 @@ window.appState = {
     currentCategory: "الكل",
     cart: safeGet('cc_cart', []),
     deliveryMode: "delivery",
+    pickupSubtype: "takeaway",
     selectedPaymentMethod: "pay_cash",
     selectedProduct: null,
     productModalQty: 1,
@@ -1989,7 +2029,7 @@ let redeemCatalog = safeGet('cc_redeem_catalog', [
 ]);
 
 let customPaymentMethods = safeGet('cc_payment_methods', [
-    { id: "pay_cash", name: "دفع نقدي (كاش)", desc: "عند الاستلام من كابتن التوصيل", branch: "both", logo: "" },
+    { id: "pay_cash", name: "دفع نقدي (كاش)", desc: "عند الاستلام من كابتن التوصيل أو الكاشير", branch: "both", logo: "" },
     { id: "pay_cliq", name: "كليك (CliQ)", desc: "تحويل مباشر للمحفظة المعتمدة", branch: "both", logo: "" }
 ]);
 
@@ -2108,7 +2148,7 @@ window.toggleThemeMode = function() {
 };
 
 // ==========================================
-// إدارة المنيو وتخصيص الصنف الذكي
+// إدارة المنيو وتخصيص الصنف
 // ==========================================
 function renderCategoryChips() {
     const container = document.getElementById('categoryScrollChips');
@@ -2359,13 +2399,25 @@ window.switchCartBranch = function(branchIdx) {
     recalculateCartSummary();
 };
 
+// فصل خيارات التوصيل عن الاستلام بالفرع
 window.switchDeliveryMode = function(mode) {
     window.appState.deliveryMode = mode;
     document.getElementById('btnModeDelivery').classList.toggle('active', mode === 'delivery');
     document.getElementById('btnModePickup').classList.toggle('active', mode === 'pickup');
+    
+    // إظهار وإخفاء الحقول المنفصلة
     document.getElementById('deliveryFieldsArea').style.display = (mode === 'delivery') ? 'block' : 'none';
+    document.getElementById('pickupFieldsArea').style.display = (mode === 'pickup') ? 'block' : 'none';
     document.getElementById('sumDeliveryRow').style.display = (mode === 'delivery') ? 'flex' : 'none';
+    
     recalculateCartSummary();
+};
+
+window.setPickupSubtype = function(subtype) {
+    window.appState.pickupSubtype = subtype;
+    document.getElementById('btnPickupTakeaway').classList.toggle('active', subtype === 'takeaway');
+    document.getElementById('btnPickupDinein').classList.toggle('active', subtype === 'dinein');
+    document.getElementById('cartTableNumInput').style.display = (subtype === 'dinein') ? 'block' : 'none';
 };
 
 function populateCartTownsSelect() {
@@ -2373,7 +2425,7 @@ function populateCartTownsSelect() {
     if (!sel) return;
     const b = branchesData[window.appState.cartBranch] || branchesData[0];
     sel.innerHTML = Object.entries(b.towns).map(([town, fee]) => `
-        <option value="${fee}">${town} (توصيل: ${parseFloat(fee).toFixed(2)} د.أ)</option>
+        <option value="${fee}">${town} (أجور التوصيل: ${parseFloat(fee).toFixed(2)} د.أ)</option>
     `).join('');
 }
 
@@ -2435,7 +2487,7 @@ window.recalculateCartSummary = function() {
 };
 
 // ==========================================
-// إرسال الطلب وإصدار الفاتورة وتتبع المدة
+// إرسال الطلب الأساسي عبر الواتساب وتدريب الكادر
 // ==========================================
 window.dispatchOrderAndInitiateTracking = function() {
     if (!window.appState.cart.length) return window.showToastMsg("سلة المشتريات فارغة");
@@ -2454,6 +2506,12 @@ window.dispatchOrderAndInitiateTracking = function() {
     const total = (sub - discountAmount) + del;
     const orderNumber = 'ORD-' + Math.floor(1000 + Math.random() * 9000);
 
+    let modeDescription = "توصيل للبيت";
+    if (window.appState.deliveryMode === 'pickup') {
+        const tbl = (document.getElementById('cartTableNumInput')?.value || '').trim();
+        modeDescription = window.appState.pickupSubtype === 'dinein' ? `جلسة بالصالة ${tbl ? '(طاولة: ' + tbl + ')' : ''}` : "استلام سفري من الفرع";
+    }
+
     const newOrderObj = {
         orderId: orderNumber,
         clientId: CURRENT_DEVICE_ID,
@@ -2462,9 +2520,10 @@ window.dispatchOrderAndInitiateTracking = function() {
         branchName: branch.name,
         branchId: window.appState.cartBranch,
         deliveryMode: window.appState.deliveryMode,
+        deliveryModeFullText: modeDescription,
         townName: window.appState.deliveryMode === 'delivery' ? (document.getElementById('cartTownSelect').options[document.getElementById('cartTownSelect').selectedIndex]?.text || '') : '',
         addressText: (document.getElementById('cartAddressInput')?.value || '').trim(),
-        paymentMethod: window.appState.selectedPaymentMethod,
+        paymentMethod: window.appState.selectedPaymentMethod === 'pay_cliq' ? 'كليك (CliQ)' : 'كاش نقدي',
         items: [...window.appState.cart],
         subtotal: sub,
         discount: discountAmount,
@@ -2499,11 +2558,33 @@ window.dispatchOrderAndInitiateTracking = function() {
     // فتح الفاتورة الرقمية الفاخرة للزبون
     showReceiptModal(newOrderObj);
 
-    let msg = `*طلب جديد أونلاين | كافيه كورنر*\nرقم الطلب: ${orderNumber}\nالفرع: ${branch.name}\nالعميل: ${name} (${phone})\nنوع الاستلام: ${newOrderObj.deliveryMode === 'delivery' ? 'توصيل' : 'من الفرع'}\n----------------\n`;
+    // صياغة رسالة الواتساب الرسمية المعتمدة لموظفي الفرع
+    let msg = `*طلب جديد | COFFEE CORNER*\n`;
+    msg += `رقم الطلب: #${orderNumber}\n`;
+    msg += `الفرع: فرع ${branch.name}\n`;
+    msg += `العميل: ${name}\n`;
+    msg += `رقم الهاتف: ${phone}\n`;
+    msg += `نوع الطلب: ${modeDescription}\n`;
+    if (newOrderObj.deliveryMode === 'delivery') {
+        msg += `المنطقة: ${newOrderObj.townName}\n`;
+        if (newOrderObj.addressText) msg += `تفاصيل العنوان: ${newOrderObj.addressText}\n`;
+    }
+    msg += `--------------------------------\n`;
+    msg += `*الأصناف المطلوبة:*\n`;
     newOrderObj.items.forEach((it, i) => {
-        msg += `${i+1}. *${it.qty}x ${it.name}* (${it.sizeName})${it.sauceInfo ? ` - ${it.sauceInfo}` : ''} - ${it.lineTotal.toFixed(2)} د.أ\n`;
+        msg += `${i+1}. *${it.qty}x ${it.name}* (${it.sizeName})\n`;
+        if (it.sauceInfo) msg += `   النكهة: ${it.sauceInfo}\n`;
+        if (it.notes) msg += `   ملاحظة: ${it.notes}\n`;
+        msg += `   السعر: ${it.lineTotal.toFixed(2)} د.أ\n`;
     });
-    msg += `----------------\nالإجمالي: ${total.toFixed(2)} د.أ\nالدفع: ${newOrderObj.paymentMethod}\n`;
+    msg += `--------------------------------\n`;
+    msg += `مجموع الأصناف: ${sub.toFixed(2)} د.أ\n`;
+    if (discountAmount > 0) msg += `الخصم: -${discountAmount.toFixed(2)} د.أ\n`;
+    if (del > 0) msg += `أجور التوصيل: ${del.toFixed(2)} د.أ\n`;
+    msg += `*الإجمالي المطلوب: ${total.toFixed(2)} د.أ*\n`;
+    msg += `طريقة الدفع: ${newOrderObj.paymentMethod}\n`;
+    msg += `الوقت: ${newOrderObj.timestamp}\n`;
+    msg += `--------------------------------`;
 
     window.open(`https://wa.me/${branch.whatsapp}?text=${encodeURIComponent(msg)}`, '_blank');
     window.navigateRouter('screen-order-tracking');
@@ -2547,8 +2628,8 @@ function renderOrderTrackingView() {
         let statusText = "تم استلام الطلب وبانتظار البدء";
         let statusBadgeClass = "header-hours-badge";
 
-        if (latest.status === 'preparing') statusText = "جاري التجهيز والتحضير بالفرع ☕";
-        else if (latest.status === 'onway') statusText = "الطلب في الطريق مع السائق 🛵";
+        if (latest.status === 'preparing') statusText = "جاري التجهيز والتحضير بالفرع";
+        else if (latest.status === 'onway') statusText = "الطلب في الطريق مع السائق";
         else if (latest.status === 'completed') statusText = "تم تسليم الطلب بنجاح ✓";
         else if (latest.status === 'cancelled') {
             statusText = "تم إلغاء الطلب من قبل الإدارة ✕";
@@ -2566,7 +2647,7 @@ function renderOrderTrackingView() {
                 const secs = Math.floor((remainingMs % 60000) / 1000);
                 timerHtml = `
                     <div class="prep-timer-box">
-                        <div style="font-size:11px; font-weight:800; color:var(--text-secondary);">الوقت المتبقي لانتهاء التجهيز:</div>
+                        <div style="font-size:11px; font-weight:800; color:var(--text-secondary);">الوقت المتبقي لانتهاء التحضير:</div>
                         <div class="prep-timer-digits num-font">${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}</div>
                         <div style="font-size:10px; color:var(--text-dim);">فريقنا يعمل بكل حب لإنجاز طلبك بأسرع وقت!</div>
                     </div>
@@ -2585,7 +2666,7 @@ function renderOrderTrackingView() {
                     userProfile.points = (userProfile.points || 0) + delta;
                     safeSet('cc_user_profile', userProfile);
 
-                    triggerSystemNotification("هدية تعويض عن التأخير 🎁", `نعتذر عن التأخير، تم إضافة +${delta} نقطة ولاء مجانية لحسابك.`);
+                    triggerSystemNotification("تعويض ولاء عن التأخير", `نعتذر عن التأخير، تم إضافة +${delta} نقطة ولاء مجانية لحسابك.`);
                 }
 
                 timerHtml = `
@@ -2616,7 +2697,8 @@ function renderOrderTrackingView() {
                 ` : ''}
 
                 <div style="font-size:12px; color:var(--text-secondary); line-height:1.7; margin-bottom:10px;">
-                    <div><strong>الفرع:</strong> ${latest.branchName}</div>
+                    <div><strong>الفرع:</strong> فرع ${latest.branchName}</div>
+                    <div><strong>نوع الاستلام:</strong> ${latest.deliveryModeFullText || (latest.deliveryMode === 'delivery' ? 'توصيل للبيت' : 'من الفرع')}</div>
                     <div><strong>وقت الطلب:</strong> ${latest.timestamp}</div>
                     <div><strong>العميل:</strong> ${latest.customerName}</div>
                     <div><strong>الإجمالي:</strong> <span class="num-font">${latest.totalAmount.toFixed(2)} د.أ</span></div>
@@ -2627,16 +2709,21 @@ function renderOrderTrackingView() {
                     ${latest.items.map(it => `<div>• ${it.qty}x ${it.name} (${it.sizeName})${it.sauceInfo ? ` - ${it.sauceInfo}` : ''}</div>`).join('')}
                 </div>
 
-                <button class="btn-brand-solid" style="padding:7px; font-size:11px;" onclick='showReceiptModal(${JSON.stringify(latest)})'>عرض وحفظ الفاتورة 📄</button>
+                <button class="btn-brand-solid" style="padding:7px; font-size:11px;" onclick='showReceiptModal(${JSON.stringify(latest)})'>عرض وحفظ الفاتورة</button>
             </div>
         `;
     }).join('');
 }
 
+// تحديث التايمرات كل ثانية للإدارة والزبون
 setInterval(() => {
     const trackingScreen = document.getElementById('screen-order-tracking');
     if (trackingScreen && trackingScreen.classList.contains('active')) {
         renderOrderTrackingView();
+    }
+    const adminOrdersSubView = document.getElementById('subView-orders');
+    if (adminOrdersSubView && adminOrdersSubView.classList.contains('active')) {
+        renderAdminLiveOrdersManager();
     }
 }, 1000);
 
@@ -2649,10 +2736,10 @@ window.showReceiptModal = function(order) {
     currentViewingOrderForReceipt = order;
     document.getElementById('rcptOrderNumber').innerText = '#' + order.orderId;
     document.getElementById('rcptDateText').innerText = order.timestamp || new Date().toLocaleTimeString('ar-JO');
-    document.getElementById('rcptBranchText').innerText = order.branchName || 'فرع كفرسوم';
+    document.getElementById('rcptBranchText').innerText = 'فرع ' + (order.branchName || 'كفرسوم');
     document.getElementById('rcptCustomerName').innerText = order.customerName;
     document.getElementById('rcptCustomerPhone').innerText = order.customerPhone;
-    document.getElementById('rcptDeliveryMode').innerText = order.deliveryMode === 'delivery' ? 'توصيل للبيت' : 'استلام من الفرع';
+    document.getElementById('rcptDeliveryMode').innerText = order.deliveryModeFullText || (order.deliveryMode === 'delivery' ? 'توصيل للبيت' : 'من الفرع');
 
     const addrRow = document.getElementById('rcptAddressRow');
     if (order.deliveryMode === 'delivery' && (order.addressText || order.townName)) {
@@ -2662,7 +2749,7 @@ window.showReceiptModal = function(order) {
         addrRow.style.display = 'none';
     }
 
-    document.getElementById('rcptPaymentMethod').innerText = order.paymentMethod === 'pay_cliq' ? 'كليك (CliQ)' : 'كاش نقدي';
+    document.getElementById('rcptPaymentMethod').innerText = order.paymentMethod;
 
     document.getElementById('rcptItemsRowsList').innerHTML = order.items.map(it => `
         <div style="display:flex; justify-content:space-between; margin-bottom:4px;">
@@ -2724,8 +2811,8 @@ window.exportReceiptAsImagePNG = function() {
 
     let y = 175;
     ctx.fillText(`العميل: ${o.customerName} (${o.customerPhone})`, 560, y); y += 30;
-    ctx.fillText(`الفرع: ${o.branchName} • وقت الطلب: ${o.timestamp}`, 560, y); y += 30;
-    ctx.fillText(`الاستلام: ${o.deliveryMode === 'delivery' ? 'توصيل' : 'من الفرع'} • الدفع: ${o.paymentMethod}`, 560, y); y += 30;
+    ctx.fillText(`الفرع: فرع ${o.branchName} • وقت الطلب: ${o.timestamp}`, 560, y); y += 30;
+    ctx.fillText(`الاستلام: ${o.deliveryModeFullText || o.deliveryMode} • الدفع: ${o.paymentMethod}`, 560, y); y += 30;
 
     ctx.strokeStyle = "#e0d8cc";
     ctx.lineWidth = 1.5;
@@ -2793,7 +2880,7 @@ window.exportReceiptAsImagePNG = function() {
     ctx.textAlign = "center";
     ctx.fillStyle = "#888888";
     ctx.font = "13px Tajawal, sans-serif";
-    ctx.fillText("شكراً لاختياركم كافيه كورنر • صحتين وهنا!", canvas.width / 2, y);
+    ctx.fillText("شكراً لاختياركم كافيه كورنر • نتمنى لكم تجربة مميزة!", canvas.width / 2, y);
 
     const imgUrl = canvas.toDataURL("image/png");
     const a = document.createElement('a');
@@ -2958,7 +3045,7 @@ function renderUserProfileView() {
     document.getElementById('profBrandTag').innerText = isDev ? "COFFEE CORNER ARCHITECT CARD" : "COFFEE CORNER PRIVILEGE";
     document.getElementById('userProfileAvatarImg').src = userProfile.avatar;
     document.getElementById('profDisplayName').innerText = userProfile.name;
-    document.getElementById('profMembershipTier').innerText = isDev ? "عضوية مطور النظم ⚡" : (userProfile.tier || "عضوية برونزية");
+    document.getElementById('profMembershipTier').innerText = isDev ? "عضوية مطور النظم" : (userProfile.tier || "عضوية برونزية");
     document.getElementById('profStatOrders').innerText = userProfile.ordersCount || 0;
     document.getElementById('profStatPoints').innerText = userProfile.points || 0;
     document.getElementById('profStatBadges').innerText = (userProfile.badges || []).length;
@@ -2969,7 +3056,9 @@ function renderUserProfileView() {
     if (badgeContainer) {
         badgeContainer.innerHTML = (userProfile.badges || ["عضوية برونزية"]).map(bName => `
             <div class="clean-card" style="display:flex; align-items:center; gap:10px; padding:10px; margin-bottom:6px;">
-                <div style="width:36px; height:36px; border-radius:50%; background:var(--bg-elevated); border:1px solid var(--border-accent); display:flex; align-items:center; justify-content:center; color:${isDev ? '#55DDF3' : 'var(--brand-gold)'};">✓</div>
+                <div style="width:36px; height:36px; border-radius:50%; background:var(--bg-elevated); border:1px solid var(--border-accent); display:flex; align-items:center; justify-content:center; color:${isDev ? '#55DDF3' : 'var(--brand-gold)'};">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                </div>
                 <div>
                     <div style="font-size:12.5px; font-weight:900;">${bName}</div>
                     <div style="font-size:10px; color:var(--text-secondary);">شارة ولاء معتمدة في كافيه كورنر</div>
@@ -3004,14 +3093,14 @@ function renderClientBranchesView() {
     const b0 = branchesData[0];
     const b1 = branchesData[1];
     if (b0) {
-        document.getElementById('branchCardTitle0').innerText = b0.name;
+        document.getElementById('branchCardTitle0').innerText = 'فرع ' + b0.name;
         document.getElementById('hoursBranch0').innerText = b0.hours;
         document.getElementById('phoneBranch0').innerText = b0.whatsapp;
         document.getElementById('locBranch0').innerText = b0.location || "الشارع الرئيسي";
         document.getElementById('waLinkBranch0').href = `https://wa.me/${b0.whatsapp}`;
     }
     if (b1) {
-        document.getElementById('branchCardTitle1').innerText = b1.name;
+        document.getElementById('branchCardTitle1').innerText = 'فرع ' + b1.name;
         document.getElementById('hoursBranch1').innerText = b1.hours;
         document.getElementById('phoneBranch1').innerText = b1.whatsapp;
         document.getElementById('locBranch1').innerText = b1.location || "الشارع العام";
@@ -3120,10 +3209,11 @@ window.confirmStartOrderPrepTimer = function() {
     document.getElementById('modalAdminSetPrepTime').classList.remove('active');
     renderAdminLiveOrdersManager();
 
-    triggerSystemNotification(`طلبك #${orderId} قيد التحضير ☕`, `فريقنا بدأ التجهيز! المدة المقدرة: ${mins} دقيقة مع عداد حي.`);
+    triggerSystemNotification(`طلبك #${orderId} قيد التحضير`, `فريقنا بدأ التجهيز! المدة المقدرة: ${mins} دقيقة مع عداد حي.`);
     window.showToastMsg(`تم بدء تجهيز الطلب بمؤقت ${mins} دقيقة`);
 };
 
+// عرض طلبات الأدمن مع تايمر التحضير الحي داخل كل طلب
 function renderAdminLiveOrdersManager() {
     const container = document.getElementById('adminLiveOrdersContainer');
     if (!container) return;
@@ -3143,27 +3233,51 @@ function renderAdminLiveOrdersManager() {
         return;
     }
 
-    container.innerHTML = adminOrders.map(o => `
-        <div class="clean-card" style="margin-bottom:8px;">
-            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
-                <span class="num-font" style="font-weight:900; color:var(--brand-gold);">#${o.orderId}</span>
-                <span style="font-size:10px; color:var(--text-secondary);">${o.branchName} • ${o.timestamp}</span>
-            </div>
-            <div style="font-size:12px;"><strong>${o.customerName}</strong> (${o.customerPhone})</div>
-            <div style="font-size:11px; color:var(--text-secondary); margin:4px 0;">${o.items.map(it => `${it.qty}x ${it.name}${it.sauceInfo ? ` (${it.sauceInfo})` : ''}`).join(' ، ')}</div>
-            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
-                <span class="num-font" style="font-weight:900; color:var(--brand-gold);">${o.totalAmount.toFixed(2)} د.أ</span>
-                <span class="header-hours-badge ${o.status === 'cancelled' ? 'closed' : ''}">${o.status}</span>
-            </div>
+    container.innerHTML = adminOrders.map(o => {
+        let timerAdminHtml = '';
+        if (o.status === 'preparing' && o.prepStartedAt && o.prepMinutes) {
+            const elapsed = now - o.prepStartedAt;
+            const target = o.prepMinutes * 60 * 1000;
+            const diff = target - elapsed;
 
-            <div style="display:flex; gap:4px; flex-wrap:wrap; border-top:1px solid var(--border-subtle); padding-top:6px;">
-                <button class="btn-brand-outline" style="padding:3px 6px; font-size:10px;" onclick="promptSetOrderPrepTime('${o.orderId}')">تحديد زمن وبدء تحضير ⏱️</button>
-                <button class="btn-brand-outline" style="padding:3px 6px; font-size:10px;" onclick="updateOrderStatusByAdmin('${o.orderId}', 'onway')">مع السائق 🛵</button>
-                <button class="btn-brand-solid" style="width:auto; padding:3px 8px; font-size:10px; background:var(--status-success);" onclick="completeOrderAndAwardLoyalty('${o.orderId}')">مكتمل ✓</button>
-                <button class="btn-brand-outline" style="padding:3px 6px; font-size:10px; color:var(--status-danger); border-color:var(--status-danger);" onclick="promptCancelOrderAdmin('${o.orderId}')">إلغاء ✕</button>
+            if (diff > 0) {
+                const m = Math.floor(diff / 60000);
+                const s = Math.floor((diff % 60000) / 1000);
+                timerAdminHtml = `<span class="admin-order-timer-chip num-font">متبقي: ${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}</span>`;
+            } else {
+                const over = Math.abs(diff);
+                const om = Math.floor(over / 60000);
+                const os = Math.floor((over % 60000) / 1000);
+                timerAdminHtml = `<span class="admin-order-timer-chip delayed num-font">تأخير: +${om.toString().padStart(2, '0')}:${os.toString().padStart(2, '0')}</span>`;
+            }
+        }
+
+        return `
+            <div class="clean-card" style="margin-bottom:8px;">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
+                    <div>
+                        <span class="num-font" style="font-weight:900; color:var(--brand-gold);">#${o.orderId}</span>
+                        ${timerAdminHtml}
+                    </div>
+                    <span style="font-size:10px; color:var(--text-secondary);">${o.branchName} • ${o.timestamp}</span>
+                </div>
+                <div style="font-size:12px;"><strong>${o.customerName}</strong> (${o.customerPhone})</div>
+                <div style="font-size:11px; color:var(--text-secondary); margin:2px 0;"><strong>نوع الاستلام:</strong> ${o.deliveryModeFullText || o.deliveryMode}</div>
+                <div style="font-size:11px; color:var(--text-secondary); margin:4px 0;">${o.items.map(it => `${it.qty}x ${it.name}${it.sauceInfo ? ` (${it.sauceInfo})` : ''}`).join(' ، ')}</div>
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+                    <span class="num-font" style="font-weight:900; color:var(--brand-gold);">${o.totalAmount.toFixed(2)} د.أ</span>
+                    <span class="header-hours-badge ${o.status === 'cancelled' ? 'closed' : ''}">${o.status}</span>
+                </div>
+
+                <div style="display:flex; gap:4px; flex-wrap:wrap; border-top:1px solid var(--border-subtle); padding-top:6px;">
+                    <button class="btn-brand-outline" style="padding:3px 6px; font-size:10px;" onclick="promptSetOrderPrepTime('${o.orderId}')">تحديد زمن وبدء تحضير</button>
+                    <button class="btn-brand-outline" style="padding:3px 6px; font-size:10px;" onclick="updateOrderStatusByAdmin('${o.orderId}', 'onway')">مع السائق</button>
+                    <button class="btn-brand-solid" style="width:auto; padding:3px 8px; font-size:10px; background:var(--status-success);" onclick="completeOrderAndAwardLoyalty('${o.orderId}')">مكتمل ✓</button>
+                    <button class="btn-brand-outline" style="padding:3px 6px; font-size:10px; color:var(--status-danger); border-color:var(--status-danger);" onclick="promptCancelOrderAdmin('${o.orderId}')">إلغاء ✕</button>
+                </div>
             </div>
-        </div>
-    `).join('');
+        `;
+    }).join('');
 }
 
 window.updateOrderStatusByAdmin = function(orderId, newStatus) {
@@ -3173,7 +3287,7 @@ window.updateOrderStatusByAdmin = function(orderId, newStatus) {
     safeSet('cc_orders', activeOrdersList);
 
     if (newStatus === 'onway') {
-        triggerSystemNotification(`طلبك #${orderId} في الطريق إليك! 🛵`, "كابتن التوصيل استلم طلبك وهو متجه لموقعك الآن.");
+        triggerSystemNotification(`طلبك #${orderId} في الطريق إليك!`, "كابتن التوصيل استلم طلبك وهو متجه لموقعك الآن.");
     }
     renderAdminLiveOrdersManager();
     window.showToastMsg("تم تحديث حالة الطلب");
@@ -3618,11 +3732,10 @@ function checkExternalAdminUrlParam() {
     }
 }
 
-// الإقلاع الأولي الفوري المضمون
+// الإقلاع الأولي
 function bootstrapApp() {
     if (isThemeDark) document.body.classList.add('dark-mode');
 
-    // تفعيل حساب المطور برقم الهاتف
     if (userProfile.phone === DEVELOPER_PHONE) {
         userProfile.tier = "عضوية مطور النظم";
         if ((userProfile.points || 0) < 10000) userProfile.points = 10000;
