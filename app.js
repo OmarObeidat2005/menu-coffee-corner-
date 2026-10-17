@@ -1,7 +1,8 @@
 /* =========================================================
-   COFFEE CORNER PRO — CORE ENGINE (ENTERPRISE EDITION 8.0)
-   QR الطاولات، الطلب الجماعي، الإحالات والمكافآت، مركز الإشعارات،
-   ولوحة إدارة تحليل المبيعات السداسية (COFFEE CORNER — Admin)
+   COFFEE CORNER PRO — CORE ENGINE (ENTERPRISE EDITION 8.5)
+   - حل تداخل الشاشات نهائياً
+   - تفعيل الأونلاين المباشر عبر Firestore
+   - صوت رنين إنذار قوي ومتناغم وعالي للأدمن فقط
    ========================================================= */
 
 const DEV_USER = 'omar';
@@ -9,7 +10,7 @@ const SHOP_USER = 'corner';
 const ENCRYPTED_MASTER_PIN_HASH = "68b556093d5089fa2d9d968b5f39611b8166c3c544e97efeb4aa27c8d9fb82d0"; // PIN: 2001159393
 
 // ---------------------------------------------------------
-// إعداد Firebase Firestore السحابي
+// إعداد Firebase Firestore السحابي (Live Online Realtime)
 // ---------------------------------------------------------
 const FIREBASE_CONFIG = {
     apiKey: "AIzaSyCPGI8XX2v5naRLK2QSQJcw6fB0Nsmbl8M",
@@ -32,7 +33,7 @@ try {
         isCloudOnline = true;
     }
 } catch(err) {
-    console.warn("Cloud connection fallback notice:", err);
+    console.warn("Cloud Firestore Notice:", err);
 }
 
 // الكتالوج الافتراضي
@@ -105,12 +106,12 @@ function safeSet(key, val) {
     } catch(e) {}
 }
 
-// الحالة العامة للنظام
+// الحالة العامة
 window.appState = {
     cartBranch: 0,
     currentCategory: "الكل",
     cart: safeGet('cc_cart', []),
-    deliveryMode: "delivery", // delivery | pickup | table
+    deliveryMode: "delivery",
     activeTable: null,
     activeGroupCode: null,
     activeGroupName: "",
@@ -146,28 +147,58 @@ let promoCodesCatalog = safeGet('cc_promos', {
 });
 
 // ---------------------------------------------------------
-// محرك الصوت وتنبيهات الإدارة
+// صوت رنين الطلبات الجديد: عالي، قوي، متتابع، ومخصص للأدمن فقط
 // ---------------------------------------------------------
-function playOrderChimeSound() {
-    if (!isAdminSoundEnabled) return;
+function playLoudOrderChime() {
+    // يعمل فقط وحصرياً إذا كان الأدمن مسجل دخوله ومفعل الصوت
+    if (!activeSessionUser || !isAdminSoundEnabled) return;
+
     try {
         const AudioCtx = window.AudioContext || window.webkitAudioContext;
         if (!AudioCtx) return;
         const ctx = new AudioCtx();
-        const now = ctx.currentTime;
-        const osc = ctx.createOscillator();
-        const gain = ctx.createGain();
-        osc.connect(gain);
-        gain.connect(ctx.destination);
-        osc.type = "sine";
-        osc.frequency.setValueAtTime(587.33, now);
-        osc.frequency.exponentialRampToValueAtTime(880.00, now + 0.15);
-        gain.gain.setValueAtTime(0.3, now);
-        gain.gain.exponentialRampToValueAtTime(0.01, now + 0.45);
-        osc.start(now);
-        osc.stop(now + 0.5);
-    } catch(e) {}
+        if (ctx.state === 'suspended') {
+            ctx.resume();
+        }
+
+        // نغمة رنين متعددة الطبقات وعالية الشدة (Loud Triple Chime)
+        const notes = [
+            { freq: 659.25, time: 0.0, dur: 0.22 }, // E5
+            { freq: 880.00, time: 0.22, dur: 0.25 }, // A5
+            { freq: 1046.50, time: 0.45, dur: 0.40 }, // C6
+            { freq: 1318.51, time: 0.85, dur: 0.55 }  // E6 (High Alert Tone)
+        ];
+
+        notes.forEach(note => {
+            const osc = ctx.createOscillator();
+            const gain = ctx.createGain();
+
+            osc.type = "triangle"; // نغمة واضحة وقوية الاختراق
+            osc.frequency.setValueAtTime(note.freq, ctx.currentTime + note.time);
+
+            // تضخيم الصوت للدرجة القصوى المريحة
+            gain.gain.setValueAtTime(0.01, ctx.currentTime + note.time);
+            gain.gain.exponentialRampToValueAtTime(0.85, ctx.currentTime + note.time + 0.04);
+            gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + note.time + note.dur);
+
+            osc.connect(gain);
+            gain.connect(ctx.destination);
+
+            osc.start(ctx.currentTime + note.time);
+            osc.stop(ctx.currentTime + note.time + note.dur + 0.05);
+        });
+    } catch(e) {
+        console.warn("Audio chime error:", e);
+    }
 }
+
+window.toggleAdminSoundMute = function() {
+    isAdminSoundEnabled = !isAdminSoundEnabled;
+    safeSet('cc_admin_sound', isAdminSoundEnabled);
+    const btn = document.getElementById('btnToggleSoundSetting');
+    if (btn) btn.innerText = isAdminSoundEnabled ? '🔔 الصوت: فعال' : '🔕 الصوت: مكتوم';
+    window.showToastMsg(isAdminSoundEnabled ? "تم تفعيل نغمة الطلبات" : "تم كتم نغمة الطلبات");
+};
 
 // ---------------------------------------------------------
 // أرشفة الطلبات بعد 15 دقيقة
@@ -190,10 +221,10 @@ function purgeCompletedOrdersAfter15Minutes() {
         if (activeSessionUser) renderAdminLiveOrdersManager();
     }
 }
-setInterval(purgeCompletedOrdersAfter15Minutes, 30000);
+setInterval(purgeCompletedOrdersAfter15Minutes, 25000);
 
 // ---------------------------------------------------------
-// مزامنة السحابة (Firestore Listener)
+// مزامنة السحابة اللحظية (Firestore Real-Time Online Sync)
 // ---------------------------------------------------------
 function initCloudRealtimeOrdersListener() {
     if (!cloudDb) return;
@@ -202,29 +233,33 @@ function initCloudRealtimeOrdersListener() {
             .onSnapshot(snapshot => {
                 const cloudOrders = [];
                 snapshot.forEach(docSnap => cloudOrders.push({ id: docSnap.id, ...docSnap.data() }));
+                
                 if (cloudOrders.length > 0) {
                     const prevCount = activeOrdersList.length;
                     activeOrdersList = cloudOrders;
                     safeSet('cc_orders', activeOrdersList);
                     purgeCompletedOrdersAfter15Minutes();
 
+                    // رنين قوي عند وصول أي طلب جديد للأدمن
                     if (activeSessionUser && cloudOrders.length > prevCount) {
-                        playOrderChimeSound();
-                        window.showToastMsg("وصل طلب جديد للتو!");
+                        playLoudOrderChime();
+                        window.showToastMsg("وصل طلب جديد للمحل الآن!");
                     }
+
                     if (activeSessionUser) {
                         renderAdminLiveOrdersManager();
                         renderAdminAnalyticsReports();
                     }
+
                     const curTrackedId = localStorage.getItem('cc_latest_order_id');
                     if (curTrackedId) renderClientOrderTrackingView();
                 }
-            }, err => console.warn(err));
+            }, err => console.warn("Firestore Listener Error:", err));
     } catch(e) {}
 }
 
 // ---------------------------------------------------------
-// أدوات التوجيه والواجهة
+// توجيه الشاشات ومنع التداخل الصارم (Strict Routing)
 // ---------------------------------------------------------
 window.showToastMsg = function(msg) {
     const toast = document.getElementById('systemToast');
@@ -236,17 +271,25 @@ window.showToastMsg = function(msg) {
 };
 
 window.navigateRouter = function(screenId) {
-    document.querySelectorAll('.app-screen').forEach(s => s.classList.remove('active'));
+    // إخفاء كل الشاشات بدون استثناء لمنع التداخل
+    const screens = document.querySelectorAll('.app-screen');
+    screens.forEach(s => {
+        s.classList.remove('active');
+        s.style.setProperty('display', 'none', 'important');
+    });
+
     const target = document.getElementById(screenId);
     if (target) {
         target.classList.add('active');
+        target.style.setProperty('display', 'flex', 'important');
         window.scrollTo(0, 0);
     }
 
     if (screenId === 'screen-cart') {
         renderCartItemsList();
         recalculateCartSummary();
-        document.getElementById('floatingCartDock').classList.remove('visible');
+        const dock = document.getElementById('floatingCartDock');
+        if (dock) dock.classList.remove('visible');
     } else if (screenId === 'screen-home') {
         window.renderMenuProducts();
         refreshCartDockStatus();
@@ -292,7 +335,7 @@ function applyThemeToDOM() {
 }
 
 // ---------------------------------------------------------
-// 1. نظام QR الطاولات الذكي (Table Direct Ordering)
+// فحص روابط الطاولة والجروب من الـ URL
 // ---------------------------------------------------------
 function checkUrlTableAndGroupParams() {
     const params = new URLSearchParams(window.location.search);
@@ -301,26 +344,25 @@ function checkUrlTableAndGroupParams() {
     const refCode = params.get('ref');
     const groupCode = params.get('group');
 
-    // تفعيل وضع الطاولة
     if (tableNum) {
         window.appState.activeTable = parseInt(tableNum);
         window.appState.deliveryMode = "table";
         if (branchParam !== null) {
             window.appState.cartBranch = parseInt(branchParam) || 0;
         }
-        document.getElementById('lblActiveTableNum').innerText = `طاولة رقم ${tableNum}`;
-        document.getElementById('tableActiveBanner').style.display = 'flex';
+        const lbl = document.getElementById('lblActiveTableNum');
+        if (lbl) lbl.innerText = `طاولة رقم ${tableNum}`;
+        const banner = document.getElementById('tableActiveBanner');
+        if (banner) banner.style.display = 'flex';
         window.showToastMsg(`أهلاً بك! تم ربط طلبك بطاولة رقم ${tableNum}`);
     }
 
-    // حفظ كود الإحالة تلقائياً
     if (refCode) {
         localStorage.setItem('cc_pending_ref', refCode);
         const refInput = document.getElementById('authInputRefCode');
         if (refInput) refInput.value = refCode;
     }
 
-    // ربط جلسة الطلب الجماعي
     if (groupCode) {
         joinExistingGroupSession(groupCode);
     }
@@ -355,10 +397,10 @@ window.generateTableQrUrlAction = function() {
 };
 
 // ---------------------------------------------------------
-// 2. ميزة "اطلبوا مع بعض" (Group Order Sessions)
+// طلب جماعي (Group Order)
 // ---------------------------------------------------------
 window.createNewGroupSession = function() {
-    const name = (document.getElementById('newGroupNameInput').value || '').trim() || "جلسة قهوة الأصدقاء";
+    const name = (document.getElementById('newGroupNameInput').value || '').trim() || "جلسة شباب الكورنر";
     const groupCode = "GRP-" + Math.floor(1000 + Math.random() * 9000);
     const creatorName = activeClientSession ? activeClientSession.name : "المنظم";
 
@@ -372,9 +414,8 @@ window.createNewGroupSession = function() {
 
     groupSessionsMap[groupCode] = newGroup;
     safeSet('cc_groups', groupSessionsMap);
-
     joinExistingGroupSession(groupCode);
-    window.showToastMsg("تم إنشاء جلسة الطلب الجماعي بنجاح!");
+    window.showToastMsg("تم بدء جلسة الطلب الجماعي بنجاح!");
 };
 
 function joinExistingGroupSession(groupCode) {
@@ -383,8 +424,10 @@ function joinExistingGroupSession(groupCode) {
     window.appState.activeGroupCode = groupCode;
     window.appState.activeGroupName = grp.title;
 
-    document.getElementById('lblActiveGroupName').innerText = grp.title;
-    document.getElementById('groupActiveBanner').style.display = 'flex';
+    const lbl = document.getElementById('lblActiveGroupName');
+    if (lbl) lbl.innerText = grp.title;
+    const banner = document.getElementById('groupActiveBanner');
+    if (banner) banner.style.display = 'flex';
     document.getElementById('boxCreateGroupBtn').style.display = 'none';
     document.getElementById('boxActiveGroupInfo').style.display = 'block';
     document.getElementById('lblActiveGroupTitle').innerText = `${grp.title} (#${grp.code})`;
@@ -397,20 +440,20 @@ function renderGroupSessionParticipantsList() {
     if (!grp || !container) return;
 
     if (!grp.items.length) {
-        container.innerHTML = `<div style="text-align:center; padding:12px; font-size:12px; color:var(--text-secondary);">لا توجد مشروبات مضافة بالجلسة بعد. تصفح المنيو وأضف مشروبك!</div>`;
+        container.innerHTML = `<div style="text-align:center; padding:12px; font-size:12px; color:var(--text-secondary);">لا توجد مشروبات مضافة بالجلسة بعد. أضف طلبك من المنيو!</div>`;
         return;
     }
 
-    container.innerHTML = grp.items.map((it, idx) => `
+    container.innerHTML = grp.items.map(it => `
         <div style="display:flex; justify-content:space-between; align-items:center; padding:8px 0; border-bottom:1px dashed var(--border-subtle); font-size:12.5px;">
             <div>
                 <strong>${it.member}:</strong> ${it.qty}x ${it.name} ${it.notes ? `(${it.notes})` : ''}
             </div>
-            <div class="num-font" style="font-weight:800; color:var(--brand-gold);">${it.lineTotal.toFixed(2)} د.أ</div>
+            <div class="num-font" style="font-weight:900; color:var(--brand-gold);">${it.lineTotal.toFixed(2)} د.أ</div>
         </div>
     `).join('') + `
         <button class="btn-brand-solid" style="width:100%; margin-top:10px;" onclick="convertGroupItemsToCart()">
-            نقل طلبات الجلسة للسلة وإرسالها للفرع
+            نقل طلبات الجلسة للسلة لتأكيدها
         </button>
     `;
 }
@@ -422,7 +465,7 @@ window.convertGroupItemsToCart = function() {
     window.appState.cart.push(...grp.items);
     safeSet('cc_cart', window.appState.cart);
     refreshCartDockStatus();
-    window.showToastMsg("تم تجميع طلبات الأصدقاء في السلة!");
+    window.showToastMsg("تم تجميع طلبات الأصدقاء بالسلة!");
     window.navigateRouter('screen-cart');
 };
 
@@ -430,18 +473,18 @@ window.copyGroupShareLink = function() {
     if (!window.appState.activeGroupCode) return;
     const url = `${window.location.origin}${window.location.pathname}?group=${window.appState.activeGroupCode}`;
     navigator.clipboard.writeText(url);
-    window.showToastMsg("تم نسخ رابط الجلسة لمشاركته مع أصحابك");
+    window.showToastMsg("تم نسخ رابط الجلسة");
 };
 
 // ---------------------------------------------------------
-// 3. نظام "ادعُ صاحبك واكسبوا الاثنين" (Referral Engine)
+// نظام الإحالات
 // ---------------------------------------------------------
 function renderReferralsScreen() {
     const linkLbl = document.getElementById('lblUserReferralLink');
     const container = document.getElementById('userReferralInvitedList');
     if (!activeClientSession) {
-        if (linkLbl) linkLbl.innerText = "سجّل دخولك للحصول على رابطك";
-        if (container) container.innerHTML = `<div style="text-align:center; padding:16px; font-size:12px; color:var(--text-secondary);">يرجى تسجيل الدخول أولاً لتفعيل روابط الإحالة.</div>`;
+        if (linkLbl) linkLbl.innerText = "سجّل دخولك أولاً";
+        if (container) container.innerHTML = `<div style="text-align:center; padding:16px; font-size:12px; color:var(--text-secondary);">يرجى تسجيل الدخول لتفعيل رابط إحالتك.</div>`;
         return;
     }
 
@@ -449,7 +492,6 @@ function renderReferralsScreen() {
     const fullLink = `${window.location.origin}${window.location.pathname}?ref=${myCode}`;
     if (linkLbl) linkLbl.innerText = fullLink;
 
-    // استخراج الأصدقاء المدعوين
     const myInvited = Object.values(registeredUsersMap).filter(u => u.referredBy === myCode);
     if (!myInvited.length) {
         container.innerHTML = `<div style="text-align:center; padding:16px; font-size:12px; color:var(--text-secondary);">لم ينضم أي صديق عبر رابطك بعد. شارك الرابط وابدأ الربح!</div>`;
@@ -460,7 +502,7 @@ function renderReferralsScreen() {
                     <strong>${u.name}</strong>
                     <div style="font-size:11px; color:var(--text-secondary);">${u.ordersCount > 0 ? 'أتم أول طلب مؤهل ✓' : 'مسجل وبانتظار أول طلب'}</div>
                 </div>
-                <div style="font-weight:800; color:${u.ordersCount > 0 ? 'var(--status-success)' : 'var(--text-secondary)'}; font-size:11.5px;">
+                <div style="font-weight:900; color:${u.ordersCount > 0 ? 'var(--status-success)' : 'var(--text-secondary)'}; font-size:11.5px;">
                     ${u.ordersCount > 0 ? '+15 نقطة تم كسبها' : 'معلق'}
                 </div>
             </div>
@@ -480,7 +522,7 @@ window.copyReferralLink = function() {
 };
 
 // ---------------------------------------------------------
-// 4. مركز إشعارات الزبون (In-App Notification Center)
+// مركز إشعارات الزبون
 // ---------------------------------------------------------
 function pushCustomerNotification(title, message, type = 'info') {
     const newNotif = {
@@ -512,25 +554,20 @@ function renderCustomerNotificationsList() {
         container.innerHTML = `
             <div class="clean-card" style="text-align:center; padding:36px 16px;">
                 <div style="font-size:32px; margin-bottom:8px;">🔔</div>
-                <div style="font-weight:800; font-size:15px; margin-bottom:4px;">لا توجد إشعارات جديدة</div>
-                <div style="font-size:12px; color:var(--text-secondary);">ستصلك هنا تحديثات فورية حول حالة طلباتك ومكافآتك الجديدة.</div>
+                <div style="font-weight:900; font-size:15px; margin-bottom:4px; color:var(--brand-gold);">لا توجد إشعارات جديدة</div>
+                <div style="font-size:12px; color:var(--text-secondary);">ستصلك هنا تحديثات فورية حول حالة طلباتك ومكافآتك.</div>
             </div>
         `;
         return;
     }
 
     container.innerHTML = userNotifications.map(n => `
-        <div class="notification-card-item ${n.isRead ? '' : 'unread'}">
-            <div class="notification-icon-coin">
-                ${n.type === 'order' ? '☕' : n.type === 'reward' ? '🎁' : '✨'}
+        <div class="clean-card" style="margin-bottom:8px; border-color:${n.isRead ? 'var(--border-subtle)' : 'var(--brand-gold)'};">
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+                <span style="font-weight:900; font-size:13.5px; color:${n.isRead ? 'var(--text-primary)' : 'var(--brand-gold)'};">${n.title}</span>
+                <span class="num-font" style="font-size:10.5px; color:var(--text-secondary);">${n.time}</span>
             </div>
-            <div style="flex:1;">
-                <div style="display:flex; justify-content:space-between; align-items:center;">
-                    <span style="font-weight:800; font-size:13.5px; color:${n.isRead ? 'var(--text-primary)' : 'var(--brand-gold)'};">${n.title}</span>
-                    <span class="num-font" style="font-size:10.5px; color:var(--text-secondary);">${n.time}</span>
-                </div>
-                <div style="font-size:12px; color:var(--text-secondary); margin-top:3px; line-height:1.5;">${n.message}</div>
-            </div>
+            <div style="font-size:12px; color:var(--text-secondary); margin-top:4px; line-height:1.5;">${n.message}</div>
         </div>
     `).join('');
 }
@@ -544,7 +581,7 @@ window.markAllNotificationsAsRead = function() {
 };
 
 // ---------------------------------------------------------
-// عرض المنيو والتصنيفات وتخصيص الأصناف
+// المنيو والتصنيفات وتخصيص الأصناف
 // ---------------------------------------------------------
 window.renderCategoryChips = function() {
     const container = document.getElementById('categoryScrollChips');
@@ -581,14 +618,16 @@ window.renderMenuProducts = function() {
     }
 
     container.innerHTML = filtered.map(p => `
-        <div class="product-card ${p.isAvailable === false ? 'out-of-stock' : ''}" onclick="openProductCustomizer('${p.id}')">
+        <div class="product-card" onclick="openProductCustomizer('${p.id}')">
             <img src="${p.img}" class="product-img" alt="${p.name}" onerror="this.src='https://images.unsplash.com/photo-1517701550927-30cf4be1aaf9?w=400&q=80'">
             <div class="product-meta">
-                <div class="product-name">${p.name}</div>
-                <div class="product-desc">${p.desc || ''}</div>
+                <div>
+                    <div class="product-name">${p.name}</div>
+                    <div class="product-desc">${p.desc || ''}</div>
+                </div>
                 <div class="product-row-bottom">
                     <div class="product-price num-font">${parseFloat(p.price).toFixed(2)} د.أ</div>
-                    <div class="btn-add-mini">${p.isAvailable === false ? 'غير متوفر' : 'إضافة'}</div>
+                    <div class="btn-add-mini">${p.isAvailable === false ? 'غير متوفر' : 'إضافة +'}</div>
                 </div>
             </div>
         </div>
@@ -664,7 +703,7 @@ window.handleSauceSelectionLimit = function(checkbox) {
     const checked = document.querySelectorAll('.ps-sauce-cb:checked');
     if (checked.length > 3) {
         checkbox.checked = false;
-        window.showToastMsg("الحد الأقصى 3 نكهات فقط لمكس الحلويات");
+        window.showToastMsg("الحد الأقصى 3 نكهات لمكس الحلويات");
     }
     updateProductCalculatedPrice();
 };
@@ -743,7 +782,6 @@ window.confirmAddItemToCart = function() {
         lineTotal: unitPrice * window.appState.productModalQty
     };
 
-    // إذا كان ضمن جلسة طلب جماعي نشطة
     if (window.appState.activeGroupCode && groupSessionsMap[window.appState.activeGroupCode]) {
         groupSessionsMap[window.appState.activeGroupCode].items.push(itemObj);
         safeSet('cc_groups', groupSessionsMap);
@@ -760,7 +798,7 @@ window.confirmAddItemToCart = function() {
 };
 
 // ---------------------------------------------------------
-// إدارة السلة وتجهيز الطلب
+// السلة وتأكيد الطلب
 // ---------------------------------------------------------
 function refreshCartDockStatus() {
     const dock = document.getElementById('floatingCartDock');
@@ -792,7 +830,7 @@ function renderCartItemsList() {
     container.innerHTML = window.appState.cart.map(item => `
         <div style="display:flex; justify-content:space-between; align-items:center; padding:10px 0; border-bottom:1px dashed var(--border-subtle);">
             <div>
-                <div style="font-weight:800; font-size:13.5px;">${item.qty}x ${item.name}</div>
+                <div style="font-weight:900; font-size:13.5px;">${item.qty}x ${item.name}</div>
                 <div style="font-size:11px; color:var(--text-secondary); margin-top:2px;">
                     ${item.sizeName !== 'قياسي' ? `الحجم: ${item.sizeName} | ` : ''}
                     ${item.sauceName ? `النكهة: ${item.sauceName} | ` : ''}
@@ -801,7 +839,7 @@ function renderCartItemsList() {
                 </div>
             </div>
             <div style="text-align:left;">
-                <div class="num-font" style="font-weight:800; color:var(--brand-gold);">${item.lineTotal.toFixed(2)} د.أ</div>
+                <div class="num-font" style="font-weight:900; color:var(--brand-gold);">${item.lineTotal.toFixed(2)} د.أ</div>
                 <button style="font-size:11px; color:var(--status-danger); cursor:pointer; margin-top:4px;" onclick="removeCartItemById('${item.id}')">حذف</button>
             </div>
         </div>
@@ -856,7 +894,7 @@ function renderCartPaymentMethods() {
     container.innerHTML = curBranchMethods.map(m => `
         <label style="display:flex; justify-content:space-between; align-items:center; padding:10px 14px; background:var(--bg-card); border-radius:var(--radius-sm); border:1px solid var(--border-subtle); cursor:pointer;">
             <div>
-                <div style="font-size:13px; font-weight:700;">${m.name}</div>
+                <div style="font-size:13px; font-weight:800;">${m.name}</div>
                 <div class="num-font" style="font-size:11px; color:var(--text-secondary);">${m.num}</div>
             </div>
             <input type="radio" name="cartPayRadio" value="${m.id}" ${m.id === window.appState.selectedPaymentId ? 'checked' : ''} onchange="window.appState.selectedPaymentId='${m.id}'">
@@ -919,7 +957,7 @@ window.removeActivePromoCode = function() {
 };
 
 // ---------------------------------------------------------
-// إرسال الطلب، تحديث الإحالات، وتتبع الحالة
+// إرسال الطلب (أونلاين سحابي + تتبع)
 // ---------------------------------------------------------
 window.dispatchOrderAndInitiateTracking = function() {
     if (!window.appState.cart.length) {
@@ -978,15 +1016,15 @@ window.dispatchOrderAndInitiateTracking = function() {
         dateStr: new Date().toISOString().slice(0, 10)
     };
 
-    // حفظ سحابي ومحلي
+    // حفظ سحابي أونلاين ومحلي
     if (cloudDb) {
-        cloudDb.collection('orders').doc(orderNumber).set(newOrderObj).catch(err => console.warn(err));
+        cloudDb.collection('orders').doc(orderNumber).set(newOrderObj).catch(err => console.warn("Cloud save error:", err));
     }
     activeOrdersList.unshift(newOrderObj);
     safeSet('cc_orders', activeOrdersList);
     localStorage.setItem('cc_latest_order_id', orderNumber);
 
-    // مكافأة الإحالة إذا كان هذا أول طلب مؤهل للزبون
+    // مكافأة الإحالة عند أول طلب مؤهل
     if ((activeUser.ordersCount || 0) === 0 && activeUser.referredBy) {
         const inviterKey = 'u_' + activeUser.referredBy;
         if (registeredUsersMap[inviterKey]) {
@@ -996,7 +1034,6 @@ window.dispatchOrderAndInitiateTracking = function() {
         }
     }
 
-    // تحديث بيانات الزبون
     activeUser.ordersCount = (activeUser.ordersCount || 0) + 1;
     activeUser.totalSpent = parseFloat(((activeUser.totalSpent || 0) + total).toFixed(2));
     activeUser.loyaltyPoints = (activeUser.loyaltyPoints || 0) + Math.floor(total);
@@ -1005,13 +1042,14 @@ window.dispatchOrderAndInitiateTracking = function() {
 
     pushCustomerNotification("تم استلام طلبك بنجاح ☕", `طلبك رقم #${orderNumber} وصل للفرع وبدأ الباريستا بالتجهيز.`, 'order');
 
-    // تفريغ السلة
     window.appState.cart = [];
     localStorage.removeItem('cc_cart');
     refreshCartDockStatus();
-    playOrderChimeSound();
 
-    // رسالة واتساب
+    // تشغيل الرنين للأدمن
+    playLoudOrderChime();
+
+    // تجهيز رسالة الواتساب
     let msg = `*طلب جديد | ${storeSettings.brandTitle}*\n`;
     msg += `رقم الطلب: ${orderNumber}\n`;
     msg += `الفرع: ${branch.name}\n`;
@@ -1071,10 +1109,10 @@ window.closeDigitalReceiptModal = function() {
 window.downloadReceiptAsImage = function() {
     const card = document.getElementById('receiptRenderableCard');
     if (!card) return;
-    window.showToastMsg("جاري تجهيز صورة الفاتورة...");
+    window.showToastMsg("جاري حفظ الفاتورة كصورة...");
     const canvas = document.createElement('canvas');
     canvas.width = 700;
-    canvas.height = 900;
+    canvas.height = 850;
     const ctx = canvas.getContext('2d');
 
     ctx.fillStyle = "#ffffff";
@@ -1090,12 +1128,12 @@ window.downloadReceiptAsImage = function() {
     const ordId = document.getElementById('recOrderId').innerText;
     ctx.fillStyle = "#c59b63";
     ctx.font = "bold 22px sans-serif";
-    ctx.fillText(ordId, canvas.width / 2, 130);
+    ctx.fillText(ordId, canvas.width / 2, 120);
 
     ctx.textAlign = "right";
     ctx.fillStyle = "#1a1714";
     ctx.font = "20px Tajawal, sans-serif";
-    let y = 190;
+    let y = 180;
     ctx.fillText(`العميل: ${document.getElementById('recClientName').innerText}`, 650, y);
     y += 35;
     ctx.fillText(`الفرع: ${document.getElementById('recBranchName').innerText}`, 650, y);
@@ -1108,7 +1146,7 @@ window.downloadReceiptAsImage = function() {
     link.download = `Receipt_${ordId}.png`;
     link.href = canvas.toDataURL('image/png');
     link.click();
-    window.showToastMsg("تم حفظ الفاتورة كصورة بنجاح");
+    window.showToastMsg("تم حفظ الفاتورة بنجاح");
 };
 
 // تتبع الطلب
@@ -1123,8 +1161,8 @@ function renderClientOrderTrackingView() {
         container.innerHTML = `
             <div class="clean-card" style="text-align:center; padding:36px 16px;">
                 <div style="font-size:32px; margin-bottom:8px;">📦</div>
-                <div style="font-weight:800; font-size:15px; margin-bottom:6px;">لا يوجد طلب نشط حالياً</div>
-                <div style="font-size:12px; color:var(--text-secondary); margin-bottom:14px;">عند تأكيد أي طلب ستتمكن من متابعة مراحله خطوة بخطوة هنا.</div>
+                <div style="font-weight:900; font-size:15px; margin-bottom:6px; color:var(--brand-gold);">لا يوجد طلب نشط حالياً</div>
+                <div style="font-size:12px; color:var(--text-secondary); margin-bottom:14px;">عند إرسال طلب ستتمكن من متابعة مراحله هنا خطوة بخطوة.</div>
                 <button class="btn-brand-solid" onclick="navigateRouter('screen-home')">استكشف المنيو</button>
             </div>
         `;
@@ -1152,13 +1190,13 @@ function renderClientOrderTrackingView() {
                     const isDone = idx <= curIdx;
                     const isCurrent = idx === curIdx;
                     return `
-                        <div style="display:flex; gap:12px; position:relative; padding-bottom:20px;">
+                        <div style="display:flex; gap:12px; position:relative; padding-bottom:18px;">
                             ${idx < stages.length - 1 ? `<div style="position:absolute; top:20px; right:11px; width:2px; height:calc(100% - 14px); background:${isDone && idx < curIdx ? 'var(--brand-gold)' : 'var(--border-subtle)'};"></div>` : ''}
-                            <div style="width:24px; height:24px; border-radius:50%; background:${isDone ? 'var(--brand-gold)' : 'var(--bg-elevated)'}; color:${isDone ? '#000' : 'var(--text-secondary)'}; display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:800; z-index:2; flex-shrink:0;">
+                            <div style="width:24px; height:24px; border-radius:50%; background:${isDone ? 'var(--brand-gold)' : 'var(--bg-elevated)'}; color:${isDone ? '#000' : 'var(--text-secondary)'}; display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:900; z-index:2; flex-shrink:0;">
                                 ${isDone ? '✓' : idx + 1}
                             </div>
                             <div>
-                                <div style="font-size:13.5px; font-weight:800; color:${isCurrent ? 'var(--brand-gold)' : 'var(--text-primary)'};">${st.title}</div>
+                                <div style="font-size:13.5px; font-weight:900; color:${isCurrent ? 'var(--brand-gold)' : 'var(--text-primary)'};">${st.title}</div>
                                 <div style="font-size:11px; color:var(--text-secondary); margin-top:2px;">${st.desc}</div>
                             </div>
                         </div>
@@ -1167,14 +1205,14 @@ function renderClientOrderTrackingView() {
             </div>
 
             <button class="btn-brand-solid" style="width:100%; margin-top:6px;" onclick="openDigitalReceiptModal(activeOrdersList.find(x => x.orderId === '${order.orderId}'))">
-                عرض الفاتورة الرقمية
+                عرض الفاتورة الإلكترونية
             </button>
         </div>
     `;
 }
 
 // ---------------------------------------------------------
-// حساب العميل والتسجيل
+// حساب الزبون
 // ---------------------------------------------------------
 window.handleUserAccountHeaderClick = function() {
     if (activeClientSession) {
@@ -1201,7 +1239,7 @@ window.handleAuthSubmitAction = function() {
     err.innerText = '';
 
     if (!phone || phone.length < 9) return err.innerText = 'يرجى إدخال رقم هاتف صحيح';
-    if (!pin || pin.length < 3) return err.innerText = 'رمز المرور يجب أن لا يقل عن 3 خانات';
+    if (!pin || pin.length < 3) return err.innerText = 'رمز المرور لا يقل عن 3 خانات';
 
     const phoneKey = 'u_' + phone;
     const isRegister = document.getElementById('authRegisterExtraFields').style.display === 'flex';
@@ -1301,7 +1339,7 @@ function renderClientProfileScreen() {
         if (isUnlocked) unlockedCount++;
         return `
             <div style="background:var(--bg-surface); padding:10px; border-radius:var(--radius-sm); border:1px solid ${isUnlocked ? 'var(--brand-gold)' : 'var(--border-subtle)'}; opacity:${isUnlocked ? '1' : '0.5'}; text-align:center;">
-                <div style="font-size:20px;">${b.icon}</div>
+                <div style="font-size:22px;">${b.icon}</div>
                 <div style="font-size:12px; font-weight:800; color:var(--text-primary); margin-top:2px;">${b.name}</div>
                 <div style="font-size:9.5px; color:var(--text-secondary);">${isUnlocked ? 'مكتملة ✓' : b.criteria}</div>
             </div>
@@ -1310,7 +1348,6 @@ function renderClientProfileScreen() {
 
     document.getElementById('profUnlockedBadgesCount').innerText = `${unlockedCount} مكتملة`;
 
-    // السجل
     const histCont = document.getElementById('profCustomerOrdersHistoryList');
     const histOrders = activeOrdersList.filter(o => o.customerPhone === user.phone);
     if (!histOrders.length) {
@@ -1322,7 +1359,7 @@ function renderClientProfileScreen() {
                     <strong>طلب #${o.orderId}</strong>
                     <div style="color:var(--text-secondary); font-size:11px;">${o.branchName} • ${o.timestamp}</div>
                 </div>
-                <div class="num-font" style="font-weight:800; color:var(--brand-gold);">${o.totalAmount.toFixed(2)} د.أ</div>
+                <div class="num-font" style="font-weight:900; color:var(--brand-gold);">${o.totalAmount.toFixed(2)} د.أ</div>
             </div>
         `).join('');
     }
@@ -1351,12 +1388,8 @@ window.saveUpdatedClientProfile = function() {
 };
 
 // ---------------------------------------------------------
-// =========================================================
-// 5. لوحة تحكم الإدارة المتطابقة 100% مع الصورة المرفقة
-// COFFEE CORNER — Admin (6 Pillars Routing)
-// =========================================================
+// إدارة الأدمن (The 6 Pillars Hub)
 // ---------------------------------------------------------
-
 window.openAdminSubSection = function(sectionKey) {
     document.getElementById('adminMainHubView').style.display = 'none';
     document.querySelectorAll('.admin-sub-view').forEach(v => v.classList.remove('active'));
@@ -1379,16 +1412,76 @@ window.backToAdminMainHub = function() {
     if (countBadge) countBadge.innerText = activeOrdersList.length;
 };
 
-// 6. لوحة تحليل المبيعات الحقيقية (10. لوحة تحليل المبيعات)
-function renderAdminAnalyticsReports() {
-    const completedOrders = activeOrdersList.filter(o => o.status === 'completed');
-    const allOrders = activeOrdersList;
+// إدارة الطلبات الحية للأدمن
+function renderAdminLiveOrdersManager() {
+    const container = document.getElementById('adminLiveOrdersContainer');
+    const countBadge = document.getElementById('adminActiveOrdersCount');
+    if (!container) return;
 
+    if (countBadge) countBadge.innerText = `${activeOrdersList.length} طلب`;
+
+    if (!activeOrdersList.length) {
+        container.innerHTML = `<div style="text-align:center; padding:20px; color:var(--text-secondary); font-size:12px;">لا توجد طلبات واردة حالياً</div>`;
+        return;
+    }
+
+    container.innerHTML = activeOrdersList.map(o => `
+        <div class="admin-order-box ${o.status === 'received' ? 'new-received' : ''}">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+                <span class="num-font" style="font-weight:900; color:var(--brand-gold);">#${o.orderId}</span>
+                <span style="font-size:11px; color:var(--text-secondary);">${o.branchName} • ${o.timestamp}</span>
+            </div>
+            <div style="font-size:12.5px; margin-bottom:6px;">
+                <strong>${o.customerName}</strong> (${o.customerPhone})<br>
+                <span style="font-size:11px; color:var(--text-secondary);">العنوان / الطاولة: ${o.address}</span>
+            </div>
+            <div style="background:var(--bg-card); padding:8px; border-radius:var(--radius-sm); font-size:11.5px; margin-bottom:8px;">
+                ${o.items.map(it => `<div>• ${it.qty}x ${it.name} ${it.notes ? `(${it.notes})` : ''}</div>`).join('')}
+            </div>
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+                <span class="num-font" style="font-weight:900; color:var(--brand-gold);">${o.totalAmount.toFixed(2)} د.أ</span>
+                <div style="display:flex; gap:6px;">
+                    <select class="ios-input-field" style="padding:4px 8px; font-size:11px; width:auto;" onchange="updateOrderStatusAction('${o.orderId}', this.value)">
+                        <option value="received" ${o.status === 'received' ? 'selected' : ''}>استلام</option>
+                        <option value="preparing" ${o.status === 'preparing' ? 'selected' : ''}>تحضير</option>
+                        <option value="on_the_way" ${o.status === 'on_the_way' ? 'selected' : ''}>في الطريق</option>
+                        <option value="ready_pickup" ${o.status === 'ready_pickup' ? 'selected' : ''}>جاهز</option>
+                        <option value="completed" ${o.status === 'completed' ? 'selected' : ''}>مكتمل ✓</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    `).join('');
+}
+
+window.updateOrderStatusAction = function(orderId, newStatus) {
+    const o = activeOrdersList.find(x => x.orderId === orderId);
+    if (!o) return;
+
+    o.status = newStatus;
+    if (newStatus === 'completed') {
+        o.completedAt = Date.now();
+    }
+
+    if (cloudDb) {
+        cloudDb.collection('orders').doc(orderId).update({
+            status: newStatus,
+            completedAt: o.completedAt
+        }).catch(e => console.warn(e));
+    }
+
+    safeSet('cc_orders', activeOrdersList);
+    window.showToastMsg(`تم تحديث حالة الطلب إلى: ${newStatus}`);
+    renderAdminLiveOrdersManager();
+};
+
+// لوحة التحليلات
+function renderAdminAnalyticsReports() {
+    const allOrders = activeOrdersList;
     const netRev = allOrders.reduce((sum, o) => sum + (o.totalAmount || 0), 0);
     const totalDiscs = allOrders.reduce((sum, o) => sum + (o.discount || 0), 0);
     const avgOrder = allOrders.length > 0 ? (netRev / allOrders.length) : 0;
 
-    // حساب نسبة الزبائن العائدين
     const phones = allOrders.map(o => o.customerPhone).filter(Boolean);
     const repeatCount = phones.filter((item, index) => phones.indexOf(item) !== index).length;
     const returningRate = phones.length > 0 ? Math.round((repeatCount / phones.length) * 100) : 0;
@@ -1403,7 +1496,6 @@ function renderAdminAnalyticsReports() {
     if (repRet) repRet.innerText = `${returningRate}%`;
     if (repDisc) repDisc.innerText = `${totalDiscs.toFixed(2)} د.أ`;
 
-    // مقارنة أداء الفروع
     const b0Count = allOrders.filter(o => o.branchId === 0 || o.branchName === "كفرسوم").length;
     const b1Count = allOrders.filter(o => o.branchId === 1 || o.branchName === "سما الروسان").length;
 
@@ -1412,16 +1504,15 @@ function renderAdminAnalyticsReports() {
         branchPerf.innerHTML = `
             <div style="display:flex; justify-content:space-between; padding:8px 0; border-bottom:1px dashed var(--border-subtle); font-size:12.5px;">
                 <span>فرع كفرسوم</span>
-                <span class="num-font" style="font-weight:800; color:var(--brand-gold);">${b0Count} طلبات</span>
+                <span class="num-font" style="font-weight:900; color:var(--brand-gold);">${b0Count} طلبات</span>
             </div>
             <div style="display:flex; justify-content:space-between; padding:8px 0; font-size:12.5px;">
                 <span>فرع سما الروسان</span>
-                <span class="num-font" style="font-weight:800; color:var(--brand-gold);">${b1Count} طلبات</span>
+                <span class="num-font" style="font-weight:900; color:var(--brand-gold);">${b1Count} طلبات</span>
             </div>
         `;
     }
 
-    // أكثر المنتجات مبيعاً
     const prodCounts = {};
     allOrders.forEach(o => {
         (o.items || []).forEach(it => {
@@ -1433,12 +1524,12 @@ function renderAdminAnalyticsReports() {
     const topProdsCont = document.getElementById('repTopSellingProductsList');
     if (topProdsCont) {
         if (!sortedProds.length) {
-            topProdsCont.innerHTML = `<div style="font-size:12px; color:var(--text-secondary); text-align:center;">بانتظار تسجيل أولى الطلبات لاحتساب الأكثر مبيعاً.</div>`;
+            topProdsCont.innerHTML = `<div style="font-size:12px; color:var(--text-secondary); text-align:center;">بانتظار تسجيل أولى الطلبات.</div>`;
         } else {
             topProdsCont.innerHTML = sortedProds.map(([pName, count], idx) => `
                 <div style="display:flex; justify-content:space-between; padding:6px 0; border-bottom:1px dashed var(--border-subtle); font-size:12px;">
                     <span>${idx + 1}. ${pName}</span>
-                    <span class="num-font" style="font-weight:800; color:var(--brand-gold);">${count} حبة</span>
+                    <span class="num-font" style="font-weight:900; color:var(--brand-gold);">${count} حبة</span>
                 </div>
             `).join('');
         }
@@ -1446,9 +1537,49 @@ function renderAdminAnalyticsReports() {
 }
 
 // ---------------------------------------------------------
-// تهيئة النظام عند فتح الصفحة
+// مصادقة ودخول الإدارة
 // ---------------------------------------------------------
-function bootstrapMenuNow() {
+let _adminSecretClickTimer = null;
+let _adminSecretClickCount = 0;
+window.handleSecretAdminTrigger = function() {
+    _adminSecretClickCount++;
+    clearTimeout(_adminSecretClickTimer);
+    _adminSecretClickTimer = setTimeout(() => { _adminSecretClickCount = 0; }, 1500);
+
+    if (_adminSecretClickCount >= 4) {
+        _adminSecretClickCount = 0;
+        window.navigateRouter('screen-admin-login');
+        window.showToastMsg("بوابة الإدارة المشفرة");
+    }
+};
+
+window.attemptAdminAuthentication = function() {
+    const user = document.getElementById('adminUserField').value;
+    const pin = (document.getElementById('adminPassField').value || '').trim();
+
+    if (pin === "2001159393") {
+        activeSessionUser = user;
+        safeSet('cc_admin_session', user);
+        document.getElementById('adminPassField').value = '';
+        window.showToastMsg(`مرحباً يا ${user === 'omar' ? 'مهندس عمر' : 'إدارة المحل'}`);
+        window.navigateRouter('screen-admin-dashboard');
+        backToAdminMainHub();
+    } else {
+        window.showToastMsg("رمز المرور غير صحيح!");
+    }
+};
+
+window.exitAdminSession = function() {
+    activeSessionUser = null;
+    localStorage.removeItem('cc_admin_session');
+    window.showToastMsg("تم تسجيل الخروج من لوحة الإدارة");
+    window.navigateRouter('screen-home');
+};
+
+// ---------------------------------------------------------
+// التهيئة الشاملة للتطبيق
+// ---------------------------------------------------------
+function bootstrapCoffeeCornerApp() {
     applyThemeToDOM();
     window.renderCategoryChips();
     window.renderMenuProducts();
@@ -1460,7 +1591,7 @@ function bootstrapMenuNow() {
 }
 
 if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', bootstrapMenuNow);
+    document.addEventListener('DOMContentLoaded', bootstrapCoffeeCornerApp);
 } else {
-    bootstrapMenuNow();
+    bootstrapCoffeeCornerApp();
 }
