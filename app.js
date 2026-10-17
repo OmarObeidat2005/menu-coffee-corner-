@@ -1,9 +1,7 @@
 /* =========================================================
-COFFEE CORNER PRO — CORE ENGINE (REFINED ARCHITECTURE)
-منظومة المنيو، السلة، رفع الصور التلقائي، والمزامنة السحابية
+COFFEE CORNER PRO — PRODUCTION CORE ENGINE
+منظومة المنيو، الطلبات الحية، الإدارة، وحساب الزبون
 ========================================================= */
-const DEV_USER = 'omar';
-const SHOP_USER = 'corner';
 const MASTER_PIN = "2001159393";
 const FIREBASE_CONFIG = {
 apiKey: "AIzaSyCPGI8XX2v5naRLK2QSQJcw6fB0Nsmbl8M",
@@ -20,9 +18,9 @@ if (!firebase.apps.length) firebase.initializeApp(FIREBASE_CONFIG);
 cloudDb = firebase.firestore();
 }
 } catch(err) {
-console.warn("Cloud Firestore Notice:", err);
+console.warn("Cloud Firestore Status:", err);
 }
-// الكتالوج الافتراضي المتطابق 100% مع صورك
+// الكتالوج الافتراضي المتطابق 100% مع صور المنيو
 window.DEFAULT_CATALOG = [
 { id: "p1", name: "كوكتيل إمبراطور فواكه", category: "كوكتيلات", price: 2.50, desc: "مزيج قطع فواكه طازجة مع القشطة والمكسرات", img: "https://images.unsplash.com/photo-1577805947697-89e18249d767?w=400&q=80", isAvailable: true },
 { id: "p2", name: "وافل بلجيكي أصلي", category: "وافل", price: 2.50, desc: "وافل دافئ مقرمش غني بأشهى النكهات والصوصات", img: "https://images.unsplash.com/photo-1562376552-0d160a2f238d?w=400&q=80", isAvailable: true },
@@ -34,15 +32,17 @@ window.DEFAULT_CATALOG = [
 { id: "p8", name: "موكا حار فاخر", category: "ستيم ساخن", price: 2.00, desc: "مزيج قهوة ساخنة غنية بالشوكولاتة والكريما", img: "https://images.unsplash.com/photo-1517701550927-30cf4be1aaf9?w=400&q=80", isAvailable: true },
 { id: "p9", name: "آيس كريم فانيليا", category: "آيس كريم", price: 1.00, desc: "كرة آيس كريم إيطالية غنية بالفانيليا النقية", img: "https://images.unsplash.com/photo-1570197781417-0a52375c020b?w=400&q=80", isAvailable: true }
 ];
-const BRANCHES_DATA = [
+const DEFAULT_BRANCHES = [
 {
 name: "كفرسوم",
 whatsapp: "962790155906",
+hours: "6:30 صباحاً حتى 3:00 فجراً يومياً",
 towns: { "كفرسوم": 1.0, "سمر": 1.25, "سحم": 1.5, "حبراص": 1.25, "يبلا": 1.5, "الرفيد": 1.5, "حرثا": 1.5, "المزيريب": 1.5, "عقربا": 2.0, "حاتم": 1.75, "ملكا": 2.0, "أم قيس": 2.5, "المنصورة": 2.0 }
 },
 {
 name: "سما الروسان",
 whatsapp: "962790155906",
+hours: "4:00 عصراً حتى 3:00 فجراً يومياً",
 towns: { "سما الروسان": 1.0, "حبراص": 1.25, "حاتم": 1.5, "كفرسوم": 1.5, "إبدر": 1.75, "المخيبة": 2.5 }
 }
 ];
@@ -60,17 +60,50 @@ cartBranch: 0,
 currentCategory: "الكل",
 cart: safeGet('cc_cart', []),
 deliveryMode: "delivery",
+selectedPaymentMethod: "cash",
 selectedProduct: null,
-productModalQty: 1
+productModalQty: 1,
+activeCouponDiscount: 0
 };
 let activeSessionUser = safeGet('cc_admin_session', null);
 let activeOrdersList = safeGet('cc_orders', []);
 let isThemeDark = safeGet('cc_theme_dark', false);
 let isAdminSoundEnabled = safeGet('cc_admin_sound', true);
 let productsCatalog = safeGet('cc_catalog', window.DEFAULT_CATALOG);
+let branchesData = safeGet('cc_branches', DEFAULT_BRANCHES);
 let customThemeColor = safeGet('cc_theme_color', '#c59b63');
 let headerLogoCustom = safeGet('cc_header_logo', './logo.png');
 let devPhotoCustom = safeGet('cc_dev_photo', 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&q=80');
+// بيانات العملاء والمستخدم الحالي
+let userProfile = safeGet('cc_user_profile', {
+name: "العميل العزيز",
+phone: "0790155906",
+birthday: "",
+bio: "محب للقهوة والمذاق الرفيع في كافيه كورنر.",
+avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200&q=80",
+points: 0,
+ordersCount: 0,
+badges: ["عضوية برونزية"]
+});
+let systemCoupons = safeGet('cc_coupons', {
+"CORNER10": { discount: 10, isActive: true }
+});
+let systemOffers = safeGet('cc_offers', [
+{ id: "off1", title: "عرض التوفير الأسبوعي", desc: "خصم 10% على جميع أصناف الوافل والكريب باستخدام الكوبون CORNER10" }
+]);
+let customerNotifications = safeGet('cc_notifications', [
+{ id: "n1", title: "أهلاً بك في كافيه كورنر!", desc: "استمتع بأشهى الكوكتيلات والحلويات مع خدمة التوصيل السريع.", time: "اليوم" }
+]);
+let communityMoments = safeGet('cc_moments', [
+{
+id: "m1",
+authorName: "أحمد الروسان",
+authorPhone: "0790155906",
+img: "https://images.unsplash.com/photo-1562376552-0d160a2f238d?w=400&q=80",
+caption: "أفخم وافل بلجيكي جربته في المنطقة!"
+}
+]);
+let bannedCustomersList = safeGet('cc_banned_users', []);
 // ---------------------------------------------------------
 // محرك ضغط وتصغير الصور التلقائي من الهاتف (HTML5 Canvas)
 // ---------------------------------------------------------
@@ -97,7 +130,7 @@ callback(compressedDataUrl);
 };
 };
 }
-// رفع وتغيير لوجو الترويسة من الهاتف
+// رفع شعار الترويسة
 window.handleHeaderLogoUpload = function(event) {
 const file = event.target.files[0];
 if (!file) return;
@@ -107,10 +140,10 @@ safeSet('cc_header_logo', headerLogoCustom);
 document.getElementById('mainHeaderLogoImg').src = base64Url;
 document.getElementById('adminLogoPreviewImg').src = base64Url;
 if (cloudDb) cloudDb.collection('settings').doc('identity').set({ headerLogo: base64Url }, { merge: true }).catch(e=>console.warn(e));
-window.showToastMsg("تم تحديث شعار الترويسة وحفظه بنجاح!");
+window.showToastMsg("تم تحديث شعار الترويسة بنجاح!");
 });
 };
-// رفع وتغيير صورة المطور الشخصية من الهاتف
+// رفع صورة المطور
 window.handleDevPhotoUpload = function(event) {
 const file = event.target.files[0];
 if (!file) return;
@@ -123,7 +156,19 @@ if (cloudDb) cloudDb.collection('settings').doc('identity').set({ devPhoto: base
 window.showToastMsg("تم تحديث صورة المطور بنجاح!");
 });
 };
-// رفع صورة الصنف مع المعاينة الفورية
+// رفع صورة الزبون في الملف الشخصي
+window.handleUserAvatarUpload = function(event) {
+const file = event.target.files[0];
+if (!file) return;
+compressImageNative(file, 250, 0.85, base64Url => {
+userProfile.avatar = base64Url;
+document.getElementById('editProfilePicPreview').src = base64Url;
+document.getElementById('userProfileAvatarImg').src = base64Url;
+safeSet('cc_user_profile', userProfile);
+window.showToastMsg("تم تحديث صورتك الشخصية!");
+});
+};
+// رفع صورة الصنف مع المعاينة
 window.handleProductImageUpload = function(event) {
 const file = event.target.files[0];
 if (!file) return;
@@ -134,7 +179,7 @@ window.showToastMsg("تمت معاينة وضغط الصورة بنجاح!");
 });
 };
 // ---------------------------------------------------------
-// رنين الطلبات القوي للأدمن
+// رنين التنبيه الصوتي القوي للأدمن فقط
 // ---------------------------------------------------------
 function playLoudOrderChime() {
 if (!activeSessionUser || !isAdminSoundEnabled) return;
@@ -155,7 +200,7 @@ const gain = ctx.createGain();
 osc.type = "triangle";
 osc.frequency.setValueAtTime(note.freq, ctx.currentTime + note.time);
 gain.gain.setValueAtTime(0.01, ctx.currentTime + note.time);
-gain.gain.exponentialRampToValueAtTime(0.85, ctx.currentTime + note.time + 0.04);
+gain.gain.exponentialRampToValueAtTime(0.9, ctx.currentTime + note.time + 0.04);
 gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + note.time + note.dur);
 osc.connect(gain);
 gain.connect(ctx.destination);
@@ -201,6 +246,18 @@ if (dock) dock.classList.remove('visible');
 } else if (screenId === 'screen-home') {
 renderMenuProducts();
 refreshCartDockStatus();
+} else if (screenId === 'screen-user-profile') {
+renderUserProfileView();
+} else if (screenId === 'screen-offers') {
+renderClientOffersView();
+} else if (screenId === 'screen-favorites') {
+renderClientFavoritesView();
+} else if (screenId === 'screen-order-tracking') {
+renderOrderTrackingView();
+} else if (screenId === 'screen-notifications') {
+renderCustomerNotifications();
+} else if (screenId === 'screen-moments') {
+renderMomentsFeed();
 } else {
 refreshCartDockStatus();
 }
@@ -249,9 +306,10 @@ if (activeSessionUser) {
 renderAdminLiveOrdersManager();
 renderAdminAnalyticsReports();
 }
+renderOrderTrackingView();
 }
 }, err => console.warn(err));
-// مزامنة الأصناف سحابياً
+// مزامنة الكتالوج
 cloudDb.collection('settings').doc('catalog').onSnapshot(docSnap => {
 if (docSnap.exists && docSnap.data().items) {
 productsCatalog = docSnap.data().items;
@@ -314,7 +372,10 @@ if (!filtered.length) {
 container.innerHTML = ⁠<div style="grid-column: 1/-1; text-align: center; padding: 36px 12px; color: var(--text-secondary); font-size: 13px;">لا توجد أصناف مطابقة</div>⁠;
 return;
 }
-container.innerHTML = filtered.map(p => ⁠<div class="product-card" onclick="openProductCustomizer('${p.id}')"> <img src="${p.img}" class="product-img" alt="${p.name}" onerror="this.src='https://images.unsplash.com/photo-1517701550927-30cf4be1aaf9?w=400&q=80'"> <div class="product-meta"> <div> <div class="product-name">${p.name}</div> <div class="product-desc">${p.desc || ''}</div> </div> <div class="product-row-bottom"> <div class="product-price num-font">${parseFloat(p.price).toFixed(2)} د.أ</div> <div class="btn-add-mini">+ إضافة</div> </div> </div> </div>⁠).join('');
+container.innerHTML = filtered.map(p => {
+const isAvail = p.isAvailable !== false;
+return ⁠<div class="product-card ${!isAvail ? 'unavailable' : ''}" onclick="${isAvail ?⁠openProductCustomizer('${p.id}')⁠:⁠window.showToastMsg('هذا الصنف غير متوفر حالياً')⁠}"> ${!isAvail ? ⁠<span class="tag-sold-out">نفدت الكمية</span>⁠: ''} <img src="${p.img}" class="product-img" alt="${p.name}" onerror="this.src='https://images.unsplash.com/photo-1517701550927-30cf4be1aaf9?w=400&q=80'"> <div class="product-meta"> <div> <div class="product-name">${p.name}</div> <div class="product-desc">${p.desc || ''}</div> </div> <div class="product-row-bottom"> <div class="product-price num-font">${parseFloat(p.price).toFixed(2)} د.أ</div> <div class="btn-add-mini">${isAvail ? '+ إضافة' : 'غير متوفر'}</div> </div> </div> </div>⁠;
+}).join('');
 };
 window.openProductCustomizer = function(productId) {
 const item = productsCatalog.find(p => p.id === productId);
@@ -402,6 +463,7 @@ return;
 }
 container.innerHTML = window.appState.cart.map(item => ⁠<div style="display:flex; justify-content:space-between; align-items:center; padding:10px 0; border-bottom:1px dashed var(--border-subtle);"> <div> <div style="font-weight:900; font-size:13.5px;">${item.qty}x ${item.name} (${item.sizeName})</div> ${item.notes ?⁠<div style="font-size:11px; color:var(--text-secondary);">ملاحظة: ${item.notes}</div>⁠: ''} </div> <div style="text-align:left;"> <div class="num-font" style="font-weight:900; color:var(--brand-gold);">${item.lineTotal.toFixed(2)} د.أ</div> <button style="font-size:11px; color:var(--status-danger); background:none; border:none; cursor:pointer;" onclick="removeCartItemById('${item.id}')">حذف</button> </div> </div>⁠).join('');
 populateCartTownsSelect();
+renderCartPaymentOptions();
 }
 window.removeCartItemById = function(itemId) {
 window.appState.cart = window.appState.cart.filter(i => i.id !== itemId);
@@ -428,9 +490,27 @@ recalculateCartSummary();
 function populateCartTownsSelect() {
 const sel = document.getElementById('cartTownSelect');
 if (!sel) return;
-const b = BRANCHES_DATA[window.appState.cartBranch];
-sel.innerHTML = Object.entries(b.towns).map(([town, fee]) => ⁠<option value="${fee}">${town} (توصيل: ${fee.toFixed(2)} د.أ)</option>⁠).join('');
+const b = branchesData[window.appState.cartBranch] || branchesData[0];
+sel.innerHTML = Object.entries(b.towns).map(([town, fee]) => ⁠<option value="${fee}">${town} (توصيل: ${parseFloat(fee).toFixed(2)} د.أ)</option>⁠).join('');
 }
+function renderCartPaymentOptions() {
+const container = document.getElementById('cartPaymentMethodsContainer');
+if (!container) return;
+container.innerHTML = ⁠<label style="display:flex; justify-content:space-between; align-items:center; padding:10px 14px; background:var(--bg-surface); border-radius:var(--radius-sm); border:1px solid var(--border-subtle); cursor:pointer;"> <div> <span style="font-size:13px; font-weight:800;">دفع نقدي (كاش)</span> <div style="font-size:10.5px; color:var(--text-secondary);">عند الاستلام من كابتن التوصيل</div> </div> <input type="radio" name="payOpt" value="cash" checked onchange="window.appState.selectedPaymentMethod='cash'"> </label> <label style="display:flex; justify-content:space-between; align-items:center; padding:10px 14px; background:var(--bg-surface); border-radius:var(--radius-sm); border:1px solid var(--border-subtle); cursor:pointer;"> <div> <span style="font-size:13px; font-weight:800;">كليك (CliQ)</span> <div style="font-size:10.5px; color:var(--text-secondary);">تحويل مباشر عبر كليك</div> </div> <input type="radio" name="payOpt" value="cliq" onchange="window.appState.selectedPaymentMethod='cliq'"> </label>⁠;
+}
+window.applyUserCouponDiscount = function() {
+const code = (document.getElementById('cartCouponCodeInput').value || '').trim().toUpperCase();
+if (!code) return;
+if (systemCoupons[code] && systemCoupons[code].isActive) {
+window.appState.activeCouponDiscount = systemCoupons[code].discount;
+document.getElementById('couponAppliedBadge').style.display = 'block';
+document.getElementById('couponAppliedBadge').innerText = ⁠تم تطبيق الكوبون بنجاح (خصم ${window.appState.activeCouponDiscount}%)⁠;
+recalculateCartSummary();
+window.showToastMsg("تم تطبيق الخصم!");
+} else {
+window.showToastMsg("كوبون الخصم غير صحيح أو منتهي!");
+}
+};
 window.recalculateCartSummary = function() {
 const sub = window.appState.cart.reduce((s, i) => s + i.lineTotal, 0);
 let del = 0;
@@ -438,7 +518,15 @@ if (window.appState.deliveryMode === 'delivery') {
 const sel = document.getElementById('cartTownSelect');
 if (sel && sel.value) del = parseFloat(sel.value);
 }
-const total = sub + del;
+let discountAmount = 0;
+if (window.appState.activeCouponDiscount > 0) {
+discountAmount = (sub * window.appState.activeCouponDiscount) / 100;
+document.getElementById('sumDiscountRow').style.display = 'flex';
+document.getElementById('sumDiscount').innerText = ⁠-${discountAmount.toFixed(2)} د.أ⁠;
+} else {
+document.getElementById('sumDiscountRow').style.display = 'none';
+}
+const total = (sub - discountAmount) + del;
 document.getElementById('sumSubtotal').innerText = ⁠${sub.toFixed(2)} د.أ⁠;
 document.getElementById('sumDelivery').innerText = ⁠${del.toFixed(2)} د.أ⁠;
 document.getElementById('sumTotal').innerText = ⁠${total.toFixed(2)} د.أ⁠;
@@ -448,10 +536,14 @@ if (!window.appState.cart.length) return window.showToastMsg("سلة المشت�
 const name = (document.getElementById('cartClientName')?.value || '').trim();
 const phone = (document.getElementById('cartClientPhone')?.value || '').trim();
 if (!name || !phone) return window.showToastMsg("يرجى إدخال الاسم ورقم الهاتف");
-const branch = BRANCHES_DATA[window.appState.cartBranch];
+if (bannedCustomersList.includes(phone)) {
+return window.showToastMsg("عذراً، هذا الحساب محظور من الطلب حالياً.");
+}
+const branch = branchesData[window.appState.cartBranch];
 const sub = window.appState.cart.reduce((s, i) => s + i.lineTotal, 0);
 const del = window.appState.deliveryMode === 'delivery' ? parseFloat(document.getElementById('cartTownSelect').value || 0) : 0;
-const total = sub + del;
+const discountAmount = (sub * window.appState.activeCouponDiscount) / 100;
+const total = (sub - discountAmount) + del;
 const orderNumber = 'ORD-' + Math.floor(1000 + Math.random() * 9000);
 const newOrderObj = {
 orderId: orderNumber,
@@ -460,31 +552,128 @@ customerPhone: phone,
 branchName: branch.name,
 branchId: window.appState.cartBranch,
 deliveryMode: window.appState.deliveryMode,
+paymentMethod: window.appState.selectedPaymentMethod,
 items: [...window.appState.cart],
 subtotal: sub,
+discount: discountAmount,
 deliveryFee: del,
 totalAmount: total,
 status: 'received',
+cancelReason: '',
 createdAt: Date.now(),
 timestamp: new Date().toLocaleTimeString('ar-JO', { hour: '2-digit', minute: '2-digit' })
 };
 if (cloudDb) cloudDb.collection('orders').doc(orderNumber).set(newOrderObj).catch(e => console.warn(e));
 activeOrdersList.unshift(newOrderObj);
 safeSet('cc_orders', activeOrdersList);
+// تحديث بيانات العميل المحلية
+userProfile.name = name;
+userProfile.phone = phone;
+safeSet('cc_user_profile', userProfile);
 window.appState.cart = [];
 localStorage.removeItem('cc_cart');
 refreshCartDockStatus();
-let msg = ⁠*طلب جديد | كافيه كورنر*\nرقم الطلب: ${orderNumber}\nالفرع: ${branch.name}\nالعميل: ${name} (${phone})\nنوع الاستلام: ${newOrderObj.deliveryMode}\n----------------\n⁠;
+let msg = ⁠*طلب جديد أونلاين | كافيه كورنر*\nرقم الطلب: ${orderNumber}\nالفرع: ${branch.name}\nالعميل: ${name} (${phone})\nنوع الاستلام: ${newOrderObj.deliveryMode}\n----------------\n⁠;
 newOrderObj.items.forEach((it, i) => {
 msg += ⁠${i+1}. *${it.qty}x ${it.name}* (${it.sizeName}) - ${it.lineTotal.toFixed(2)} د.أ\n⁠;
 });
-msg += ⁠----------------\nالإجمالي: ${total.toFixed(2)} د.أ\n⁠;
+msg += ⁠----------------\nالإجمالي: ${total.toFixed(2)} د.أ\nطريقة الدفع: ${newOrderObj.paymentMethod}\n⁠;
 window.open(⁠https://wa.me/${branch.whatsapp}?text=${encodeURIComponent(msg)}⁠, '_blank');
-window.showToastMsg("تم إرسال الطلب بنجاح!");
-window.navigateRouter('screen-home');
+window.showToastMsg("تم إرسال الطلب أونلاين بنجاح!");
+window.navigateRouter('screen-order-tracking');
 };
 // ---------------------------------------------------------
-// لوحة الإدارة والأقسام الستة المتطابقة 100%
+// شاشة تتبع الطلب الحي (مع إشعار الإلغاء والسبب)
+// ---------------------------------------------------------
+function renderOrderTrackingView() {
+const container = document.getElementById('activeOrderTrackingView');
+if (!container) return;
+if (!activeOrdersList.length) {
+container.innerHTML = ⁠<div class="clean-card" style="text-align:center; padding:36px 16px;"> <div style="font-size:32px; margin-bottom:8px;">📦</div> <div style="font-weight:900; font-size:15px; margin-bottom:4px;">لا توجد طلبات جارية حالياً</div> <div style="font-size:12px; color:var(--text-secondary);">قم بتأكيد طلبك لتتمكن من متابعة حالته في الوقت الفعلي.</div> </div>⁠;
+return;
+}
+const latest = activeOrdersList[0];
+let statusText = "تم استلام الطلب";
+let statusBadgeClass = "header-hours-badge";
+if (latest.status === 'preparing') statusText = "جاري التحضير والتجهيز في الفرع ☕";
+else if (latest.status === 'onway') statusText = "الطلب في الطريق إليك مع كابتن التوصيل 🛵";
+else if (latest.status === 'completed') statusText = "تم تسليم الطلب بنجاح ✓";
+else if (latest.status === 'cancelled') {
+statusText = "تم إلغاء الطلب من قبل الإدارة ✕";
+statusBadgeClass = "header-hours-badge closed";
+}
+container.innerHTML = `
+<div class="clean-card">
+<div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+<span class="num-font" style="font-weight:900; color:var(--brand-gold);">#￼
+￼{statusText}</span>
+</div>
+${latest.status === 'cancelled' && latest.cancelReason ? ⁠<div style="background:rgba(239,68,68,0.1); border:1px solid var(--status-danger); padding:10px; border-radius:var(--radius-sm); margin-bottom:12px; font-size:12px; color:var(--status-danger); line-height:1.5;"> <strong>سبب الإلغاء من الإدارة:</strong> ${latest.cancelReason} </div>⁠ : ''}
+<div style="font-size:12.5px; color:var(--text-secondary); line-height:1.7; margin-bottom:12px;">
+<div>📍 <strong>الفرع:</strong> ${latest.branchName}</div>
+<div>⏰ <strong>وقت الطلب:</strong> ${latest.timestamp}</div>
+<div>👤 <strong>العميل:</strong> ￼
+￼{latest.totalAmount.toFixed(2)} د.أ</span></div>
+</div>
+<div class="clean-title" style="margin-bottom:6px;">الأصناف</div>
+<div style="font-size:12px; color:var(--text-secondary);">
+${latest.items.map(it => ⁠<div>• ${it.qty}x ${it.name} (${it.sizeName})</div>⁠).join('')}
+</div>
+</div>
+`;
+}
+// ---------------------------------------------------------
+// الملف الشخصي للزبون (Instagram Profile)
+// ---------------------------------------------------------
+function renderUserProfileView() {
+document.getElementById('userProfileAvatarImg').src = userProfile.avatar;
+document.getElementById('profDisplayName').innerText = userProfile.name;
+document.getElementById('profStatOrders').innerText = userProfile.ordersCount || 0;
+document.getElementById('profStatPoints').innerText = userProfile.points || 0;
+document.getElementById('profStatBadges').innerText = (userProfile.badges || []).length;
+document.getElementById('profBioDesc').innerText = userProfile.bio || "محب للقهوة والمذاق الرفيع في كافيه كورنر.";
+if (userProfile.birthday) {
+document.getElementById('profBirthdayText').innerText = ⁠🎂 تاريخ الميلاد: ${userProfile.birthday}⁠;
+} else {
+document.getElementById('profBirthdayText').innerText = ⁠🎂 تاريخ الميلاد: غير محدد⁠;
+}
+// عرض الشارات
+const badgeContainer = document.getElementById('userBadgesCabinetContainer');
+if (badgeContainer) {
+badgeContainer.innerHTML = (userProfile.badges || ["عضوية برونزية"]).map(b => ⁠<span class="header-hours-badge" style="font-size:11px; padding:4px 10px;">${b}</span>⁠).join('');
+}
+// عرض شبكة مشاركات الزبون المصورة (Instagram Grid)
+const igGrid = document.getElementById('userMomentsIGGrid');
+if (igGrid) {
+const userMoments = communityMoments.filter(m => m.authorPhone === userProfile.phone);
+if (userMoments.length > 0) {
+igGrid.innerHTML = userMoments.map(m => ⁠<img src="${m.img}" class="ig-post-thumb" alt="مشاركة الزبون">⁠).join('');
+} else {
+igGrid.innerHTML = ⁠<div style="grid-column:1/-1; text-align:center; padding:16px; color:var(--text-secondary); font-size:11.5px;">لم تشارك أي صور بعد. شارك تجربتك في الكافيه لتظهر هنا!</div>⁠;
+}
+}
+}
+window.openEditProfileModal = function() {
+document.getElementById('editProfilePicPreview').src = userProfile.avatar;
+document.getElementById('inputProfName').value = userProfile.name || '';
+document.getElementById('inputProfBirthday').value = userProfile.birthday || '';
+document.getElementById('inputProfBio').value = userProfile.bio || '';
+window.navigateRouter('screen-edit-profile');
+};
+window.saveUserProfileData = function() {
+const name = document.getElementById('inputProfName').value.trim();
+const bday = document.getElementById('inputProfBirthday').value;
+const bio = document.getElementById('inputProfBio').value.trim();
+if (!name) return window.showToastMsg("يرجى إدخال اسمك الكريم");
+userProfile.name = name;
+userProfile.birthday = bday;
+userProfile.bio = bio;
+safeSet('cc_user_profile', userProfile);
+window.showToastMsg("تم حفظ وتحديث ملفك الشخصي بنجاح!");
+window.navigateRouter('screen-user-profile');
+};
+// ---------------------------------------------------------
+// لوحة الإدارة والأقسام المتطابقة 100%
 // ---------------------------------------------------------
 let secretClickCount = 0;
 let secretTimer = null;
@@ -525,6 +714,8 @@ const sub = document.getElementById('subView-' + sectionKey);
 if (sub) sub.classList.add('active');
 if (sectionKey === 'orders') renderAdminLiveOrdersManager();
 if (sectionKey === 'products') renderAdminProductsManager();
+if (sectionKey === 'coupons') renderAdminCouponsAndOffers();
+if (sectionKey === 'customers') renderAdminCustomersManager();
 if (sectionKey === 'reports') renderAdminAnalyticsReports();
 if (sectionKey === 'identity') {
 document.getElementById('adminLogoPreviewImg').src = headerLogoCustom;
@@ -533,14 +724,86 @@ document.getElementById('adminDevPreviewImg').src = devPhotoCustom;
 if (sectionKey === 'themes') {
 document.getElementById('themeGoldColorPicker').value = customThemeColor;
 }
+if (sectionKey === 'storeSettings') {
+document.getElementById('adminBranch0PhoneInput').value = branchesData[0].whatsapp;
+document.getElementById('adminBranch1PhoneInput').value = branchesData[1].whatsapp;
+}
 };
 window.backToAdminMainHub = function() {
 document.querySelectorAll('.admin-sub-view').forEach(v => v.classList.remove('active'));
 document.getElementById('adminMainHubView').style.display = 'block';
 const badge = document.getElementById('badgeHubLiveOrdersCount');
-if (badge) badge.innerText = activeOrdersList.length;
+if (badge) badge.innerText = activeOrdersList.filter(o => o.status !== 'completed' && o.status !== 'cancelled').length;
 };
-// إدارة وتعديل المنتجات والمخزون
+// 1. إدارة الطلبات الحية مع تغيير الحالة والإلغاء مع السبب
+function renderAdminLiveOrdersManager() {
+const container = document.getElementById('adminLiveOrdersContainer');
+if (!container) return;
+if (!activeOrdersList.length) {
+container.innerHTML = ⁠<div style="text-align:center; padding:16px; color:var(--text-secondary); font-size:12px;">لا توجد طلبات واردة حالياً</div>⁠;
+return;
+}
+container.innerHTML = activeOrdersList.map(o => ⁠<div class="clean-card" style="margin-bottom:10px;"> <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;"> <span class="num-font" style="font-weight:900; color:var(--brand-gold);">#${o.orderId}</span> <span style="font-size:11px; color:var(--text-secondary);">${o.branchName} • ${o.timestamp}</span> </div> <div style="font-size:12.5px; margin-bottom:2px;"><strong>${o.customerName}</strong> (${o.customerPhone})</div> <div style="font-size:11.5px; color:var(--text-secondary); margin-bottom:6px;">${o.items.map(it =>⁠￼{it.name}`).join(' ، ')}</div>
+<div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+<span class="num-font" style="font-weight:900; color:var(--brand-gold);">￼
+￼{o.status}</span>
+</div>
+<!-- أزرار تغيير الحالة للمحل والأدمن -->
+<div style="display:flex; gap:6px; flex-wrap:wrap; border-top:1px solid var(--border-subtle); padding-top:8px;">
+<button class="btn-brand-outline" style="padding:4px 8px; font-size:10.5px;" onclick="updateOrderStatusByAdmin('${o.orderId}', 'preparing')">تحضير ☕</button>
+<button class="btn-brand-outline" style="padding:4px 8px; font-size:10.5px;" onclick="updateOrderStatusByAdmin('${o.orderId}', 'onway')">في الطريق 🛵</button>
+<button class="btn-brand-solid" style="padding:4px 8px; font-size:10.5px; background:var(--status-success);" onclick="completeOrderAndAwardLoyalty('${o.orderId}')">مكتمل ✓</button>
+<button class="btn-brand-outline" style="padding:4px 8px; font-size:10.5px; color:var(--status-danger); border-color:var(--status-danger);" onclick="promptCancelOrderAdmin('${o.orderId}')">إلغاء مع سبب ✕</button>
+</div>
+</div>
+`).join('');
+}
+window.updateOrderStatusByAdmin = function(orderId, newStatus) {
+const o = activeOrdersList.find(x => x.orderId === orderId);
+if (!o) return;
+o.status = newStatus;
+safeSet('cc_orders', activeOrdersList);
+if (cloudDb) cloudDb.collection('orders').doc(orderId).update({ status: newStatus }).catch(e=>console.warn(e));
+renderAdminLiveOrdersManager();
+window.showToastMsg("تم تحديث حالة الطلب");
+};
+// تأكيد اكتمال الطلب وإضافة نقاط الولاء والأوسمة رسمياً
+window.completeOrderAndAwardLoyalty = function(orderId) {
+const o = activeOrdersList.find(x => x.orderId === orderId);
+if (!o) return;
+o.status = 'completed';
+safeSet('cc_orders', activeOrdersList);
+if (cloudDb) cloudDb.collection('orders').doc(orderId).update({ status: 'completed' }).catch(e=>console.warn(e));
+// إضافة النقاط والأوسمة للزبون فقط بعد التحقق من نجاح الشراء
+if (userProfile.phone === o.customerPhone) {
+userProfile.ordersCount = (userProfile.ordersCount || 0) + 1;
+userProfile.points = (userProfile.points || 0) + Math.floor(o.totalAmount);
+if (userProfile.ordersCount >= 3 && !userProfile.badges.includes("رائد الكورنر")) {
+userProfile.badges.push("رائد الكورنر");
+}
+if (userProfile.ordersCount >= 7 && !userProfile.badges.includes("العميل الذهبي VIP")) {
+userProfile.badges.push("العميل الذهبي VIP");
+}
+safeSet('cc_user_profile', userProfile);
+}
+renderAdminLiveOrdersManager();
+renderAdminAnalyticsReports();
+window.showToastMsg("تم اعتماد اكتمال الطلب واحتساب نقاط العميل!");
+};
+// إلغاء الطلب من قبل الإدارة مع كتابة السبب للزبون
+window.promptCancelOrderAdmin = function(orderId) {
+const reason = prompt("يرجى كتابة سبب الإلغاء ليظهر للزبون مباشرة (مثال: نفاد الكمية، الفرع مغلق):");
+if (reason === null) return;
+const o = activeOrdersList.find(x => x.orderId === orderId);
+if (!o) return;
+o.status = 'cancelled';
+o.cancelReason = reason || 'تم الإلغاء لظروف تشغيلية طارئة';
+safeSet('cc_orders', activeOrdersList);
+if (cloudDb) cloudDb.collection('orders').doc(orderId).update({ status: 'cancelled', cancelReason: o.cancelReason }).catch(e=>console.warn(e));
+renderAdminLiveOrdersManager();
+window.showToastMsg("تم إلغاء الطلب وإرسال التنبيه للزبون");
+};
+// 2. إدارة وتعديل أصناف المنيو
 function renderAdminProductsManager() {
 const container = document.getElementById('adminProductsControlList');
 if (!container) return;
@@ -595,7 +858,7 @@ if (cloudDb) cloudDb.collection('settings').doc('catalog').set({ items: products
 renderCategoryChips();
 renderMenuProducts();
 renderAdminProductsManager();
-window.showToastMsg("تم حفظ الصنف وتحديثه سحابياً بنجاح!");
+window.showToastMsg("تم حفظ وتحديث الصنف سحابياً!");
 window.navigateRouter('screen-admin-dashboard');
 openAdminSubSection('products');
 };
@@ -608,7 +871,125 @@ renderMenuProducts();
 renderAdminProductsManager();
 window.showToastMsg("تم حذف الصنف بنجاح!");
 };
-// حفظ وتطبيق الثيم المخصص
+// 3. إدارة العروض والكوبونات
+function renderAdminCouponsAndOffers() {
+const offContainer = document.getElementById('adminOffersListContainer');
+if (offContainer) {
+offContainer.innerHTML = systemOffers.map(off => ⁠<div style="display:flex; justify-content:space-between; align-items:center; background:var(--bg-surface); padding:8px 12px; border-radius:var(--radius-sm); border:1px solid var(--border-subtle); margin-bottom:6px;"> <div> <div style="font-size:12.5px; font-weight:900;">${off.title}</div> <div style="font-size:11px; color:var(--text-secondary);">${off.desc}</div> </div> <button class="btn-brand-outline" style="padding:4px 8px; font-size:10px; color:var(--status-danger); border-color:var(--status-danger);" onclick="deleteOfferAdmin('${off.id}')">حذف</button> </div>⁠).join('');
+}
+const coupContainer = document.getElementById('adminCouponsListContainer');
+if (coupContainer) {
+coupContainer.innerHTML = Object.entries(systemCoupons).map(([code, c]) => ⁠<div style="display:flex; justify-content:space-between; align-items:center; background:var(--bg-surface); padding:8px 12px; border-radius:var(--radius-sm); border:1px solid var(--border-subtle); margin-bottom:6px;"> <div style="font-size:13px; font-weight:900;" class="num-font">${code} (${c.discount}%)</div> <button class="btn-brand-outline" style="padding:4px 8px; font-size:10px; color:var(--status-danger); border-color:var(--status-danger);" onclick="deleteCouponAdmin('${code}')">إلغاء</button> </div>⁠).join('');
+}
+}
+window.saveNewOfferFromAdmin = function() {
+const title = document.getElementById('newOfferTitleInput').value.trim();
+const desc = document.getElementById('newOfferDescInput').value.trim();
+if (!title || !desc) return window.showToastMsg("يرجى إدخال عنوان وتفاصيل العرض");
+systemOffers.unshift({ id: "off_" + Date.now(), title, desc });
+safeSet('cc_offers', systemOffers);
+document.getElementById('newOfferTitleInput').value = '';
+document.getElementById('newOfferDescInput').value = '';
+renderAdminCouponsAndOffers();
+window.showToastMsg("تم نشر العرض بنجاح!");
+};
+window.deleteOfferAdmin = function(id) {
+systemOffers = systemOffers.filter(x => x.id !== id);
+safeSet('cc_offers', systemOffers);
+renderAdminCouponsAndOffers();
+window.showToastMsg("تم حذف العرض");
+};
+window.saveNewCouponFromAdmin = function() {
+const code = document.getElementById('newCouponCodeInput').value.trim().toUpperCase();
+const disc = parseFloat(document.getElementById('newCouponPercentInput').value);
+if (!code || isNaN(disc) || disc <= 0) return window.showToastMsg("يرجى إدخال رمز كوبون ونسبة صحيحة");
+systemCoupons[code] = { discount: disc, isActive: true };
+safeSet('cc_coupons', systemCoupons);
+document.getElementById('newCouponCodeInput').value = '';
+document.getElementById('newCouponPercentInput').value = '';
+renderAdminCouponsAndOffers();
+window.showToastMsg("تم تفعيل الكوبون بنجاح!");
+};
+window.deleteCouponAdmin = function(code) {
+delete systemCoupons[code];
+safeSet('cc_coupons', systemCoupons);
+renderAdminCouponsAndOffers();
+window.showToastMsg("تم إلغاء الكوبون");
+};
+// 4. إدارة شارات الولاء
+window.saveNewBadgeDefinition = function() {
+const name = document.getElementById('newBadgeNameInput').value.trim();
+const icon = document.getElementById('newBadgeIconInput').value.trim();
+if (!name) return window.showToastMsg("يرجى إدخال اسم الشارة");
+const fullBadge = ⁠${icon} ${name}⁠.trim();
+if (!userProfile.badges.includes(fullBadge)) {
+userProfile.badges.push(fullBadge);
+safeSet('cc_user_profile', userProfile);
+}
+document.getElementById('newBadgeNameInput').value = '';
+document.getElementById('newBadgeIconInput').value = '';
+window.showToastMsg("تمت إضافة الشارة لمنظومة المكافآت بنجاح!");
+};
+// 5. إدارة الزبائن والمراسلة المباشرة والحظر
+function renderAdminCustomersManager() {
+const container = document.getElementById('adminCustomersListContainer');
+if (!container) return;
+const uniquePhones = [...new Set(activeOrdersList.map(o => o.customerPhone))];
+if (!uniquePhones.length) {
+container.innerHTML = ⁠<div style="font-size:12px; color:var(--text-secondary); padding:8px;">لا يوجد زبائن مسجلين بعد</div>⁠;
+return;
+}
+container.innerHTML = uniquePhones.map(phone => {
+const order = activeOrdersList.find(o => o.customerPhone === phone);
+const isBanned = bannedCustomersList.includes(phone);
+return ⁠<div style="display:flex; justify-content:space-between; align-items:center; background:var(--bg-surface); padding:10px 12px; border-radius:var(--radius-sm); border:1px solid var(--border-subtle); margin-bottom:8px;"> <div> <div style="font-size:13px; font-weight:900;">${order ? order.customerName : 'زبون كافيه كورنر'}</div> <div class="num-font" style="font-size:11px; color:var(--text-secondary);">${phone}</div> </div> <div style="display:flex; gap:6px;"> <button class="btn-brand-outline" style="padding:4px 8px; font-size:10.5px;" onclick="document.getElementById('msgTargetPhoneInput').value='${phone}'">مراسلة ✉</button> <button class="btn-brand-outline" style="padding:4px 8px; font-size:10.5px; ${isBanned ? 'color:var(--status-success); border-color:var(--status-success);' : 'color:var(--status-danger); border-color:var(--status-danger);'}" onclick="toggleCustomerBanStatus('${phone}')"> ${isBanned ? 'إلغاء الحظر' : 'حظر الزبون'} </button> </div> </div>⁠;
+}).join('');
+}
+window.sendAdminNotificationToCustomer = function() {
+const targetPhone = document.getElementById('msgTargetPhoneInput').value.trim();
+const content = document.getElementById('msgContentAdminInput').value.trim();
+if (!targetPhone || !content) return window.showToastMsg("يرجى إدخال الهاتف ونص الرسالة");
+customerNotifications.unshift({
+id: "msg_" + Date.now(),
+title: "رسالة رسمية من إدارة كافيه كورنر ☕",
+desc: content,
+time: "الآن"
+});
+safeSet('cc_notifications', customerNotifications);
+document.getElementById('msgContentAdminInput').value = '';
+window.showToastMsg("تم إرسال الإشعار للزبون بنجاح!");
+};
+window.toggleCustomerBanStatus = function(phone) {
+if (bannedCustomersList.includes(phone)) {
+bannedCustomersList = bannedCustomersList.filter(p => p !== phone);
+window.showToastMsg("تم إلغاء حظر الزبون");
+} else {
+bannedCustomersList.push(phone);
+window.showToastMsg("تم حظر الزبون من إرسال الطلبات");
+}
+safeSet('cc_banned_users', bannedCustomersList);
+renderAdminCustomersManager();
+};
+// 6. التقارير والرسم البياني
+function renderAdminAnalyticsReports() {
+const rev = activeOrdersList.reduce((s, o) => s + (o.status !== 'cancelled' ? (o.totalAmount || 0) : 0), 0);
+const validCount = activeOrdersList.filter(o => o.status !== 'cancelled').length;
+const avg = validCount ? (rev / validCount) : 0;
+const revEl = document.getElementById('repNetRevenue');
+const avgEl = document.getElementById('repAvgOrderValue');
+if (revEl) revEl.innerText = ⁠${rev.toFixed(2)} د.أ⁠;
+if (avgEl) avgEl.innerText = ⁠${avg.toFixed(2)} د.أ⁠;
+// رسم بياني خفيف
+const canvas = document.getElementById('adminSalesAnalyticsCanvas');
+if (!canvas) return;
+const ctx = canvas.getContext('2d');
+ctx.clearRect(0, 0, canvas.width, canvas.height);
+ctx.fillStyle = customThemeColor;
+ctx.font = "bold 11px Tajawal";
+ctx.fillText("إجمالي الطلبات الناجحة: " + validCount, 15, 25);
+ctx.fillText("صافي الإيرادات: " + rev.toFixed(2) + " د.أ", 15, 50);
+}
+// 7. الثيمات والمظهر
 window.applyAndSaveCustomTheme = function() {
 const color = document.getElementById('themeGoldColorPicker').value;
 customThemeColor = color;
@@ -617,25 +998,58 @@ applyThemeToDOM();
 if (cloudDb) cloudDb.collection('settings').doc('identity').set({ themeColor: color }, { merge: true }).catch(e=>console.warn(e));
 window.showToastMsg("تم حفظ وتعميم الثيم سحابياً بنجاح!");
 };
-function renderAdminLiveOrdersManager() {
-const container = document.getElementById('adminLiveOrdersContainer');
-if (!container) return;
-if (!activeOrdersList.length) {
-container.innerHTML = ⁠<div style="text-align:center; padding:16px; color:var(--text-secondary); font-size:12px;">لا توجد طلبات واردة حالياً</div>⁠;
-return;
-}
-container.innerHTML = activeOrdersList.map(o => ⁠<div class="clean-card" style="margin-bottom:8px;"> <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;"> <span class="num-font" style="font-weight:900; color:var(--brand-gold);">#${o.orderId}</span> <span style="font-size:11px; color:var(--text-secondary);">${o.branchName} • ${o.timestamp}</span> </div> <div style="font-size:12.5px; margin-bottom:2px;"><strong>${o.customerName}</strong> (${o.customerPhone})</div> <div style="font-size:11.5px; color:var(--text-secondary); margin-bottom:6px;">${o.items.map(it =>⁠{it.qty}x{it.name}⁠).join(' ، ')}</div> <div style="display:flex; justify-content:space-between; align-items:center;"> <span class="num-font" style="font-weight:900; color:var(--brand-gold);">${o.totalAmount.toFixed(2)} د.أ</span> <span class="header-hours-badge">${o.status === 'received' ? 'جديد' : o.status}</span> </div> </div> ⁠).join('');
-}
-function renderAdminAnalyticsReports() {
-const rev = activeOrdersList.reduce((s, o) => s + (o.totalAmount || 0), 0);
-const avg = activeOrdersList.length ? (rev / activeOrdersList.length) : 0;
-const revEl = document.getElementById('repNetRevenue');
-const avgEl = document.getElementById('repAvgOrderValue');
-if (revEl) revEl.innerText = ⁠${rev.toFixed(2)} د.أ⁠;
-if (avgEl) avgEl.innerText = ⁠${avg.toFixed(2)} د.أ⁠;
-}
+// 8. إعدادات الفروع ومناطق التوصيل
+window.saveAdminTownRateRecord = function() {
+const branchIdx = parseInt(document.getElementById('adminTownBranchSelect').value);
+const townName = document.getElementById('adminTownNameInput').value.trim();
+const fee = parseFloat(document.getElementById('adminTownFeeInput').value);
+if (!townName || isNaN(fee)) return window.showToastMsg("يرجى إدخال اسم المنطقة وسعر التوصيل");
+branchesData[branchIdx].towns[townName] = fee;
+safeSet('cc_branches', branchesData);
+document.getElementById('adminTownNameInput').value = '';
+document.getElementById('adminTownFeeInput').value = '';
+populateCartTownsSelect();
+window.showToastMsg("تم حفظ سعر التوصيل للمنطقة!");
+};
 // ---------------------------------------------------------
-// تهيئة التشغيل الأولى
+// الشاشات التفاعلية (العروض، المفضلة، الإشعارات، الصور)
+// ---------------------------------------------------------
+function renderClientOffersView() {
+const container = document.getElementById('clientOffersContainer');
+if (!container) return;
+container.innerHTML = systemOffers.map(off => ⁠<div class="clean-card"> <div style="font-weight:900; font-size:15px; color:var(--brand-gold); margin-bottom:6px;">${off.title}</div> <div style="font-size:12.5px; color:var(--text-secondary); line-height:1.6;">${off.desc}</div> </div>⁠).join('');
+}
+function renderClientFavoritesView() {
+const container = document.getElementById('clientFavoritesContainer');
+if (!container) return;
+container.innerHTML = ⁠<div class="clean-card" style="text-align:center; padding:36px 16px;"> <div style="font-size:36px; margin-bottom:8px; color:var(--brand-gold);">♡</div> <div style="font-weight:900; font-size:15px; margin-bottom:6px;">قائمتك المفضلة</div> <div style="font-size:12px; color:var(--text-secondary); margin-bottom:14px;">احفظ أشهى الكوكتيلات والحلويات بلمسة زر واحدة.</div> <button class="btn-brand-solid" onclick="navigateRouter('screen-home')">تصفح المنيو الآن</button> </div>⁠;
+}
+function renderCustomerNotifications() {
+const container = document.getElementById('customerNotificationsList');
+if (!container) return;
+container.innerHTML = customerNotifications.map(n => ⁠<div class="clean-card" style="margin-bottom:8px;"> <div style="font-size:13.5px; font-weight:900; color:var(--brand-gold); margin-bottom:4px;">${n.title}</div> <div style="font-size:12px; color:var(--text-secondary); line-height:1.5;">${n.desc}</div> <div class="num-font" style="font-size:10px; color:var(--text-dim); margin-top:4px;">${n.time}</div> </div>⁠).join('');
+}
+function renderMomentsFeed() {
+const container = document.getElementById('communityFeedContainer');
+if (!container) return;
+container.innerHTML = communityMoments.map(m => ⁠<div class="clean-card" style="padding:0; overflow:hidden; margin-bottom:12px;"> <img src="${m.img}" style="width:100%; height:200px; object-fit:cover;" alt="صورة العميل"> <div style="padding:12px 14px;"> <div style="font-size:13px; font-weight:900; margin-bottom:4px;">${m.authorName}</div> <div style="font-size:11.5px; color:var(--text-secondary); line-height:1.4;">${m.caption}</div> </div> </div>⁠).join('');
+}
+window.openNewMomentModal = function() {
+const caption = prompt("اكتب تعليقاً على تجربتك مع الصورة:");
+if (!caption) return;
+communityMoments.unshift({
+id: "m_" + Date.now(),
+authorName: userProfile.name,
+authorPhone: userProfile.phone,
+img: "https://images.unsplash.com/photo-1562376552-0d160a2f238d?w=400&q=80",
+caption: caption
+});
+safeSet('cc_moments', communityMoments);
+renderMomentsFeed();
+window.showToastMsg("تم نشر مشاركتك بنجاح!");
+};
+// ---------------------------------------------------------
+// التهيئة الأولى للموقع
 // ---------------------------------------------------------
 document.addEventListener('DOMContentLoaded', () => {
 applyThemeToDOM();
@@ -644,6 +1058,7 @@ document.getElementById('devProfilePicImg').src = devPhotoCustom;
 renderCategoryChips();
 renderMenuProducts();
 populateCartTownsSelect();
+renderCartPaymentOptions();
 refreshCartDockStatus();
 initCloudRealtimeOrdersListener();
 });
