@@ -8,7 +8,6 @@
     <meta name="theme-color" content="#fbfbf9">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <!-- استدعاء خطوط ممتازة قابلة للتبديل -->
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&family=IBM+Plex+Sans+Arabic:wght@400;600;700&family=Plus+Jakarta+Sans:wght@600;700;800;900&family=Tajawal:wght@400;500;700;800;900&display=swap" rel="stylesheet">
 
     <!-- Firebase SDK Compat -->
@@ -961,7 +960,6 @@
             <div style="width:38px;"></div>
         </header>
         <div class="scrollable-content">
-            <!-- الشرح التوضيحي للزيارة الأولى -->
             <div class="page-guide-banner" id="guideRewards" style="display:none;">
                 <div class="guide-banner-text">
                     <strong>كيف تستبدل نقاطك؟</strong>
@@ -1177,7 +1175,7 @@
                 <div class="clean-title">خطوات الطلب والاستفادة</div>
                 <div style="padding: 8px 0; border-bottom: 1px solid var(--border-subtle);">
                     <div style="font-size:13px; font-weight:900; color:var(--brand-gold);">1. اختيار الأصناف وتخصيصها</div>
-                    <div style="font-size:11px; color:var(--text-secondary);">حدد الحجم والنكهات والإضافات المفضلة لديك.</div>
+                    <div style="font-size:11px; color:var(--text-secondary);">حدد الحجم للمشروبات، أو النكهات والمكس الذكي للحلويات (وافل، كريب، كنافة، بان كيك).</div>
                 </div>
                 <div style="padding: 8px 0; border-bottom: 1px solid var(--border-subtle);">
                     <div style="font-size:13px; font-weight:900; color:var(--brand-gold);">2. تحديد طريقة الاستلام والتوصيل</div>
@@ -1213,8 +1211,8 @@
                     مهندس اتصالات ومطور برمجيات يجمع بين التفكير الهندسي الدقيق للشبكات وهندسة النظم وتطوير المنظومات الرقمية الموزعة.
                 </p>
                 <div style="display:flex; gap:8px; width:100%; margin-top:10px;">
-                    <a href="https://wa.me/962796433698" target="_blank" style="background:#55DDF3; color:#080D16; font-weight:900; padding:9px; border-radius:8px; flex:1; text-align:center; text-decoration:none;">تواصل عبر واتساب</a>
-                    <a href="https://www.instagram.com/o_yd" target="_blank" style="border:1px solid #55DDF3; color:#55DDF3; font-weight:800; padding:9px; border-radius:8px; flex:1; text-align:center; text-decoration:none;">Instagram</a>
+                    <a href="https://wa.me/962796433698" target="_blank" id="devWaLinkBtn" style="background:#55DDF3; color:#080D16; font-weight:900; padding:9px; border-radius:8px; flex:1; text-align:center; text-decoration:none;">تواصل عبر واتساب</a>
+                    <a href="https://www.instagram.com/o_yd" target="_blank" id="devIgLinkBtn" style="border:1px solid #55DDF3; color:#55DDF3; font-weight:800; padding:9px; border-radius:8px; flex:1; text-align:center; text-decoration:none;">Instagram</a>
                 </div>
             </div>
 
@@ -1274,14 +1272,27 @@
                 <div class="num-font" style="font-size:16px; font-weight:900; color:var(--brand-gold); margin-top:4px;" id="psBasePrice">0.00 د.أ</div>
             </div>
 
-            <div class="clean-card" style="margin: 0 14px 10px;">
+            <!-- قسم الأحجام: يتم إخفاؤه تماماً للحلويات (وافل، كريب، كنافة، بان كيك) -->
+            <div class="clean-card" id="psSizeCardWrapper" style="margin: 0 14px 10px;">
                 <div class="clean-title">الحجم المطلوب</div>
                 <div id="psSizeOptionsContainer" style="display:flex; flex-direction:column; gap:6px;"></div>
             </div>
 
+            <!-- قسم النكهات والمكس الذكي للحلويات -->
+            <div class="clean-card" id="psSaucesCardWrapper" style="margin: 0 14px 10px; display:none;">
+                <div class="clean-title">
+                    <span>النكهات والمكس المطلوب</span>
+                    <span style="font-size:10px; color:var(--text-secondary);">(لغاية 3 نكهات للمكس)</span>
+                </div>
+                <div style="font-size:10.5px; color:var(--text-secondary); margin-bottom:8px; line-height:1.4;">
+                    * في حال اختيار مكس نكهات، يُحسب السعر تلقائياً بناءً على <strong>سعر النكهة الأعلى</strong>.
+                </div>
+                <div id="psSaucesContainer" style="display:flex; flex-direction:column; gap:6px;"></div>
+            </div>
+
             <div class="clean-card" style="margin: 0 14px 14px;">
                 <div class="clean-title">ملاحظات التحضير</div>
-                <textarea class="ios-textarea-field" id="psNotes" placeholder="مثال: سكر خفيف، بدون ثلج، زيادة كريما..."></textarea>
+                <textarea class="ios-textarea-field" id="psNotes" placeholder="مثال: سكر خفيف، بدون قشطة، زيادة صوص..."></textarea>
             </div>
         </div>
 
@@ -1440,6 +1451,16 @@
                         </div>
                     </div>
 
+                    <div class="admin-hub-card" onclick="openAdminSubSection('brandAndDev')">
+                        <div class="admin-hub-icon-wrap">
+                            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                        </div>
+                        <div>
+                            <div class="admin-hub-card-title">الهوية وبيانات المطور</div>
+                            <div class="admin-hub-card-sub">تعديل الشعار ومعلومات المطور</div>
+                        </div>
+                    </div>
+
                     <div class="admin-hub-card" onclick="openAdminSubSection('redeemManager')">
                         <div class="admin-hub-icon-wrap">
                             <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
@@ -1530,6 +1551,43 @@
                     </div>
                     <div id="adminProductsControlList"></div>
                 </div>
+            </div>
+
+            <!-- قسم تعديل الشعار وهوية المطور من الهاتف -->
+            <div id="subView-brandAndDev" class="admin-sub-view">
+                <button class="btn-brand-outline" style="margin-bottom:10px;" onclick="backToAdminMainHub()">← العودة للوحة الرئيسية</button>
+                
+                <div class="clean-card">
+                    <div class="clean-title">تعديل شعار المتجر (Logo)</div>
+                    <div style="display:flex; align-items:center; gap:12px; margin-bottom:10px;">
+                        <img src="./logo.png" id="admLogoPreview" style="width:60px; height:60px; border-radius:50%; object-fit:cover; border:2px solid var(--brand-gold);">
+                        <div>
+                            <input type="file" id="uploadStoreLogoInput" accept="image/*" style="display:none;" onchange="handleStoreLogoUpload(event)">
+                            <button type="button" class="btn-brand-outline" onclick="document.getElementById('uploadStoreLogoInput').click()">رفع شعار جديد من الهاتف</button>
+                        </div>
+                    </div>
+                    <input type="text" class="ios-input-field" id="admBrandTitleInput" placeholder="اسم المتجر في الترويسة" style="margin-bottom:8px;">
+                    <input type="text" class="ios-input-field" id="admBrandSubInput" placeholder="الوصف الفرعي في الترويسة">
+                </div>
+
+                <div class="clean-card">
+                    <div class="clean-title">تعديل بيانات وصورة المطور</div>
+                    <div style="display:flex; align-items:center; gap:12px; margin-bottom:12px;">
+                        <img src="" id="admDevAvatarPreview" style="width:60px; height:60px; border-radius:50%; object-fit:cover; border:2px solid #55DDF3;">
+                        <div>
+                            <input type="file" id="uploadDevAvatarInput" accept="image/*" style="display:none;" onchange="handleDevAvatarUpload(event)">
+                            <button type="button" class="btn-brand-outline" style="border-color:#55DDF3; color:#55DDF3;" onclick="document.getElementById('uploadDevAvatarInput').click()">رفع صورة المطور من الهاتف</button>
+                        </div>
+                    </div>
+                    <div style="display:flex; flex-direction:column; gap:8px;">
+                        <input type="text" class="ios-input-field" id="admDevNameInput" placeholder="اسم المطور">
+                        <textarea class="ios-textarea-field" id="admDevBioInput" placeholder="النبذة التعريفية للمطور..."></textarea>
+                        <input type="tel" class="ios-input-field num-font" id="admDevWaInput" placeholder="رقم واتساب المطور (مثال: 962796433698)">
+                        <input type="text" class="ios-input-field" id="admDevIgInput" placeholder="رابط حساب إنستغرام">
+                    </div>
+                </div>
+
+                <button class="btn-brand-solid" onclick="saveBrandAndDeveloperSettings()">حفظ وتثبيت الشعار وبيانات المطور</button>
             </div>
 
             <div id="subView-redeemManager" class="admin-sub-view">
@@ -1992,15 +2050,25 @@ function initCloudFirestoreSafe() {
 // الكتالوج الافتراضي
 window.DEFAULT_CATALOG = [
     { id: "p1", name: "كوكتيل إمبراطور فواكه", category: "كوكتيلات", price: 2.50, desc: "مزيج قطع فواكه طازجة مع القشطة والمكسرات", img: "https://images.unsplash.com/photo-1577805947697-89e18249d767?w=400&q=80", isAvailable: true },
-    { id: "p2", name: "وافل بلجيكي أصلي", category: "وافل", price: 2.50, desc: "وافل دافئ مقرمش غني بأشهى النكهات والصوصات", img: "https://images.unsplash.com/photo-1562376552-0d160a2f238d?w=400&q=80", isAvailable: true },
-    { id: "p3", name: "كريب فيتوتشيني فاخر", category: "كريب", price: 3.00, desc: "شرائح كريب رقيقة طازجة مع نكهاتك المفضلة", img: "https://images.unsplash.com/photo-1519676867240-f03562e64548?w=400&q=80", isAvailable: true },
+    { id: "p2", name: "وافل بلجيكي أصلي", category: "وافل", price: 2.00, desc: "وافل دافئ مقرمش غني بأشهى النكهات والصوصات", img: "https://images.unsplash.com/photo-1562376552-0d160a2f238d?w=400&q=80", isAvailable: true },
+    { id: "p3", name: "كريب فيتوتشيني فاخر", category: "كريب", price: 2.50, desc: "شرائح كريب رقيقة طازجة مع نكهاتك المفضلة", img: "https://images.unsplash.com/photo-1519676867240-f03562e64548?w=400&q=80", isAvailable: true },
     { id: "p4", name: "ميلك شيك أوريو", category: "ميلك شيك", price: 2.00, desc: "مخفوق الحليب والآيس كريم مع بسكويت الأوريو", img: "https://images.unsplash.com/photo-1572490122747-3968b75cc699?w=400&q=80", isAvailable: true },
     { id: "p5", name: "بان كيك كلاسيك", category: "بان كيك", price: 2.00, desc: "طبقات بان كيك هشة وطرية مع صوصك المفضل", img: "https://images.unsplash.com/photo-1528207776546-384cb11312b2?w=400&q=80", isAvailable: true },
-    { id: "p6", name: "كنافة نابلسية بالجبن", category: "كنافة", price: 3.00, desc: "كنافة سخنة متبلة بالسمن والجبن المذوب", img: "https://images.unsplash.com/photo-1628198642220-4bf63f25c755?w=400&q=80", isAvailable: true },
+    { id: "p6", name: "كنافة نابلسية بالجبن", category: "كنافة", price: 2.50, desc: "كنافة سخنة متبلة بالسمن والجبن المذوب والمكسرات", img: "https://images.unsplash.com/photo-1628198642220-4bf63f25c755?w=400&q=80", isAvailable: true },
     { id: "p7", name: "آيس كوفي منعش", category: "ستيم بارد", price: 1.50, desc: "شوت إسبريسو مزدوج مثلج مع حليب ناعم", img: "https://images.unsplash.com/photo-1461023058943-0708e52150fe?w=400&q=80", isAvailable: true },
     { id: "p8", name: "موكا حار فاخر", category: "ستيم ساخن", price: 2.00, desc: "مزيج قهوة ساخنة غنية بالشوكولاتة والكريما", img: "https://images.unsplash.com/photo-1517701550927-30cf4be1aaf9?w=400&q=80", isAvailable: true },
     { id: "p9", name: "آيس كريم فانيليا", category: "آيس كريم", price: 1.00, desc: "كرة آيس كريم إيطالية غنية بالفانيليا النقية", img: "https://images.unsplash.com/photo-1570197781417-0a52375c020b?w=400&q=80", isAvailable: true }
 ];
+
+// قائمة النكهات المتاحة للحلويات وأسعارها
+let dessertSaucesCatalog = safeGet('cc_dessert_sauces', [
+    { name: "نوتيلا", price: 2.00 },
+    { name: "لوتس", price: 2.50 },
+    { name: "بستاشيو (فستق حلبي)", price: 2.75 },
+    { name: "كيندر بوينو", price: 2.50 },
+    { name: "أوريو كرانش", price: 2.25 },
+    { name: "شوكولاتة بلجيكية بيضاء", price: 2.00 }
+]);
 
 const DEFAULT_BRANCHES = [
     {
@@ -2054,6 +2122,18 @@ let branchesData = safeGet('cc_branches', DEFAULT_BRANCHES);
 let menuEditCounter = safeGet('cc_menu_edit_counter', 0);
 let dismissedGuides = safeGet('cc_dismissed_guides', []);
 let likedMomentsDevice = safeGet('cc_liked_moments', []);
+
+// إعدادات الشعار وهوية المطور
+let brandAndDevSettings = safeGet('cc_brand_dev_config', {
+    storeLogo: "./logo.png",
+    brandTitle: "كافيه كورنر",
+    brandSub: "أشهى الكوكتيلات والحلويات الفاخرة",
+    devAvatar: "./logo.png",
+    devName: "المهندس عمر عبيدات",
+    devBio: "مهندس اتصالات ومطور برمجيات يجمع بين التفكير الهندسي الدقيق للشبكات وهندسة النظم وتطوير المنظومات الرقمية الموزعة.",
+    devWa: "962796433698",
+    devIg: "https://www.instagram.com/o_yd"
+});
 
 // أصناف استبدال النقاط
 let redeemCatalog = safeGet('cc_redeem_catalog', [
@@ -2135,7 +2215,35 @@ function updateDynamicVersionDisplay() {
     if (el) el.innerText = getDynamicVersion();
 }
 
-// محرك رنين التنبيه الصوتي الحقيقي (الزبون والأدمن)
+// تطبيق إعدادات الشعار وهوية المطور في واجهات الموقع
+function applyBrandAndDevSettingsToDOM() {
+    const s = brandAndDevSettings;
+    const logoImg = document.getElementById('mainHeaderLogoImg');
+    if (logoImg && s.storeLogo) logoImg.src = s.storeLogo;
+
+    const brandTitle = document.getElementById('mainHeaderBrandTitle');
+    if (brandTitle && s.brandTitle) brandTitle.innerText = s.brandTitle;
+
+    const brandSub = document.getElementById('mainHeaderBrandSub');
+    if (brandSub && s.brandSub) brandSub.innerText = s.brandSub;
+
+    const devAvatar = document.getElementById('devHubAvatarImg');
+    if (devAvatar && s.devAvatar) devAvatar.src = s.devAvatar;
+
+    const devName = document.getElementById('devHubNameDisplay');
+    if (devName && s.devName) devName.innerText = s.devName;
+
+    const devBio = document.getElementById('devHubBioDisplay');
+    if (devBio && s.devBio) devBio.innerText = s.devBio;
+
+    const waBtn = document.getElementById('devWaLinkBtn');
+    if (waBtn && s.devWa) waBtn.href = `https://wa.me/${s.devWa}`;
+
+    const igBtn = document.getElementById('devIgLinkBtn');
+    if (igBtn && s.devIg) igBtn.href = s.devIg;
+}
+
+// محرك رنين التنبيه الصوتي
 function playHarmonicChime(type = 'user') {
     try {
         const AudioCtx = window.AudioContext || window.webkitAudioContext;
@@ -2147,7 +2255,6 @@ function playHarmonicChime(type = 'user') {
         const gain = ctx.createGain();
 
         if (type === 'admin') {
-            // نغمة قوية ثلاثية للأدمن
             const notes = [659.25, 880.00, 1046.50];
             notes.forEach((freq, idx) => {
                 const subOsc = ctx.createOscillator();
@@ -2163,7 +2270,6 @@ function playHarmonicChime(type = 'user') {
                 subOsc.stop(ctx.currentTime + (idx * 0.14) + 0.28);
             });
         } else {
-            // نغمة رنين ناعمة ومحسوسة للزبون عند تغير حالة الطلب
             osc.type = "sine";
             osc.frequency.setValueAtTime(587.33, ctx.currentTime);
             osc.frequency.exponentialRampToValueAtTime(880.00, ctx.currentTime + 0.18);
@@ -2225,7 +2331,6 @@ function updateNotificationBadge() {
     }
 }
 
-// فحص وإظهار الشرح التوضيحي لأول مرة
 function checkAndShowGuideBanner(pageKey, bannerId) {
     if (!dismissedGuides.includes(pageKey)) {
         const el = document.getElementById(bannerId);
@@ -2249,7 +2354,6 @@ window.dismissGuideBanner = function(pageKey) {
     if (el) el.style.display = 'none';
 };
 
-// التنقل بين الشاشات
 window.showToastMsg = function(msg) {
     const toast = document.getElementById('systemToast');
     if (!toast) return;
@@ -2424,6 +2528,12 @@ window.renderMenuProducts = function() {
     }).join('');
 };
 
+// فحص إن كان الصنف من الحلويات التي ليس لها أحجام وتعتمد على النكهات والمكس
+function isDessertItem(category) {
+    const dessertCats = ["وافل", "كريب", "بان كيك", "كنافة"];
+    return dessertCats.includes(category);
+}
+
 window.openProductCustomizer = function(productId) {
     const item = productsCatalog.find(p => p.id === productId);
     if (!item) return;
@@ -2438,24 +2548,57 @@ window.openProductCustomizer = function(productId) {
     document.getElementById('psQtyDisplay').innerText = '1';
     document.getElementById('psNotes').value = '';
 
+    const sizeCard = document.getElementById('psSizeCardWrapper');
+    const saucesCard = document.getElementById('psSaucesCardWrapper');
     const sizeContainer = document.getElementById('psSizeOptionsContainer');
-    sizeContainer.innerHTML = `
-        <label style="display:flex; justify-content:space-between; align-items:center; padding:9px 12px; background:var(--bg-surface); border-radius:var(--radius-sm); border:1px solid var(--border-subtle); cursor:pointer;">
-            <span style="font-size:12.5px; font-weight:700;">صغير (عادي)</span>
-            <input type="radio" name="prodSize" value="small" checked onchange="updateProductCalculatedPrice()">
-        </label>
-        <label style="display:flex; justify-content:space-between; align-items:center; padding:9px 12px; background:var(--bg-surface); border-radius:var(--radius-sm); border:1px solid var(--border-subtle); cursor:pointer;">
-            <span style="font-size:12.5px; font-weight:700;">وسط (+0.50 د.أ)</span>
-            <input type="radio" name="prodSize" value="medium" onchange="updateProductCalculatedPrice()">
-        </label>
-        <label style="display:flex; justify-content:space-between; align-items:center; padding:9px 12px; background:var(--bg-surface); border-radius:var(--radius-sm); border:1px solid var(--border-subtle); cursor:pointer;">
-            <span style="font-size:12.5px; font-weight:700;">كبير (+1.00 د.أ)</span>
-            <input type="radio" name="prodSize" value="large" onchange="updateProductCalculatedPrice()">
-        </label>
-    `;
+    const saucesContainer = document.getElementById('psSaucesContainer');
+
+    if (isDessertItem(item.category)) {
+        // إلغاء الأحجام تماماً للوافل والكريب والبان كيك والكنافة
+        sizeCard.style.display = 'none';
+        saucesCard.style.display = 'block';
+
+        saucesContainer.innerHTML = dessertSaucesCatalog.map(sauce => `
+            <label style="display:flex; justify-content:space-between; align-items:center; padding:9px 12px; background:var(--bg-surface); border-radius:var(--radius-sm); border:1px solid var(--border-subtle); cursor:pointer;">
+                <div>
+                    <span style="font-size:12.5px; font-weight:700;">${sauce.name}</span>
+                    <span class="num-font" style="font-size:11px; color:var(--brand-gold); margin-right:6px;">(${parseFloat(sauce.price).toFixed(2)} د.أ)</span>
+                </div>
+                <input type="checkbox" class="sauce-check-opt" value="${sauce.name}" data-price="${sauce.price}" onchange="handleSauceCheckChange(this)">
+            </label>
+        `).join('');
+    } else {
+        // إظهار الأحجام للمشروبات والأصناف العادية
+        sizeCard.style.display = 'block';
+        saucesCard.style.display = 'none';
+
+        sizeContainer.innerHTML = `
+            <label style="display:flex; justify-content:space-between; align-items:center; padding:9px 12px; background:var(--bg-surface); border-radius:var(--radius-sm); border:1px solid var(--border-subtle); cursor:pointer;">
+                <span style="font-size:12.5px; font-weight:700;">صغير (عادي)</span>
+                <input type="radio" name="prodSize" value="small" checked onchange="updateProductCalculatedPrice()">
+            </label>
+            <label style="display:flex; justify-content:space-between; align-items:center; padding:9px 12px; background:var(--bg-surface); border-radius:var(--radius-sm); border:1px solid var(--border-subtle); cursor:pointer;">
+                <span style="font-size:12.5px; font-weight:700;">وسط (+0.50 د.أ)</span>
+                <input type="radio" name="prodSize" value="medium" onchange="updateProductCalculatedPrice()">
+            </label>
+            <label style="display:flex; justify-content:space-between; align-items:center; padding:9px 12px; background:var(--bg-surface); border-radius:var(--radius-sm); border:1px solid var(--border-subtle); cursor:pointer;">
+                <span style="font-size:12.5px; font-weight:700;">كبير (+1.00 د.أ)</span>
+                <input type="radio" name="prodSize" value="large" onchange="updateProductCalculatedPrice()">
+            </label>
+        `;
+    }
 
     updateProductCalculatedPrice();
     window.navigateRouter('screen-product');
+};
+
+window.handleSauceCheckChange = function(el) {
+    const checked = Array.from(document.querySelectorAll('.sauce-check-opt:checked'));
+    if (checked.length > 3) {
+        el.checked = false;
+        return window.showToastMsg("الحد الأقصى 3 نكهات فقط للمكس");
+    }
+    updateProductCalculatedPrice();
 };
 
 window.adjustProductQty = function(delta) {
@@ -2467,14 +2610,29 @@ window.adjustProductQty = function(delta) {
     }
 };
 
+// حساب السعر الذكي: في المكس يُحسب سعر أعلى نكهة
 window.updateProductCalculatedPrice = function() {
     if (!window.appState.selectedProduct) return;
-    let base = parseFloat(window.appState.selectedProduct.price);
-    const sizeInput = document.querySelector('input[name="prodSize"]:checked');
-    if (sizeInput) {
-        if (sizeInput.value === 'medium') base += 0.50;
-        if (sizeInput.value === 'large') base += 1.00;
+    const p = window.appState.selectedProduct;
+    let base = parseFloat(p.price);
+
+    if (isDessertItem(p.category)) {
+        // حساب سعر النكهات أو مكس النكهات بأخذ أعلى سعر
+        const checked = Array.from(document.querySelectorAll('.sauce-check-opt:checked'));
+        if (checked.length > 0) {
+            const prices = checked.map(c => parseFloat(c.getAttribute('data-price') || 0));
+            const highestSaucePrice = Math.max(...prices);
+            base = highestSaucePrice; // اعتماد سعر النكهة الأغلى بدلاً من سعر الصنف الأساسي
+        }
+    } else {
+        // حساب حجم المشروب
+        const sizeInput = document.querySelector('input[name="prodSize"]:checked');
+        if (sizeInput) {
+            if (sizeInput.value === 'medium') base += 0.50;
+            if (sizeInput.value === 'large') base += 1.00;
+        }
     }
+
     const total = base * window.appState.productModalQty;
     const calcEl = document.getElementById('psCalculatedPrice');
     if (calcEl) calcEl.innerText = total.toFixed(2);
@@ -2484,17 +2642,36 @@ window.confirmAddItemToCart = function() {
     if (!window.appState.selectedProduct) return;
     const p = window.appState.selectedProduct;
     let unitPrice = parseFloat(p.price);
-    let sizeTitle = "صغير";
+    let sizeTitle = "عادي";
+    let saucesDesc = "";
 
-    const sizeInput = document.querySelector('input[name="prodSize"]:checked');
-    if (sizeInput && sizeInput.value === 'medium') { unitPrice += 0.50; sizeTitle = 'وسط'; }
-    if (sizeInput && sizeInput.value === 'large') { unitPrice += 1.00; sizeTitle = 'كبير'; }
+    if (isDessertItem(p.category)) {
+        const checked = Array.from(document.querySelectorAll('.sauce-check-opt:checked'));
+        if (checked.length === 0) {
+            return window.showToastMsg("يرجى اختيار نكهة واحدة على الأقل للصنف");
+        }
+        const prices = checked.map(c => parseFloat(c.getAttribute('data-price') || 0));
+        unitPrice = Math.max(...prices); // السعر على أعلى نكهة بالمكس
+
+        const names = checked.map(c => c.value);
+        if (names.length === 1) {
+            saucesDesc = `نكهة: ${names[0]}`;
+        } else {
+            saucesDesc = `مكس نكهات (${names.join(' + ')})`;
+        }
+        sizeTitle = "حبة كاملة";
+    } else {
+        const sizeInput = document.querySelector('input[name="prodSize"]:checked');
+        if (sizeInput && sizeInput.value === 'medium') { unitPrice += 0.50; sizeTitle = 'وسط'; }
+        if (sizeInput && sizeInput.value === 'large') { unitPrice += 1.00; sizeTitle = 'كبير'; }
+    }
 
     window.appState.cart.push({
         id: "c_" + Date.now(),
         name: p.name,
         qty: window.appState.productModalQty,
         sizeName: sizeTitle,
+        sauceInfo: saucesDesc,
         unitPrice: unitPrice,
         notes: (document.getElementById('psNotes').value || '').trim(),
         lineTotal: unitPrice * window.appState.productModalQty
@@ -2538,6 +2715,7 @@ function renderCartItemsList() {
         <div style="display:flex; justify-content:space-between; align-items:center; padding:8px 0; border-bottom:1px dashed var(--border-subtle);">
             <div>
                 <div style="font-weight:900; font-size:13px;">${item.qty}x ${item.name} (${item.sizeName})</div>
+                ${item.sauceInfo ? `<div style="font-size:11px; color:var(--brand-gold); font-weight:800;">${item.sauceInfo}</div>` : ''}
                 ${item.isReward ? `<span style="font-size:10px; color:var(--brand-gold); font-weight:800;">[مكافأة ولاء مجانية]</span>` : ''}
                 ${item.notes ? `<div style="font-size:10.5px; color:var(--text-secondary);">ملاحظة: ${item.notes}</div>` : ''}
             </div>
@@ -2696,9 +2874,9 @@ window.dispatchOrderAndInitiateTracking = function() {
 
     triggerSystemNotification(`تم إرسال طلبك #${orderNumber}`, `طلبك بقيمة ${total.toFixed(2)} د.أ قيد المعالجة الآن.`);
 
-    let msg = `*طلب جديد أونلاين | كافيه كورنر*\nرقم الطلب: ${orderNumber}\nالفرع: ${branch.name}\nالعميل: ${name} (${phone})\nنوع الاستلام: ${newOrderObj.deliveryMode}\n----------------\n`;
+    let msg = `*طلب جديد أونلاين | ${brandAndDevSettings.brandTitle}*\nرقم الطلب: ${orderNumber}\nالفرع: ${branch.name}\nالعميل: ${name} (${phone})\nنوع الاستلام: ${newOrderObj.deliveryMode}\n----------------\n`;
     newOrderObj.items.forEach((it, i) => {
-        msg += `${i+1}. *${it.qty}x ${it.name}* (${it.sizeName}) - ${it.lineTotal.toFixed(2)} د.أ\n`;
+        msg += `${i+1}. *${it.qty}x ${it.name}* (${it.sizeName})${it.sauceInfo ? ` - ${it.sauceInfo}` : ''} - ${it.lineTotal.toFixed(2)} د.أ\n`;
     });
     msg += `----------------\nالإجمالي: ${total.toFixed(2)} د.أ\nطريقة الدفع: ${newOrderObj.paymentMethod}\n`;
 
@@ -2766,13 +2944,13 @@ function renderOrderTrackingView() {
 
             <div class="clean-title" style="margin-bottom:6px;">الأصناف</div>
             <div style="font-size:11.5px; color:var(--text-secondary);">
-                ${latest.items.map(it => `<div>• ${it.qty}x ${it.name} (${it.sizeName})</div>`).join('')}
+                ${latest.items.map(it => `<div>• ${it.qty}x ${it.name} (${it.sizeName})${it.sauceInfo ? ` - ${it.sauceInfo}` : ''}</div>`).join('')}
             </div>
         </div>
     `;
 }
 
-// مركز استبدال النقاط التفاعلي
+// مركز استبدال النقاط
 function renderRedeemStoreView() {
     const balanceEl = document.getElementById('userRedeemPointsBalance');
     if (balanceEl) balanceEl.innerText = userProfile.points || 0;
@@ -2825,12 +3003,12 @@ window.executeRedeemChoice = function(choiceType) {
     safeSet('cc_user_profile', userProfile);
 
     if (choiceType === 'cart') {
-        // إدراجه فورياً في السلة كصنف مجاني بقيمة 0.00
         window.appState.cart.push({
             id: "rw_" + Date.now(),
             name: item.name,
             qty: 1,
             sizeName: "مجاني",
+            sauceInfo: "",
             unitPrice: 0.00,
             notes: "مكافأة ولاء مستبدلة بالنقاط",
             lineTotal: 0.00,
@@ -2842,7 +3020,6 @@ window.executeRedeemChoice = function(choiceType) {
         closeRedeemChoiceModal();
         window.navigateRouter('screen-cart');
     } else {
-        // حفظ في المحفظة لوقت لاحق
         const voucher = {
             id: "vch_" + Date.now(),
             name: item.name,
@@ -2969,7 +3146,7 @@ window.saveUserProfileData = function() {
     window.navigateRouter('screen-user-profile');
 };
 
-// مجتمع شاركنا بصورة مع نظام لايك واحد فقط وخيارات إنستغرام
+// مجتمع شاركنا بصورة
 function renderCommunityMoments() {
     const container = document.getElementById('communityFeedContainer');
     if (!container) return;
@@ -3061,11 +3238,9 @@ window.toggleMomentLike = function(id) {
     if (!m) return;
 
     if (likedMomentsDevice.includes(id)) {
-        // إلغاء الإعجاب
         likedMomentsDevice = likedMomentsDevice.filter(x => x !== id);
         m.likes = Math.max(0, (m.likes || 1) - 1);
     } else {
-        // إضافة إعجاب واحد فقط
         likedMomentsDevice.push(id);
         m.likes = (m.likes || 0) + 1;
     }
@@ -3082,7 +3257,6 @@ window.deleteCustomerMoment = function(id) {
     window.showToastMsg("تم حذف المشاركة");
 };
 
-// شاشة الفروع والتواصل مع الربط المباشر ببيانات الأدمن
 function renderClientBranchesView() {
     const b0 = branchesData[0];
     const b1 = branchesData[1];
@@ -3103,7 +3277,6 @@ function renderClientBranchesView() {
     }
 }
 
-// العروض
 function renderClientOffersView() {
     const container = document.getElementById('clientOffersContainer');
     if (!container) return;
@@ -3162,6 +3335,7 @@ window.openAdminSubSection = function(sectionKey) {
 
     if (sectionKey === 'orders') renderAdminLiveOrdersManager();
     if (sectionKey === 'products') renderAdminProductsManager();
+    if (sectionKey === 'brandAndDev') populateBrandAndDevSettingsInputs();
     if (sectionKey === 'redeemManager') renderAdminRedeemManager();
     if (sectionKey === 'customers') renderAdminCustomersManager();
     if (sectionKey === 'paymentSettings') renderAdminPaymentMethods();
@@ -3177,6 +3351,50 @@ window.backToAdminMainHub = function() {
         const liveOrders = activeOrdersList.filter(o => o.status !== 'completed' && o.status !== 'cancelled');
         badge.innerText = liveOrders.length;
     }
+};
+
+// إدارة الشعار وهوية المطور من لوحة الإدارة
+function populateBrandAndDevSettingsInputs() {
+    const s = brandAndDevSettings;
+    document.getElementById('admLogoPreview').src = s.storeLogo || "./logo.png";
+    document.getElementById('admBrandTitleInput').value = s.brandTitle || "كافيه كورنر";
+    document.getElementById('admBrandSubInput').value = s.brandSub || "";
+    document.getElementById('admDevAvatarPreview').src = s.devAvatar || "./logo.png";
+    document.getElementById('admDevNameInput').value = s.devName || "";
+    document.getElementById('admDevBioInput').value = s.devBio || "";
+    document.getElementById('admDevWaInput').value = s.devWa || "";
+    document.getElementById('admDevIgInput').value = s.devIg || "";
+}
+
+window.handleStoreLogoUpload = function(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+    compressImageNative(file, 200, 0.9, base64Url => {
+        document.getElementById('admLogoPreview').src = base64Url;
+        brandAndDevSettings.storeLogo = base64Url;
+    });
+};
+
+window.handleDevAvatarUpload = function(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+    compressImageNative(file, 300, 0.9, base64Url => {
+        document.getElementById('admDevAvatarPreview').src = base64Url;
+        brandAndDevSettings.devAvatar = base64Url;
+    });
+};
+
+window.saveBrandAndDeveloperSettings = function() {
+    brandAndDevSettings.brandTitle = document.getElementById('admBrandTitleInput').value.trim() || "كافيه كورنر";
+    brandAndDevSettings.brandSub = document.getElementById('admBrandSubInput').value.trim();
+    brandAndDevSettings.devName = document.getElementById('admDevNameInput').value.trim();
+    brandAndDevSettings.devBio = document.getElementById('admDevBioInput').value.trim();
+    brandAndDevSettings.devWa = document.getElementById('admDevWaInput').value.trim();
+    brandAndDevSettings.devIg = document.getElementById('admDevIgInput').value.trim();
+
+    safeSet('cc_brand_dev_config', brandAndDevSettings);
+    applyBrandAndDevSettingsToDOM();
+    window.showToastMsg("تم حفظ وتحديث الشعار وهوية المطور بنجاح!");
 };
 
 // تعديل بيانات الفروع من الأدمن
@@ -3243,7 +3461,7 @@ function renderAdminLiveOrdersManager() {
                     <span style="font-size:10px; color:var(--text-secondary);">${o.branchName} • ${o.timestamp}</span>
                 </div>
                 <div style="font-size:12px;"><strong>${o.customerName}</strong> (${o.customerPhone})</div>
-                <div style="font-size:11px; color:var(--text-secondary); margin:4px 0;">${o.items.map(it => `${it.qty}x ${it.name}`).join(' ، ')}</div>
+                <div style="font-size:11px; color:var(--text-secondary); margin:4px 0;">${o.items.map(it => `${it.qty}x ${it.name}${it.sauceInfo ? ` (${it.sauceInfo})` : ''}`).join(' ، ')}</div>
                 <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
                     <span class="num-font" style="font-weight:900; color:var(--brand-gold);">${o.totalAmount.toFixed(2)} د.أ</span>
                     <span class="header-hours-badge ${o.status === 'cancelled' ? 'closed' : ''}">
@@ -3438,7 +3656,7 @@ window.deleteRedeemItemAdmin = function(id) {
     window.showToastMsg("تم حذف الصنف");
 };
 
-// إدارة الزبائن والتحكم بملفاتهم وتحديد حر للنقاط
+// إدارة الزبائن
 function renderAdminCustomersManager() {
     const container = document.getElementById('adminCustomersListContainer');
     if (!container) return;
@@ -3674,6 +3892,7 @@ window.runLiveSystemDiagnostic = function() {
 // التهيئة الأولى
 function bootstrapApp() {
     applyThemeToDOM();
+    applyBrandAndDevSettingsToDOM();
 
     const savedTheme = safeGet('cc_theme_preset', 'gold');
     if (savedTheme !== 'gold') applyAdminThemePreset(savedTheme);
