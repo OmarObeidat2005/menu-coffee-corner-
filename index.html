@@ -1,866 +1,950 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-<title>COFFEE CORNER | كافيه كورنر</title>
-<meta name="theme-color" content="#fbfbf9">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;700;800;900&family=Tajawal:wght@400;500;700;800;900&display=swap" rel="stylesheet">
-<!-- Firestore SDK Compat Mode (Online Real-Time Cloud) -->
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
-<link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>COFFEE CORNER | كافيه كورنر</title>
+    
+    <meta name="theme-color" content="#fbfbf9">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;700;800;900&family=Tajawal:wght@400;500;700;800;900&display=swap" rel="stylesheet">
+
+    <!-- Firestore SDK Compat Mode (Deferred to prevent rendering block) -->
+    <script defer src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script defer src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
+
 <div class="app-container" id="appContainer">
 <div class="main-viewport">
-<!-- 1. الشاشة الرئيسية (المنيو المباشر) -->
-<div id="screen-home" class="app-screen active">
-<header class="header">
-<button class="header-btn" onclick="openSidebarDrawer()" aria-label="القائمة">
-<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
-</button>
-<div class="brand-box" onclick="handleSecretAdminTrigger()" title="كافيه كورنر">
-<img src="./logo.png" id="mainHeaderLogoImg" class="brand-logo-img" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1517701550927-30cf4be1aaf9?w=120&q=80';" alt="شعار كافيه كورنر">
-<div class="brand-text-wrap">
-<div class="brand-title" id="mainHeaderBrandTitle">كافيه كورنر</div>
-<div class="brand-sub" id="mainHeaderBrandSub">أشهى الكوكتيلات والحلويات الفاخرة</div>
-<div class="header-hours-badge" id="mainStoreOpenBadge">مفتوح الآن</div>
-</div>
-</div>
-<div style="display:flex; gap:6px;">
-<button class="header-btn" onclick="navigateRouter('screen-notifications')" aria-label="الإشعارات">
-<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
-<span id="unreadNotifCountBadge" style="position:absolute; top:8px; left:8px; width:7px; height:7px; background:var(--brand-gold); border-radius:50%; display:none;"></span>
-</button>
-<button class="header-btn" onclick="toggleThemeMode()" aria-label="المظهر">
-<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
-</button>
-</div>
-</header>
-<div class="search-container">
-<div class="search-bar">
-<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--text-dim)" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
-<input type="text" class="search-input" id="menuSearchInput" oninput="renderMenuProducts()" placeholder="ابحث في قائمة المشروبات والحلويات...">
-</div>
-</div>
-<div class="categories-scroll" id="categoryScrollChips"></div>
-<div class="scrollable-content">
-<div class="product-grid" id="menuGridContainer"></div>
-</div>
-</div>
-<!-- 2. شاشة العروض والخصومات -->
-<div id="screen-offers" class="app-screen">
-<header class="header">
-<button class="header-btn" onclick="navigateRouter('screen-home')" aria-label="عودة">✕</button>
-<div style="font-weight:900; font-size:15px; color:var(--brand-gold);">العروض والخصومات</div>
-<div style="width:38px;"></div>
-</header>
-<div class="scrollable-content" id="clientOffersContainer"></div>
-</div>
-<!-- 3. شاشة مفضلتي -->
-<div id="screen-favorites" class="app-screen">
-<header class="header">
-<button class="header-btn" onclick="navigateRouter('screen-home')" aria-label="عودة">✕</button>
-<div style="font-weight:900; font-size:15px; color:var(--brand-gold);">مفضلتي ♡</div>
-<div style="width:38px;"></div>
-</header>
-<div class="scrollable-content" id="clientFavoritesContainer"></div>
-</div>
-<!-- 4. شاشة تتبع طلبي الحية -->
-<div id="screen-order-tracking" class="app-screen">
-<header class="header">
-<button class="header-btn" onclick="navigateRouter('screen-home')" aria-label="عودة">✕</button>
-<div style="font-weight:900; font-size:15px; color:var(--brand-gold);">تتبع طلبي</div>
-<div style="width:38px;"></div>
-</header>
-<div class="scrollable-content">
-<div id="activeOrderTrackingView"></div>
-</div>
-</div>
-<!-- 5. شاشة مركز الإشعارات ورسائل الإدارة -->
-<div id="screen-notifications" class="app-screen">
-<header class="header">
-<button class="header-btn" onclick="navigateRouter('screen-home')" aria-label="عودة">✕</button>
-<div style="font-weight:900; font-size:15px; color:var(--brand-gold);">مركز الإشعارات</div>
-<div style="width:38px;"></div>
-</header>
-<div class="scrollable-content">
-<div id="customerNotificationsList"></div>
-</div>
-</div>
-<!-- 6. شاشة حسابي والشارات (بروفايل تفاعلي مثل إنستغرام) -->
-<div id="screen-user-profile" class="app-screen">
-<header class="header">
-<button class="header-btn" onclick="navigateRouter('screen-home')" aria-label="عودة">✕</button>
-<div style="font-weight:900; font-size:15px; color:var(--brand-gold);">ملفي الشخصي والشارات</div>
-<div style="width:38px;"></div>
-</header>
-<div class="scrollable-content">
-<div class="clean-card">
-<div class="ig-profile-header">
-<div class="ig-avatar-wrap">
-<img src="" id="userProfileAvatarImg" class="ig-avatar-img" onerror="this.src='https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200&q=80';" alt="صورة الزبون">
-</div>
-<div class="ig-stats-row">
-<div class="ig-stat-col">
-<span class="ig-stat-num num-font" id="profStatOrders">0</span>
-<span class="ig-stat-label">الطلبات</span>
-</div>
-<div class="ig-stat-col">
-<span class="ig-stat-num num-font" id="profStatPoints">0</span>
-<span class="ig-stat-label">نقاط الولاء</span>
-</div>
-<div class="ig-stat-col">
-<span class="ig-stat-num num-font" id="profStatBadges">0</span>
-<span class="ig-stat-label">الشارات</span>
-</div>
-</div>
-</div>
-<div class="ig-bio-area">
-<div class="ig-bio-name" id="profDisplayName">العميل العزيز</div>
-<div class="ig-bio-tag" id="profMembershipTier">عضوية برونزية ☕</div>
-<div class="ig-bio-desc" id="profBioDesc">محب للقهوة والمذاق الرفيع في كافيه كورنر.</div>
-<div style="font-size:11.5px; color:var(--brand-gold); margin-top:4px;" id="profBirthdayText">🎂 تاريخ الميلاد: غير محدد</div>
-<!-- ملاحظة أمنية: رقم الهاتف مخفي 100% عن الزوار لضمان الخصوصية التامة -->
-</div>
-<button class="btn-brand-outline" style="width:100%; margin-bottom:10px;" onclick="openEditProfileModal()">تعديل بياناتي وصورتي الشخصية ✎</button>
-</div>
-<!-- خزانة الشارات -->
-<div class="clean-card">
-<div class="clean-title">شاراتي وإنجازاتي</div>
-<div id="userBadgesCabinetContainer" style="display:flex; flex-wrap:wrap; gap:8px;"></div>
-</div>
-<!-- شبكة مشاركات الزبون المصورة (Instagram Grid) -->
-<div class="clean-card">
-<div class="clean-title">مشاركاتي في "شاركنا بصورة" 📷</div>
-<div id="userMomentsIGGrid" class="ig-posts-grid"></div>
-</div>
-</div>
-</div>
-<!-- 7. شاشة شاركنا بصورة -->
-<div id="screen-moments" class="app-screen">
-<header class="header">
-<button class="header-btn" onclick="navigateRouter('screen-home')" aria-label="عودة">✕</button>
-<div style="font-weight:900; font-size:15px; color:var(--brand-gold);">شاركنا بصورة 📷</div>
-<button class="btn-brand-solid" style="padding:4px 10px; font-size:11px;" onclick="openNewMomentModal()">+ نشر صورة</button>
-</header>
-<div class="scrollable-content">
-<div id="communityFeedContainer"></div>
-</div>
-</div>
-<!-- 8. شاشة فروعنا والتواصل -->
-<div id="screen-branches" class="app-screen">
-<header class="header">
-<button class="header-btn" onclick="navigateRouter('screen-home')" aria-label="عودة">✕</button>
-<div style="font-weight:900; font-size:15px; color:var(--brand-gold);">فروعنا والتواصل</div>
-<div style="width:38px;"></div>
-</header>
-<div class="scrollable-content">
-<div class="clean-card">
-<div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
-<span style="font-size:16px; font-weight:900; color:var(--brand-gold);">فرع كفرسوم</span>
-<span class="header-hours-badge" id="badgeOpenBranch0">مفتوح الآن</span>
-</div>
-<div style="font-size:12.5px; color:var(--text-secondary); line-height:1.8;">
-<div>📍 <strong>الموقع:</strong> الشارع الرئيسي - مقابل مجمع المحلات التجارية</div>
-<div>⏰ <strong>أوقات العمل:</strong> <span id="hoursBranch0">6:30 صباحاً حتى 3:00 فجراً يومياً</span></div>
-<div>📞 <strong>واتساب والطلبات:</strong> <span class="num-font" id="phoneBranch0">0790155906</span></div>
-</div>
-<a href="https://wa.me/962790155906" target="_blank" id="waLinkBranch0" class="btn-brand-solid" style="width:100%; margin-top:12px;">محادثة الفرع عبر واتساب</a>
-</div>
-<div class="clean-card">
-<div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
-<span style="font-size:16px; font-weight:900; color:var(--brand-gold);">فرع سما الروسان</span>
-<span class="header-hours-badge" id="badgeOpenBranch1">مفتوح الآن</span>
-</div>
-<div style="font-size:12.5px; color:var(--text-secondary); line-height:1.8;">
-<div>📍 <strong>الموقع:</strong> الشارع العام - بجانب مبنى البلدية</div>
-<div>⏰ <strong>أوقات العمل:</strong> <span id="hoursBranch1">4:00 عصراً حتى 3:00 فجراً يومياً</span></div>
-<div>📞 <strong>واتساب والطلبات:</strong> <span class="num-font" id="phoneBranch1">0790155906</span></div>
-</div>
-<a href="https://wa.me/962790155906" target="_blank" id="waLinkBranch1" class="btn-brand-solid" style="width:100%; margin-top:12px;">محادثة الفرع عبر واتساب</a>
-</div>
-</div>
-</div>
-<!-- 9. شاشة طريقة الاستخدام -->
-<div id="screen-usage-guide" class="app-screen">
-<header class="header">
-<button class="header-btn" onclick="navigateRouter('screen-home')" aria-label="عودة">✕</button>
-<div style="font-weight:900; font-size:15px; color:var(--brand-gold);">طريقة الاستخدام</div>
-<div style="width:38px;"></div>
-</header>
-<div class="scrollable-content">
-<div class="clean-card">
-<div class="clean-title">خطوات الاستفادة والطلب الذكي</div>
-<div style="padding: 10px 0; border-bottom: 1px solid var(--border-subtle);">
-<div style="font-size:14px; font-weight:900; color:var(--brand-gold); margin-bottom:4px;">1. تصفح المنيو والتخصيص</div>
-<div style="font-size:12px; color:var(--text-secondary);">اختر مشروبك أو حلوياتك المفضلة، وحدد الحجم والنكهات والإضافات بسهولة.</div>
-</div>
-<div style="padding: 10px 0; border-bottom: 1px solid var(--border-subtle);">
-<div style="font-size:14px; font-weight:900; color:var(--brand-gold); margin-bottom:4px;">2. تأكيد وتتبع الطلب اللحظي</div>
-<div style="font-size:12px; color:var(--text-secondary);">حدد موقعك وطريقة الاستلام، وتابع حالة تجهيز طلبك وتوصيله خطوة بخطوة.</div>
-</div>
-<div style="padding: 10px 0;">
-<div style="font-size:14px; font-weight:900; color:var(--brand-gold); margin-bottom:4px;">3. تجميع الأوسمة ونقاط الولاء</div>
-<div style="font-size:12px; color:var(--text-secondary);">مع كل طلب مؤكد تكسب نقاط ولاء وشارات حصرية تضاف لملفك الشخصي.</div>
-</div>
-</div>
-</div>
-</div>
-<!-- 10. شاشة المطور المطورة كلياً -->
-<div id="screen-developer" class="app-screen">
-<header class="header">
-<button class="header-btn" onclick="navigateRouter('screen-home')" aria-label="عودة">✕</button>
-<div style="font-weight:900; font-size:15px; color:var(--brand-gold);">الملف الهندسي للمطور</div>
-<div style="width:38px;"></div>
-</header>
-<div class="scrollable-content">
-<div class="dev-profile-hero">
-<div class="dev-avatar-wrap">
-<img src="" id="devProfilePicImg" class="dev-avatar-img" onerror="this.src='https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&q=80';" alt="المهندس عمر عبيدات">
-<div class="dev-online-dot"></div>
-</div>
-<div style="font-size:18px; font-weight:900; margin-bottom:4px;">المهندس عمر عبيدات</div>
-<div style="font-size:12px; color:var(--brand-gold); font-weight:800; margin-bottom:12px;">Lead Systems Architect & Full-Stack Engineer</div>
-<p style="font-size:12px; color:var(--text-secondary); line-height:1.7; text-align:justify; margin-bottom:16px;">
-تم تخطيط وهندسة بنية النظام الرقمي الشامل لـ Coffee Corner Pro لتقديم تجربة حجز وطلب ذكية وفورية مع مزامنة سحابية لحظية، دعم كامل لأجهزة الجوال، ولوحة تحكم POS سداسية الركائز متكاملة.
-</p>
-<div style="display:flex; gap:8px;">
-<a href="https://wa.me/962796433698" target="_blank" class="btn-brand-solid" style="flex:1;">محادثة واتساب</a>
-<a href="https://www.instagram.com/o_yd" target="_blank" class="btn-brand-outline" style="flex:1;">إنستغرام</a>
-</div>
-</div>
-</div>
-</div>
-<!-- شاشة تخصيص الصنف وإضافته للسلة -->
-<div id="screen-product" class="app-screen">
-<header class="header">
-<button class="header-btn" onclick="navigateRouter('screen-home')" aria-label="عودة">✕</button>
-<div style="font-weight:900; font-size:15px; color:var(--brand-gold);">تخصيص الصنف</div>
-<div style="width:38px;"></div>
-</header>
-<div class="scrollable-content" style="padding:0 0 100px;">
-<div style="width:100%; height:220px; background:#000; display:flex; align-items:center; justify-content:center;">
-<img src="" id="psHeroImg" style="width:100%; height:220px; object-fit:cover;" alt="صورة الصنف">
-</div>
-<div style="padding: 16px;">
-<h1 style="font-size:18px; font-weight:900; margin-bottom:4px;" id="psTitle">اسم الصنف</h1>
-<p style="font-size:12px; color:var(--text-secondary); line-height:1.5;" id="psDesc">الوصف</p>
-<div class="num-font" style="font-size:17px; font-weight:900; color:var(--brand-gold); margin-top:6px;" id="psBasePrice">0.00 د.أ</div>
-</div>
-<div class="clean-card" style="margin: 0 16px 12px;" id="psSizeGroup">
-<div class="clean-title">الحجم المطلوب</div>
-<div id="psSizeOptionsContainer" style="display:flex; flex-direction:column; gap:6px;"></div>
-</div>
-<div class="clean-card" style="margin: 0 16px 16px;">
-<div class="clean-title">ملاحظات التحضير</div>
-<textarea class="ios-textarea-field" id="psNotes" placeholder="مثال: سكر خفيف، بدون ثلج، زيادة كريما..."></textarea>
-</div>
-</div>
-<div style="position:sticky; bottom:0; padding:10px 16px calc(12px + env(safe-area-inset-bottom, 10px)); background:var(--bg-surface); border-top:1px solid var(--border-subtle); display:flex; gap:10px; z-index:100;">
-<div style="display:flex; align-items:center; background:var(--bg-card); border-radius:var(--radius-sm); border:1px solid var(--border-subtle);">
-<button class="header-btn" style="width:34px; height:34px;" onclick="adjustProductQty(-1)">−</button>
-<div class="num-font" style="font-size:14px; font-weight:800; min-width:34px; text-align:center;" id="psQtyDisplay">1</div>
-<button class="header-btn" style="width:34px; height:34px;" onclick="adjustProductQty(1)">+</button>
-</div>
-<button class="btn-brand-solid" style="flex:1;" onclick="confirmAddItemToCart()">
-إضافة <span class="num-font" id="psCalculatedPrice">0.00</span> د.أ
-</button>
-</div>
-</div>
-<!-- شاشة سلة المشتريات -->
-<div id="screen-cart" class="app-screen">
-<header class="header">
-<button class="header-btn" onclick="navigateRouter('screen-home')" aria-label="عودة">✕</button>
-<div style="font-weight:900; font-size:15px; color:var(--brand-gold);">سلة المشتريات</div>
-<div style="width:38px;"></div>
-</header>
-<div class="scrollable-content">
-<div class="clean-card">
-<div class="clean-title">الأصناف المطلوبة</div>
-<div id="cartItemsList"></div>
-</div>
-<div class="clean-card">
-<div class="clean-title">فرع الطلب</div>
-<div style="display:flex; gap:6px; margin-bottom:12px;">
-<button class="btn-brand-outline active" style="flex:1;" id="btnBranch0" onclick="switchCartBranch(0)">كفرسوم</button>
-<button class="btn-brand-outline" style="flex:1;" id="btnBranch1" onclick="switchCartBranch(1)">سما الروسان</button>
-</div>
-<div class="clean-title">طريقة الاستلام</div>
-<div style="display:flex; gap:6px; margin-bottom:12px;">
-<button class="btn-brand-outline active" style="flex:1;" id="btnModeDelivery" onclick="switchDeliveryMode('delivery')">توصيل</button>
-<button class="btn-brand-outline" style="flex:1;" id="btnModePickup" onclick="switchDeliveryMode('pickup')">من الفرع</button>
-</div>
-<div id="deliveryFieldsArea">
-<div style="display:flex; flex-direction:column; gap:8px;">
-<select class="ios-input-field" id="cartTownSelect" onchange="recalculateCartSummary()"></select>
-<input type="text" class="ios-input-field" id="cartAddressInput" placeholder="تفاصيل العنوان (الحي، المعلم)">
-</div>
-</div>
-</div>
-<div class="clean-card">
-<div class="clean-title">كوبون الخصم</div>
-<div style="display:flex; gap:8px;">
-<input type="text" class="ios-input-field num-font" id="cartCouponCodeInput" placeholder="أدخل الكوبون (مثل: CORNER10)" style="text-transform:uppercase;">
-<button class="btn-brand-solid" style="padding:0 16px;" onclick="applyUserCouponDiscount()">تطبيق</button>
-</div>
-<div id="couponAppliedBadge" style="display:none; font-size:12px; color:var(--status-success); font-weight:800; margin-top:6px;"></div>
-</div>
-<div class="clean-card">
-<div class="clean-title">بيانات العميل</div>
-<div style="display:flex; flex-direction:column; gap:8px;">
-<input type="text" class="ios-input-field" id="cartClientName" placeholder="الاسم الكريم">
-<input type="tel" class="ios-input-field num-font" id="cartClientPhone" placeholder="رقم الهاتف (079xxxxxxx)">
-</div>
-</div>
-<div class="clean-card">
-<div class="clean-title">طريقة الدفع</div>
-<div id="cartPaymentMethodsContainer" style="display:flex; flex-direction:column; gap:8px;"></div>
-</div>
-<div class="clean-card">
-<div class="clean-title">ملخص الحساب</div>
-<div style="display:flex; justify-content:space-between; font-size:12.5px; color:var(--text-secondary); margin-bottom:6px;">
-<span>مجموع الأصناف</span>
-<span class="num-font" id="sumSubtotal">0.00 د.أ</span>
-</div>
-<div style="display:flex; justify-content:space-between; font-size:12.5px; color:var(--status-success); margin-bottom:6px; display:none;" id="sumDiscountRow">
-<span>خصم الكوبون</span>
-<span class="num-font" id="sumDiscount">-0.00 د.أ</span>
-</div>
-<div style="display:flex; justify-content:space-between; font-size:12.5px; color:var(--text-secondary); margin-bottom:8px;" id="sumDeliveryRow">
-<span>أجور التوصيل</span>
-<span class="num-font" id="sumDelivery">1.00 د.أ</span>
-</div>
-<div style="display:flex; justify-content:space-between; font-size:15px; font-weight:800; border-top:1px solid var(--border-subtle); padding-top:8px;">
-<span>الإجمالي</span>
-<span class="num-font" id="sumTotal" style="color:var(--brand-gold);">0.00 د.أ</span>
-</div>
-</div>
-<button class="btn-brand-solid" style="width:100%; padding:13px;" onclick="dispatchOrderAndInitiateTracking()">
-تأكيد وإرسال الطلب أونلاين عبر واتساب
-</button>
-</div>
-</div>
-<!-- شاشة تسجيل دخول الإدارة -->
-<div id="screen-admin-login" class="app-screen">
-<header class="header">
-<button class="header-btn" onclick="navigateRouter('screen-home')" aria-label="عودة">✕</button>
-<div style="font-weight:900; font-size:15px; color:var(--brand-gold);">بوابة الإدارة</div>
-<div style="width:38px;"></div>
-</header>
-<div class="scrollable-content">
-<div class="clean-card" style="max-width:340px; margin:40px auto 0; text-align:center;">
-<div style="font-size:16px; font-weight:900; margin-bottom:12px; color:var(--brand-gold);">تسجيل دخول الإدارة</div>
-<div style="display:flex; flex-direction:column; gap:10px; margin-bottom:12px;">
-<select class="ios-input-field" id="adminUserField" style="text-align:center; font-weight:700;">
-<option value="omar">المطور (المهندس عمر عبيدات)</option>
-<option value="corner">إدارة المحل</option>
-</select>
-<input type="password" class="ios-input-field num-font" id="adminPassField" placeholder="رمز المرور (PIN)" style="text-align:center;">
-</div>
-<button class="btn-brand-solid" style="width:100%;" onclick="attemptAdminAuthentication()">دخول آمن</button>
-</div>
-</div>
-</div>
-<!-- لوحة تحكم الإدارة (The 6 Pillars Admin Grid المتطابقة 100%) -->
-<div id="screen-admin-dashboard" class="app-screen">
-<header class="header">
-<div style="font-weight:900; font-size:15px; color:var(--brand-gold);">COFFEE CORNER — Admin</div>
-<div style="display:flex; gap:6px;">
-<button class="btn-brand-outline" style="padding:4px 8px; font-size:11px;" id="btnToggleSoundSetting" onclick="toggleAdminSoundMute()">🔔 الصوت: فعال</button>
-<button class="btn-brand-outline" style="padding:4px 10px; font-size:11px; color:var(--status-danger); border-color:var(--status-danger);" onclick="exitAdminSession()">خروج</button>
-</div>
-</header>
-<div class="scrollable-content" style="padding:0;">
-<div id="adminMainHubView" style="display:block;">
-<div class="admin-hub-grid">
-<!-- 1. الطلبات -->
-<div class="admin-hub-card" onclick="openAdminSubSection('orders')">
-<span class="admin-card-badge num-font" id="badgeHubLiveOrdersCount">0</span>
-<div class="admin-hub-icon-wrap">
-<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path><line x1="3" y1="6" x2="21" y2="6"></line><path d="M16 10a4 4 0 0 1-8 0"></path></svg>
-</div>
-<div>
-<div class="admin-hub-card-title">الطلبات</div>
-<div class="admin-hub-card-sub">الحالة والتجهيز والتوصيل</div>
-</div>
-</div>
-<!-- 2. المنتجات والمخزون -->
-<div class="admin-hub-card" onclick="openAdminSubSection('products')">
-<div class="admin-hub-icon-wrap">
-<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path></svg>
-</div>
-<div>
-<div class="admin-hub-card-title">المنتجات والمخزون</div>
-<div class="admin-hub-card-sub">الأسعار والتوفر والإضافات</div>
-</div>
-</div>
-<!-- 3. العروض والكوبونات -->
-<div class="admin-hub-card" onclick="openAdminSubSection('coupons')">
-<div class="admin-hub-icon-wrap">
-<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path></svg>
-</div>
-<div>
-<div class="admin-hub-card-title">العروض والكوبونات</div>
-<div class="admin-hub-card-sub">الشروط والمدة والاستخدام</div>
-</div>
-</div>
-<!-- 4. الولاء والمكافآت -->
-<div class="admin-hub-card" onclick="openAdminSubSection('loyalty')">
-<div class="admin-hub-icon-wrap">
-<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path></svg>
-</div>
-<div>
-<div class="admin-hub-card-title">الولاء والمكافآت</div>
-<div class="admin-hub-card-sub">الأختام والنقاط والاستبدال</div>
-</div>
-</div>
-<!-- 5. الزبائن -->
-<div class="admin-hub-card" onclick="openAdminSubSection('customers')">
-<div class="admin-hub-icon-wrap">
-<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle></svg>
-</div>
-<div>
-<div class="admin-hub-card-title">الزبائن</div>
-<div class="admin-hub-card-sub">الطلبات والمراسلة والحظر</div>
-</div>
-</div>
-<!-- 6. التقارير -->
-<div class="admin-hub-card" onclick="openAdminSubSection('reports')">
-<div class="admin-hub-icon-wrap">
-<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
-</div>
-<div>
-<div class="admin-hub-card-title">التقارير</div>
-<div class="admin-hub-card-sub">المبيعات والتحويل والأرباح</div>
-</div>
-</div>
-<!-- 7. الثيمات والمظهر -->
-<div class="admin-hub-card" onclick="openAdminSubSection('themes')">
-<div class="admin-hub-icon-wrap">
-<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
-</div>
-<div>
-<div class="admin-hub-card-title">الثيمات والمظهر</div>
-<div class="admin-hub-card-sub">ألوان الموقع والستايل</div>
-</div>
-</div>
-<!-- 8. الشعار والهوية والمطور -->
-<div class="admin-hub-card" onclick="openAdminSubSection('identity')">
-<div class="admin-hub-icon-wrap">
-<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
-</div>
-<div>
-<div class="admin-hub-card-title">الشعار والترويسة</div>
-<div class="admin-hub-card-sub">رفع الشعار وصورة المطور</div>
-</div>
-</div>
-<!-- 9. إعدادات الفروع والدفع والتوصيل -->
-<div class="admin-hub-card" onclick="openAdminSubSection('storeSettings')">
-<div class="admin-hub-icon-wrap">
-<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"></polygon></svg>
-</div>
-<div>
-<div class="admin-hub-card-title">الفروع والتوصيل</div>
-<div class="admin-hub-card-sub">أرقام الواتساب ومناطق التوصيل</div>
-</div>
-</div>
-</div>
-</div>
-<!-- تفاصيل الأقسام الفرعية للأدمن -->
-<!-- 1. إدارة الطلبات الحية مع خيار الإلغاء وسبب الإلغاء -->
-<div id="subView-orders" class="admin-sub-view">
-<button class="btn-brand-outline" style="margin-bottom:12px;" onclick="backToAdminMainHub()">← العودة للوحة الرئيسية</button>
-<div class="clean-card">
-<div class="clean-title">الطلبات الواردة الحية (المزامنة السحابية)</div>
-<div id="adminLiveOrdersContainer"></div>
-</div>
-</div>
-<!-- 2. المنتجات والمخزون -->
-<div id="subView-products" class="admin-sub-view">
-<button class="btn-brand-outline" style="margin-bottom:12px;" onclick="backToAdminMainHub()">← العودة للوحة الرئيسية</button>
-<div class="clean-card">
-<div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
-<div class="clean-title" style="margin-bottom:0;">المنتجات والمخزون</div>
-<button class="btn-brand-solid" style="padding:6px 14px; font-size:11px;" onclick="openProductEditorModal(null)">+ إضافة صنف جديد</button>
-</div>
-<div id="adminProductsControlList"></div>
-</div>
-</div>
-<!-- 3. العروض والكوبونات -->
-<div id="subView-coupons" class="admin-sub-view">
-<button class="btn-brand-outline" style="margin-bottom:12px;" onclick="backToAdminMainHub()">← العودة للوحة الرئيسية</button>
-<div class="clean-card">
-<div class="clean-title">إضافة عرض حصري جديد</div>
-<div style="display:flex; flex-direction:column; gap:8px; margin-bottom:14px;">
-<input type="text" class="ios-input-field" id="newOfferTitleInput" placeholder="عنوان العرض">
-<textarea class="ios-textarea-field" id="newOfferDescInput" placeholder="تفاصيل العرض..."></textarea>
-<button class="btn-brand-solid" onclick="saveNewOfferFromAdmin()">نشر العرض فوراً للزبائن</button>
-</div>
-<div class="clean-title">العروض النشطة حالياً</div>
-<div id="adminOffersListContainer"></div>
-</div>
-<div class="clean-card">
-<div class="clean-title">إضافة كوبون خصم جديد</div>
-<div style="display:flex; flex-direction:column; gap:8px; margin-bottom:14px;">
-<input type="text" class="ios-input-field num-font" id="newCouponCodeInput" placeholder="رمز الكوبون (مثال: CORNER15)" style="text-transform:uppercase;">
-<input type="number" class="ios-input-field num-font" id="newCouponPercentInput" placeholder="نسبة الخصم % (مثال: 15)">
-<button class="btn-brand-solid" onclick="saveNewCouponFromAdmin()">تفعيل الكوبون سحابياً</button>
-</div>
-<div class="clean-title">الكوبونات الفعالة</div>
-<div id="adminCouponsListContainer"></div>
-</div>
-</div>
-<!-- 4. الولاء والمكافآت -->
-<div id="subView-loyalty" class="admin-sub-view">
-<button class="btn-brand-outline" style="margin-bottom:12px;" onclick="backToAdminMainHub()">← العودة للوحة الرئيسية</button>
-<div class="clean-card">
-<div class="clean-title">نظام الشارات ونقاط الولاء</div>
-<p style="font-size:12px; color:var(--text-secondary); line-height:1.6; margin-bottom:12px;">
-<strong>الأمان المعتمد:</strong> لا يتم احتساب أي نقطة ولاء أو منح أي وسام للزبون إلا بعد أن يقوم الأدمن بتأكيد استلام وتجهيز الطلب واعتماده كمكتمل منعاً للتحايل.
-</p>
-<div class="clean-title">إضافة شارة ولاء جديدة تلقائياً</div>
-<div style="display:flex; flex-direction:column; gap:8px;">
-<input type="text" class="ios-input-field" id="newBadgeNameInput" placeholder="اسم الشارة (مثال: متذوق الكريب)">
-<input type="text" class="ios-input-field" id="newBadgeIconInput" placeholder="رمز الأيقونة التعبيري (مثل: 🥞 أو ☕)">
-<button class="btn-brand-solid" onclick="saveNewBadgeDefinition()">إضافة الشارة للمنظومة</button>
-</div>
-</div>
-</div>
-<!-- 5. الزبائن (المراسلة المباشرة والحظر) -->
-<div id="subView-customers" class="admin-sub-view">
-<button class="btn-brand-outline" style="margin-bottom:12px;" onclick="backToAdminMainHub()">← العودة للوحة الرئيسية</button>
-<div class="clean-card">
-<div class="clean-title">إرسال رسالة رسمية لزبون (إشعار لا يمكن الرد عليه)</div>
-<div style="display:flex; flex-direction:column; gap:8px; margin-bottom:14px;">
-<input type="tel" class="ios-input-field num-font" id="msgTargetPhoneInput" placeholder="رقم هاتف الزبون (مثال: 0790155906)">
-<textarea class="ios-textarea-field" id="msgContentAdminInput" placeholder="نص الرسالة أو الهدية من الإدارة..."></textarea>
-<button class="btn-brand-solid" onclick="sendAdminNotificationToCustomer()">إرسال الإشعار فوراً للزبون</button>
-</div>
-<div class="clean-title">سجل الزبائن وإدارة الحظر</div>
-<div id="adminCustomersListContainer"></div>
-</div>
-</div>
-<!-- 6. التقارير والإحصائيات -->
-<div id="subView-reports" class="admin-sub-view">
-<button class="btn-brand-outline" style="margin-bottom:12px;" onclick="backToAdminMainHub()">← العودة للوحة الرئيسية</button>
-<div class="clean-card">
-<div class="clean-title">التقارير الحية</div>
-<div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:12px;">
-<div style="background:var(--bg-surface); padding:10px; border-radius:var(--radius-sm); border:1px solid var(--border-subtle);">
-<div style="font-size:11px; color:var(--text-secondary);">صافي المبيعات</div>
-<div class="num-font" style="font-size:17px; font-weight:900; color:var(--brand-gold);" id="repNetRevenue">0.00 د.أ</div>
-</div>
-<div style="background:var(--bg-surface); padding:10px; border-radius:var(--radius-sm); border:1px solid var(--border-subtle);">
-<div style="font-size:11px; color:var(--text-secondary);">متوسط الطلب</div>
-<div class="num-font" style="font-size:17px; font-weight:900; color:var(--brand-gold);" id="repAvgOrderValue">0.00 د.أ</div>
-</div>
-</div>
-<div class="clean-title">رسم بياني لنشاط المبيعات</div>
-<canvas id="adminSalesAnalyticsCanvas" style="width:100%; height:160px; background:var(--bg-surface); border-radius:var(--radius-sm); border:1px solid var(--border-subtle);"></canvas>
-</div>
-</div>
-<!-- 7. الثيمات والمظهر -->
-<div id="subView-themes" class="admin-sub-view">
-<button class="btn-brand-outline" style="margin-bottom:12px;" onclick="backToAdminMainHub()">← العودة للوحة الرئيسية</button>
-<div class="clean-card">
-<div class="clean-title">تخصيص نمط وألوان الموقع</div>
-<div style="display:flex; flex-direction:column; gap:10px;">
-<div>
-<span style="font-size:12px; font-weight:700;">اللون الرئيسي للعلامة:</span>
-<input type="color" id="themeGoldColorPicker" style="width:100%; height:40px; border-radius:6px; cursor:pointer; margin-top:4px;" value="#c59b63">
-</div>
-<button class="btn-brand-solid" onclick="applyAndSaveCustomTheme()">حفظ وتثبيت الثيم سحابياً</button>
-</div>
-</div>
-</div>
-<!-- 8. الشعار والهوية -->
-<div id="subView-identity" class="admin-sub-view">
-<button class="btn-brand-outline" style="margin-bottom:12px;" onclick="backToAdminMainHub()">← العودة للوحة الرئيسية</button>
-<div class="clean-card">
-<div class="clean-title">تعديل شعار الترويسة وصورة المطور</div>
-<div style="display:flex; flex-direction:column; gap:14px;">
-<div>
-<div style="font-size:13px; font-weight:800; margin-bottom:4px;">1. شعار الموقع بالترويسة</div>
-<div style="display:flex; align-items:center; gap:10px;">
-<img src="" id="adminLogoPreviewImg" style="width:50px; height:50px; border-radius:50%; object-fit:cover; border:1px solid var(--brand-gold);">
-<input type="file" id="uploadHeaderLogoFile" accept="image/*" style="display:none;" onchange="handleHeaderLogoUpload(event)">
-<button class="btn-brand-outline" onclick="document.getElementById('uploadHeaderLogoFile').click()">رفع شعار من الهاتف 📷</button>
-</div>
-</div>
-<div style="height:1px; background:var(--border-subtle);"></div>
-<div>
-<div style="font-size:13px; font-weight:800; margin-bottom:4px;">2. الصورة الشخصية للمطور</div>
-<div style="display:flex; align-items:center; gap:10px;">
-<img src="" id="adminDevPreviewImg" style="width:50px; height:50px; border-radius:50%; object-fit:cover; border:1px solid var(--brand-gold);">
-<input type="file" id="uploadDevPhotoFile" accept="image/*" style="display:none;" onchange="handleDevPhotoUpload(event)">
-<button class="btn-brand-outline" onclick="document.getElementById('uploadDevPhotoFile').click()">رفع صورتي من الهاتف 📷</button>
-</div>
-</div>
-</div>
-</div>
-</div>
-<!-- 9. إعدادات الفروع والتوصيل والدفع -->
-<div id="subView-storeSettings" class="admin-sub-view">
-<button class="btn-brand-outline" style="margin-bottom:12px;" onclick="backToAdminMainHub()">← العودة للوحة الرئيسية</button>
-<div class="clean-card">
-<div class="clean-title">أرقام واتساب الفروع لتلقي الطلبات</div>
-<div style="display:flex; flex-direction:column; gap:8px; margin-bottom:14px;">
-<div>
-<span style="font-size:11px; font-weight:700;">واتساب فرع كفرسوم:</span>
-<input type="text" class="ios-input-field num-font" id="adminBranch0PhoneInput" placeholder="962790155906">
-</div>
-<div>
-<span style="font-size:11px; font-weight:700;">واتساب فرع سما الروسان:</span>
-<input type="text" class="ios-input-field num-font" id="adminBranch1PhoneInput" placeholder="962790155906">
-</div>
-</div>
-<div class="clean-title">إضافة / تعديل سعر توصيل منطقة</div>
-<div style="display:flex; gap:8px; margin-bottom:8px;">
-<select class="ios-input-field" id="adminTownBranchSelect">
-<option value="0">فرع كفرسوم</option>
-<option value="1">فرع سما الروسان</option>
-</select>
-<input type="text" class="ios-input-field" id="adminTownNameInput" placeholder="اسم المنطقة">
-<input type="number" step="0.25" class="ios-input-field num-font" id="adminTownFeeInput" placeholder="السعر" style="width:85px;">
-</div>
-<button class="btn-brand-solid" style="width:100%;" onclick="saveAdminTownRateRecord()">حفظ المنطقة وسعر التوصيل</button>
-</div>
-</div>
-</div>
-</div>
-<!-- نافذة تعديل / إضافة صنف مع رفع الصورة والمعاينة -->
-<div id="screen-product-editor" class="app-screen">
-<header class="header">
-<button class="header-btn" onclick="navigateRouter('screen-admin-dashboard'); openAdminSubSection('products');" aria-label="عودة">✕</button>
-<div style="font-weight:900; font-size:15px; color:var(--brand-gold);" id="productEditorModalHeader">تعديل بيانات الصنف</div>
-<div style="width:38px;"></div>
-</header>
-<div class="scrollable-content">
-<div class="clean-card">
-<input type="hidden" id="editProdId">
-<div style="display:flex; flex-direction:column; gap:10px;">
-<div>
-<span style="font-size:12px; font-weight:700;">اسم الصنف:</span>
-<input type="text" class="ios-input-field" id="editProdName" placeholder="مثال: وافل نوتيلا فاخر">
-</div>
-<div>
-<span style="font-size:12px; font-weight:700;">التصنيف:</span>
-<select class="ios-input-field" id="editProdCategory">
-<option value="كوكتيلات">كوكتيلات</option>
-<option value="وافل">وافل</option>
-<option value="كريب">كريب</option>
-<option value="ميلك شيك">ميلك شيك</option>
-<option value="بان كيك">بان كيك</option>
-<option value="كنافة">كنافة</option>
-<option value="ستيم بارد">ستيم بارد</option>
-<option value="ستيم ساخن">ستيم ساخن</option>
-<option value="آيس كريم">آيس كريم</option>
-</select>
-</div>
-<div>
-<span style="font-size:12px; font-weight:700;">السعر (د.أ):</span>
-<input type="number" step="0.25" class="ios-input-field num-font" id="editProdPrice" placeholder="مثال: 2.50">
-</div>
-<div>
-<span style="font-size:12px; font-weight:700;">الوصف:</span>
-<textarea class="ios-textarea-field" id="editProdDesc" placeholder="تفاصيل الصنف والمكونات..."></textarea>
-</div>
-<!-- رفع الصورة مع المعاينة الفورية -->
-<div>
-<span style="font-size:12px; font-weight:700;">صورة الصنف:</span>
-<div style="display:flex; align-items:center; gap:12px; margin-top:6px;">
-<img src="" id="editProdImagePreview" style="width:75px; height:75px; border-radius:var(--radius-sm); object-fit:cover; border:1px solid var(--border-subtle); background:var(--bg-elevated);">
-<div style="flex:1;">
-<input type="file" id="editProdFileInput" accept="image/*" style="display:none;" onchange="handleProductImageUpload(event)">
-<button type="button" class="btn-brand-outline" style="width:100%; margin-bottom:4px;" onclick="document.getElementById('editProdFileInput').click()">رفع صورة من هاتفي 📷</button>
-<div style="font-size:10px; color:var(--text-secondary);">يتم ضغط الصورة تلقائياً لسرعة التحميل</div>
-</div>
-</div>
-</div>
-<div style="display:flex; align-items:center; justify-content:space-between; padding:8px 0;">
-<span style="font-size:13px; font-weight:800;">حالة التوفر (متاح بالمنيو):</span>
-<input type="checkbox" id="editProdAvailableToggle" checked style="width:20px; height:20px;">
-</div>
-<button class="btn-brand-solid" style="margin-top:6px;" onclick="saveProductEditorRecord()">حفظ وتحديث الصنف فوراً</button>
-</div>
-</div>
-</div>
-</div>
-<!-- نافذة تعديل الملف الشخصي للزبون مع تاريخ الميلاد والصورة الشخصية -->
-<div id="screen-edit-profile" class="app-screen">
-<header class="header">
-<button class="header-btn" onclick="navigateRouter('screen-user-profile')" aria-label="عودة">✕</button>
-<div style="font-weight:900; font-size:15px; color:var(--brand-gold);">تعديل ملفي الشخصي</div>
-<div style="width:38px;"></div>
-</header>
-<div class="scrollable-content">
-<div class="clean-card">
-<div style="text-align:center; margin-bottom:14px;">
-<img src="" id="editProfilePicPreview" style="width:85px; height:85px; border-radius:50%; object-fit:cover; border:2px solid var(--brand-gold); margin-bottom:8px;">
-<div>
-<input type="file" id="uploadUserAvatarFile" accept="image/*" style="display:none;" onchange="handleUserAvatarUpload(event)">
-<button class="btn-brand-outline" onclick="document.getElementById('uploadUserAvatarFile').click()">تغيير الصورة الشخصية 📷</button>
-</div>
-</div>
-<div style="display:flex; flex-direction:column; gap:10px;">
-<div>
-<span style="font-size:12px; font-weight:700;">الاسم الكامل:</span>
-<input type="text" class="ios-input-field" id="inputProfName" placeholder="اسمك الكريم">
-</div>
-<div>
-<span style="font-size:12px; font-weight:700;">تاريخ الميلاد (لهدايا وتنبيهات أعياد الميلاد 🎁):</span>
-<input type="date" class="ios-input-field num-font" id="inputProfBirthday">
-</div>
-<div>
-<span style="font-size:12px; font-weight:700;">نبذة عني (Bio):</span>
-<textarea class="ios-textarea-field" id="inputProfBio" placeholder="اكتب نبذة لطيفة تظهر بملفك..."></textarea>
-</div>
-<button class="btn-brand-solid" style="margin-top:6px;" onclick="saveUserProfileData()">حفظ وتثبيت الملف الشخصي</button>
-</div>
-</div>
-</div>
-</div>
-</div>
+    
+    <!-- 1. الشاشة الرئيسية (المنيو المباشر) -->
+    <div id="screen-home" class="app-screen active">
+        <header class="header">
+            <button class="header-btn" onclick="openSidebarDrawer()" aria-label="القائمة">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+            </button>
+            
+            <div class="brand-box" onclick="handleSecretAdminTrigger()" title="كافيه كورنر">
+                <img src="./logo.png" id="mainHeaderLogoImg" class="brand-logo-img" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1517701550927-30cf4be1aaf9?w=120&q=80';" alt="شعار كافيه كورنر">
+                <div class="brand-text-wrap">
+                    <div class="brand-title" id="mainHeaderBrandTitle">كافيه كورنر</div>
+                    <div class="brand-sub" id="mainHeaderBrandSub">أشهى الكوكتيلات والحلويات الفاخرة</div>
+                    <div class="header-hours-badge" id="mainStoreOpenBadge">مفتوح الآن</div>
+                </div>
+            </div>
+            
+            <div style="display:flex; gap:6px;">
+                <button class="header-btn" onclick="navigateRouter('screen-notifications')" aria-label="الإشعارات">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
+                    <span id="unreadNotifCountBadge" style="position:absolute; top:8px; left:8px; width:7px; height:7px; background:var(--brand-gold); border-radius:50%; display:none;"></span>
+                </button>
+                <button class="header-btn" onclick="toggleThemeMode()" aria-label="المظهر">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+                </button>
+            </div>
+        </header>
+
+        <div class="search-container">
+            <div class="search-bar">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--text-dim)" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                <input type="text" class="search-input" id="menuSearchInput" oninput="renderMenuProducts()" placeholder="ابحث في قائمة المشروبات والحلويات...">
+            </div>
+        </div>
+
+        <div class="categories-scroll" id="categoryScrollChips"></div>
+        
+        <div class="scrollable-content">
+            <div class="product-grid" id="menuGridContainer"></div>
+        </div>
+    </div>
+
+    <!-- 2. شاشة العروض والخصومات -->
+    <div id="screen-offers" class="app-screen">
+        <header class="header">
+            <button class="header-btn" onclick="navigateRouter('screen-home')" aria-label="عودة">✕</button>
+            <div style="font-weight:900; font-size:15px; color:var(--brand-gold);">العروض والخصومات</div>
+            <div style="width:38px;"></div>
+        </header>
+        <div class="scrollable-content" id="clientOffersContainer"></div>
+    </div>
+
+    <!-- 3. شاشة مفضلتي -->
+    <div id="screen-favorites" class="app-screen">
+        <header class="header">
+            <button class="header-btn" onclick="navigateRouter('screen-home')" aria-label="عودة">✕</button>
+            <div style="font-weight:900; font-size:15px; color:var(--brand-gold);">مفضلتي ♡</div>
+            <div style="width:38px;"></div>
+        </header>
+        <div class="scrollable-content" id="clientFavoritesContainer"></div>
+    </div>
+
+    <!-- 4. شاشة تتبع طلبي الحية -->
+    <div id="screen-order-tracking" class="app-screen">
+        <header class="header">
+            <button class="header-btn" onclick="navigateRouter('screen-home')" aria-label="عودة">✕</button>
+            <div style="font-weight:900; font-size:15px; color:var(--brand-gold);">تتبع طلبي</div>
+            <div style="width:38px;"></div>
+        </header>
+        <div class="scrollable-content">
+            <div id="activeOrderTrackingView"></div>
+        </div>
+    </div>
+
+    <!-- 5. شاشة مركز الإشعارات ورسائل الإدارة -->
+    <div id="screen-notifications" class="app-screen">
+        <header class="header">
+            <button class="header-btn" onclick="navigateRouter('screen-home')" aria-label="عودة">✕</button>
+            <div style="font-weight:900; font-size:15px; color:var(--brand-gold);">مركز الإشعارات</div>
+            <div style="width:38px;"></div>
+        </header>
+        <div class="scrollable-content">
+            <div id="customerNotificationsList"></div>
+        </div>
+    </div>
+
+    <!-- 6. شاشة حسابي والشارات (بروفايل تفاعلي مثل إنستغرام) -->
+    <div id="screen-user-profile" class="app-screen">
+        <header class="header">
+            <button class="header-btn" onclick="navigateRouter('screen-home')" aria-label="عودة">✕</button>
+            <div style="font-weight:900; font-size:15px; color:var(--brand-gold);">ملفي الشخصي والشارات</div>
+            <div style="width:38px;"></div>
+        </header>
+        <div class="scrollable-content">
+            <div class="clean-card">
+                <div class="ig-profile-header">
+                    <div class="ig-avatar-wrap">
+                        <img src="" id="userProfileAvatarImg" class="ig-avatar-img" onerror="this.src='https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200&q=80';" alt="صورة الزبون">
+                    </div>
+                    <div class="ig-stats-row">
+                        <div class="ig-stat-col">
+                            <span class="ig-stat-num num-font" id="profStatOrders">0</span>
+                            <span class="ig-stat-label">الطلبات</span>
+                        </div>
+                        <div class="ig-stat-col">
+                            <span class="ig-stat-num num-font" id="profStatPoints">0</span>
+                            <span class="ig-stat-label">نقاط الولاء</span>
+                        </div>
+                        <div class="ig-stat-col">
+                            <span class="ig-stat-num num-font" id="profStatBadges">0</span>
+                            <span class="ig-stat-label">الشارات</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="ig-bio-area">
+                    <div class="ig-bio-name" id="profDisplayName">العميل العزيز</div>
+                    <div class="ig-bio-tag" id="profMembershipTier">عضوية برونزية ☕</div>
+                    <div class="ig-bio-desc" id="profBioDesc">محب للقهوة والمذاق الرفيع في كافيه كورنر.</div>
+                    <div style="font-size:11.5px; color:var(--brand-gold); margin-top:4px;" id="profBirthdayText">🎂 تاريخ الميلاد: غير محدد</div>
+                    <!-- ملاحظة أمنية: رقم الهاتف مخفي 100% عن الزوار لضمان الخصوصية التامة -->
+                </div>
+
+                <button class="btn-brand-outline" style="width:100%; margin-bottom:10px;" onclick="openEditProfileModal()">تعديل بياناتي وصورتي الشخصية ✎</button>
+            </div>
+
+            <!-- خزانة الشارات -->
+            <div class="clean-card">
+                <div class="clean-title">شاراتي وإنجازاتي</div>
+                <div id="userBadgesCabinetContainer" style="display:flex; flex-wrap:wrap; gap:8px;"></div>
+            </div>
+
+            <!-- شبكة مشاركات الزبون المصورة (Instagram Grid) -->
+            <div class="clean-card">
+                <div class="clean-title">مشاركاتي في "شاركنا بصورة" 📷</div>
+                <div id="userMomentsIGGrid" class="ig-posts-grid"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 7. شاشة شاركنا بصورة -->
+    <div id="screen-moments" class="app-screen">
+        <header class="header">
+            <button class="header-btn" onclick="navigateRouter('screen-home')" aria-label="عودة">✕</button>
+            <div style="font-weight:900; font-size:15px; color:var(--brand-gold);">شاركنا بصورة 📷</div>
+            <button class="btn-brand-solid" style="padding:4px 10px; font-size:11px;" onclick="openNewMomentModal()">+ نشر صورة</button>
+        </header>
+        <div class="scrollable-content">
+            <div id="communityFeedContainer"></div>
+        </div>
+    </div>
+
+    <!-- 8. شاشة فروعنا والتواصل -->
+    <div id="screen-branches" class="app-screen">
+        <header class="header">
+            <button class="header-btn" onclick="navigateRouter('screen-home')" aria-label="عودة">✕</button>
+            <div style="font-weight:900; font-size:15px; color:var(--brand-gold);">فروعنا والتواصل</div>
+            <div style="width:38px;"></div>
+        </header>
+        <div class="scrollable-content">
+            <div class="clean-card">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+                    <span style="font-size:16px; font-weight:900; color:var(--brand-gold);">فرع كفرسوم</span>
+                    <span class="header-hours-badge" id="badgeOpenBranch0">مفتوح الآن</span>
+                </div>
+                <div style="font-size:12.5px; color:var(--text-secondary); line-height:1.8;">
+                    <div>📍 <strong>الموقع:</strong> الشارع الرئيسي - مقابل مجمع المحلات التجارية</div>
+                    <div>⏰ <strong>أوقات العمل:</strong> <span id="hoursBranch0">6:30 صباحاً حتى 3:00 فجراً يومياً</span></div>
+                    <div>📞 <strong>واتساب والطلبات:</strong> <span class="num-font" id="phoneBranch0">0790155906</span></div>
+                </div>
+                <a href="https://wa.me/962790155906" target="_blank" id="waLinkBranch0" class="btn-brand-solid" style="width:100%; margin-top:12px;">محادثة الفرع عبر واتساب</a>
+            </div>
+
+            <div class="clean-card">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+                    <span style="font-size:16px; font-weight:900; color:var(--brand-gold);">فرع سما الروسان</span>
+                    <span class="header-hours-badge" id="badgeOpenBranch1">مفتوح الآن</span>
+                </div>
+                <div style="font-size:12.5px; color:var(--text-secondary); line-height:1.8;">
+                    <div>📍 <strong>الموقع:</strong> الشارع العام - بجانب مبنى البلدية</div>
+                    <div>⏰ <strong>أوقات العمل:</strong> <span id="hoursBranch1">4:00 عصراً حتى 3:00 فجراً يومياً</span></div>
+                    <div>📞 <strong>واتساب والطلبات:</strong> <span class="num-font" id="phoneBranch1">0790155906</span></div>
+                </div>
+                <a href="https://wa.me/962790155906" target="_blank" id="waLinkBranch1" class="btn-brand-solid" style="width:100%; margin-top:12px;">محادثة الفرع عبر واتساب</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- 9. شاشة طريقة الاستخدام -->
+    <div id="screen-usage-guide" class="app-screen">
+        <header class="header">
+            <button class="header-btn" onclick="navigateRouter('screen-home')" aria-label="عودة">✕</button>
+            <div style="font-weight:900; font-size:15px; color:var(--brand-gold);">طريقة الاستخدام</div>
+            <div style="width:38px;"></div>
+        </header>
+        <div class="scrollable-content">
+            <div class="clean-card">
+                <div class="clean-title">خطوات الاستفادة والطلب الذكي</div>
+                <div style="padding: 10px 0; border-bottom: 1px solid var(--border-subtle);">
+                    <div style="font-size:14px; font-weight:900; color:var(--brand-gold); margin-bottom:4px;">1. تصفح المنيو والتخصيص</div>
+                    <div style="font-size:12px; color:var(--text-secondary);">اختر مشروبك أو حلوياتك المفضلة، وحدد الحجم والنكهات والإضافات بسهولة.</div>
+                </div>
+                <div style="padding: 10px 0; border-bottom: 1px solid var(--border-subtle);">
+                    <div style="font-size:14px; font-weight:900; color:var(--brand-gold); margin-bottom:4px;">2. تأكيد وتتبع الطلب اللحظي</div>
+                    <div style="font-size:12px; color:var(--text-secondary);">حدد موقعك وطريقة الاستلام، وتابع حالة تجهيز طلبك وتوصيله خطوة بخطوة.</div>
+                </div>
+                <div style="padding: 10px 0;">
+                    <div style="font-size:14px; font-weight:900; color:var(--brand-gold); margin-bottom:4px;">3. تجميع الأوسمة ونقاط الولاء</div>
+                    <div style="font-size:12px; color:var(--text-secondary);">مع كل طلب مؤكد تكسب نقاط ولاء وشارات حصرية تضاف لملفك الشخصي.</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 10. شاشة المطور المطورة كلياً -->
+    <div id="screen-developer" class="app-screen">
+        <header class="header">
+            <button class="header-btn" onclick="navigateRouter('screen-home')" aria-label="عودة">✕</button>
+            <div style="font-weight:900; font-size:15px; color:var(--brand-gold);">الملف الهندسي للمطور</div>
+            <div style="width:38px;"></div>
+        </header>
+        <div class="scrollable-content">
+            <div class="dev-profile-hero">
+                <div class="dev-avatar-wrap">
+                    <img src="" id="devProfilePicImg" class="dev-avatar-img" onerror="this.src='https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&q=80';" alt="المهندس عمر عبيدات">
+                    <div class="dev-online-dot"></div>
+                </div>
+                <div style="font-size:18px; font-weight:900; margin-bottom:4px;">المهندس عمر عبيدات</div>
+                <div style="font-size:12px; color:var(--brand-gold); font-weight:800; margin-bottom:12px;">Lead Systems Architect & Full-Stack Engineer</div>
+                <p style="font-size:12px; color:var(--text-secondary); line-height:1.7; text-align:justify; margin-bottom:16px;">
+                    تم تخطيط وهندسة بنية النظام الرقمي الشامل لـ Coffee Corner Pro لتقديم تجربة حجز وطلب ذكية وفورية مع مزامنة سحابية لحظية، دعم كامل لأجهزة الجوال، ولوحة تحكم POS سداسية الركائز متكاملة.
+                </p>
+                <div style="display:flex; gap:8px;">
+                    <a href="https://wa.me/962796433698" target="_blank" class="btn-brand-solid" style="flex:1;">محادثة واتساب</a>
+                    <a href="https://www.instagram.com/o_yd" target="_blank" class="btn-brand-outline" style="flex:1;">إنستغرام</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- شاشة تخصيص الصنف وإضافته للسلة -->
+    <div id="screen-product" class="app-screen">
+        <header class="header">
+            <button class="header-btn" onclick="navigateRouter('screen-home')" aria-label="عودة">✕</button>
+            <div style="font-weight:900; font-size:15px; color:var(--brand-gold);">تخصيص الصنف</div>
+            <div style="width:38px;"></div>
+        </header>
+        <div class="scrollable-content" style="padding:0 0 100px;">
+            <div style="width:100%; height:220px; background:#000; display:flex; align-items:center; justify-content:center;">
+                <img src="" id="psHeroImg" style="width:100%; height:220px; object-fit:cover;" alt="صورة الصنف">
+            </div>
+            
+            <div style="padding: 16px;">
+                <h1 style="font-size:18px; font-weight:900; margin-bottom:4px;" id="psTitle">اسم الصنف</h1>
+                <p style="font-size:12px; color:var(--text-secondary); line-height:1.5;" id="psDesc">الوصف</p>
+                <div class="num-font" style="font-size:17px; font-weight:900; color:var(--brand-gold); margin-top:6px;" id="psBasePrice">0.00 د.أ</div>
+            </div>
+
+            <div class="clean-card" style="margin: 0 16px 12px;" id="psSizeGroup">
+                <div class="clean-title">الحجم المطلوب</div>
+                <div id="psSizeOptionsContainer" style="display:flex; flex-direction:column; gap:6px;"></div>
+            </div>
+
+            <div class="clean-card" style="margin: 0 16px 16px;">
+                <div class="clean-title">ملاحظات التحضير</div>
+                <textarea class="ios-textarea-field" id="psNotes" placeholder="مثال: سكر خفيف، بدون ثلج، زيادة كريما..."></textarea>
+            </div>
+        </div>
+
+        <div style="position:sticky; bottom:0; padding:10px 16px calc(12px + env(safe-area-inset-bottom, 10px)); background:var(--bg-surface); border-top:1px solid var(--border-subtle); display:flex; gap:10px; z-index:100;">
+            <div style="display:flex; align-items:center; background:var(--bg-card); border-radius:var(--radius-sm); border:1px solid var(--border-subtle);">
+                <button class="header-btn" style="width:34px; height:34px;" onclick="adjustProductQty(-1)">−</button>
+                <div class="num-font" style="font-size:14px; font-weight:800; min-width:34px; text-align:center;" id="psQtyDisplay">1</div>
+                <button class="header-btn" style="width:34px; height:34px;" onclick="adjustProductQty(1)">+</button>
+            </div>
+            <button class="btn-brand-solid" style="flex:1;" onclick="confirmAddItemToCart()">
+                إضافة <span class="num-font" id="psCalculatedPrice">0.00</span> د.أ
+            </button>
+        </div>
+    </div>
+
+    <!-- شاشة سلة المشتريات -->
+    <div id="screen-cart" class="app-screen">
+        <header class="header">
+            <button class="header-btn" onclick="navigateRouter('screen-home')" aria-label="عودة">✕</button>
+            <div style="font-weight:900; font-size:15px; color:var(--brand-gold);">سلة المشتريات</div>
+            <div style="width:38px;"></div>
+        </header>
+
+        <div class="scrollable-content">
+            <div class="clean-card">
+                <div class="clean-title">الأصناف المطلوبة</div>
+                <div id="cartItemsList"></div>
+            </div>
+
+            <div class="clean-card">
+                <div class="clean-title">فرع الطلب</div>
+                <div style="display:flex; gap:6px; margin-bottom:12px;">
+                    <button class="btn-brand-outline active" style="flex:1;" id="btnBranch0" onclick="switchCartBranch(0)">كفرسوم</button>
+                    <button class="btn-brand-outline" style="flex:1;" id="btnBranch1" onclick="switchCartBranch(1)">سما الروسان</button>
+                </div>
+
+                <div class="clean-title">طريقة الاستلام</div>
+                <div style="display:flex; gap:6px; margin-bottom:12px;">
+                    <button class="btn-brand-outline active" style="flex:1;" id="btnModeDelivery" onclick="switchDeliveryMode('delivery')">توصيل</button>
+                    <button class="btn-brand-outline" style="flex:1;" id="btnModePickup" onclick="switchDeliveryMode('pickup')">من الفرع</button>
+                </div>
+
+                <div id="deliveryFieldsArea">
+                    <div style="display:flex; flex-direction:column; gap:8px;">
+                        <select class="ios-input-field" id="cartTownSelect" onchange="recalculateCartSummary()"></select>
+                        <input type="text" class="ios-input-field" id="cartAddressInput" placeholder="تفاصيل العنوان (الحي، المعلم)">
+                    </div>
+                </div>
+            </div>
+
+            <div class="clean-card">
+                <div class="clean-title">كوبون الخصم</div>
+                <div style="display:flex; gap:8px;">
+                    <input type="text" class="ios-input-field num-font" id="cartCouponCodeInput" placeholder="أدخل الكوبون (مثل: CORNER10)" style="text-transform:uppercase;">
+                    <button class="btn-brand-solid" style="padding:0 16px;" onclick="applyUserCouponDiscount()">تطبيق</button>
+                </div>
+                <div id="couponAppliedBadge" style="display:none; font-size:12px; color:var(--status-success); font-weight:800; margin-top:6px;"></div>
+            </div>
+
+            <div class="clean-card">
+                <div class="clean-title">بيانات العميل</div>
+                <div style="display:flex; flex-direction:column; gap:8px;">
+                    <input type="text" class="ios-input-field" id="cartClientName" placeholder="الاسم الكريم">
+                    <input type="tel" class="ios-input-field num-font" id="cartClientPhone" placeholder="رقم الهاتف (079xxxxxxx)">
+                </div>
+            </div>
+
+            <div class="clean-card">
+                <div class="clean-title">طريقة الدفع</div>
+                <div id="cartPaymentMethodsContainer" style="display:flex; flex-direction:column; gap:8px;"></div>
+            </div>
+
+            <div class="clean-card">
+                <div class="clean-title">ملخص الحساب</div>
+                <div style="display:flex; justify-content:space-between; font-size:12.5px; color:var(--text-secondary); margin-bottom:6px;">
+                    <span>مجموع الأصناف</span>
+                    <span class="num-font" id="sumSubtotal">0.00 د.أ</span>
+                </div>
+                <div style="display:flex; justify-content:space-between; font-size:12.5px; color:var(--status-success); margin-bottom:6px; display:none;" id="sumDiscountRow">
+                    <span>خصم الكوبون</span>
+                    <span class="num-font" id="sumDiscount">-0.00 د.أ</span>
+                </div>
+                <div style="display:flex; justify-content:space-between; font-size:12.5px; color:var(--text-secondary); margin-bottom:8px;" id="sumDeliveryRow">
+                    <span>أجور التوصيل</span>
+                    <span class="num-font" id="sumDelivery">1.00 د.أ</span>
+                </div>
+                <div style="display:flex; justify-content:space-between; font-size:15px; font-weight:800; border-top:1px solid var(--border-subtle); padding-top:8px;">
+                    <span>الإجمالي</span>
+                    <span class="num-font" id="sumTotal" style="color:var(--brand-gold);">0.00 د.أ</span>
+                </div>
+            </div>
+
+            <button class="btn-brand-solid" style="width:100%; padding:13px;" onclick="dispatchOrderAndInitiateTracking()">
+                تأكيد وإرسال الطلب أونلاين عبر واتساب
+            </button>
+        </div>
+    </div>
+
+    <!-- شاشة تسجيل دخول الإدارة -->
+    <div id="screen-admin-login" class="app-screen">
+        <header class="header">
+            <button class="header-btn" onclick="navigateRouter('screen-home')" aria-label="عودة">✕</button>
+            <div style="font-weight:900; font-size:15px; color:var(--brand-gold);">بوابة الإدارة</div>
+            <div style="width:38px;"></div>
+        </header>
+        <div class="scrollable-content">
+            <div class="clean-card" style="max-width:340px; margin:40px auto 0; text-align:center;">
+                <div style="font-size:16px; font-weight:900; margin-bottom:12px; color:var(--brand-gold);">تسجيل دخول الإدارة</div>
+                <div style="display:flex; flex-direction:column; gap:10px; margin-bottom:12px;">
+                    <select class="ios-input-field" id="adminUserField" style="text-align:center; font-weight:700;">
+                        <option value="omar">المطور (المهندس عمر عبيدات)</option>
+                        <option value="corner">إدارة المحل</option>
+                    </select>
+                    <input type="password" class="ios-input-field num-font" id="adminPassField" placeholder="رمز المرور (PIN)" style="text-align:center;">
+                </div>
+                <button class="btn-brand-solid" style="width:100%;" onclick="attemptAdminAuthentication()">دخول آمن</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- لوحة تحكم الإدارة (The 6 Pillars Admin Grid المتطابقة 100%) -->
+    <div id="screen-admin-dashboard" class="app-screen">
+        <header class="header">
+            <div style="font-weight:900; font-size:15px; color:var(--brand-gold);">COFFEE CORNER — Admin</div>
+            <div style="display:flex; gap:6px;">
+                <button class="btn-brand-outline" style="padding:4px 8px; font-size:11px;" id="btnToggleSoundSetting" onclick="toggleAdminSoundMute()">🔔 الصوت: فعال</button>
+                <button class="btn-brand-outline" style="padding:4px 10px; font-size:11px; color:var(--status-danger); border-color:var(--status-danger);" onclick="exitAdminSession()">خروج</button>
+            </div>
+        </header>
+
+        <div class="scrollable-content" style="padding:0;">
+            <div id="adminMainHubView" style="display:block;">
+                <div class="admin-hub-grid">
+                    <!-- 1. الطلبات -->
+                    <div class="admin-hub-card" onclick="openAdminSubSection('orders')">
+                        <span class="admin-card-badge num-font" id="badgeHubLiveOrdersCount">0</span>
+                        <div class="admin-hub-icon-wrap">
+                            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path><line x1="3" y1="6" x2="21" y2="6"></line><path d="M16 10a4 4 0 0 1-8 0"></path></svg>
+                        </div>
+                        <div>
+                            <div class="admin-hub-card-title">الطلبات</div>
+                            <div class="admin-hub-card-sub">الحالة والتجهيز والتوصيل</div>
+                        </div>
+                    </div>
+
+                    <!-- 2. المنتجات والمخزون -->
+                    <div class="admin-hub-card" onclick="openAdminSubSection('products')">
+                        <div class="admin-hub-icon-wrap">
+                            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path></svg>
+                        </div>
+                        <div>
+                            <div class="admin-hub-card-title">المنتجات والمخزون</div>
+                            <div class="admin-hub-card-sub">الأسعار والتوفر والإضافات</div>
+                        </div>
+                    </div>
+
+                    <!-- 3. العروض والكوبونات -->
+                    <div class="admin-hub-card" onclick="openAdminSubSection('coupons')">
+                        <div class="admin-hub-icon-wrap">
+                            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path></svg>
+                        </div>
+                        <div>
+                            <div class="admin-hub-card-title">العروض والكوبونات</div>
+                            <div class="admin-hub-card-sub">الشروط والمدة والاستخدام</div>
+                        </div>
+                    </div>
+
+                    <!-- 4. الولاء والمكافآت -->
+                    <div class="admin-hub-card" onclick="openAdminSubSection('loyalty')">
+                        <div class="admin-hub-icon-wrap">
+                            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path></svg>
+                        </div>
+                        <div>
+                            <div class="admin-hub-card-title">الولاء والمكافآت</div>
+                            <div class="admin-hub-card-sub">الأختام والنقاط والاستبدال</div>
+                        </div>
+                    </div>
+
+                    <!-- 5. الزبائن -->
+                    <div class="admin-hub-card" onclick="openAdminSubSection('customers')">
+                        <div class="admin-hub-icon-wrap">
+                            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle></svg>
+                        </div>
+                        <div>
+                            <div class="admin-hub-card-title">الزبائن</div>
+                            <div class="admin-hub-card-sub">الطلبات والمراسلة والحظر</div>
+                        </div>
+                    </div>
+
+                    <!-- 6. التقارير -->
+                    <div class="admin-hub-card" onclick="openAdminSubSection('reports')">
+                        <div class="admin-hub-icon-wrap">
+                            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
+                        </div>
+                        <div>
+                            <div class="admin-hub-card-title">التقارير</div>
+                            <div class="admin-hub-card-sub">المبيعات والتحويل والأرباح</div>
+                        </div>
+                    </div>
+
+                    <!-- 7. الثيمات والمظهر -->
+                    <div class="admin-hub-card" onclick="openAdminSubSection('themes')">
+                        <div class="admin-hub-icon-wrap">
+                            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+                        </div>
+                        <div>
+                            <div class="admin-hub-card-title">الثيمات والمظهر</div>
+                            <div class="admin-hub-card-sub">ألوان الموقع والستايل</div>
+                        </div>
+                    </div>
+
+                    <!-- 8. الشعار والهوية والمطور -->
+                    <div class="admin-hub-card" onclick="openAdminSubSection('identity')">
+                        <div class="admin-hub-icon-wrap">
+                            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
+                        </div>
+                        <div>
+                            <div class="admin-hub-card-title">الشعار والترويسة</div>
+                            <div class="admin-hub-card-sub">رفع الشعار وصورة المطور</div>
+                        </div>
+                    </div>
+
+                    <!-- 9. إعدادات الفروع والدفع والتوصيل -->
+                    <div class="admin-hub-card" onclick="openAdminSubSection('storeSettings')">
+                        <div class="admin-hub-icon-wrap">
+                            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"></polygon></svg>
+                        </div>
+                        <div>
+                            <div class="admin-hub-card-title">الفروع والتوصيل</div>
+                            <div class="admin-hub-card-sub">أرقام الواتساب ومناطق التوصيل</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- تفاصيل الأقسام الفرعية للأدمن -->
+            <!-- 1. إدارة الطلبات الحية مع خيار الإلغاء وسبب الإلغاء -->
+            <div id="subView-orders" class="admin-sub-view">
+                <button class="btn-brand-outline" style="margin-bottom:12px;" onclick="backToAdminMainHub()">← العودة للوحة الرئيسية</button>
+                <div class="clean-card">
+                    <div class="clean-title">الطلبات الواردة الحية (المزامنة السحابية)</div>
+                    <div id="adminLiveOrdersContainer"></div>
+                </div>
+            </div>
+
+            <!-- 2. المنتجات والمخزون -->
+            <div id="subView-products" class="admin-sub-view">
+                <button class="btn-brand-outline" style="margin-bottom:12px;" onclick="backToAdminMainHub()">← العودة للوحة الرئيسية</button>
+                <div class="clean-card">
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+                        <div class="clean-title" style="margin-bottom:0;">المنتجات والمخزون</div>
+                        <button class="btn-brand-solid" style="padding:6px 14px; font-size:11px;" onclick="openProductEditorModal(null)">+ إضافة صنف جديد</button>
+                    </div>
+                    <div id="adminProductsControlList"></div>
+                </div>
+            </div>
+
+            <!-- 3. العروض والكوبونات -->
+            <div id="subView-coupons" class="admin-sub-view">
+                <button class="btn-brand-outline" style="margin-bottom:12px;" onclick="backToAdminMainHub()">← العودة للوحة الرئيسية</button>
+                <div class="clean-card">
+                    <div class="clean-title">إضافة عرض حصري جديد</div>
+                    <div style="display:flex; flex-direction:column; gap:8px; margin-bottom:14px;">
+                        <input type="text" class="ios-input-field" id="newOfferTitleInput" placeholder="عنوان العرض">
+                        <textarea class="ios-textarea-field" id="newOfferDescInput" placeholder="تفاصيل العرض..."></textarea>
+                        <button class="btn-brand-solid" onclick="saveNewOfferFromAdmin()">نشر العرض فوراً للزبائن</button>
+                    </div>
+                    <div class="clean-title">العروض النشطة حالياً</div>
+                    <div id="adminOffersListContainer"></div>
+                </div>
+
+                <div class="clean-card">
+                    <div class="clean-title">إضافة كوبون خصم جديد</div>
+                    <div style="display:flex; flex-direction:column; gap:8px; margin-bottom:14px;">
+                        <input type="text" class="ios-input-field num-font" id="newCouponCodeInput" placeholder="رمز الكوبون (مثال: CORNER15)" style="text-transform:uppercase;">
+                        <input type="number" class="ios-input-field num-font" id="newCouponPercentInput" placeholder="نسبة الخصم % (مثال: 15)">
+                        <button class="btn-brand-solid" onclick="saveNewCouponFromAdmin()">تفعيل الكوبون سحابياً</button>
+                    </div>
+                    <div class="clean-title">الكوبونات الفعالة</div>
+                    <div id="adminCouponsListContainer"></div>
+                </div>
+            </div>
+
+            <!-- 4. الولاء والمكافآت -->
+            <div id="subView-loyalty" class="admin-sub-view">
+                <button class="btn-brand-outline" style="margin-bottom:12px;" onclick="backToAdminMainHub()">← العودة للوحة الرئيسية</button>
+                <div class="clean-card">
+                    <div class="clean-title">نظام الشارات ونقاط الولاء</div>
+                    <p style="font-size:12px; color:var(--text-secondary); line-height:1.6; margin-bottom:12px;">
+                        <strong>الأمان المعتمد:</strong> لا يتم احتساب أي نقطة ولاء أو منح أي وسام للزبون إلا بعد أن يقوم الأدمن بتأكيد استلام وتجهيز الطلب واعتماده كمكتمل منعاً للتحايل.
+                    </p>
+                    <div class="clean-title">إضافة شارة ولاء جديدة تلقائياً</div>
+                    <div style="display:flex; flex-direction:column; gap:8px;">
+                        <input type="text" class="ios-input-field" id="newBadgeNameInput" placeholder="اسم الشارة (مثال: متذوق الكريب)">
+                        <input type="text" class="ios-input-field" id="newBadgeIconInput" placeholder="رمز الأيقونة التعبيري (مثل: 🥞 أو ☕)">
+                        <button class="btn-brand-solid" onclick="saveNewBadgeDefinition()">إضافة الشارة للمنظومة</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 5. الزبائن (المراسلة المباشرة والحظر) -->
+            <div id="subView-customers" class="admin-sub-view">
+                <button class="btn-brand-outline" style="margin-bottom:12px;" onclick="backToAdminMainHub()">← العودة للوحة الرئيسية</button>
+                <div class="clean-card">
+                    <div class="clean-title">إرسال رسالة رسمية لزبون (إشعار لا يمكن الرد عليه)</div>
+                    <div style="display:flex; flex-direction:column; gap:8px; margin-bottom:14px;">
+                        <input type="tel" class="ios-input-field num-font" id="msgTargetPhoneInput" placeholder="رقم هاتف الزبون (مثال: 0790155906)">
+                        <textarea class="ios-textarea-field" id="msgContentAdminInput" placeholder="نص الرسالة أو الهدية من الإدارة..."></textarea>
+                        <button class="btn-brand-solid" onclick="sendAdminNotificationToCustomer()">إرسال الإشعار فوراً للزبون</button>
+                    </div>
+                    <div class="clean-title">سجل الزبائن وإدارة الحظر</div>
+                    <div id="adminCustomersListContainer"></div>
+                </div>
+            </div>
+
+            <!-- 6. التقارير والإحصائيات -->
+            <div id="subView-reports" class="admin-sub-view">
+                <button class="btn-brand-outline" style="margin-bottom:12px;" onclick="backToAdminMainHub()">← العودة للوحة الرئيسية</button>
+                <div class="clean-card">
+                    <div class="clean-title">التقارير الحية</div>
+                    <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:12px;">
+                        <div style="background:var(--bg-surface); padding:10px; border-radius:var(--radius-sm); border:1px solid var(--border-subtle);">
+                            <div style="font-size:11px; color:var(--text-secondary);">صافي المبيعات</div>
+                            <div class="num-font" style="font-size:17px; font-weight:900; color:var(--brand-gold);" id="repNetRevenue">0.00 د.أ</div>
+                        </div>
+                        <div style="background:var(--bg-surface); padding:10px; border-radius:var(--radius-sm); border:1px solid var(--border-subtle);">
+                            <div style="font-size:11px; color:var(--text-secondary);">متوسط الطلب</div>
+                            <div class="num-font" style="font-size:17px; font-weight:900; color:var(--brand-gold);" id="repAvgOrderValue">0.00 د.أ</div>
+                        </div>
+                    </div>
+                    <div class="clean-title">رسم بياني لنشاط المبيعات</div>
+                    <canvas id="adminSalesAnalyticsCanvas" style="width:100%; height:160px; background:var(--bg-surface); border-radius:var(--radius-sm); border:1px solid var(--border-subtle);"></canvas>
+                </div>
+            </div>
+
+            <!-- 7. الثيمات والمظهر -->
+            <div id="subView-themes" class="admin-sub-view">
+                <button class="btn-brand-outline" style="margin-bottom:12px;" onclick="backToAdminMainHub()">← العودة للوحة الرئيسية</button>
+                <div class="clean-card">
+                    <div class="clean-title">تخصيص نمط وألوان الموقع</div>
+                    <div style="display:flex; flex-direction:column; gap:10px;">
+                        <div>
+                            <span style="font-size:12px; font-weight:700;">اللون الرئيسي للعلامة:</span>
+                            <input type="color" id="themeGoldColorPicker" style="width:100%; height:40px; border-radius:6px; cursor:pointer; margin-top:4px;" value="#c59b63">
+                        </div>
+                        <button class="btn-brand-solid" onclick="applyAndSaveCustomTheme()">حفظ وتثبيت الثيم سحابياً</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 8. الشعار والهوية -->
+            <div id="subView-identity" class="admin-sub-view">
+                <button class="btn-brand-outline" style="margin-bottom:12px;" onclick="backToAdminMainHub()">← العودة للوحة الرئيسية</button>
+                <div class="clean-card">
+                    <div class="clean-title">تعديل شعار الترويسة وصورة المطور</div>
+                    <div style="display:flex; flex-direction:column; gap:14px;">
+                        <div>
+                            <div style="font-size:13px; font-weight:800; margin-bottom:4px;">1. شعار الموقع بالترويسة</div>
+                            <div style="display:flex; align-items:center; gap:10px;">
+                                <img src="" id="adminLogoPreviewImg" style="width:50px; height:50px; border-radius:50%; object-fit:cover; border:1px solid var(--brand-gold);">
+                                <input type="file" id="uploadHeaderLogoFile" accept="image/*" style="display:none;" onchange="handleHeaderLogoUpload(event)">
+                                <button class="btn-brand-outline" onclick="document.getElementById('uploadHeaderLogoFile').click()">رفع شعار من الهاتف 📷</button>
+                            </div>
+                        </div>
+
+                        <div style="height:1px; background:var(--border-subtle);"></div>
+
+                        <div>
+                            <div style="font-size:13px; font-weight:800; margin-bottom:4px;">2. الصورة الشخصية للمطور</div>
+                            <div style="display:flex; align-items:center; gap:10px;">
+                                <img src="" id="adminDevPreviewImg" style="width:50px; height:50px; border-radius:50%; object-fit:cover; border:1px solid var(--brand-gold);">
+                                <input type="file" id="uploadDevPhotoFile" accept="image/*" style="display:none;" onchange="handleDevPhotoUpload(event)">
+                                <button class="btn-brand-outline" onclick="document.getElementById('uploadDevPhotoFile').click()">رفع صورتي من الهاتف 📷</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 9. إعدادات الفروع والتوصيل والدفع -->
+            <div id="subView-storeSettings" class="admin-sub-view">
+                <button class="btn-brand-outline" style="margin-bottom:12px;" onclick="backToAdminMainHub()">← العودة للوحة الرئيسية</button>
+                <div class="clean-card">
+                    <div class="clean-title">أرقام واتساب الفروع لتلقي الطلبات</div>
+                    <div style="display:flex; flex-direction:column; gap:8px; margin-bottom:14px;">
+                        <div>
+                            <span style="font-size:11px; font-weight:700;">واتساب فرع كفرسوم:</span>
+                            <input type="text" class="ios-input-field num-font" id="adminBranch0PhoneInput" placeholder="962790155906">
+                        </div>
+                        <div>
+                            <span style="font-size:11px; font-weight:700;">واتساب فرع سما الروسان:</span>
+                            <input type="text" class="ios-input-field num-font" id="adminBranch1PhoneInput" placeholder="962790155906">
+                        </div>
+                    </div>
+
+                    <div class="clean-title">إضافة / تعديل سعر توصيل منطقة</div>
+                    <div style="display:flex; gap:8px; margin-bottom:8px;">
+                        <select class="ios-input-field" id="adminTownBranchSelect">
+                            <option value="0">فرع كفرسوم</option>
+                            <option value="1">فرع سما الروسان</option>
+                        </select>
+                        <input type="text" class="ios-input-field" id="adminTownNameInput" placeholder="اسم المنطقة">
+                        <input type="number" step="0.25" class="ios-input-field num-font" id="adminTownFeeInput" placeholder="السعر" style="width:85px;">
+                    </div>
+                    <button class="btn-brand-solid" style="width:100%;" onclick="saveAdminTownRateRecord()">حفظ المنطقة وسعر التوصيل</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- نافذة تعديل / إضافة صنف مع رفع الصورة والمعاينة -->
+    <div id="screen-product-editor" class="app-screen">
+        <header class="header">
+            <button class="header-btn" onclick="navigateRouter('screen-admin-dashboard'); openAdminSubSection('products');" aria-label="عودة">✕</button>
+            <div style="font-weight:900; font-size:15px; color:var(--brand-gold);" id="productEditorModalHeader">تعديل بيانات الصنف</div>
+            <div style="width:38px;"></div>
+        </header>
+        <div class="scrollable-content">
+            <div class="clean-card">
+                <input type="hidden" id="editProdId">
+                <div style="display:flex; flex-direction:column; gap:10px;">
+                    <div>
+                        <span style="font-size:12px; font-weight:700;">اسم الصنف:</span>
+                        <input type="text" class="ios-input-field" id="editProdName" placeholder="مثال: وافل نوتيلا فاخر">
+                    </div>
+                    <div>
+                        <span style="font-size:12px; font-weight:700;">التصنيف:</span>
+                        <select class="ios-input-field" id="editProdCategory">
+                            <option value="كوكتيلات">كوكتيلات</option>
+                            <option value="وافل">وافل</option>
+                            <option value="كريب">كريب</option>
+                            <option value="ميلك شيك">ميلك شيك</option>
+                            <option value="بان كيك">بان كيك</option>
+                            <option value="كنافة">كنافة</option>
+                            <option value="ستيم بارد">ستيم بارد</option>
+                            <option value="ستيم ساخن">ستيم ساخن</option>
+                            <option value="آيس كريم">آيس كريم</option>
+                        </select>
+                    </div>
+                    <div>
+                        <span style="font-size:12px; font-weight:700;">السعر (د.أ):</span>
+                        <input type="number" step="0.25" class="ios-input-field num-font" id="editProdPrice" placeholder="مثال: 2.50">
+                    </div>
+                    <div>
+                        <span style="font-size:12px; font-weight:700;">الوصف:</span>
+                        <textarea class="ios-textarea-field" id="editProdDesc" placeholder="تفاصيل الصنف والمكونات..."></textarea>
+                    </div>
+
+                    <!-- رفع الصورة مع المعاينة الفورية -->
+                    <div>
+                        <span style="font-size:12px; font-weight:700;">صورة الصنف:</span>
+                        <div style="display:flex; align-items:center; gap:12px; margin-top:6px;">
+                            <img src="" id="editProdImagePreview" style="width:75px; height:75px; border-radius:var(--radius-sm); object-fit:cover; border:1px solid var(--border-subtle); background:var(--bg-elevated);">
+                            <div style="flex:1;">
+                                <input type="file" id="editProdFileInput" accept="image/*" style="display:none;" onchange="handleProductImageUpload(event)">
+                                <button type="button" class="btn-brand-outline" style="width:100%; margin-bottom:4px;" onclick="document.getElementById('editProdFileInput').click()">رفع صورة من هاتفي 📷</button>
+                                <div style="font-size:10px; color:var(--text-secondary);">يتم ضغط الصورة تلقائياً لسرعة التحميل</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div style="display:flex; align-items:center; justify-content:space-between; padding:8px 0;">
+                        <span style="font-size:13px; font-weight:800;">حالة التوفر (متاح بالمنيو):</span>
+                        <input type="checkbox" id="editProdAvailableToggle" checked style="width:20px; height:20px;">
+                    </div>
+
+                    <button class="btn-brand-solid" style="margin-top:6px;" onclick="saveProductEditorRecord()">حفظ وتحديث الصنف فوراً</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- نافذة تعديل الملف الشخصي للزبون مع تاريخ الميلاد والصورة الشخصية -->
+    <div id="screen-edit-profile" class="app-screen">
+        <header class="header">
+            <button class="header-btn" onclick="navigateRouter('screen-user-profile')" aria-label="عودة">✕</button>
+            <div style="font-weight:900; font-size:15px; color:var(--brand-gold);">تعديل ملفي الشخصي</div>
+            <div style="width:38px;"></div>
+        </header>
+        <div class="scrollable-content">
+            <div class="clean-card">
+                <div style="text-align:center; margin-bottom:14px;">
+                    <img src="" id="editProfilePicPreview" style="width:85px; height:85px; border-radius:50%; object-fit:cover; border:2px solid var(--brand-gold); margin-bottom:8px;">
+                    <div>
+                        <input type="file" id="uploadUserAvatarFile" accept="image/*" style="display:none;" onchange="handleUserAvatarUpload(event)">
+                        <button class="btn-brand-outline" onclick="document.getElementById('uploadUserAvatarFile').click()">تغيير الصورة الشخصية 📷</button>
+                    </div>
+                </div>
+
+                <div style="display:flex; flex-direction:column; gap:10px;">
+                    <div>
+                        <span style="font-size:12px; font-weight:700;">الاسم الكامل:</span>
+                        <input type="text" class="ios-input-field" id="inputProfName" placeholder="اسمك الكريم">
+                    </div>
+                    <div>
+                        <span style="font-size:12px; font-weight:700;">تاريخ الميلاد (لهدايا وتنبيهات أعياد الميلاد 🎁):</span>
+                        <input type="date" class="ios-input-field num-font" id="inputProfBirthday">
+                    </div>
+                    <div>
+                        <span style="font-size:12px; font-weight:700;">نبذة عني (Bio):</span>
+                        <textarea class="ios-textarea-field" id="inputProfBio" placeholder="اكتب نبذة لطيفة تظهر بملفك..."></textarea>
+                    </div>
+                    <button class="btn-brand-solid" style="margin-top:6px;" onclick="saveUserProfileData()">حفظ وتثبيت الملف الشخصي</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
 <!-- القائمة الجانبية (Sidebar Drawer المتطابقة 100%) -->
 <div class="sidebar-mask" id="sidebarMask" onclick="closeSidebarDrawer()"></div>
 <div class="sidebar-drawer" id="sidebarDrawer">
-<div class="sidebar-top">
-<div class="sidebar-brand-name">COFFEE CORNER</div>
-<button class="header-btn" onclick="closeSidebarDrawer()" style="width:34px; height:34px;" aria-label="إغلاق">✕</button>
+    <div class="sidebar-top">
+        <div class="sidebar-brand-name">COFFEE CORNER</div>
+        <button class="header-btn" onclick="closeSidebarDrawer()" style="width:34px; height:34px;" aria-label="إغلاق">✕</button>
+    </div>
+    
+    <div class="sidebar-menu-list">
+        <div class="sidebar-item-card" onclick="navigateRouter('screen-home'); closeSidebarDrawer();">
+            <div class="sidebar-item-right">
+                <div class="sidebar-icon-sq">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+                </div>
+                <div>
+                    <div class="sidebar-item-title">الصفحة الرئيسية</div>
+                    <div class="sidebar-item-sub">المنيو وجميع الأصناف</div>
+                </div>
+            </div>
+            <div class="sidebar-arrow-chevron">❮</div>
+        </div>
+
+        <div class="sidebar-item-card" onclick="navigateRouter('screen-offers'); closeSidebarDrawer();">
+            <div class="sidebar-item-right">
+                <div class="sidebar-icon-sq">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7.01" y2="7"></line></svg>
+                </div>
+                <div>
+                    <div class="sidebar-item-title">العروض والخصومات</div>
+                    <div class="sidebar-item-sub">كل العروض المتاحة</div>
+                </div>
+            </div>
+            <div class="sidebar-arrow-chevron">❮</div>
+        </div>
+
+        <div class="sidebar-item-card" onclick="navigateRouter('screen-favorites'); closeSidebarDrawer();">
+            <div class="sidebar-item-right">
+                <div class="sidebar-icon-sq">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
+                </div>
+                <div>
+                    <div class="sidebar-item-title">مفضلتي</div>
+                    <div class="sidebar-item-sub">الأصناف اللي بتحبها</div>
+                </div>
+            </div>
+            <div class="sidebar-arrow-chevron">❮</div>
+        </div>
+
+        <div class="sidebar-item-card" onclick="navigateRouter('screen-order-tracking'); closeSidebarDrawer();">
+            <div class="sidebar-item-right">
+                <div class="sidebar-icon-sq">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>
+                </div>
+                <div>
+                    <div class="sidebar-item-title">تتبع طلبي</div>
+                    <div class="sidebar-item-sub">متابعة حالة الطلب</div>
+                </div>
+            </div>
+            <div class="sidebar-arrow-chevron">❮</div>
+        </div>
+
+        <div class="sidebar-item-card" onclick="navigateRouter('screen-user-profile'); closeSidebarDrawer();">
+            <div class="sidebar-item-right">
+                <div class="sidebar-icon-sq">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                </div>
+                <div>
+                    <div class="sidebar-item-title">حسابي والشارات</div>
+                    <div class="sidebar-item-sub">النقاط والإنجازات ومشاركاتي</div>
+                </div>
+            </div>
+            <div class="sidebar-arrow-chevron">❮</div>
+        </div>
+
+        <div class="sidebar-item-card" onclick="navigateRouter('screen-moments'); closeSidebarDrawer();">
+            <div class="sidebar-item-right">
+                <div class="sidebar-icon-sq">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path><circle cx="12" cy="13" r="4"></circle></svg>
+                </div>
+                <div>
+                    <div class="sidebar-item-title">شاركنا بصورة</div>
+                    <div class="sidebar-item-sub">صورك وتجربتك في الكافيه</div>
+                </div>
+            </div>
+            <div class="sidebar-arrow-chevron">❮</div>
+        </div>
+
+        <div class="sidebar-item-card" onclick="navigateRouter('screen-branches'); closeSidebarDrawer();">
+            <div class="sidebar-item-right">
+                <div class="sidebar-icon-sq">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="10"></circle><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"></polygon></svg>
+                </div>
+                <div>
+                    <div class="sidebar-item-title">فروعنا والتواصل</div>
+                    <div class="sidebar-item-sub">مواقع الفروع وأرقامها</div>
+                </div>
+            </div>
+            <div class="sidebar-arrow-chevron">❮</div>
+        </div>
+
+        <div class="sidebar-item-card" onclick="navigateRouter('screen-usage-guide'); closeSidebarDrawer();">
+            <div class="sidebar-item-right">
+                <div class="sidebar-icon-sq">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="10"></circle><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+                </div>
+                <div>
+                    <div class="sidebar-item-title">طريقة الاستخدام</div>
+                    <div class="sidebar-item-sub">كيف تستفيد من الموقع</div>
+                </div>
+            </div>
+            <div class="sidebar-arrow-chevron">❮</div>
+        </div>
+
+        <div class="sidebar-item-card" onclick="navigateRouter('screen-developer'); closeSidebarDrawer();">
+            <div class="sidebar-item-right">
+                <div class="sidebar-icon-sq">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>
+                </div>
+                <div>
+                    <div class="sidebar-item-title">المطور</div>
+                    <div class="sidebar-item-sub">معلومات عن الموقع</div>
+                </div>
+            </div>
+            <div class="sidebar-arrow-chevron">❮</div>
+        </div>
+    </div>
+
+    <div class="sidebar-footer-bar">
+        <div onclick="toggleThemeMode()" style="cursor:pointer; color:var(--brand-gold);">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+        </div>
+        <div style="font-size:12px; color:var(--text-dim);">
+            <span>الإصدار </span><span class="num-font">7.3.6</span>
+        </div>
+    </div>
 </div>
-<div class="sidebar-menu-list">
-<div class="sidebar-item-card" onclick="navigateRouter('screen-home'); closeSidebarDrawer();">
-<div class="sidebar-item-right">
-<div class="sidebar-icon-sq">
-<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
-</div>
-<div>
-<div class="sidebar-item-title">الصفحة الرئيسية</div>
-<div class="sidebar-item-sub">المنيو وجميع الأصناف</div>
-</div>
-</div>
-<div class="sidebar-arrow-chevron">❮</div>
-</div>
-<div class="sidebar-item-card" onclick="navigateRouter('screen-offers'); closeSidebarDrawer();">
-<div class="sidebar-item-right">
-<div class="sidebar-icon-sq">
-<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7.01" y2="7"></line></svg>
-</div>
-<div>
-<div class="sidebar-item-title">العروض والخصومات</div>
-<div class="sidebar-item-sub">كل العروض المتاحة</div>
-</div>
-</div>
-<div class="sidebar-arrow-chevron">❮</div>
-</div>
-<div class="sidebar-item-card" onclick="navigateRouter('screen-favorites'); closeSidebarDrawer();">
-<div class="sidebar-item-right">
-<div class="sidebar-icon-sq">
-<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
-</div>
-<div>
-<div class="sidebar-item-title">مفضلتي</div>
-<div class="sidebar-item-sub">الأصناف اللي بتحبها</div>
-</div>
-</div>
-<div class="sidebar-arrow-chevron">❮</div>
-</div>
-<div class="sidebar-item-card" onclick="navigateRouter('screen-order-tracking'); closeSidebarDrawer();">
-<div class="sidebar-item-right">
-<div class="sidebar-icon-sq">
-<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>
-</div>
-<div>
-<div class="sidebar-item-title">تتبع طلبي</div>
-<div class="sidebar-item-sub">متابعة حالة الطلب</div>
-</div>
-</div>
-<div class="sidebar-arrow-chevron">❮</div>
-</div>
-<div class="sidebar-item-card" onclick="navigateRouter('screen-user-profile'); closeSidebarDrawer();">
-<div class="sidebar-item-right">
-<div class="sidebar-icon-sq">
-<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
-</div>
-<div>
-<div class="sidebar-item-title">حسابي والشارات</div>
-<div class="sidebar-item-sub">النقاط والإنجازات ومشاركاتي</div>
-</div>
-</div>
-<div class="sidebar-arrow-chevron">❮</div>
-</div>
-<div class="sidebar-item-card" onclick="navigateRouter('screen-moments'); closeSidebarDrawer();">
-<div class="sidebar-item-right">
-<div class="sidebar-icon-sq">
-<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path><circle cx="12" cy="13" r="4"></circle></svg>
-</div>
-<div>
-<div class="sidebar-item-title">شاركنا بصورة</div>
-<div class="sidebar-item-sub">صورك وتجربتك في الكافيه</div>
-</div>
-</div>
-<div class="sidebar-arrow-chevron">❮</div>
-</div>
-<div class="sidebar-item-card" onclick="navigateRouter('screen-branches'); closeSidebarDrawer();">
-<div class="sidebar-item-right">
-<div class="sidebar-icon-sq">
-<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="10"></circle><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"></polygon></svg>
-</div>
-<div>
-<div class="sidebar-item-title">فروعنا والتواصل</div>
-<div class="sidebar-item-sub">مواقع الفروع وأرقامها</div>
-</div>
-</div>
-<div class="sidebar-arrow-chevron">❮</div>
-</div>
-<div class="sidebar-item-card" onclick="navigateRouter('screen-usage-guide'); closeSidebarDrawer();">
-<div class="sidebar-item-right">
-<div class="sidebar-icon-sq">
-<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="10"></circle><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
-</div>
-<div>
-<div class="sidebar-item-title">طريقة الاستخدام</div>
-<div class="sidebar-item-sub">كيف تستفيد من الموقع</div>
-</div>
-</div>
-<div class="sidebar-arrow-chevron">❮</div>
-</div>
-<div class="sidebar-item-card" onclick="navigateRouter('screen-developer'); closeSidebarDrawer();">
-<div class="sidebar-item-right">
-<div class="sidebar-icon-sq">
-<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>
-</div>
-<div>
-<div class="sidebar-item-title">المطور</div>
-<div class="sidebar-item-sub">معلومات عن الموقع</div>
-</div>
-</div>
-<div class="sidebar-arrow-chevron">❮</div>
-</div>
-</div>
-<div class="sidebar-footer-bar">
-<div onclick="toggleThemeMode()" style="cursor:pointer; color:var(--brand-gold);">
-<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
-</div>
-<div style="font-size:12px; color:var(--text-dim);">
-<span>الإصدار </span><span class="num-font">7.3.6</span>
-</div>
-</div>
-</div>
+
 <!-- شريط السلة العائم -->
 <div class="floating-dock" id="floatingCartDock" onclick="navigateRouter('screen-cart')">
-<div style="display:flex; align-items:center; gap:10px;">
-<div class="dock-badge num-font" id="dockBadgeCount">0</div>
-<div style="font-size:13.5px; font-weight:900;">عرض السلة</div>
+    <div style="display:flex; align-items:center; gap:10px;">
+        <div class="dock-badge num-font" id="dockBadgeCount">0</div>
+        <div style="font-size:13.5px; font-weight:900;">عرض السلة</div>
+    </div>
+    <div style="font-size:14px; font-weight:900;" class="num-font" id="dockPriceTotal">0.00 د.أ</div>
 </div>
-<div style="font-size:14px; font-weight:900;" class="num-font" id="dockPriceTotal">0.00 د.أ</div>
-</div>
+
 <div class="toast-popup" id="systemToast">تم</div>
 </div>
+
 <script src="app.js"></script>
 </body>
 </html>
