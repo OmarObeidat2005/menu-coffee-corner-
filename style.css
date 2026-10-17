@@ -1,6 +1,6 @@
 /* =========================================================
-COFFEE CORNER PRO — PRODUCTION STYLESHEET (MOBILE FIXED)
-إصلاح تام للارتفاعات ومنع الانهيار الأبيض 100%
+COFFEE CORNER PRO — MASTER PRODUCTION STYLESHEET
+نظام التصميم الشامل، دعم المظهرين، وعزل الشاشات التام
 ========================================================= */
 :root {
 --bg-main: #fbfbf9;
@@ -63,7 +63,7 @@ display: inline-block;
 }
 .app-container {
 width: 100%;
-max-width: 520px;
+max-width: 540px;
 margin: 0 auto;
 min-height: 100vh;
 background-color: var(--bg-main);
@@ -72,12 +72,12 @@ position: relative;
 border-left: 1px solid var(--border-subtle);
 border-right: 1px solid var(--border-subtle);
 }
-/* قاعدة الشاشات الصارمة والمضمونة */
+/* قاعدة العزل الصارمة لجميع الشاشات لمنع أي تداخل نهائياً */
 .app-screen {
 display: none !important;
 width: 100%;
 min-height: 100vh;
-padding-bottom: 90px;
+padding-bottom: 95px;
 background: var(--bg-main);
 }
 .app-screen.active {
@@ -85,7 +85,7 @@ display: block !important;
 }
 .scrollable-content {
 width: 100%;
-padding: 12px 16px 100px;
+padding: 14px 16px 110px;
 }
 /* =========================================================
 الترويسة (Header)
@@ -422,39 +422,6 @@ object-fit: cover;
 border-radius: var(--radius-sm);
 background: var(--bg-elevated);
 }
-/* بطاقة المطور التنفيذية */
-.dev-profile-hero {
-border-radius: var(--radius-md);
-background: linear-gradient(135deg, rgba(197, 155, 99, 0.14), rgba(197, 155, 99, 0.02));
-border: 1px solid var(--border-accent);
-padding: 24px 16px;
-text-align: center;
-margin-bottom: 14px;
-}
-.dev-avatar-wrap {
-position: relative;
-width: 104px;
-height: 104px;
-margin: 0 auto 12px;
-}
-.dev-avatar-img {
-width: 100%;
-height: 100%;
-border-radius: 50%;
-object-fit: cover;
-border: 3px solid var(--brand-gold);
-box-shadow: 0 4px 14px rgba(197, 155, 99, 0.25);
-}
-.dev-online-dot {
-position: absolute;
-bottom: 4px;
-right: 4px;
-width: 15px;
-height: 15px;
-background: var(--status-success);
-border: 2.5px solid var(--bg-surface);
-border-radius: 50%;
-}
 /* الكروت والأزرار العامة */
 .clean-card {
 background: var(--bg-card);
@@ -569,7 +536,7 @@ justify-content: center;
 font-size: 12px;
 font-weight: 900;
 }
-/* القائمة الجانبية (Sidebar Drawer) */
+/* القائمة الجانبية (Sidebar Drawer المطابقة للصورة) */
 .sidebar-mask {
 position: fixed;
 inset: 0;
@@ -696,4 +663,349 @@ pointer-events: none;
 .toast-popup.active {
 transform: translate(-50%, 0);
 opacity: 1;
+}
+/* =========================================================
+COFFEE CORNER DEVELOPER HUB — DEDICATED DARK TECH PALETTE
+مخصص لصفحة المطور بهوية مهندس اتصالات ومطور برمجيات
+========================================================= */
+#screen-developer {
+background-color: #080D16 !important;
+color: #F4F7FB !important;
+padding-bottom: 90px;
+}
+.dev-hub-container {
+width: 100%;
+max-width: 600px;
+margin: 0 auto;
+padding: 14px;
+box-sizing: border-box;
+}
+.dev-tech-card {
+background: #101A29;
+border: 1px solid #24364A;
+border-radius: 16px;
+padding: 18px;
+margin-bottom: 14px;
+box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+transition: border-color 0.2s ease;
+}
+.dev-tech-card:hover {
+border-color: rgba(85, 221, 243, 0.4);
+}
+.dev-hero-header {
+display: flex;
+flex-direction: column;
+align-items: center;
+text-align: center;
+padding: 24px 16px;
+background: radial-gradient(circle at top, rgba(85, 221, 243, 0.12) 0%, transparent 70%), #101A29;
+border: 1px solid #24364A;
+border-radius: 18px;
+margin-bottom: 14px;
+}
+.dev-avatar-shell {
+position: relative;
+width: 96px;
+height: 96px;
+margin-bottom: 14px;
+}
+.dev-avatar-img-modern {
+width: 100%;
+height: 100%;
+border-radius: 50%;
+object-fit: cover;
+border: 2px solid #55DDF3;
+box-shadow: 0 0 20px rgba(85, 221, 243, 0.25);
+background: #080D16;
+}
+.dev-pulse-online {
+position: absolute;
+bottom: 3px;
+right: 3px;
+width: 15px;
+height: 15px;
+background: #10B981;
+border: 2px solid #101A29;
+border-radius: 50%;
+box-shadow: 0 0 8px #10B981;
+}
+.dev-name-title {
+font-size: 20px;
+font-weight: 900;
+color: #F4F7FB;
+margin-bottom: 4px;
+}
+.dev-role-badge {
+display: inline-flex;
+align-items: center;
+background: rgba(85, 221, 243, 0.1);
+border: 1px solid rgba(85, 221, 243, 0.3);
+color: #55DDF3;
+font-size: 11.5px;
+font-weight: 800;
+padding: 3px 12px;
+border-radius: 20px;
+direction: ltr;
+margin-bottom: 10px;
+font-family: var(--font-num);
+}
+.dev-slogan-quote {
+font-family: var(--font-num);
+font-size: 13px;
+font-weight: 700;
+color: #55DDF3;
+margin-bottom: 12px;
+direction: ltr;
+}
+.dev-bio-paragraph {
+font-size: 12.5px;
+color: #9BAEC3;
+line-height: 1.65;
+max-width: 520px;
+margin: 0 auto 14px;
+text-align: justify;
+text-align-last: center;
+}
+.dev-badges-container {
+display: flex;
+flex-wrap: wrap;
+gap: 6px;
+justify-content: center;
+margin-bottom: 16px;
+}
+.dev-skill-pill {
+background: #080D16;
+border: 1px solid #24364A;
+color: #F4F7FB;
+font-size: 11px;
+font-weight: 700;
+padding: 4px 10px;
+border-radius: 8px;
+direction: ltr;
+}
+.dev-hero-cta-row {
+display: flex;
+gap: 8px;
+width: 100%;
+}
+.dev-btn-primary {
+flex: 1;
+background: #55DDF3;
+color: #080D16;
+font-weight: 900;
+font-size: 12.5px;
+border: none;
+border-radius: 10px;
+padding: 10px 14px;
+cursor: pointer;
+display: inline-flex;
+align-items: center;
+justify-content: center;
+gap: 6px;
+text-decoration: none;
+transition: 0.15s;
+}
+.dev-btn-secondary {
+flex: 1;
+background: transparent;
+color: #55DDF3;
+border: 1px solid rgba(85, 221, 243, 0.35);
+font-weight: 800;
+font-size: 12.5px;
+border-radius: 10px;
+padding: 10px 14px;
+cursor: pointer;
+display: inline-flex;
+align-items: center;
+justify-content: center;
+gap: 6px;
+text-decoration: none;
+}
+.dev-section-title {
+font-size: 14.5px;
+font-weight: 900;
+color: #55DDF3;
+margin-bottom: 12px;
+display: flex;
+align-items: center;
+gap: 8px;
+}
+.dev-section-title::after {
+content: '';
+flex: 1;
+height: 1px;
+background: #24364A;
+}
+.dev-expertise-grid {
+display: grid;
+grid-template-columns: 1fr;
+gap: 8px;
+}
+.dev-expertise-item {
+background: #080D16;
+border: 1px solid #24364A;
+border-radius: 10px;
+padding: 12px;
+cursor: pointer;
+transition: all 0.2s ease;
+}
+.dev-expertise-item:hover, .dev-expertise-item.expanded {
+border-color: #55DDF3;
+background: rgba(85, 221, 243, 0.04);
+}
+.dev-expertise-top {
+display: flex;
+align-items: center;
+justify-content: space-between;
+}
+.dev-expertise-name {
+font-size: 13px;
+font-weight: 800;
+color: #F4F7FB;
+}
+.dev-expertise-detail {
+display: none;
+margin-top: 8px;
+padding-top: 8px;
+border-top: 1px dashed #24364A;
+font-size: 11.5px;
+color: #9BAEC3;
+line-height: 1.5;
+}
+.dev-expertise-item.expanded .dev-expertise-detail {
+display: block;
+}
+.dev-status-grid {
+display: grid;
+grid-template-columns: repeat(2, 1fr);
+gap: 8px;
+margin-bottom: 10px;
+}
+.dev-status-pill {
+background: #080D16;
+border: 1px solid #24364A;
+border-radius: 8px;
+padding: 10px;
+display: flex;
+align-items: center;
+justify-content: space-between;
+}
+.dev-status-label {
+font-size: 10px;
+color: #9BAEC3;
+margin-bottom: 2px;
+}
+.dev-status-value {
+font-size: 11.5px;
+font-weight: 800;
+color: #F4F7FB;
+}
+.dev-status-indicator {
+width: 9px;
+height: 9px;
+border-radius: 50%;
+background: #9BAEC3;
+}
+.dev-status-indicator.operational {
+background: #10B981;
+box-shadow: 0 0 6px #10B981;
+}
+.dev-status-indicator.degraded {
+background: #F59E0B;
+}
+.dev-timeline-wrap {
+position: relative;
+padding-right: 18px;
+border-right: 2px solid #24364A;
+margin-right: 6px;
+}
+.dev-timeline-item {
+position: relative;
+margin-bottom: 16px;
+}
+.dev-timeline-item:last-child { margin-bottom: 0; }
+.dev-timeline-item::before {
+content: '';
+position: absolute;
+right: -23px;
+top: 4px;
+width: 8px;
+height: 8px;
+border-radius: 50%;
+background: #55DDF3;
+}
+.dev-timeline-phase {
+font-size: 10.5px;
+color: #55DDF3;
+font-weight: 800;
+direction: ltr;
+display: inline-block;
+}
+.dev-timeline-title {
+font-size: 13px;
+font-weight: 800;
+color: #F4F7FB;
+margin: 2px 0;
+}
+.dev-timeline-desc {
+font-size: 11.5px;
+color: #9BAEC3;
+line-height: 1.45;
+}
+.dev-changelog-entry {
+background: #080D16;
+border: 1px solid #24364A;
+border-radius: 8px;
+padding: 10px 12px;
+margin-bottom: 8px;
+}
+.dev-changelog-header {
+display: flex;
+align-items: center;
+justify-content: space-between;
+margin-bottom: 4px;
+}
+.dev-changelog-ver {
+font-family: var(--font-num);
+font-size: 11px;
+font-weight: 900;
+color: #55DDF3;
+background: rgba(85, 221, 243, 0.1);
+padding: 2px 6px;
+border-radius: 4px;
+}
+.dev-changelog-date {
+font-size: 10px;
+color: #9BAEC3;
+}
+.dev-changelog-body {
+font-size: 11.5px;
+color: #F4F7FB;
+line-height: 1.4;
+}
+.dev-contact-grid {
+display: grid;
+grid-template-columns: repeat(3, 1fr);
+gap: 6px;
+margin-top: 10px;
+}
+.dev-contact-chip {
+background: #080D16;
+border: 1px solid #24364A;
+border-radius: 8px;
+padding: 8px 4px;
+text-align: center;
+color: #F4F7FB;
+text-decoration: none;
+font-size: 11px;
+font-weight: 700;
+display: flex;
+flex-direction: column;
+align-items: center;
+gap: 3px;
+transition: 0.15s;
+}
+.dev-contact-chip:hover {
+border-color: #55DDF3;
+color: #55DDF3;
 }
