@@ -64,7 +64,7 @@ display: inline-block;
 /* حاوية التطبيق الرئيسية لمنع الفراغات */
 .app-container {
 width: 100%;
-max-width: 540px;
+max-width: 520px;
 margin: 0 auto;
 min-height: 100vh;
 min-height: 100dvh;
@@ -83,7 +83,7 @@ flex-direction: column;
 position: relative;
 }
 /* =========================================================
-قاعدة الشاشات (الحل الجذري والنهائي لمنع أي تداخل بين الشاشات)
+قاعدة الشاشات (الحل الصارم لمنع أي تداخل بين الشاشات)
 ========================================================= */
 .app-screen {
 display: none !important;
@@ -101,8 +101,7 @@ flex: 1;
 width: 100%;
 overflow-y: auto;
 overflow-x: hidden;
-padding: 16px;
-padding-bottom: 120px;
+padding: 14px 16px 120px;
 -webkit-overflow-scrolling: touch;
 }
 /* =========================================================
@@ -141,13 +140,15 @@ display: flex;
 align-items: center;
 gap: 10px;
 cursor: pointer;
+user-select: none;
 }
 .brand-logo-img {
-width: 38px;
-height: 38px;
+width: 40px;
+height: 40px;
 border-radius: 50%;
 object-fit: cover;
 border: 1.5px solid var(--brand-gold);
+background: #1b1510;
 }
 .brand-title {
 font-size: 15px;
@@ -166,8 +167,6 @@ padding: 2px 7px;
 border-radius: var(--radius-full);
 display: inline-block;
 margin-top: 2px;
-}
-.badge-open {
 background: rgba(16, 185, 129, 0.15);
 color: var(--status-success);
 border: 1px solid rgba(16, 185, 129, 0.3);
@@ -249,12 +248,12 @@ flex-direction: column;
 cursor: pointer;
 transition: transform 0.15s ease, border-color 0.15s ease;
 }
-.product-card:active { transform: scale(0.97); }
+.product-card:active { transform: scale(0.97); border-color: var(--brand-gold); }
 .product-img {
 width: 100%;
 height: 125px;
 object-fit: cover;
-background: #000;
+background: #14100c;
 }
 .product-meta {
 padding: 10px 12px 12px;
@@ -378,24 +377,8 @@ border-color: var(--brand-gold);
 }
 .btn-brand-outline:active { transform: scale(0.97); }
 /* =========================================================
-لوحة الإدارة (6 Pillars Admin Grid)
+لوحة الإدارة (6 Pillars Admin Grid - متطابقة 100% مع صورتك)
 ========================================================= */
-.admin-executive-header {
-padding: 16px;
-background: var(--bg-surface);
-border-bottom: 1px solid var(--border-subtle);
-display: flex;
-align-items: center;
-justify-content: space-between;
-}
-.admin-header-title {
-font-size: 15px;
-font-weight: 900;
-color: var(--brand-gold);
-display: flex;
-align-items: center;
-gap: 8px;
-}
 .admin-hub-grid {
 display: grid;
 grid-template-columns: repeat(2, 1fr);
@@ -473,7 +456,6 @@ font-size: 17px;
 font-weight: 900;
 color: var(--brand-gold);
 }
-/* بطاقة طلب الأدمن */
 .admin-order-box {
 background: var(--bg-surface);
 border: 1px solid var(--border-subtle);
@@ -492,7 +474,7 @@ bottom: 20px;
 left: 50%;
 transform: translate(-50%, 150%);
 width: calc(100% - 32px);
-max-width: 508px;
+max-width: 488px;
 background: var(--brand-gold);
 color: #000000;
 border-radius: var(--radius-md);
@@ -525,12 +507,12 @@ font-size: 12px;
 font-weight: 900;
 }
 /* =========================================================
-القائمة الجانبية (Sidebar Drawer المتطابق مع الصور)
+القائمة الجانبية (Sidebar Drawer المطابق للصور 100%)
 ========================================================= */
 .sidebar-mask {
 position: fixed;
 inset: 0;
-background: rgba(0, 0, 0, 0.65);
+background: rgba(0, 0, 0, 0.75);
 z-index: 2000;
 opacity: 0;
 pointer-events: none;
@@ -547,7 +529,7 @@ bottom: 0;
 right: 0;
 width: 320px;
 max-width: 85%;
-background: var(--bg-surface);
+background: #0c0906;
 z-index: 2100;
 transform: translate3d(100%, 0, 0);
 transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1);
@@ -555,6 +537,7 @@ display: flex;
 flex-direction: column;
 border-left: 1px solid var(--border-subtle);
 }
+body.light-theme .sidebar-drawer { background: #f8f6f2; }
 .sidebar-drawer.active {
 transform: translate3d(0, 0, 0);
 }
@@ -632,6 +615,7 @@ margin-top: 2px;
 }
 .sidebar-arrow-chevron {
 color: var(--text-dim);
+font-size: 15px;
 }
 .sidebar-footer-bar {
 padding: 14px 18px calc(14px + env(safe-area-inset-bottom, 0px));
@@ -639,8 +623,9 @@ border-top: 1px solid var(--border-subtle);
 display: flex;
 align-items: center;
 justify-content: space-between;
-background: var(--bg-surface);
+background: #14100c;
 }
+body.light-theme .sidebar-footer-bar { background: #ffffff; }
 /* التنبيهات المنبثقة والمودال */
 .toast-popup {
 position: fixed;
@@ -657,6 +642,7 @@ z-index: 3000;
 opacity: 0;
 transition: 0.25s ease;
 box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+pointer-events: none;
 }
 .toast-popup.active {
 transform: translate(-50%, 0);
@@ -684,16 +670,4 @@ max-width: 440px;
 max-height: 90vh;
 overflow-y: auto;
 padding: 18px;
-}
-/* بطاقة الفاتورة الرقمية القابلة للتنزيل */
-.receipt-paper-box {
-background: #ffffff;
-color: #1a1714;
-border-radius: var(--radius-md);
-padding: 22px 18px;
-width: 100%;
-max-width: 380px;
-margin: 0 auto;
-font-family: var(--font-ar);
-box-shadow: 0 10px 30px rgba(0,0,0,0.5);
 }
