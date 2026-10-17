@@ -1,6 +1,6 @@
 /* =========================================================
-COFFEE CORNER PRO — PRODUCTION STYLESHEET
-نظام تصميم شامل: بدون تداخل، متوافق 100% مع الهواتف
+COFFEE CORNER PRO — COMPLETE PRODUCTION STYLESHEET
+تنسيق شامل 100% متوافق مع كافة الهواتف وخالٍ من التداخل
 ========================================================= */
 :root {
 --bg-main: #fbfbf9;
@@ -23,7 +23,7 @@ COFFEE CORNER PRO — PRODUCTION STYLESHEET
 --radius-md: 16px;
 --radius-lg: 22px;
 --radius-full: 9999px;
---font-ar: 'Tajawal', -apple-system, BlinkMacSystemFont, sans-serif;
+--font-ar: 'Tajawal', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
 --font-num: 'Plus Jakarta Sans', sans-serif;
 }
 body.dark-mode {
@@ -82,9 +82,7 @@ display: flex;
 flex-direction: column;
 position: relative;
 }
-/* =========================================================
-قاعدة الشاشات الصارمة لمنع التداخل نهائياً
-========================================================= */
+/* قاعدة الشاشات الصارمة لمنع التداخل */
 .app-screen {
 display: none !important;
 width: 100%;
@@ -225,7 +223,7 @@ color: #ffffff;
 border-color: var(--brand-gold);
 font-weight: 900;
 }
-/* شبكة أصناف المنيو (المتطابقة 100% مع صورك) */
+/* شبكة أصناف المنيو */
 .product-grid {
 display: grid;
 grid-template-columns: repeat(2, 1fr);
@@ -367,7 +365,7 @@ padding: 16px;
 .admin-sub-view.active {
 display: flex;
 }
-/* بطاقات وتصميم حساب الزبون (Instagram-like Profile) */
+/* بروفايل حساب الزبون (Instagram-like Profile) */
 .ig-profile-header {
 display: flex;
 align-items: center;
@@ -586,7 +584,7 @@ justify-content: center;
 font-size: 12px;
 font-weight: 900;
 }
-/* القائمة الجانبية (Sidebar Drawer المتطابقة 100%) */
+/* القائمة الجانبية (Sidebar Drawer المطابقة للصورة) */
 .sidebar-mask {
 position: fixed;
 inset: 0;
