@@ -8,16 +8,15 @@
     <meta name="theme-color" content="#fbfbf9">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;700;800;900&family=Tajawal:wght@400;500;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Almarai:wght@400;700;800&family=Cairo:wght@400;600;700;800;900&family=IBM+Plex+Sans+Arabic:wght@400;600;700&family=Plus+Jakarta+Sans:wght@600;700;800;900&family=Tajawal:wght@400;500;700;800;900&display=swap" rel="stylesheet">
 
-    <!-- Firebase SDK Compat (Safe Optional Loading) -->
+    <!-- Firebase SDK Compat -->
     <script defer src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
     <script defer src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
 
     <style>
         /* =========================================================
            COFFEE CORNER PRO — CLEAN PRODUCTION STYLESHEET
-           خالٍ تماماً من الإيموجيز ويعتمد على أيقونات SVG وتناسق الجوال
            ========================================================= */
         :root {
             --bg-main: #fbfbf9;
@@ -68,6 +67,12 @@
             --border-accent: rgba(197, 155, 99, 0.4);
         }
 
+        /* خطوط مخصصة للتبديل الفوري */
+        body.font-cairo { font-family: 'Cairo', sans-serif; }
+        body.font-ibm { font-family: 'IBM Plex Sans Arabic', sans-serif; }
+        body.font-almarai { font-family: 'Almarai', sans-serif; }
+        body.font-tajawal { font-family: 'Tajawal', sans-serif; }
+
         *, *::before, *::after {
             box-sizing: border-box;
             margin: 0;
@@ -93,14 +98,6 @@
             font-family: var(--font-num);
             direction: ltr;
             display: inline-block;
-        }
-
-        .svg-icon {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            vertical-align: middle;
-            flex-shrink: 0;
         }
 
         .app-container {
@@ -992,31 +989,31 @@
                         <img src="" id="userProfileAvatarImg" class="passport-avatar-img" onerror="this.src='https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200&q=80';" alt="صورة الزبون">
                     </div>
                     <div class="passport-user-info">
-                        <div class="passport-user-name" id="profDisplayName">المهندس عمر عبيدات</div>
-                        <div class="passport-user-bio" id="profBioDesc">محب للقهوة والمذاق الرفيع في كافيه كورنر ومطور هذا النظام.</div>
-                        <div style="font-size:10.5px; color:var(--brand-gold); margin-top:3px;" id="profBirthdayText">تاريخ الميلاد: 2005-01-01</div>
+                        <div class="passport-user-name" id="profDisplayName">عميل كافيه كورنر</div>
+                        <div class="passport-user-bio" id="profBioDesc">محب للقهوة والمذاق الرفيع في كافيه كورنر.</div>
+                        <div style="font-size:10.5px; color:var(--brand-gold); margin-top:3px;" id="profBirthdayText">تاريخ الميلاد: غير محدد</div>
                     </div>
                 </div>
                 <div class="passport-stats-grid">
                     <div class="passport-stat-box">
-                        <span class="num-font" id="profStatOrders">15</span>
+                        <span class="num-font" id="profStatOrders">0</span>
                         <span>الطلبات</span>
                     </div>
                     <div class="passport-stat-box">
-                        <span class="num-font" id="profStatPoints">10000</span>
+                        <span class="num-font" id="profStatPoints">0</span>
                         <span>نقاط الولاء</span>
                     </div>
                     <div class="passport-stat-box">
-                        <span class="num-font" id="profStatBadges">5</span>
+                        <span class="num-font" id="profStatBadges">1</span>
                         <span>الشارات</span>
                     </div>
                 </div>
             </div>
 
-            <!-- زر وصول مباشر للوحة الإدارة للمطور -->
-            <div id="devProfileAccessBtnRow" style="display:block; margin-bottom:12px;">
+            <!-- زر وصول مباشر للوحة الإدارة للمطور فقط -->
+            <div id="devProfileAccessBtnRow" style="display:none; margin-bottom:12px;">
                 <button class="btn-brand-solid" style="background:#55DDF3; color:#080D16;" onclick="navigateRouter('screen-admin-dashboard'); backToAdminMainHub();">
-                    دخول مباشر للوحة الإدارة (صلاحيات المطور الكاملة)
+                    دخول مباشر للوحة الإدارة (صلاحيات المطور الكاملة) ⚡
                 </button>
             </div>
 
@@ -1560,12 +1557,22 @@
             <div id="subView-themes" class="admin-sub-view">
                 <button class="btn-brand-outline" style="margin-bottom:10px;" onclick="backToAdminMainHub()">← العودة للوحة الرئيسية</button>
                 <div class="clean-card">
-                    <div class="clean-title">تخصيص الثيم وألوان الموقع</div>
-                    <div style="display:flex; flex-direction:column; gap:8px; margin-bottom:16px;">
-                        <button class="btn-brand-outline" style="width:100%; justify-content:flex-start;" onclick="applyAdminThemePreset('gold')">الثيم الذهبي الكلاسيكي (الافتراضي)</button>
-                        <button class="btn-brand-outline" style="width:100%; justify-content:flex-start;" onclick="applyAdminThemePreset('blue')">الأزرق العصري (Sapphire)</button>
-                        <button class="btn-brand-outline" style="width:100%; justify-content:flex-start;" onclick="applyAdminThemePreset('emerald')">الزمردي الراقي (Emerald)</button>
-                        <button class="btn-brand-outline" style="width:100%; justify-content:flex-start;" onclick="applyAdminThemePreset('amber')">العنبري الدافئ (Amber Roast)</button>
+                    <div class="clean-title">تخصيص ألوان وثيمات المنظومة</div>
+                    <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-bottom:14px;">
+                        <button class="btn-brand-outline" style="justify-content:center; padding:10px;" onclick="applyAdminThemePreset('gold')">الذهبي الملكي (الافتراضي)</button>
+                        <button class="btn-brand-outline" style="justify-content:center; padding:10px; border-color:#2563eb; color:#2563eb;" onclick="applyAdminThemePreset('blue')">الأزرق العصري (Sapphire)</button>
+                        <button class="btn-brand-outline" style="justify-content:center; padding:10px; border-color:#059669; color:#059669;" onclick="applyAdminThemePreset('emerald')">الزمردي الراقي (Emerald)</button>
+                        <button class="btn-brand-outline" style="justify-content:center; padding:10px; border-color:#d97706; color:#d97706;" onclick="applyAdminThemePreset('amber')">العنبري الدافئ (Amber Roast)</button>
+                        <button class="btn-brand-outline" style="justify-content:center; padding:10px; border-color:#55DDF3; color:#55DDF3;" onclick="applyAdminThemePreset('cyan')">السيبراني (Cyber Cyan)</button>
+                        <button class="btn-brand-outline" style="justify-content:center; padding:10px; border-color:#7c3aed; color:#7c3aed;" onclick="applyAdminThemePreset('purple')">المخملي (Velvet Purple)</button>
+                    </div>
+
+                    <div class="clean-title">نوع الخط العربي المعتمد للجميع</div>
+                    <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-bottom:12px;">
+                        <button class="btn-brand-outline" style="justify-content:center; font-family:'Tajawal';" onclick="applyAdminFontFamily('font-tajawal')">خط تجوال (Tajawal)</button>
+                        <button class="btn-brand-outline" style="justify-content:center; font-family:'Cairo';" onclick="applyAdminFontFamily('font-cairo')">خط كايرو (Cairo)</button>
+                        <button class="btn-brand-outline" style="justify-content:center; font-family:'IBM Plex Sans Arabic';" onclick="applyAdminFontFamily('font-ibm')">خط آي بي إم (IBM Plex)</button>
+                        <button class="btn-brand-outline" style="justify-content:center; font-family:'Almarai';" onclick="applyAdminFontFamily('font-almarai')">خط المراعي (Almarai)</button>
                     </div>
                 </div>
             </div>
@@ -1903,7 +1910,7 @@
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
         </div>
         <div style="font-size:11px; color:var(--text-dim);">
-            <span>الإصدار </span><span class="num-font">7.4.9</span>
+            <span>الإصدار </span><span class="num-font">7.5.0</span>
         </div>
     </div>
 </div>
@@ -1926,6 +1933,17 @@
 
 const MASTER_PIN = "2001159393";
 const DEVELOPER_PHONE = "0796433698";
+
+const FIREBASE_CONFIG = {
+    apiKey: "AIzaSyCPGI8XX2v5naRLK2QSQJcw6fB0Nsmbl8M",
+    authDomain: "coffee-corner-121.firebaseapp.com",
+    projectId: "coffee-corner-121",
+    storageBucket: "coffee-corner-121.firebasestorage.app",
+    messagingSenderId: "550349405177",
+    appId: "1:550349405177:web:468a9248c6c6be9f46db28"
+};
+
+let cloudDb = null;
 
 const DEFAULT_CATALOG = [
     { id: "p1", name: "كوكتيل إمبراطور فواكه", category: "كوكتيلات", price: 2.50, desc: "مزيج قطع فواكه طازجة مع القشطة والمكسرات", img: "https://images.unsplash.com/photo-1577805947697-89e18249d767?w=400&q=80", isAvailable: true },
@@ -1990,6 +2008,7 @@ function getOrCreateClientId() {
 
 const CURRENT_DEVICE_ID = getOrCreateClientId();
 
+// كائن الحالة الأساسية للتطبيق
 window.appState = {
     cartBranch: 0,
     currentCategory: "الكل",
@@ -2002,25 +2021,28 @@ window.appState = {
     activeCouponDiscount: 0
 };
 
+// تعريف المتغيرات مرة واحدة حصراً لمنع تعطل المحرك البرمجي
+let userProfile = safeGet('cc_user_profile', {
+    name: "عميل كافيه كورنر",
+    phone: "",
+    birthday: "",
+    bio: "محب للقهوة والمذاق الرفيع في كافيه كورنر.",
+    avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200&q=80",
+    points: 0,
+    ordersCount: 0,
+    tier: "عضوية برونزية",
+    badges: ["عضوية برونزية"]
+});
+
 let activeSessionUser = safeGet('cc_admin_session', null);
 let activeOrdersList = safeGet('cc_orders', []);
 let isThemeDark = safeGet('cc_theme_dark', false);
+let activeThemePreset = safeGet('cc_active_theme_preset', 'gold');
+let activeFontFamily = safeGet('cc_active_font_family', 'font-tajawal');
 let isAdminSoundEnabled = safeGet('cc_admin_sound', true);
 let productsCatalog = safeGet('cc_catalog', DEFAULT_CATALOG);
 let branchesData = safeGet('cc_branches', DEFAULT_BRANCHES);
 let bannedCustomersList = safeGet('cc_banned_users', []);
-
-let userProfile = safeGet('cc_user_profile', {
-    name: "المهندس عمر عبيدات",
-    phone: DEVELOPER_PHONE,
-    birthday: "2005-01-01",
-    bio: "محب للقهوة والمذاق الرفيع في كافيه كورنر ومطور هذا النظام.",
-    avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200&q=80",
-    points: 10000,
-    ordersCount: 15,
-    tier: "عضوية مطور النظم",
-    badges: ["مطور النظم المعتمد", "رائد الكورنر", "العميل الذهبي VIP", "متذوق الوافل", "عضوية بلاتينية"]
-});
 
 let redeemCatalog = safeGet('cc_redeem_catalog', [
     { id: "rd1", name: "آيس كوفي منعش مجاني", points: 30, desc: "استبدل 30 نقطة بشوت آيس كوفي بارد" },
@@ -2044,6 +2066,166 @@ let systemOffers = safeGet('cc_offers', [
 let customerNotifications = safeGet('cc_notifications', [
     { id: "n1", title: "أهلاً بك في كافيه كورنر", desc: "استمتع بأشهى الكوكتيلات والحلويات واجمع نقاطك.", time: "اليوم", isRead: false }
 ]);
+
+// مزامنة فورية ومستمعات السحابة الحية لكامل المنظومة
+function initCloudFirestoreSafe() {
+    try {
+        if (window.firebase) {
+            if (!firebase.apps.length) firebase.initializeApp(FIREBASE_CONFIG);
+            cloudDb = firebase.firestore();
+
+            // 1. مزامنة الطلبات اللحظية
+            cloudDb.collection('orders').orderBy('createdAt', 'desc').limit(50)
+                .onSnapshot(snapshot => {
+                    const cloudOrders = [];
+                    snapshot.forEach(docSnap => cloudOrders.push({ id: docSnap.id, ...docSnap.data() }));
+                    if (cloudOrders.length > 0) {
+                        const prevCount = activeOrdersList.length;
+                        activeOrdersList = cloudOrders;
+                        safeSet('cc_orders', activeOrdersList);
+
+                        if (activeSessionUser && cloudOrders.length > prevCount) {
+                            playHarmonicChime('admin');
+                            window.showToastMsg("وصل طلب جديد للمحل الآن!");
+                        }
+                        if (activeSessionUser) renderAdminLiveOrdersManager();
+                        renderOrderTrackingView();
+                    }
+                }, err => console.warn("Orders sync:", err));
+
+            // 2. مزامنة إعدادات المتجر العامة
+            cloudDb.collection('store_config').doc('main_settings')
+                .onSnapshot(docSnap => {
+                    if (docSnap.exists) {
+                        const data = docSnap.data();
+                        if (data.branches) {
+                            branchesData = data.branches;
+                            safeSet('cc_branches', branchesData);
+                            renderClientBranchesView();
+                        }
+                        if (data.paymentMethods) {
+                            customPaymentMethods = data.paymentMethods;
+                            safeSet('cc_payment_methods', customPaymentMethods);
+                        }
+                        if (data.theme) {
+                            applyAdminThemePreset(data.theme, false);
+                        }
+                        if (data.font) {
+                            applyAdminFontFamily(data.font, false);
+                        }
+                        if (data.brandTitle) {
+                            document.getElementById('mainHeaderBrandTitle').innerText = data.brandTitle;
+                        }
+                        if (data.brandSub) {
+                            document.getElementById('mainHeaderBrandSub').innerText = data.brandSub;
+                        }
+                        if (data.storeLogo) {
+                            document.getElementById('mainHeaderLogoImg').src = data.storeLogo;
+                        }
+                    }
+                }, err => console.warn("Config sync:", err));
+
+            // 3. مزامنة المنتجات والأسعار الحية
+            cloudDb.collection('store_config').doc('menu_catalog')
+                .onSnapshot(docSnap => {
+                    if (docSnap.exists && docSnap.data().items) {
+                        productsCatalog = docSnap.data().items;
+                        safeSet('cc_catalog', productsCatalog);
+                        renderCategoryChips();
+                        renderMenuProducts();
+                    }
+                }, err => console.warn("Menu sync:", err));
+        }
+    } catch(err) {
+        console.warn("Cloud Firestore init error:", err);
+    }
+}
+
+// تحديث لحظي عند رجوع الصفحة من الخلفية
+document.addEventListener("visibilitychange", () => {
+    if (document.visibilityState === "visible") {
+        if (cloudDb) {
+            cloudDb.collection('store_config').doc('menu_catalog').get().then(d => {
+                if (d.exists && d.data().items) {
+                    productsCatalog = d.data().items;
+                    safeSet('cc_catalog', productsCatalog);
+                    renderMenuProducts();
+                }
+            }).catch(() => {});
+            cloudDb.collection('orders').orderBy('createdAt', 'desc').limit(50).get().then(s => {
+                const arr = [];
+                s.forEach(docSnap => arr.push({ id: docSnap.id, ...docSnap.data() }));
+                if (arr.length > 0) {
+                    activeOrdersList = arr;
+                    safeSet('cc_orders', activeOrdersList);
+                    renderOrderTrackingView();
+                    if (activeSessionUser) renderAdminLiveOrdersManager();
+                }
+            }).catch(() => {});
+        }
+    }
+});
+
+// تطبيق الثيمات الهندسية
+window.applyAdminThemePreset = function(preset, syncToCloud = true) {
+    activeThemePreset = preset;
+    safeSet('cc_active_theme_preset', preset);
+
+    if (preset === 'gold') {
+        document.documentElement.style.setProperty('--brand-gold', '#c59b63');
+        document.documentElement.style.setProperty('--brand-gold-glow', 'rgba(197, 155, 99, 0.16)');
+    } else if (preset === 'blue') {
+        document.documentElement.style.setProperty('--brand-gold', '#2563eb');
+        document.documentElement.style.setProperty('--brand-gold-glow', 'rgba(37, 99, 235, 0.16)');
+    } else if (preset === 'emerald') {
+        document.documentElement.style.setProperty('--brand-gold', '#059669');
+        document.documentElement.style.setProperty('--brand-gold-glow', 'rgba(5, 150, 105, 0.16)');
+    } else if (preset === 'amber') {
+        document.documentElement.style.setProperty('--brand-gold', '#d97706');
+        document.documentElement.style.setProperty('--brand-gold-glow', 'rgba(217, 119, 6, 0.16)');
+    } else if (preset === 'cyan') {
+        document.documentElement.style.setProperty('--brand-gold', '#55DDF3');
+        document.documentElement.style.setProperty('--brand-gold-glow', 'rgba(85, 221, 243, 0.16)');
+    } else if (preset === 'purple') {
+        document.documentElement.style.setProperty('--brand-gold', '#7c3aed');
+        document.documentElement.style.setProperty('--brand-gold-glow', 'rgba(124, 58, 237, 0.16)');
+    }
+
+    if (syncToCloud && cloudDb) {
+        cloudDb.collection('store_config').doc('main_settings').set({ theme: preset }, { merge: true }).catch(() => {});
+    }
+};
+
+// تطبيق الخطوط العربية
+window.applyAdminFontFamily = function(fontClass, syncToCloud = true) {
+    activeFontFamily = fontClass;
+    safeSet('cc_active_font_family', fontClass);
+    document.body.classList.remove('font-tajawal', 'font-cairo', 'font-ibm', 'font-almarai');
+    document.body.classList.add(fontClass);
+
+    if (syncToCloud && cloudDb) {
+        cloudDb.collection('store_config').doc('main_settings').set({ font: fontClass }, { merge: true }).catch(() => {});
+    }
+};
+
+// فحص أمان حساب العميل وعزل المطور الصارم
+function verifyAccountSecurityAndPrivilege() {
+    const isDev = (userProfile.phone === DEVELOPER_PHONE);
+    const cardRoot = document.getElementById('passportCardWrapper');
+    const devAccessBtn = document.getElementById('devProfileAccessBtnRow');
+
+    if (isDev) {
+        userProfile.tier = "عضوية مطور النظم";
+        if ((userProfile.points || 0) < 10000) userProfile.points = 10000;
+        userProfile.badges = ["مطور النظم المعتمد", "رائد الكورنر", "العميل الذهبي VIP", "متذوق الوافل", "عضوية بلاتينية"];
+        safeSet('cc_user_profile', userProfile);
+        if (cardRoot) cardRoot.classList.add('dev-tier-active');
+        if (devAccessBtn) devAccessBtn.style.display = 'block';
+    } else {
+        if (cardRoot) cardRoot.classList.remove('dev-tier-active');
+        if (devAccessBtn) devAccessBtn.style.display = 'none';
+    }
+}
 
 // محرك الصوتيات Web Audio API
 function playHarmonicChime(type = 'user') {
@@ -2399,13 +2581,11 @@ window.switchCartBranch = function(branchIdx) {
     recalculateCartSummary();
 };
 
-// فصل خيارات التوصيل عن الاستلام بالفرع
 window.switchDeliveryMode = function(mode) {
     window.appState.deliveryMode = mode;
     document.getElementById('btnModeDelivery').classList.toggle('active', mode === 'delivery');
     document.getElementById('btnModePickup').classList.toggle('active', mode === 'pickup');
     
-    // إظهار وإخفاء الحقول المنفصلة
     document.getElementById('deliveryFieldsArea').style.display = (mode === 'delivery') ? 'block' : 'none';
     document.getElementById('pickupFieldsArea').style.display = (mode === 'pickup') ? 'block' : 'none';
     document.getElementById('sumDeliveryRow').style.display = (mode === 'delivery') ? 'flex' : 'none';
@@ -2486,9 +2666,7 @@ window.recalculateCartSummary = function() {
     document.getElementById('sumTotal').innerText = `${total.toFixed(2)} د.أ`;
 };
 
-// ==========================================
 // إرسال الطلب الأساسي عبر الواتساب وتدريب الكادر
-// ==========================================
 window.dispatchOrderAndInitiateTracking = function() {
     if (!window.appState.cart.length) return window.showToastMsg("سلة المشتريات فارغة");
     const name = (document.getElementById('cartClientName')?.value || userProfile.name || '').trim();
@@ -2558,7 +2736,7 @@ window.dispatchOrderAndInitiateTracking = function() {
     // فتح الفاتورة الرقمية الفاخرة للزبون
     showReceiptModal(newOrderObj);
 
-    // صياغة رسالة الواتساب الرسمية المعتمدة لموظفي الفرع
+    // صياغة رسالة الواتساب الرسمية
     let msg = `*طلب جديد | COFFEE CORNER*\n`;
     msg += `رقم الطلب: #${orderNumber}\n`;
     msg += `الفرع: فرع ${branch.name}\n`;
@@ -2590,9 +2768,7 @@ window.dispatchOrderAndInitiateTracking = function() {
     window.navigateRouter('screen-order-tracking');
 };
 
-// ==========================================
 // تتبع الطلبات مع عداد التجهيز ونظام التعويض
-// ==========================================
 function renderOrderTrackingView() {
     const container = document.getElementById('activeOrderTrackingView');
     if (!container) return;
@@ -2715,7 +2891,7 @@ function renderOrderTrackingView() {
     }).join('');
 }
 
-// تحديث التايمرات كل ثانية للإدارة والزبون
+// تحديث التايمرات كل ثانية
 setInterval(() => {
     const trackingScreen = document.getElementById('screen-order-tracking');
     if (trackingScreen && trackingScreen.classList.contains('active')) {
@@ -2727,9 +2903,7 @@ setInterval(() => {
     }
 }, 1000);
 
-// ==========================================
 // الفاتورة الرقمية الفاخرة وتصديرها كصورة PNG
-// ==========================================
 let currentViewingOrderForReceipt = null;
 
 window.showReceiptModal = function(order) {
@@ -2906,9 +3080,7 @@ window.shareReceiptNative = function() {
     }
 };
 
-// ==========================================
 // استبدال النقاط
-// ==========================================
 function renderRedeemStoreView() {
     const balanceEl = document.getElementById('userRedeemPointsBalance');
     if (balanceEl) balanceEl.innerText = userProfile.points || 0;
@@ -2963,9 +3135,7 @@ window.executeDirectRedeem = function(redeemId) {
     window.navigateRouter('screen-cart');
 };
 
-// ==========================================
 // الإشعارات
-// ==========================================
 function triggerSystemNotification(title, desc) {
     customerNotifications.unshift({
         id: "nt_" + Date.now(),
@@ -3032,9 +3202,7 @@ window.clearAllNotifications = function() {
     window.showToastMsg("تم تفريغ الإشعارات بالكامل");
 };
 
-// ==========================================
 // الملف الشخصي
-// ==========================================
 function renderUserProfileView() {
     const isDev = (userProfile.phone === DEVELOPER_PHONE);
     const cardRoot = document.getElementById('passportCardWrapper');
@@ -3085,6 +3253,7 @@ window.saveUserProfileData = function() {
     userProfile.bio = document.getElementById('inputProfBio').value.trim();
     safeSet('cc_user_profile', userProfile);
 
+    verifyAccountSecurityAndPrivilege();
     window.showToastMsg("تم حفظ بيانات ملفك الشخصي");
     window.navigateRouter('screen-user-profile');
 };
@@ -3123,9 +3292,7 @@ function renderClientOffersView() {
     `).join('');
 }
 
-// ==========================================
 // لوحة الإدارة الشاملة
-// ==========================================
 let secretClickCount = 0;
 let secretTimer = null;
 window.handleSecretAdminTrigger = function() {
@@ -3213,7 +3380,7 @@ window.confirmStartOrderPrepTimer = function() {
     window.showToastMsg(`تم بدء تجهيز الطلب بمؤقت ${mins} دقيقة`);
 };
 
-// عرض طلبات الأدمن مع تايمر التحضير الحي داخل كل طلب
+// عرض طلبات الأدمن مع تايمر التحضير الحي
 function renderAdminLiveOrdersManager() {
     const container = document.getElementById('adminLiveOrdersContainer');
     if (!container) return;
@@ -3389,6 +3556,7 @@ window.saveProductEditorRecord = function() {
     }
 
     safeSet('cc_catalog', productsCatalog);
+    syncMenuProductsToCloud();
     renderMenuProducts();
     renderAdminProductsManager();
 
@@ -3397,9 +3565,19 @@ window.saveProductEditorRecord = function() {
     openAdminSubSection('products');
 };
 
+function syncMenuProductsToCloud() {
+    if (cloudDb) {
+        cloudDb.collection('store_config').doc('menu_catalog').set({
+            items: productsCatalog,
+            updatedAt: Date.now()
+        }, { merge: true }).catch(err => console.warn(err));
+    }
+}
+
 window.deleteProductFromCatalog = function(productId) {
     productsCatalog = productsCatalog.filter(x => x.id !== productId);
     safeSet('cc_catalog', productsCatalog);
+    syncMenuProductsToCloud();
     renderMenuProducts();
     renderAdminProductsManager();
     window.showToastMsg("تم حذف الصنف");
@@ -3457,7 +3635,7 @@ function renderAdminCustomersManager() {
                     <img src="${c.avatar}" style="width:36px; height:36px; border-radius:50%; object-fit:cover; border:1px solid var(--brand-gold);">
                     <div>
                         <div style="font-size:13px; font-weight:900;">${c.name}</div>
-                        <div style="font-size:10px; color:var(--text-secondary);">${c.phone}</div>
+                        <div style="font-size:10px; color:var(--text-secondary);">${c.phone || 'بدون هاتف'}</div>
                     </div>
                 </div>
                 <span class="num-font" style="font-weight:900; color:var(--brand-gold);">${c.points || 0} نقطة</span>
@@ -3473,7 +3651,7 @@ window.openCustomerDossierModal = function() {
     document.getElementById('modalAdminCustomerDossier').style.display = 'flex';
     document.getElementById('dosCustomerNameTitle').innerText = `ملف العميل: ${userProfile.name}`;
     document.getElementById('dosFullName').innerText = userProfile.name;
-    document.getElementById('dosPhone').innerText = userProfile.phone;
+    document.getElementById('dosPhone').innerText = userProfile.phone || 'غير مسجل';
     document.getElementById('dosBirthday').innerText = `عيد الميلاد: ${userProfile.birthday || 'غير محدد'}`;
     document.getElementById('dosAvatarImg').src = userProfile.avatar;
     document.getElementById('dosPointsVal').innerText = userProfile.points || 0;
@@ -3506,6 +3684,7 @@ window.applyCustomPointsDelta = function(isAdd) {
 
 window.toggleCustomerBanStatus = function() {
     const phone = userProfile.phone;
+    if (!phone) return window.showToastMsg("لا يمكن حظر حساب بدون رقم هاتف");
     if (bannedCustomersList.includes(phone)) {
         bannedCustomersList = bannedCustomersList.filter(p => p !== phone);
         window.showToastMsg("تم إلغاء الحظر عن العميل");
@@ -3571,6 +3750,10 @@ window.saveCustomPaymentMethod = function() {
     });
 
     safeSet('cc_payment_methods', customPaymentMethods);
+    if (cloudDb) {
+        cloudDb.collection('store_config').doc('main_settings').set({ paymentMethods: customPaymentMethods }, { merge: true }).catch(() => {});
+    }
+
     document.getElementById('newPayMethodName').value = '';
     document.getElementById('newPayMethodDesc').value = '';
     document.getElementById('newPayLogoPreview').style.display = 'none';
@@ -3582,25 +3765,11 @@ window.saveCustomPaymentMethod = function() {
 window.deletePaymentMethodAdmin = function(id) {
     customPaymentMethods = customPaymentMethods.filter(m => m.id !== id);
     safeSet('cc_payment_methods', customPaymentMethods);
+    if (cloudDb) {
+        cloudDb.collection('store_config').doc('main_settings').set({ paymentMethods: customPaymentMethods }, { merge: true }).catch(() => {});
+    }
     renderAdminPaymentMethods();
     window.showToastMsg("تم حذف طريقة الدفع");
-};
-
-window.applyAdminThemePreset = function(preset) {
-    if (preset === 'gold') {
-        document.documentElement.style.setProperty('--brand-gold', '#c59b63');
-        document.documentElement.style.setProperty('--brand-gold-glow', 'rgba(197, 155, 99, 0.16)');
-    } else if (preset === 'blue') {
-        document.documentElement.style.setProperty('--brand-gold', '#2563eb');
-        document.documentElement.style.setProperty('--brand-gold-glow', 'rgba(37, 99, 235, 0.16)');
-    } else if (preset === 'emerald') {
-        document.documentElement.style.setProperty('--brand-gold', '#059669');
-        document.documentElement.style.setProperty('--brand-gold-glow', 'rgba(5, 150, 105, 0.16)');
-    } else if (preset === 'amber') {
-        document.documentElement.style.setProperty('--brand-gold', '#d97706');
-        document.documentElement.style.setProperty('--brand-gold-glow', 'rgba(217, 119, 6, 0.16)');
-    }
-    window.showToastMsg("تم تطبيق الثيم بنجاح!");
 };
 
 function renderAdminAnalyticsReports(filteredList = null) {
@@ -3713,6 +3882,7 @@ window.saveBrandAndDeveloperSettings = function() {
     const dBio = document.getElementById('admDevBioInput').value.trim();
     const dWa = document.getElementById('admDevWaInput').value.trim();
     const dIg = document.getElementById('admDevIgInput').value.trim();
+    const logoImg = document.getElementById('mainHeaderLogoImg').src;
 
     if (title) document.getElementById('mainHeaderBrandTitle').innerText = title;
     if (sub) document.getElementById('mainHeaderBrandSub').innerText = sub;
@@ -3721,10 +3891,59 @@ window.saveBrandAndDeveloperSettings = function() {
     if (dWa) document.getElementById('devWaLinkBtn').href = `https://wa.me/${dWa}`;
     if (dIg) document.getElementById('devIgLinkBtn').href = dIg;
 
-    window.showToastMsg("تم حفظ الشعار وبيانات المطور بنجاح!");
+    if (cloudDb) {
+        cloudDb.collection('store_config').doc('main_settings').set({
+            brandTitle: title,
+            brandSub: sub,
+            devName: dName,
+            devBio: dBio,
+            devWa: dWa,
+            devIg: dIg,
+            storeLogo: logoImg
+        }, { merge: true }).catch(() => {});
+    }
+
+    window.showToastMsg("تم تثبيت الشعار وبيانات المطور سحابياً للجميع!");
 };
 
-// فحص وجود معلمة لوحة الإدارة الخارجية في الرابط (?admin=true)
+window.saveBranchesSettingsFromAdmin = function() {
+    const p0 = document.getElementById('admBranch0Phone').value.trim();
+    const h0 = document.getElementById('admBranch0Hours').value.trim();
+    const l0 = document.getElementById('admBranch0Loc').value.trim();
+    const p1 = document.getElementById('admBranch1Phone').value.trim();
+    const h1 = document.getElementById('admBranch1Hours').value.trim();
+    const l1 = document.getElementById('admBranch1Loc').value.trim();
+
+    if (branchesData[0]) {
+        if (p0) branchesData[0].whatsapp = p0;
+        if (h0) branchesData[0].hours = h0;
+        if (l0) branchesData[0].location = l0;
+    }
+    if (branchesData[1]) {
+        if (p1) branchesData[1].whatsapp = p1;
+        if (h1) branchesData[1].hours = h1;
+        if (l1) branchesData[1].location = l1;
+    }
+
+    safeSet('cc_branches', branchesData);
+    renderClientBranchesView();
+
+    if (cloudDb) {
+        cloudDb.collection('store_config').doc('main_settings').set({
+            branches: branchesData
+        }, { merge: true }).catch(() => {});
+    }
+
+    window.showToastMsg("تم تحديث بيانات الفروع أونلاين لجميع الزبائن!");
+};
+
+window.toggleAdminSoundMute = function() {
+    isAdminSoundEnabled = !isAdminSoundEnabled;
+    safeSet('cc_admin_sound', isAdminSoundEnabled);
+    document.getElementById('btnToggleSoundSetting').innerText = isAdminSoundEnabled ? "رنين: فعال" : "رنين: مكتوم";
+    window.showToastMsg(isAdminSoundEnabled ? "تم تفعيل رنين الطلبات" : "تم كتم رنين الطلبات");
+};
+
 function checkExternalAdminUrlParam() {
     const params = new URLSearchParams(window.location.search);
     if (params.get('admin') === 'true' || params.get('portal') === 'admin') {
@@ -3732,21 +3951,18 @@ function checkExternalAdminUrlParam() {
     }
 }
 
-// الإقلاع الأولي
+// الإقلاع الأولي للنظام وبناء الواجهات المباشرة
 function bootstrapApp() {
     if (isThemeDark) document.body.classList.add('dark-mode');
+    applyAdminThemePreset(activeThemePreset, false);
+    applyAdminFontFamily(activeFontFamily, false);
 
-    if (userProfile.phone === DEVELOPER_PHONE) {
-        userProfile.tier = "عضوية مطور النظم";
-        if ((userProfile.points || 0) < 10000) userProfile.points = 10000;
-        userProfile.badges = ["مطور النظم المعتمد", "رائد الكورنر", "العميل الذهبي VIP", "متذوق الوافل", "عضوية بلاتينية"];
-        safeSet('cc_user_profile', userProfile);
-    }
-
+    verifyAccountSecurityAndPrivilege();
     renderCategoryChips();
     renderMenuProducts();
     updateNotificationBadge();
     checkExternalAdminUrlParam();
+    setTimeout(initCloudFirestoreSafe, 400);
 }
 
 if (document.readyState === 'loading') {
