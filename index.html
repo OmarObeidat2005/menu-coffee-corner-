@@ -8,7 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;700;800;900&family=Tajawal:wght@400;500;700;800;900&display=swap" rel="stylesheet">
-<!-- Firestore SDK Compat Mode (Real-Time Cloud Online) -->
+<!-- Firestore SDK Compat Mode (Online Real-Time Cloud) -->
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
 <link rel="stylesheet" href="style.css">
@@ -16,18 +16,18 @@
 <body>
 <div class="app-container" id="appContainer">
 <div class="main-viewport">
-<!-- 1. الشاشة الرئيسية (المنيو) -->
+<!-- 1. الشاشة الرئيسية (المنيو المباشر) -->
 <div id="screen-home" class="app-screen active">
 <header class="header">
 <button class="header-btn" onclick="openSidebarDrawer()" aria-label="القائمة">
 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
 </button>
 <div class="brand-box" onclick="handleSecretAdminTrigger()" title="كافيه كورنر">
-<img src="./logo.png" id="mainHeaderLogoImg" class="brand-logo-img" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1517701550927-30cf4be1aaf9?w=120&q=80';" alt="لوجو كافيه كورنر">
+<img src="./logo.png" id="mainHeaderLogoImg" class="brand-logo-img" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1517701550927-30cf4be1aaf9?w=120&q=80';" alt="شعار كافيه كورنر">
 <div class="brand-text-wrap">
 <div class="brand-title" id="mainHeaderBrandTitle">كافيه كورنر</div>
 <div class="brand-sub" id="mainHeaderBrandSub">أشهى الكوكتيلات والحلويات الفاخرة</div>
-<div class="header-hours-badge">مفتوح الآن</div>
+<div class="header-hours-badge" id="mainStoreOpenBadge">مفتوح الآن</div>
 </div>
 </div>
 <div style="display:flex; gap:6px;">
@@ -58,14 +58,7 @@
 <div style="font-weight:900; font-size:15px; color:var(--brand-gold);">العروض والخصومات</div>
 <div style="width:38px;"></div>
 </header>
-<div class="scrollable-content">
-<div class="clean-card" style="text-align:center; padding:24px 16px;">
-<div style="font-weight:900; font-size:16px; margin-bottom:8px; color:var(--brand-gold);">عروض كافيه كورنر الحصرية</div>
-<div style="font-size:12.5px; color:var(--text-secondary); line-height:1.6;">
-استخدم كود الخصم <strong class="num-font" style="color:var(--brand-gold); font-size:14px;">CORNER10</strong> واحصل على خصم 10% فورياً عند تأكيد طلبك!
-</div>
-</div>
-</div>
+<div class="scrollable-content" id="clientOffersContainer"></div>
 </div>
 <!-- 3. شاشة مفضلتي -->
 <div id="screen-favorites" class="app-screen">
@@ -74,16 +67,9 @@
 <div style="font-weight:900; font-size:15px; color:var(--brand-gold);">مفضلتي ♡</div>
 <div style="width:38px;"></div>
 </header>
-<div class="scrollable-content">
-<div class="clean-card" style="text-align:center; padding:36px 16px;">
-<div style="font-size:36px; margin-bottom:8px; color:var(--brand-gold);">♡</div>
-<div style="font-weight:900; font-size:15px; margin-bottom:6px;">قائمتك المفضلة خالية</div>
-<div style="font-size:12px; color:var(--text-secondary); margin-bottom:14px;">يمكنك حفظ أصنافك المحبوبة بلمسة زر واحدة دائماً.</div>
-<button class="btn-brand-solid" onclick="navigateRouter('screen-home')">تصفح المنيو الآن</button>
+<div class="scrollable-content" id="clientFavoritesContainer"></div>
 </div>
-</div>
-</div>
-<!-- 4. شاشة تتبع طلبي -->
+<!-- 4. شاشة تتبع طلبي الحية -->
 <div id="screen-order-tracking" class="app-screen">
 <header class="header">
 <button class="header-btn" onclick="navigateRouter('screen-home')" aria-label="عودة">✕</button>
@@ -94,7 +80,7 @@
 <div id="activeOrderTrackingView"></div>
 </div>
 </div>
-<!-- 5. شاشة مركز الإشعارات -->
+<!-- 5. شاشة مركز الإشعارات ورسائل الإدارة -->
 <div id="screen-notifications" class="app-screen">
 <header class="header">
 <button class="header-btn" onclick="navigateRouter('screen-home')" aria-label="عودة">✕</button>
@@ -105,23 +91,52 @@
 <div id="customerNotificationsList"></div>
 </div>
 </div>
-<!-- 6. شاشة حسابي والشارات -->
+<!-- 6. شاشة حسابي والشارات (بروفايل تفاعلي مثل إنستغرام) -->
 <div id="screen-user-profile" class="app-screen">
 <header class="header">
 <button class="header-btn" onclick="navigateRouter('screen-home')" aria-label="عودة">✕</button>
-<div style="font-weight:900; font-size:15px; color:var(--brand-gold);">حسابي والشارات</div>
+<div style="font-weight:900; font-size:15px; color:var(--brand-gold);">ملفي الشخصي والشارات</div>
 <div style="width:38px;"></div>
 </header>
 <div class="scrollable-content">
 <div class="clean-card">
-<div style="display:flex; align-items:center; gap:12px; margin-bottom:14px;">
-<div style="width:50px; height:50px; border-radius:50%; background:var(--bg-elevated); border:1.5px solid var(--brand-gold); display:flex; align-items:center; justify-content:center; font-size:22px;">☕</div>
-<div>
-<div style="font-size:16px; font-weight:900;" id="profDisplayName">العميل العزيز</div>
-<div class="num-font" style="font-size:12px; color:var(--text-secondary);" id="profDisplayPhone">079xxxxxxx</div>
-<span class="header-hours-badge" id="profTierBadge">عضوية برونزية</span>
+<div class="ig-profile-header">
+<div class="ig-avatar-wrap">
+<img src="" id="userProfileAvatarImg" class="ig-avatar-img" onerror="this.src='https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200&q=80';" alt="صورة الزبون">
+</div>
+<div class="ig-stats-row">
+<div class="ig-stat-col">
+<span class="ig-stat-num num-font" id="profStatOrders">0</span>
+<span class="ig-stat-label">الطلبات</span>
+</div>
+<div class="ig-stat-col">
+<span class="ig-stat-num num-font" id="profStatPoints">0</span>
+<span class="ig-stat-label">نقاط الولاء</span>
+</div>
+<div class="ig-stat-col">
+<span class="ig-stat-num num-font" id="profStatBadges">0</span>
+<span class="ig-stat-label">الشارات</span>
 </div>
 </div>
+</div>
+<div class="ig-bio-area">
+<div class="ig-bio-name" id="profDisplayName">العميل العزيز</div>
+<div class="ig-bio-tag" id="profMembershipTier">عضوية برونزية ☕</div>
+<div class="ig-bio-desc" id="profBioDesc">محب للقهوة والمذاق الرفيع في كافيه كورنر.</div>
+<div style="font-size:11.5px; color:var(--brand-gold); margin-top:4px;" id="profBirthdayText">🎂 تاريخ الميلاد: غير محدد</div>
+<!-- ملاحظة أمنية: رقم الهاتف مخفي 100% عن الزوار لضمان الخصوصية التامة -->
+</div>
+<button class="btn-brand-outline" style="width:100%; margin-bottom:10px;" onclick="openEditProfileModal()">تعديل بياناتي وصورتي الشخصية ✎</button>
+</div>
+<!-- خزانة الشارات -->
+<div class="clean-card">
+<div class="clean-title">شاراتي وإنجازاتي</div>
+<div id="userBadgesCabinetContainer" style="display:flex; flex-wrap:wrap; gap:8px;"></div>
+</div>
+<!-- شبكة مشاركات الزبون المصورة (Instagram Grid) -->
+<div class="clean-card">
+<div class="clean-title">مشاركاتي في "شاركنا بصورة" 📷</div>
+<div id="userMomentsIGGrid" class="ig-posts-grid"></div>
 </div>
 </div>
 </div>
@@ -130,7 +145,7 @@
 <header class="header">
 <button class="header-btn" onclick="navigateRouter('screen-home')" aria-label="عودة">✕</button>
 <div style="font-weight:900; font-size:15px; color:var(--brand-gold);">شاركنا بصورة 📷</div>
-<div style="width:38px;"></div>
+<button class="btn-brand-solid" style="padding:4px 10px; font-size:11px;" onclick="openNewMomentModal()">+ نشر صورة</button>
 </header>
 <div class="scrollable-content">
 <div id="communityFeedContainer"></div>
@@ -147,26 +162,26 @@
 <div class="clean-card">
 <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
 <span style="font-size:16px; font-weight:900; color:var(--brand-gold);">فرع كفرسوم</span>
-<span class="header-hours-badge">مفتوح الآن</span>
+<span class="header-hours-badge" id="badgeOpenBranch0">مفتوح الآن</span>
 </div>
 <div style="font-size:12.5px; color:var(--text-secondary); line-height:1.8;">
 <div>📍 <strong>الموقع:</strong> الشارع الرئيسي - مقابل مجمع المحلات التجارية</div>
-<div>⏰ <strong>أوقات العمل:</strong> 6:30 صباحاً حتى 3:00 فجراً يومياً</div>
-<div>📞 <strong>واتساب والطلبات:</strong> <span class="num-font">0790155906</span></div>
+<div>⏰ <strong>أوقات العمل:</strong> <span id="hoursBranch0">6:30 صباحاً حتى 3:00 فجراً يومياً</span></div>
+<div>📞 <strong>واتساب والطلبات:</strong> <span class="num-font" id="phoneBranch0">0790155906</span></div>
 </div>
-<a href="https://wa.me/962790155906" target="_blank" class="btn-brand-solid" style="width:100%; margin-top:12px;">محادثة الفرع عبر واتساب</a>
+<a href="https://wa.me/962790155906" target="_blank" id="waLinkBranch0" class="btn-brand-solid" style="width:100%; margin-top:12px;">محادثة الفرع عبر واتساب</a>
 </div>
 <div class="clean-card">
 <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
 <span style="font-size:16px; font-weight:900; color:var(--brand-gold);">فرع سما الروسان</span>
-<span class="header-hours-badge">مفتوح الآن</span>
+<span class="header-hours-badge" id="badgeOpenBranch1">مفتوح الآن</span>
 </div>
 <div style="font-size:12.5px; color:var(--text-secondary); line-height:1.8;">
 <div>📍 <strong>الموقع:</strong> الشارع العام - بجانب مبنى البلدية</div>
-<div>⏰ <strong>أوقات العمل:</strong> 4:00 عصراً حتى 3:00 فجراً يومياً</div>
-<div>📞 <strong>واتساب والطلبات:</strong> <span class="num-font">0790155906</span></div>
+<div>⏰ <strong>أوقات العمل:</strong> <span id="hoursBranch1">4:00 عصراً حتى 3:00 فجراً يومياً</span></div>
+<div>📞 <strong>واتساب والطلبات:</strong> <span class="num-font" id="phoneBranch1">0790155906</span></div>
 </div>
-<a href="https://wa.me/962790155906" target="_blank" class="btn-brand-solid" style="width:100%; margin-top:12px;">محادثة الفرع عبر واتساب</a>
+<a href="https://wa.me/962790155906" target="_blank" id="waLinkBranch1" class="btn-brand-solid" style="width:100%; margin-top:12px;">محادثة الفرع عبر واتساب</a>
 </div>
 </div>
 </div>
@@ -182,11 +197,15 @@
 <div class="clean-title">خطوات الاستفادة والطلب الذكي</div>
 <div style="padding: 10px 0; border-bottom: 1px solid var(--border-subtle);">
 <div style="font-size:14px; font-weight:900; color:var(--brand-gold); margin-bottom:4px;">1. تصفح المنيو والتخصيص</div>
-<div style="font-size:12px; color:var(--text-secondary);">اختر مشروبك أو تحليتك، وحدد الحجم والنكهات والإضافات بسهولة.</div>
+<div style="font-size:12px; color:var(--text-secondary);">اختر مشروبك أو حلوياتك المفضلة، وحدد الحجم والنكهات والإضافات بسهولة.</div>
+</div>
+<div style="padding: 10px 0; border-bottom: 1px solid var(--border-subtle);">
+<div style="font-size:14px; font-weight:900; color:var(--brand-gold); margin-bottom:4px;">2. تأكيد وتتبع الطلب اللحظي</div>
+<div style="font-size:12px; color:var(--text-secondary);">حدد موقعك وطريقة الاستلام، وتابع حالة تجهيز طلبك وتوصيله خطوة بخطوة.</div>
 </div>
 <div style="padding: 10px 0;">
-<div style="font-size:14px; font-weight:900; color:var(--brand-gold); margin-bottom:4px;">2. تأكيد الطلب الفوري</div>
-<div style="font-size:12px; color:var(--text-secondary);">اختر الفرع، وحدد العنوان أو الاستلام من الفرع، ثم أرسل طلبك مباشرة عبر واتساب.</div>
+<div style="font-size:14px; font-weight:900; color:var(--brand-gold); margin-bottom:4px;">3. تجميع الأوسمة ونقاط الولاء</div>
+<div style="font-size:12px; color:var(--text-secondary);">مع كل طلب مؤكد تكسب نقاط ولاء وشارات حصرية تضاف لملفك الشخصي.</div>
 </div>
 </div>
 </div>
@@ -216,7 +235,7 @@
 </div>
 </div>
 </div>
-<!-- شاشة تفاصيل وتخصيص الصنف -->
+<!-- شاشة تخصيص الصنف وإضافته للسلة -->
 <div id="screen-product" class="app-screen">
 <header class="header">
 <button class="header-btn" onclick="navigateRouter('screen-home')" aria-label="عودة">✕</button>
@@ -283,6 +302,14 @@
 </div>
 </div>
 <div class="clean-card">
+<div class="clean-title">كوبون الخصم</div>
+<div style="display:flex; gap:8px;">
+<input type="text" class="ios-input-field num-font" id="cartCouponCodeInput" placeholder="أدخل الكوبون (مثل: CORNER10)" style="text-transform:uppercase;">
+<button class="btn-brand-solid" style="padding:0 16px;" onclick="applyUserCouponDiscount()">تطبيق</button>
+</div>
+<div id="couponAppliedBadge" style="display:none; font-size:12px; color:var(--status-success); font-weight:800; margin-top:6px;"></div>
+</div>
+<div class="clean-card">
 <div class="clean-title">بيانات العميل</div>
 <div style="display:flex; flex-direction:column; gap:8px;">
 <input type="text" class="ios-input-field" id="cartClientName" placeholder="الاسم الكريم">
@@ -290,10 +317,18 @@
 </div>
 </div>
 <div class="clean-card">
+<div class="clean-title">طريقة الدفع</div>
+<div id="cartPaymentMethodsContainer" style="display:flex; flex-direction:column; gap:8px;"></div>
+</div>
+<div class="clean-card">
 <div class="clean-title">ملخص الحساب</div>
 <div style="display:flex; justify-content:space-between; font-size:12.5px; color:var(--text-secondary); margin-bottom:6px;">
 <span>مجموع الأصناف</span>
 <span class="num-font" id="sumSubtotal">0.00 د.أ</span>
+</div>
+<div style="display:flex; justify-content:space-between; font-size:12.5px; color:var(--status-success); margin-bottom:6px; display:none;" id="sumDiscountRow">
+<span>خصم الكوبون</span>
+<span class="num-font" id="sumDiscount">-0.00 د.أ</span>
 </div>
 <div style="display:flex; justify-content:space-between; font-size:12.5px; color:var(--text-secondary); margin-bottom:8px;" id="sumDeliveryRow">
 <span>أجور التوصيل</span>
@@ -305,7 +340,7 @@
 </div>
 </div>
 <button class="btn-brand-solid" style="width:100%; padding:13px;" onclick="dispatchOrderAndInitiateTracking()">
-تأكيد وإرسال الطلب عبر واتساب
+تأكيد وإرسال الطلب أونلاين عبر واتساب
 </button>
 </div>
 </div>
@@ -321,7 +356,7 @@
 <div style="font-size:16px; font-weight:900; margin-bottom:12px; color:var(--brand-gold);">تسجيل دخول الإدارة</div>
 <div style="display:flex; flex-direction:column; gap:10px; margin-bottom:12px;">
 <select class="ios-input-field" id="adminUserField" style="text-align:center; font-weight:700;">
-<option value="omar">المطور (صلاحيات كاملة)</option>
+<option value="omar">المطور (المهندس عمر عبيدات)</option>
 <option value="corner">إدارة المحل</option>
 </select>
 <input type="password" class="ios-input-field num-font" id="adminPassField" placeholder="رمز المرور (PIN)" style="text-align:center;">
@@ -330,7 +365,7 @@
 </div>
 </div>
 </div>
-<!-- لوحة تحكم الإدارة (The 6 Pillars Admin Grid المتطابقة مع صورتك 100%) -->
+<!-- لوحة تحكم الإدارة (The 6 Pillars Admin Grid المتطابقة 100%) -->
 <div id="screen-admin-dashboard" class="app-screen">
 <header class="header">
 <div style="font-weight:900; font-size:15px; color:var(--brand-gold);">COFFEE CORNER — Admin</div>
@@ -390,7 +425,7 @@
 </div>
 <div>
 <div class="admin-hub-card-title">الزبائن</div>
-<div class="admin-hub-card-sub">الطلبات والتفضيلات والولاء</div>
+<div class="admin-hub-card-sub">الطلبات والمراسلة والحظر</div>
 </div>
 </div>
 <!-- 6. التقارير -->
@@ -403,7 +438,7 @@
 <div class="admin-hub-card-sub">المبيعات والتحويل والأرباح</div>
 </div>
 </div>
-<!-- 7. الثيمات والمظهر (قسم جديد بنفس النمط) -->
+<!-- 7. الثيمات والمظهر -->
 <div class="admin-hub-card" onclick="openAdminSubSection('themes')">
 <div class="admin-hub-icon-wrap">
 <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
@@ -413,62 +448,108 @@
 <div class="admin-hub-card-sub">ألوان الموقع والستايل</div>
 </div>
 </div>
-<!-- 8. الشعار والهوية (قسم جديد بنفس النمط) -->
+<!-- 8. الشعار والهوية والمطور -->
 <div class="admin-hub-card" onclick="openAdminSubSection('identity')">
 <div class="admin-hub-icon-wrap">
 <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
 </div>
 <div>
 <div class="admin-hub-card-title">الشعار والترويسة</div>
-<div class="admin-hub-card-sub">رفع الشعار من الهاتف</div>
+<div class="admin-hub-card-sub">رفع الشعار وصورة المطور</div>
+</div>
+</div>
+<!-- 9. إعدادات الفروع والدفع والتوصيل -->
+<div class="admin-hub-card" onclick="openAdminSubSection('storeSettings')">
+<div class="admin-hub-icon-wrap">
+<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"></polygon></svg>
+</div>
+<div>
+<div class="admin-hub-card-title">الفروع والتوصيل</div>
+<div class="admin-hub-card-sub">أرقام الواتساب ومناطق التوصيل</div>
 </div>
 </div>
 </div>
 </div>
 <!-- تفاصيل الأقسام الفرعية للأدمن -->
+<!-- 1. إدارة الطلبات الحية مع خيار الإلغاء وسبب الإلغاء -->
 <div id="subView-orders" class="admin-sub-view">
 <button class="btn-brand-outline" style="margin-bottom:12px;" onclick="backToAdminMainHub()">← العودة للوحة الرئيسية</button>
 <div class="clean-card">
-<div class="clean-title">الطلبات الواردة الحية</div>
+<div class="clean-title">الطلبات الواردة الحية (المزامنة السحابية)</div>
 <div id="adminLiveOrdersContainer"></div>
 </div>
 </div>
+<!-- 2. المنتجات والمخزون -->
 <div id="subView-products" class="admin-sub-view">
 <button class="btn-brand-outline" style="margin-bottom:12px;" onclick="backToAdminMainHub()">← العودة للوحة الرئيسية</button>
 <div class="clean-card">
 <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
 <div class="clean-title" style="margin-bottom:0;">المنتجات والمخزون</div>
-<button class="btn-brand-solid" style="padding:6px 14px; font-size:11px;" onclick="openProductEditorModal(null)">+ إضافة صنف</button>
+<button class="btn-brand-solid" style="padding:6px 14px; font-size:11px;" onclick="openProductEditorModal(null)">+ إضافة صنف جديد</button>
 </div>
 <div id="adminProductsControlList"></div>
 </div>
 </div>
+<!-- 3. العروض والكوبونات -->
 <div id="subView-coupons" class="admin-sub-view">
 <button class="btn-brand-outline" style="margin-bottom:12px;" onclick="backToAdminMainHub()">← العودة للوحة الرئيسية</button>
 <div class="clean-card">
-<div class="clean-title">العروض والكوبونات</div>
-<div style="font-size:12.5px; color:var(--text-secondary);">كوبون CORNER10 مفعل تلقائياً بنسبة خصم 10%.</div>
+<div class="clean-title">إضافة عرض حصري جديد</div>
+<div style="display:flex; flex-direction:column; gap:8px; margin-bottom:14px;">
+<input type="text" class="ios-input-field" id="newOfferTitleInput" placeholder="عنوان العرض">
+<textarea class="ios-textarea-field" id="newOfferDescInput" placeholder="تفاصيل العرض..."></textarea>
+<button class="btn-brand-solid" onclick="saveNewOfferFromAdmin()">نشر العرض فوراً للزبائن</button>
+</div>
+<div class="clean-title">العروض النشطة حالياً</div>
+<div id="adminOffersListContainer"></div>
+</div>
+<div class="clean-card">
+<div class="clean-title">إضافة كوبون خصم جديد</div>
+<div style="display:flex; flex-direction:column; gap:8px; margin-bottom:14px;">
+<input type="text" class="ios-input-field num-font" id="newCouponCodeInput" placeholder="رمز الكوبون (مثال: CORNER15)" style="text-transform:uppercase;">
+<input type="number" class="ios-input-field num-font" id="newCouponPercentInput" placeholder="نسبة الخصم % (مثال: 15)">
+<button class="btn-brand-solid" onclick="saveNewCouponFromAdmin()">تفعيل الكوبون سحابياً</button>
+</div>
+<div class="clean-title">الكوبونات الفعالة</div>
+<div id="adminCouponsListContainer"></div>
 </div>
 </div>
+<!-- 4. الولاء والمكافآت -->
 <div id="subView-loyalty" class="admin-sub-view">
 <button class="btn-brand-outline" style="margin-bottom:12px;" onclick="backToAdminMainHub()">← العودة للوحة الرئيسية</button>
 <div class="clean-card">
-<div class="clean-title">الولاء والمكافآت</div>
-<div style="font-size:12.5px; color:var(--text-secondary);">نظام النقاط يحتسب نقطة لكل دينار مستهلك.</div>
+<div class="clean-title">نظام الشارات ونقاط الولاء</div>
+<p style="font-size:12px; color:var(--text-secondary); line-height:1.6; margin-bottom:12px;">
+<strong>الأمان المعتمد:</strong> لا يتم احتساب أي نقطة ولاء أو منح أي وسام للزبون إلا بعد أن يقوم الأدمن بتأكيد استلام وتجهيز الطلب واعتماده كمكتمل منعاً للتحايل.
+</p>
+<div class="clean-title">إضافة شارة ولاء جديدة تلقائياً</div>
+<div style="display:flex; flex-direction:column; gap:8px;">
+<input type="text" class="ios-input-field" id="newBadgeNameInput" placeholder="اسم الشارة (مثال: متذوق الكريب)">
+<input type="text" class="ios-input-field" id="newBadgeIconInput" placeholder="رمز الأيقونة التعبيري (مثل: 🥞 أو ☕)">
+<button class="btn-brand-solid" onclick="saveNewBadgeDefinition()">إضافة الشارة للمنظومة</button>
 </div>
 </div>
+</div>
+<!-- 5. الزبائن (المراسلة المباشرة والحظر) -->
 <div id="subView-customers" class="admin-sub-view">
 <button class="btn-brand-outline" style="margin-bottom:12px;" onclick="backToAdminMainHub()">← العودة للوحة الرئيسية</button>
 <div class="clean-card">
-<div class="clean-title">قائمة الزبائن النشطين</div>
-<div style="font-size:12.5px; color:var(--text-secondary);">بيانات العملاء وإحصائيات الطلبات التراكمية.</div>
+<div class="clean-title">إرسال رسالة رسمية لزبون (إشعار لا يمكن الرد عليه)</div>
+<div style="display:flex; flex-direction:column; gap:8px; margin-bottom:14px;">
+<input type="tel" class="ios-input-field num-font" id="msgTargetPhoneInput" placeholder="رقم هاتف الزبون (مثال: 0790155906)">
+<textarea class="ios-textarea-field" id="msgContentAdminInput" placeholder="نص الرسالة أو الهدية من الإدارة..."></textarea>
+<button class="btn-brand-solid" onclick="sendAdminNotificationToCustomer()">إرسال الإشعار فوراً للزبون</button>
+</div>
+<div class="clean-title">سجل الزبائن وإدارة الحظر</div>
+<div id="adminCustomersListContainer"></div>
 </div>
 </div>
+<!-- 6. التقارير والإحصائيات -->
 <div id="subView-reports" class="admin-sub-view">
 <button class="btn-brand-outline" style="margin-bottom:12px;" onclick="backToAdminMainHub()">← العودة للوحة الرئيسية</button>
 <div class="clean-card">
 <div class="clean-title">التقارير الحية</div>
-<div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+<div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:12px;">
 <div style="background:var(--bg-surface); padding:10px; border-radius:var(--radius-sm); border:1px solid var(--border-subtle);">
 <div style="font-size:11px; color:var(--text-secondary);">صافي المبيعات</div>
 <div class="num-font" style="font-size:17px; font-weight:900; color:var(--brand-gold);" id="repNetRevenue">0.00 د.أ</div>
@@ -478,21 +559,25 @@
 <div class="num-font" style="font-size:17px; font-weight:900; color:var(--brand-gold);" id="repAvgOrderValue">0.00 د.أ</div>
 </div>
 </div>
+<div class="clean-title">رسم بياني لنشاط المبيعات</div>
+<canvas id="adminSalesAnalyticsCanvas" style="width:100%; height:160px; background:var(--bg-surface); border-radius:var(--radius-sm); border:1px solid var(--border-subtle);"></canvas>
 </div>
 </div>
+<!-- 7. الثيمات والمظهر -->
 <div id="subView-themes" class="admin-sub-view">
 <button class="btn-brand-outline" style="margin-bottom:12px;" onclick="backToAdminMainHub()">← العودة للوحة الرئيسية</button>
 <div class="clean-card">
-<div class="clean-title">تخصيص ثيم وألوان الموقع</div>
+<div class="clean-title">تخصيص نمط وألوان الموقع</div>
 <div style="display:flex; flex-direction:column; gap:10px;">
 <div>
-<span style="font-size:12px; font-weight:700;">اللون الذهبي الرئيسي للموقع:</span>
+<span style="font-size:12px; font-weight:700;">اللون الرئيسي للعلامة:</span>
 <input type="color" id="themeGoldColorPicker" style="width:100%; height:40px; border-radius:6px; cursor:pointer; margin-top:4px;" value="#c59b63">
 </div>
-<button class="btn-brand-solid" onclick="applyAndSaveCustomTheme()">حفظ وتثبيت الثيم</button>
+<button class="btn-brand-solid" onclick="applyAndSaveCustomTheme()">حفظ وتثبيت الثيم سحابياً</button>
 </div>
 </div>
 </div>
+<!-- 8. الشعار والهوية -->
 <div id="subView-identity" class="admin-sub-view">
 <button class="btn-brand-outline" style="margin-bottom:12px;" onclick="backToAdminMainHub()">← العودة للوحة الرئيسية</button>
 <div class="clean-card">
@@ -500,7 +585,7 @@
 <div style="display:flex; flex-direction:column; gap:14px;">
 <div>
 <div style="font-size:13px; font-weight:800; margin-bottom:4px;">1. شعار الموقع بالترويسة</div>
-<div style="display:flex; align-items:center; gap:10px; margin-bottom:8px;">
+<div style="display:flex; align-items:center; gap:10px;">
 <img src="" id="adminLogoPreviewImg" style="width:50px; height:50px; border-radius:50%; object-fit:cover; border:1px solid var(--brand-gold);">
 <input type="file" id="uploadHeaderLogoFile" accept="image/*" style="display:none;" onchange="handleHeaderLogoUpload(event)">
 <button class="btn-brand-outline" onclick="document.getElementById('uploadHeaderLogoFile').click()">رفع شعار من الهاتف 📷</button>
@@ -516,6 +601,33 @@
 </div>
 </div>
 </div>
+</div>
+</div>
+<!-- 9. إعدادات الفروع والتوصيل والدفع -->
+<div id="subView-storeSettings" class="admin-sub-view">
+<button class="btn-brand-outline" style="margin-bottom:12px;" onclick="backToAdminMainHub()">← العودة للوحة الرئيسية</button>
+<div class="clean-card">
+<div class="clean-title">أرقام واتساب الفروع لتلقي الطلبات</div>
+<div style="display:flex; flex-direction:column; gap:8px; margin-bottom:14px;">
+<div>
+<span style="font-size:11px; font-weight:700;">واتساب فرع كفرسوم:</span>
+<input type="text" class="ios-input-field num-font" id="adminBranch0PhoneInput" placeholder="962790155906">
+</div>
+<div>
+<span style="font-size:11px; font-weight:700;">واتساب فرع سما الروسان:</span>
+<input type="text" class="ios-input-field num-font" id="adminBranch1PhoneInput" placeholder="962790155906">
+</div>
+</div>
+<div class="clean-title">إضافة / تعديل سعر توصيل منطقة</div>
+<div style="display:flex; gap:8px; margin-bottom:8px;">
+<select class="ios-input-field" id="adminTownBranchSelect">
+<option value="0">فرع كفرسوم</option>
+<option value="1">فرع سما الروسان</option>
+</select>
+<input type="text" class="ios-input-field" id="adminTownNameInput" placeholder="اسم المنطقة">
+<input type="number" step="0.25" class="ios-input-field num-font" id="adminTownFeeInput" placeholder="السعر" style="width:85px;">
+</div>
+<button class="btn-brand-solid" style="width:100%;" onclick="saveAdminTownRateRecord()">حفظ المنطقة وسعر التوصيل</button>
 </div>
 </div>
 </div>
@@ -574,6 +686,40 @@
 <input type="checkbox" id="editProdAvailableToggle" checked style="width:20px; height:20px;">
 </div>
 <button class="btn-brand-solid" style="margin-top:6px;" onclick="saveProductEditorRecord()">حفظ وتحديث الصنف فوراً</button>
+</div>
+</div>
+</div>
+</div>
+<!-- نافذة تعديل الملف الشخصي للزبون مع تاريخ الميلاد والصورة الشخصية -->
+<div id="screen-edit-profile" class="app-screen">
+<header class="header">
+<button class="header-btn" onclick="navigateRouter('screen-user-profile')" aria-label="عودة">✕</button>
+<div style="font-weight:900; font-size:15px; color:var(--brand-gold);">تعديل ملفي الشخصي</div>
+<div style="width:38px;"></div>
+</header>
+<div class="scrollable-content">
+<div class="clean-card">
+<div style="text-align:center; margin-bottom:14px;">
+<img src="" id="editProfilePicPreview" style="width:85px; height:85px; border-radius:50%; object-fit:cover; border:2px solid var(--brand-gold); margin-bottom:8px;">
+<div>
+<input type="file" id="uploadUserAvatarFile" accept="image/*" style="display:none;" onchange="handleUserAvatarUpload(event)">
+<button class="btn-brand-outline" onclick="document.getElementById('uploadUserAvatarFile').click()">تغيير الصورة الشخصية 📷</button>
+</div>
+</div>
+<div style="display:flex; flex-direction:column; gap:10px;">
+<div>
+<span style="font-size:12px; font-weight:700;">الاسم الكامل:</span>
+<input type="text" class="ios-input-field" id="inputProfName" placeholder="اسمك الكريم">
+</div>
+<div>
+<span style="font-size:12px; font-weight:700;">تاريخ الميلاد (لهدايا وتنبيهات أعياد الميلاد 🎁):</span>
+<input type="date" class="ios-input-field num-font" id="inputProfBirthday">
+</div>
+<div>
+<span style="font-size:12px; font-weight:700;">نبذة عني (Bio):</span>
+<textarea class="ios-textarea-field" id="inputProfBio" placeholder="اكتب نبذة لطيفة تظهر بملفك..."></textarea>
+</div>
+<button class="btn-brand-solid" style="margin-top:6px;" onclick="saveUserProfileData()">حفظ وتثبيت الملف الشخصي</button>
 </div>
 </div>
 </div>
@@ -642,7 +788,7 @@
 </div>
 <div>
 <div class="sidebar-item-title">حسابي والشارات</div>
-<div class="sidebar-item-sub">النقاط والإنجازات</div>
+<div class="sidebar-item-sub">النقاط والإنجازات ومشاركاتي</div>
 </div>
 </div>
 <div class="sidebar-arrow-chevron">❮</div>
