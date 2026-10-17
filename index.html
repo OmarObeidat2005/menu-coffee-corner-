@@ -57,10 +57,10 @@
 <div class="cat-chip" onclick="selectMenuCat('ستيم ساخن')">ستيم ساخن</div>
 <div class="cat-chip" onclick="selectMenuCat('آيس كريم')">آيس كريم</div>
 </div>
-<!-- شبكة المنتجات -->
+<!-- شبكة المنتجات الحقيقية المباشرة -->
 <div class="product-grid" id="menuGridContainer"></div>
 </div>
-<!-- 2. شاشة استبدال النقاط (المكافآت) -->
+<!-- 2. شاشة استبدال نقاطي (متجر المكافآت) -->
 <div id="screen-rewards" class="app-screen">
 <header class="header">
 <button class="header-btn" onclick="navigateRouter('screen-home')" aria-label="عودة">✕</button>
@@ -97,7 +97,7 @@
 <div id="activeOrderTrackingView"></div>
 </div>
 </div>
-<!-- 5. شاشة مركز الإشعارات -->
+<!-- 5. شاشة مركز الإشعارات والتنبيهات -->
 <div id="screen-notifications" class="app-screen">
 <header class="header">
 <button class="header-btn" onclick="navigateRouter('screen-home')" aria-label="عودة">✕</button>
@@ -108,7 +108,7 @@
 <div id="customerNotificationsList"></div>
 </div>
 </div>
-<!-- 6. شاشة حسابي والشارات -->
+<!-- 6. شاشة حسابي والشارات (Instagram Passport) -->
 <div id="screen-user-profile" class="app-screen">
 <header class="header">
 <button class="header-btn" onclick="navigateRouter('screen-home')" aria-label="عودة">✕</button>
@@ -142,7 +142,7 @@
 <div class="ig-bio-desc" id="profBioDesc">محب للقهوة والمذاق الرفيع في كافيه كورنر.</div>
 <div style="font-size:11.5px; color:var(--brand-gold); margin-top:4px;" id="profBirthdayText">🎂 تاريخ الميلاد: غير محدد</div>
 </div>
-<div style="display:flex; gap:8px; margin-bottom:8px;">
+<div style="display:flex; gap:8px; margin-top:10px; margin-bottom:8px;">
 <button class="btn-brand-solid" style="flex:1; padding:8px;" onclick="navigateRouter('screen-rewards')">استبدال نقاطي 🎁</button>
 <button class="btn-brand-outline" style="flex:1; padding:8px;" onclick="openEditProfileModal()">تعديل ملفي ✎</button>
 </div>
@@ -157,7 +157,7 @@
 </div>
 </div>
 </div>
-<!-- 7. شاشة شاركنا بصورة -->
+<!-- 7. شاشة مجتمع شاركنا بصورة -->
 <div id="screen-moments" class="app-screen">
 <header class="header">
 <button class="header-btn" onclick="navigateRouter('screen-home')" aria-label="عودة">✕</button>
@@ -227,7 +227,7 @@
 </div>
 </div>
 </div>
-<!-- 10. شاشة المطور -->
+<!-- 10. شاشة المطور المتطورة (COFFEE CORNER Developer Hub) -->
 <div id="screen-developer" class="app-screen">
 <header class="header" style="background: rgba(8, 13, 22, 0.95); border-bottom: 1px solid #24364A;">
 <button class="header-btn" onclick="navigateRouter('screen-home')" aria-label="عودة" style="background:#101A29; border-color:#24364A; color:#F4F7FB;">✕</button>
@@ -245,17 +245,40 @@
 <div class="dev-role-badge">Telecommunications Engineer & Developer</div>
 <div class="dev-slogan-quote">“Built with logic. Designed for people.”</div>
 <p class="dev-bio-paragraph">
-مهندس اتصالات ومطور برمجيات يجمع بين التفكير الهندسي الدقيق للشبكات وهندسة النظم وتطوير المنظومات الرقمية الموزعة.
+مهندس اتصالات ومطور برمجيات يجمع بين التفكير الهندسي الدقيق للشبكات وهندسة النظم وتطوير المنظومات الرقمية الموزعة. يركز هذا المشروع على تقديم تجربة طلبات ذكية وسريعة دون تعقيد تشغيلي.
 </p>
 <div class="dev-badges-container">
 <span class="dev-skill-pill">📡 Telecommunications</span>
 <span class="dev-skill-pill">🌐 Network Architectures</span>
 <span class="dev-skill-pill">⚡ Software Systems</span>
 <span class="dev-skill-pill">🗄️ Database Design</span>
+<span class="dev-skill-pill">📱 Responsive Web Apps</span>
 </div>
 <div style="display:flex; gap:8px; width:100%;">
 <a href="https://wa.me/962796433698" target="_blank" class="dev-btn-primary">تواصل مع المطوّر</a>
 <a href="https://www.instagram.com/o_yd" target="_blank" class="dev-btn-secondary">Instagram</a>
+</div>
+</div>
+<div class="dev-tech-card">
+<div class="dev-section-title">المشروع المميز | Featured Project</div>
+<div style="font-size:14px; font-weight:900; color:#F4F7FB; margin-bottom:4px;">منظومة COFFEE CORNER الرقمية</div>
+<p style="font-size:12px; color:#9BAEC3; line-height:1.6; margin-bottom:10px;">
+تطبيق طلبات سحابي متكامل يخدم فرعي كفرسوم وسما الروسان. مبني بـ Vanilla JS و CSS Tokens ومعمارية هجينة مع Cloud Firestore.
+</p>
+<div style="display:flex; justify-content:space-between; align-items:center; border-top:1px solid #24364A; padding-top:8px;">
+<span style="font-size:11px; color:#10B981; font-weight:800;">● النظام في وضع التشغيل الكامل</span>
+<button class="btn-brand-outline" style="padding:4px 10px; font-size:11px; border-color:#55DDF3; color:#55DDF3;" onclick="navigateRouter('screen-home')">فتح المنيو ⎘</button>
+</div>
+</div>
+<div class="dev-tech-card">
+<div class="dev-section-title">الخبرات والمجالات الهندسية | Engineering</div>
+<div class="dev-expertise-item" onclick="toggleExpertiseCard(this)">
+<div class="dev-expertise-top"><span>📡 هندسة الاتصالات والشبكات</span><span>+</span></div>
+<div class="dev-expertise-detail">تحليل مسارات الإشارة وبروتوكولات نقل البيانات ونظم التوجيه المتقدمة.</div>
+</div>
+<div class="dev-expertise-item" onclick="toggleExpertiseCard(this)">
+<div class="dev-expertise-top"><span>💻 تطوير الأنظمة والويب</span><span>+</span></div>
+<div class="dev-expertise-detail">بناء واجهات متجاوبة وخفيفة ومعمارية نظم سحابية عالية الاستقرار.</div>
 </div>
 </div>
 <div class="dev-tech-card">
@@ -712,6 +735,26 @@
 <textarea class="ios-textarea-field" id="inputProfBio" placeholder="اكتب نبذة لطيفة..."></textarea>
 <button class="btn-brand-solid" onclick="saveUserProfileData()">حفظ وتحديث الملف</button>
 </div>
+</div>
+</div>
+</div>
+<!-- نافذة إضافة مشاركة صورة جديدة -->
+<div id="modalNewMoment" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.7); z-index:4000; align-items:center; justify-content:center; padding:16px;">
+<div class="clean-card" style="width:100%; max-width:400px; max-height:90vh; overflow-y:auto;">
+<div class="clean-title">
+<span>مشاركة تجربة جديدة 📷</span>
+<button style="background:none; border:none; font-size:16px; cursor:pointer;" onclick="closeNewMomentModal()">✕</button>
+</div>
+<div style="display:flex; flex-direction:column; gap:10px;">
+<div>
+<input type="file" id="momentFileInput" accept="image/*" style="display:none;" onchange="handleMomentImageSelect(event)">
+<button type="button" class="btn-brand-outline" style="width:100%;" onclick="document.getElementById('momentFileInput').click()">اختيار صورة من هاتفك 📷</button>
+</div>
+<div id="momentPreviewBox" style="display:none; width:100%; background:#000; border-radius:var(--radius-sm); overflow:hidden; text-align:center;">
+<img src="" id="momentPreviewImg" style="width:100%; max-height:240px; object-fit:contain;">
+</div>
+<textarea class="ios-textarea-field" id="momentTextInput" placeholder="اكتب رأيك أو تعليقك اللطيف حول تجربتك..."></textarea>
+<button class="btn-brand-solid" onclick="publishCustomerMoment()">نشر المشاركة للجميع</button>
 </div>
 </div>
 </div>
