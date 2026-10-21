@@ -4243,3 +4243,245 @@ if (document.readyState === 'loading') {
 </script>
 </body>
 </html>
+/* COFFEE CORNER — PATCH v8 : يوضع قبل </body> بعد السكربت الأساسي */
+(function(){
+const $=id=>document.getElementById(id);
+const esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const toast=m=>window.showToastMsg(m);
+const wait=f=>{let n=0;const i=setInterval(()=>{if(f()||++n>80)clearInterval(i)},500)};
+
+/* ---------- CSS: صور مربعة + دارك أسود متغير مع الثيم ---------- */
+const st=document.createElement('style');
+st.textContent=`
+.product-img{height:auto!important;aspect-ratio:1/1;object-fit:cover;object-position:center}
+#psHeroImg{object-fit:cover;object-position:center}
+body:not(.dark-mode){--bg-elevated:color-mix(in srgb,var(--brand-gold) 11%,#fff);--border-subtle:color-mix(in srgb,var(--brand-gold) 18%,#fff)}
+body.dark-mode{--bg-main:#000;--bg-surface:#080808;--bg-card:#0f0f0f;--bg-elevated:#171717;--border-subtle:color-mix(in srgb,var(--brand-gold) 18%,#1a1a1a);--text-primary:#f5f5f5;--text-secondary:#a3a3a3;--text-dim:#6b6b6b}
+body.dark-mode .app-container{background:#000}
+.cc-row{display:flex;gap:6px;margin-bottom:6px;align-items:center}
+.cc-pick{max-height:230px;overflow-y:auto;border:1px solid var(--border-subtle);border-radius:var(--radius-sm);padding:4px;margin:6px 0}
+.cc-pick label{display:flex;align-items:center;justify-content:space-between;padding:7px 8px;font-size:12px;border-bottom:1px dashed var(--border-subtle);cursor:pointer}`;
+document.head.appendChild(st);
+
+/* ---------- الثيمات ---------- */
+const TH={gold:'#c59b63',blue:'#2563eb',emerald:'#059669',amber:'#d97706',slate:'#64748b',violet:'#7c3aed',rose:'#e11d48',ocean:'#0891b2',sunset:'#ea580c',royal:'#4f46e5',mint:'#0d9488'};
+window.applyAdminThemePreset=function(p,push=true){
+  const c=TH[p]||TH.gold,r=document.documentElement.style;
+  r.setProperty('--brand-gold',c);r.setProperty('--brand-gold-hover',c);
+  r.setProperty('--brand-gold-glow',c+'29');r.setProperty('--border-accent',c+'59');
+  safeSet('cc_theme_preset',p);
+  if(push&&activeSessionUser){pushStoreSettingsToCloud();toast('تم تفعيل الثيم للجميع');}
+};
+const tl=document.querySelector('#subView-themes .clean-card > div[style*="margin-bottom:16px"]');
+[['violet','البنفسجي الملكي (Violet)'],['rose','الوردي الراقي (Rose)'],['ocean','المحيط الهادئ (Ocean)'],['sunset','غروب برتقالي (Sunset)'],['royal','النيلي الفاخر (Royal)'],['mint','النعناع (Mint)']].forEach(([k,t])=>{
+  const b=document.createElement('button');b.className='btn-brand-outline';b.style.cssText='width:100%;justify-content:flex-start';b.textContent=t;b.onclick=()=>applyAdminThemePreset(k);tl&&tl.appendChild(b);
+});
+applyAdminThemePreset(safeGet('cc_theme_preset','gold'),false);
+
+/* ---------- النكهات (وافل/كريب/بان كيك/كنافة) ---------- */
+const sv=safeGet('cc_sauces',null);if(Array.isArray(sv)&&sv.length)dessertSaucesCatalog=sv;
+window.pushStoreSettingsToCloud=function(){
+  if(!cloudDb)return;
+  cloudDb.collection('settings').doc('store_config').set({brandAndDev:brandAndDevSettings,branches:branchesData,paymentMethods:customPaymentMethods,redeemCatalog:redeemCatalog,sauces:dessertSaucesCatalog,themePreset:safeGet('cc_theme_preset','gold'),fontName:safeGet('cc_font_name','Tajawal'),updatedAt:Date.now()}).catch(console.warn);
+};
+const dash=document.querySelector('#screen-admin-dashboard .scrollable-content');
+function sub(id,html){const d=document.createElement('div');d.id='subView-'+id;d.className='admin-sub-view';d.innerHTML='<button class="btn-brand-outline" style="margin-bottom:10px" onclick="backToAdminMainHub()">← العودة للوحة الرئيسية</button>'+html;dash.appendChild(d)}
+const grid=document.querySelector('.admin-hub-grid'),lastCard=grid.lastElementChild;
+function hubCard(key,t,s,svg,badge){const d=document.createElement('div');d.className='admin-hub-card';d.onclick=()=>openAdminSubSection(key);
+  d.innerHTML=(badge?`<span class="admin-card-badge num-font" id="${badge}">0</span>`:'')+`<div class="admin-hub-icon-wrap"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">${svg}</svg></div><div><div class="admin-hub-card-title">${t}</div><div class="admin-hub-card-sub">${s}</div></div>`;grid.insertBefore(d,lastCard)}
+hubCard('flavors','النكهات وأسعارها','وافل، كريب، بان كيك، كنافة','<path d="M12 2l3 7h7l-5.5 4.5L18 21l-6-4-6 4 1.5-7.5L2 9h7z"></path>');
+hubCard('complaints','الشكاوى والاقتراحات','رسائل الزبائن والرد عليها','<path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>','cmpBadge');
+sub('flavors',`<div class="clean-card"><div class="clean-title">نكهات الحلويات وأسعارها</div><div class="cc-row"><input class="ios-input-field" id="flvName" placeholder="اسم النكهة"><input type="number" step="0.05" class="ios-input-field num-font" id="flvPrice" placeholder="السعر" style="max-width:90px"><button class="btn-brand-solid" style="width:auto;padding:0 12px" onclick="addFlavor()">إضافة</button></div><div id="flvList"></div></div>`);
+sub('complaints',`<div class="clean-card"><div class="clean-title">الشكاوى والاقتراحات الواردة</div><div id="cmpAdminList"></div></div>`);
+function renderFlavors(){const el=$('flvList');if(el)el.innerHTML=dessertSaucesCatalog.map((f,i)=>`<div class="cc-row"><input class="ios-input-field" value="${esc(f.name)}" onchange="editFlavor(${i},'name',this.value)"><input type="number" step="0.05" class="ios-input-field num-font" style="max-width:90px" value="${f.price}" onchange="editFlavor(${i},'price',this.value)"><button class="btn-brand-outline" style="color:var(--status-danger);border-color:var(--status-danger)" onclick="delFlavor(${i})">✕</button></div>`).join('')}
+function saveFlavors(){safeSet('cc_sauces',dessertSaucesCatalog);pushStoreSettingsToCloud();toast('تم حفظ النكهات للجميع')}
+window.addFlavor=()=>{const n=$('flvName').value.trim(),p=parseFloat($('flvPrice').value);if(!n||isNaN(p))return toast('أدخل اسم وسعر النكهة');dessertSaucesCatalog.push({name:n,price:p});$('flvName').value='';$('flvPrice').value='';saveFlavors();renderFlavors()};
+window.editFlavor=(i,k,v)=>{dessertSaucesCatalog[i][k]=k==='price'?(parseFloat(v)||0):v.trim();saveFlavors()};
+window.delFlavor=i=>{dessertSaucesCatalog.splice(i,1);saveFlavors();renderFlavors()};
+
+/* ---------- الأصناف: كل صنف مستند مستقل (بلا حد) + أحجام وأسعار ---------- */
+window.pushProductsToCloud=function(){ /* ترحيل كامل لمرة واحدة */
+  if(!cloudDb)return;
+  const l=productsCatalog.map((p,i)=>({...p,ts:p.ts||Date.now()-i}));
+  for(let i=0;i<l.length;i+=400){const b=cloudDb.batch();l.slice(i,i+400).forEach(p=>b.set(cloudDb.collection('products').doc(p.id),p));b.commit().catch(console.warn)}
+  cloudDb.collection('catalog').doc('products_list').delete().catch(()=>{});
+};
+let SZ=[];
+const ed=$('editProdAvailableToggle').parentElement,w=document.createElement('div');
+w.id='sizesEditorWrap';
+w.innerHTML='<div style="font-size:11.5px;font-weight:700;margin-bottom:4px">الأحجام وسعر كل حجم (للمشروبات) — اتركها فارغة لسعر واحد</div><div id="szRows"></div><button type="button" class="btn-brand-outline" onclick="addSzRow()">+ إضافة حجم</button>';
+ed.parentElement.insertBefore(w,ed);
+function renderSz(){$('szRows').innerHTML=SZ.map((s,i)=>`<div class="cc-row"><input class="ios-input-field" placeholder="الحجم (صغير/وسط/كبير)" value="${esc(s.name)}" oninput="szSet(${i},'name',this.value)"><input type="number" step="0.05" class="ios-input-field num-font" placeholder="السعر" style="max-width:90px" value="${s.price==null?'':s.price}" oninput="szSet(${i},'price',this.value)"><button type="button" class="btn-brand-outline" style="color:var(--status-danger);border-color:var(--status-danger)" onclick="szDel(${i})">✕</button></div>`).join('')}
+const toggleSz=()=>{w.style.display=isDessertItem($('editProdCategory').value)?'none':'block'};
+$('editProdCategory').addEventListener('change',toggleSz);
+window.addSzRow=()=>{SZ.push({name:'',price:''});renderSz()};
+window.szSet=(i,k,v)=>{SZ[i][k]=v};
+window.szDel=i=>{SZ.splice(i,1);renderSz()};
+const _ope=window.openProductEditorModal;
+window.openProductEditorModal=function(id){_ope(id);const p=id&&productsCatalog.find(x=>x.id===id);SZ=p&&p.sizes?p.sizes.map(s=>({...s})):[];renderSz();toggleSz()};
+window.saveProductEditorRecord=function(){
+  const id=$('editProdId').value,name=$('editProdName').value.trim(),cat=$('editProdCategory').value;
+  let price=parseFloat($('editProdPrice').value);
+  const sizes=isDessertItem(cat)?[]:SZ.map(s=>({name:String(s.name).trim(),price:parseFloat(s.price)})).filter(s=>s.name&&!isNaN(s.price));
+  if(sizes.length)price=Math.min(...sizes.map(s=>s.price));
+  if(!name||isNaN(price))return toast('أدخل اسماً وسعراً صالحين');
+  const old=productsCatalog.find(x=>x.id===id);
+  const it={id:id||'p_'+Date.now(),name,category:cat,price,sizes,desc:$('editProdDesc').value.trim(),img:$('editProdImagePreview').src,isAvailable:$('editProdAvailableToggle').checked,ts:old&&old.ts?old.ts:Date.now()};
+  if(old)productsCatalog[productsCatalog.indexOf(old)]=it;else productsCatalog.unshift(it);
+  safeSet('cc_catalog',productsCatalog);renderCategoryChips();renderMenuProducts();renderAdminProductsManager();
+  if(cloudDb)cloudDb.collection('products').doc(it.id).set(it).catch(console.warn);
+  toast('تم حفظ الصنف للجميع');navigateRouter('screen-admin-dashboard');openAdminSubSection('products');
+};
+window.deleteProductFromCatalog=function(id){
+  if(!confirm('حذف الصنف نهائياً؟'))return;
+  productsCatalog=productsCatalog.filter(x=>x.id!==id);safeSet('cc_catalog',productsCatalog);
+  renderMenuProducts();renderAdminProductsManager();
+  if(cloudDb)cloudDb.collection('products').doc(id).delete().catch(console.warn);toast('تم حذف الصنف');
+};
+window.handleProductImageUpload=function(e){ /* قص مربع من المنتصف تلقائياً */
+  const f=e.target.files[0];if(!f)return;const r=new FileReader();
+  r.onload=ev=>{const im=new Image();im.onload=()=>{const s=Math.min(im.width,im.height),S=420,c=document.createElement('canvas');c.width=c.height=S;
+    c.getContext('2d').drawImage(im,(im.width-s)/2,(im.height-s)/2,s,s,0,0,S,S);$('editProdImagePreview').src=c.toDataURL('image/jpeg',.78)};im.src=ev.target.result};
+  r.readAsDataURL(f);
+};
+/* شاشة الصنف عند الزبون: أحجام مخصصة */
+const _open=window.openProductCustomizer;
+window.openProductCustomizer=function(id){
+  _open(id);const p=appState.selectedProduct;
+  if(p&&!isDessertItem(p.category)&&p.sizes&&p.sizes.length){
+    $('psSizeOptionsContainer').innerHTML=p.sizes.map((s,i)=>`<label style="display:flex;justify-content:space-between;align-items:center;padding:9px 12px;background:var(--bg-surface);border-radius:var(--radius-sm);border:1px solid var(--border-subtle);cursor:pointer"><span style="font-size:12.5px;font-weight:700">${esc(s.name)} <span class="num-font" style="color:var(--brand-gold)">(${s.price.toFixed(2)} د.أ)</span></span><input type="radio" name="prodSize" value="${i}" ${i?'':'checked'} onchange="updateProductCalculatedPrice()"></label>`).join('');
+    updateProductCalculatedPrice();
+  }
+};
+const _upd=window.updateProductCalculatedPrice;
+window.updateProductCalculatedPrice=function(){
+  const p=appState.selectedProduct;
+  if(p&&p.sizes&&p.sizes.length&&!isDessertItem(p.category)){
+    const i=document.querySelector('input[name="prodSize"]:checked'),s=p.sizes[i?+i.value:0]||p.sizes[0];
+    $('psBasePrice').innerText=s.price.toFixed(2)+' د.أ';$('psCalculatedPrice').innerText=(s.price*appState.productModalQty).toFixed(2);
+  }else _upd();
+};
+const _cf=window.confirmAddItemToCart;
+window.confirmAddItemToCart=function(){
+  const p=appState.selectedProduct;
+  if(p&&p.sizes&&p.sizes.length&&!isDessertItem(p.category)){
+    const i=document.querySelector('input[name="prodSize"]:checked'),s=p.sizes[i?+i.value:0]||p.sizes[0],q=appState.productModalQty;
+    appState.cart.push({id:'c_'+Date.now(),name:p.name,qty:q,sizeName:s.name,sauceInfo:'',unitPrice:s.price,notes:$('psNotes').value.trim(),lineTotal:s.price*q});
+    safeSet('cc_cart',appState.cart);refreshCartDockStatus();toast('تمت الإضافة للسلة');navigateRouter('screen-home');
+  }else _cf();
+};
+
+/* ---------- الشكاوى والاقتراحات (بدل طريقة الاستخدام) ---------- */
+const ui=document.querySelector('.sidebar-item-card[onclick*="screen-usage-guide"]');
+if(ui){ui.setAttribute('onclick',"checkAuthAndNavigate('screen-complaints'); closeSidebarDrawer();");ui.querySelector('.sidebar-item-title').textContent='الشكاوى والاقتراحات';ui.querySelector('svg').innerHTML='<path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>'}
+const sc=document.createElement('div');sc.id='screen-complaints';sc.className='app-screen';
+sc.innerHTML=`<header class="header"><button class="header-btn" onclick="navigateRouter('screen-home')">✕</button><div style="font-weight:900;font-size:15px;color:var(--brand-gold)">الشكاوى والاقتراحات</div><div style="width:38px"></div></header><div class="scrollable-content"><div class="clean-card"><div class="clean-title">أرسل للإدارة</div><div class="cc-row"><button class="btn-brand-outline active" id="cmpTypeC" style="flex:1" onclick="setCmpType('شكوى')">شكوى</button><button class="btn-brand-outline" id="cmpTypeS" style="flex:1" onclick="setCmpType('اقتراح')">اقتراح</button></div><textarea class="ios-textarea-field" id="cmpText" placeholder="اكتب رسالتك..." style="margin-bottom:8px"></textarea><button class="btn-brand-solid" onclick="sendComplaint()">إرسال</button></div><div class="clean-title">رسائلي وردود الإدارة</div><div id="cmpClientList"></div></div>`;
+$('appContainer').appendChild(sc);
+let cmpType='شكوى',CMP_MINE=[],CMP_ALL=[],uMine=null,uAll=null,cmpPhone=null;
+window.setCmpType=t=>{cmpType=t;$('cmpTypeC').classList.toggle('active',t==='شكوى');$('cmpTypeS').classList.toggle('active',t==='اقتراح')};
+window.sendComplaint=function(){
+  const t=$('cmpText').value.trim();if(!t)return toast('اكتب رسالتك أولاً');
+  if(!cloudDb)return toast('لا يوجد اتصال بالسحابة حالياً');
+  const u=currentAuthenticatedUser,c={id:'c_'+Date.now(),phone:u.phone,name:u.name,type:cmpType,text:t,createdAt:Date.now(),reply:'',repliedAt:null,seenAt:null};
+  cloudDb.collection('complaints').doc(c.id).set(c).then(()=>{$('cmpText').value='';toast('وصلت رسالتك للإدارة')}).catch(()=>toast('تعذر الإرسال'));
+};
+function renderCmpClient(){
+  const el=$('cmpClientList');if(!el)return;const now=Date.now();
+  const list=CMP_MINE.filter(c=>!(c.seenAt&&now-c.seenAt>72*36e5));
+  el.innerHTML=list.length?list.map(c=>`<div class="clean-card"><div style="display:flex;justify-content:space-between;margin-bottom:6px"><span class="header-hours-badge ${c.type==='شكوى'?'closed':''}">${c.type}</span><span style="font-size:10px;color:var(--text-dim)">${new Date(c.createdAt).toLocaleDateString('ar-JO')}</span></div><div style="font-size:12.5px;line-height:1.5">${esc(c.text)}</div>${c.reply?`<div style="background:var(--brand-gold-glow);border:1px solid var(--border-accent);padding:8px;border-radius:8px;margin-top:8px;font-size:12px"><strong style="color:var(--brand-gold)">ردّ الإدارة:</strong> ${esc(c.reply)}<div style="font-size:10px;color:var(--text-dim);margin-top:4px">تختفي هذه الرسالة تلقائياً بعد 72 ساعة من مشاهدة الرد</div></div>`:'<div style="font-size:11px;color:var(--text-secondary);margin-top:8px">بانتظار رد الإدارة…</div>'}</div>`).join(''):'<div style="text-align:center;padding:20px;color:var(--text-secondary);font-size:12px">لا توجد رسائل</div>';
+  if(cloudDb&&sc.classList.contains('active'))list.forEach(c=>{if(c.reply&&!c.seenAt){c.seenAt=now;cloudDb.collection('complaints').doc(c.id).update({seenAt:now}).catch(()=>{})}});
+}
+function renderCmpAdmin(){
+  const b=$('cmpBadge');if(b)b.textContent=CMP_ALL.filter(c=>!c.reply).length;
+  const el=$('cmpAdminList');if(!el)return;
+  if(document.activeElement&&String(document.activeElement.id).startsWith('rep_'))return;
+  el.innerHTML=CMP_ALL.length?CMP_ALL.map(c=>`<div class="clean-card" style="margin-bottom:8px"><div style="display:flex;justify-content:space-between"><span class="header-hours-badge ${c.type==='شكوى'?'closed':''}">${c.type}${c.reply?' • تم الرد':''}</span><span style="font-size:10px;color:var(--text-dim)">${new Date(c.createdAt).toLocaleString('ar-JO')}</span></div><div style="font-size:12.5px;font-weight:900;margin:6px 0 2px">${esc(c.name)} <span class="num-font" style="font-size:11px;color:var(--text-secondary)">${esc(c.phone)}</span></div><div style="font-size:12px;line-height:1.5;margin-bottom:8px">${esc(c.text)}</div>${c.reply?`<div style="background:var(--brand-gold-glow);padding:8px;border-radius:8px;font-size:11.5px"><strong>ردّك:</strong> ${esc(c.reply)}</div>`:`<textarea class="ios-textarea-field" id="rep_${c.id}" placeholder="اكتب ردك..." style="margin-bottom:6px"></textarea><button class="btn-brand-solid" onclick="cmpReply('${c.id}')">إرسال الرد</button>`}<button class="btn-brand-outline" style="margin-top:6px;color:var(--status-danger);border-color:var(--status-danger)" onclick="cmpDelete('${c.id}')">حذف</button></div>`).join(''):'<div style="text-align:center;padding:16px;color:var(--text-secondary);font-size:12px">لا توجد رسائل</div>';
+}
+window.cmpReply=function(id){
+  const t=$('rep_'+id).value.trim();if(!t)return toast('اكتب الرد أولاً');const c=CMP_ALL.find(x=>x.id===id);if(!c)return;
+  cloudDb.collection('complaints').doc(id).update({reply:t,repliedAt:Date.now(),seenAt:null}).then(()=>{sendNotifs([c.phone],'ردّت الإدارة على رسالتك','افتح «الشكاوى والاقتراحات» لمشاهدة الرد.');toast('تم إرسال الرد')}).catch(()=>toast('تعذر الإرسال'));
+};
+window.cmpDelete=id=>{if(confirm('حذف الرسالة؟'))cloudDb.collection('complaints').doc(id).delete()};
+
+/* ---------- الإشعارات: سحابية + ترحيب يومي + إرسال فردي/جماعي ---------- */
+let NF=[];
+function sendNotifs(ph,title,desc){
+  if(!cloudDb){toast('لا يوجد اتصال بالسحابة');return Promise.resolve()}
+  const b=cloudDb.batch();
+  (ph==='all'?['all']:ph).forEach(p=>{const id='nf_'+Date.now()+Math.random().toString(36).slice(2,6);b.set(cloudDb.collection('notifs').doc(id),{id,to:p,title,desc,createdAt:Date.now()})});
+  return b.commit();
+}
+function syncNotifs(){
+  const me=currentAuthenticatedUser&&currentAuthenticatedUser.phone,seen=safeGet('cc_seen_notifs',[]);let n=0;
+  NF.forEach(x=>{
+    if(seen.includes(x.id)||Date.now()-x.createdAt>6048e5)return;
+    if(x.to!=='all'&&x.to!==me)return;
+    seen.push(x.id);
+    customerNotifications.unshift({id:x.id,title:x.title,desc:x.desc,time:new Date(x.createdAt).toLocaleTimeString('ar-JO',{hour:'2-digit',minute:'2-digit'}),isRead:false});n++;
+  });
+  if(n){safeSet('cc_seen_notifs',seen.slice(-300));safeSet('cc_notifications',customerNotifications);updateNotificationBadge();
+    if($('screen-notifications').classList.contains('active'))renderCustomerNotifications();
+    playHarmonicChime('user');toast('وصلك إشعار جديد');}
+}
+function dailyWelcome(){
+  const d=new Date().toDateString();if(safeGet('cc_welcome_day','')===d)return;safeSet('cc_welcome_day',d);
+  const u=currentAuthenticatedUser,h=new Date().getHours(),g=h<12?'صباح الخير':h<18?'نهارك سعيد':'مساء الخير';
+  const tips=['ابدأ أسبوعك بكوكتيل منعش من كافيه كورنر 🍹','وافل دافئ مع نوتيلا؟ نحن بانتظارك 🧇','لا تنسَ نقاط الولاء، كل طلب يقربك من مكافأة مجانية ⭐','جرّب مكس نكهات على الكريب والبان كيك اليوم 🥞','اختم يومك بكنافة نابلسية سخنة 😋','عطلة نهاية الأسبوع أحلى مع ميلك شيك أوريو 🥤','يوم هادئ؟ قهوة ساخنة وحلوى تناسبك ☕'];
+  customerNotifications.unshift({id:'w_'+Date.now(),title:g+(u?' يا '+u.name:'')+' ☕',desc:tips[new Date().getDay()],time:'اليوم',isRead:false});
+  safeSet('cc_notifications',customerNotifications);updateNotificationBadge();toast(g+'! أهلاً بك في كافيه كورنر');
+}
+dailyWelcome();setInterval(dailyWelcome,6e5);setInterval(syncNotifs,4000);
+
+/* لوحة الإرسال الذكية للزبائن */
+function renderBulk(){
+  const card=document.querySelector('#subView-customers .clean-card');if(!card)return;
+  [...card.children].slice(0,2).forEach(e=>{if(e.id!=='bulkPanel')e.style.display='none'});
+  let p=$('bulkPanel');if(!p){p=document.createElement('div');p.id='bulkPanel';card.insertBefore(p,card.children[2])}
+  const cs=Object.values(allRegisteredCustomers);
+  p.innerHTML=`<div class="clean-title">رسالة / نقاط للزبائن (فردي أو جماعي)</div><input class="ios-input-field" id="bkSearch" placeholder="بحث بالاسم أو الرقم" oninput="bkFilter()"><label style="display:flex;gap:8px;align-items:center;font-size:12px;font-weight:800;margin:8px 0"><input type="checkbox" onchange="bkToggleAll(this.checked)"> تحديد الكل — المحدد: <span class="num-font" id="bkCount">0</span> / ${cs.length}</label><div class="cc-pick" id="bkList">${cs.map(c=>`<label data-q="${esc((c.name+' '+c.phone).toLowerCase())}"><span>${esc(c.name)} <span class="num-font" style="color:var(--text-dim)">${esc(c.phone)}</span> · <span class="num-font" style="color:var(--brand-gold)">${c.points||0}</span></span><input type="checkbox" class="bk-chk" value="${esc(c.phone)}" onchange="bkCount()"></label>`).join('')}</div><textarea class="ios-textarea-field" id="bkMsg" placeholder="نص الرسالة..." style="margin-bottom:6px"></textarea><button class="btn-brand-solid" onclick="bkSendMsg()">إرسال الرسالة للمحددين</button><div class="cc-row" style="margin-top:8px"><input type="number" class="ios-input-field num-font" id="bkPts" placeholder="عدد النقاط"><button class="btn-brand-solid" style="width:auto;padding:0 12px" onclick="bkPoints(1)">+ منح</button><button class="btn-brand-outline" style="color:var(--status-danger);border-color:var(--status-danger)" onclick="bkPoints(-1)">− خصم</button></div>`;
+}
+const sel=()=>[...document.querySelectorAll('.bk-chk:checked')].map(x=>x.value);
+window.bkCount=()=>{$('bkCount').textContent=sel().length};
+window.bkToggleAll=v=>{document.querySelectorAll('#bkList label').forEach(l=>{if(l.style.display!=='none')l.querySelector('.bk-chk').checked=v});bkCount()};
+window.bkFilter=()=>{const q=$('bkSearch').value.trim().toLowerCase();document.querySelectorAll('#bkList label').forEach(l=>l.style.display=l.dataset.q.includes(q)?'':'none')};
+window.bkSendMsg=function(){
+  const l=sel(),m=$('bkMsg').value.trim();if(!l.length)return toast('حدد زبوناً واحداً على الأقل');if(!m)return toast('اكتب نص الرسالة');
+  const all=l.length===Object.keys(allRegisteredCustomers).length;
+  Promise.resolve(sendNotifs(all?'all':l,'رسالة من الإدارة',m)).then(()=>{$('bkMsg').value='';toast('تم إرسال الرسالة لـ '+l.length+' زبون')}).catch(()=>toast('تعذر الإرسال'));
+};
+window.bkPoints=function(sign){
+  const l=sel(),n=parseInt($('bkPts').value);if(!l.length||!(n>0))return toast('حدد الزبائن وأدخل عدد النقاط');
+  l.forEach(p=>{const u=allRegisteredCustomers[p];if(!u)return;u.points=Math.max(0,(u.points||0)+sign*n);
+    if(cloudDb)cloudDb.collection('users').doc(p).set(u).catch(console.warn);
+    if(currentAuthenticatedUser&&currentAuthenticatedUser.phone===p){currentAuthenticatedUser=u;safeSet('cc_active_client_user',u)}});
+  safeSet('cc_users_directory',allRegisteredCustomers);
+  if(sign>0)sendNotifs(l,'هدية نقاط 🎁','أضافت لك الإدارة '+n+' نقطة إلى رصيدك.');
+  renderBulk();renderAdminCustomersManager();toast((sign>0?'تم منح ':'تم خصم ')+n+' نقطة لـ '+l.length+' زبون');
+};
+
+/* ---------- ربط التنقل ---------- */
+const _oas=window.openAdminSubSection;
+window.openAdminSubSection=function(k){_oas(k);if(k==='flavors')renderFlavors();if(k==='complaints')renderCmpAdmin();if(k==='customers')renderBulk()};
+const _nav=window.navigateRouter;
+window.navigateRouter=function(id){_nav(id);if(id==='screen-complaints')renderCmpClient();if(id==='screen-notifications')syncNotifs()};
+
+/* ---------- المستمعات السحابية ---------- */
+wait(()=>{
+  if(!cloudDb)return false;
+  cloudDb.collection('products').onSnapshot(s=>{
+    if(s.empty){if(activeSessionUser&&productsCatalog.length)pushProductsToCloud();return}
+    productsCatalog=s.docs.map(d=>d.data()).sort((a,b)=>(b.ts||0)-(a.ts||0));
+    safeSet('cc_catalog',productsCatalog);renderCategoryChips();renderMenuProducts();if(activeSessionUser)renderAdminProductsManager();
+  },console.warn);
+  cloudDb.collection('settings').doc('store_config').onSnapshot(d=>{const s=d.exists&&d.data().sauces;if(Array.isArray(s)&&s.length){dessertSaucesCatalog=s;safeSet('cc_sauces',s);renderFlavors()}});
+  cloudDb.collection('notifs').orderBy('createdAt','desc').limit(100).onSnapshot(s=>{NF=s.docs.map(d=>d.data());syncNotifs()},console.warn);
+  setInterval(()=>{
+    const ph=currentAuthenticatedUser&&currentAuthenticatedUser.phone;
+    if(ph!==cmpPhone){uMine&&uMine();uMine=null;cmpPhone=ph;CMP_MINE=[];renderCmpClient();
+      if(ph)uMine=cloudDb.collection('complaints').where('phone','==',ph).onSnapshot(s=>{CMP_MINE=s.docs.map(d=>d.data()).sort((a,b)=>b.createdAt-a.createdAt);renderCmpClient()},console.warn)}
+    if(activeSessionUser&&!uAll)uAll=cloudDb.collection('complaints').orderBy('createdAt','desc').limit(200).onSnapshot(s=>{CMP_ALL=s.docs.map(d=>d.data());renderCmpAdmin()},console.warn);
+    if(!activeSessionUser&&uAll){uAll();uAll=null}
+  },1500);
+  return true;
+});
+})();
