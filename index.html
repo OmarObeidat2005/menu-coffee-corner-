@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>COFFEE CORNER | كافيه كورنر</title>
     
-    <meta name="theme-color" content="#fbfbf9">
+    <meta name="theme-color" content="#000000">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&family=IBM+Plex+Sans+Arabic:wght@400;600;700&family=Plus+Jakarta+Sans:wght@600;700;800;900&family=Tajawal:wght@400;500;700;800;900&display=swap" rel="stylesheet">
@@ -53,8 +53,8 @@
             --bg-elevated: #1a1a1a !important;
             
             --text-primary: #fbf8f5 !important;
-            --text-secondary: #a39587 !important;
-            --text-dim: #6b6055 !important;
+            --text-secondary: #b5aba0 !important;
+            --text-dim: #756a5e !important;
             
             --border-subtle: #242424 !important;
             --border-accent: rgba(255, 255, 255, 0.15) !important;
@@ -189,6 +189,11 @@
             background: rgba(16, 185, 129, 0.12);
             color: var(--status-success);
             border: 1px solid rgba(16, 185, 129, 0.25);
+        }
+        .header-hours-badge.closed {
+            background: rgba(239, 68, 68, 0.12);
+            color: var(--status-danger);
+            border-color: rgba(239, 68, 68, 0.25);
         }
 
         .home-auth-banner {
@@ -413,57 +418,6 @@
             height: 70px;
         }
 
-        /* واجهة حسابي العالمية الفاخرة */
-        .profile-luxury-hero {
-            background: linear-gradient(145deg, var(--bg-card), var(--bg-elevated));
-            border: 1px solid var(--border-accent);
-            border-radius: var(--radius-lg);
-            padding: 24px 18px;
-            position: relative;
-            overflow: hidden;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.04);
-            margin-bottom: 16px;
-        }
-        .profile-user-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            padding: 4px 12px;
-            border-radius: var(--radius-full);
-            background: var(--brand-glow);
-            color: var(--brand-theme);
-            font-size: 11px;
-            font-weight: 800;
-            border: 1px solid var(--border-accent);
-            margin-top: 6px;
-        }
-        .profile-action-row {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 13px 14px;
-            background: var(--bg-card);
-            border: 1px solid var(--border-subtle);
-            border-radius: var(--radius-md);
-            margin-bottom: 8px;
-            cursor: pointer;
-            transition: 0.15s ease;
-        }
-        .profile-action-row:active {
-            transform: scale(0.98);
-            border-color: var(--brand-theme);
-        }
-        .profile-action-icon {
-            width: 36px;
-            height: 36px;
-            border-radius: var(--radius-sm);
-            background: var(--bg-elevated);
-            color: var(--brand-theme);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
         /* نافذة الحظر الصارمة */
         #bannedAccountOverlay {
             display: none;
@@ -477,7 +431,21 @@
             padding: 20px;
         }
 
-        /* شبكة لوحة الإدارة 14 خدمة */
+        /* نافذة غلق المتجر بانتظار أوقات الفتح */
+        #storeClosedOverlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(10, 8, 6, 0.95);
+            z-index: 99998;
+            backdrop-filter: blur(12px);
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            text-align: center;
+        }
+
+        /* شبكة لوحة الإدارة */
         .admin-hub-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
@@ -676,24 +644,36 @@
 </head>
 <body>
 
-<!-- شاشة حظر الحساب الصارمة مع تقديم الطعن -->
+<!-- شاشة حظر الحساب الصارمة مع زر الطعن الفوري -->
 <div id="bannedAccountOverlay">
     <div class="clean-card" style="max-width:390px; text-align:center; border:2px solid var(--status-danger); background:var(--bg-card); padding:24px 18px;">
         <div style="width:64px; height:64px; border-radius:50%; background:rgba(239, 68, 68, 0.15); color:var(--status-danger); display:flex; align-items:center; justify-content:center; margin:0 auto 14px;">
             <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"></circle><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"></line></svg>
         </div>
-        <div style="font-size:17px; font-weight:900; color:var(--status-danger); margin-bottom:6px;">تم تقييد هذا الحساب</div>
+        <div style="font-size:17px; font-weight:900; color:var(--status-danger); margin-bottom:6px;">تم تقييد وحظر هذا الحساب</div>
         <p style="font-size:12px; color:var(--text-secondary); line-height:1.6; margin-bottom:14px;">
-            نظراً لمخالفة سياسات الاستخدام أو لوجود طلب قيد المراجعة، تم تعليق قدرتك على التصفح والشراء وجمع النقاط نهائياً.
+            عذراً، تم تعليق قدرتك على التصفح والشراء وجمع النقاط بناءً على سياسات المحل.
         </p>
 
         <div style="background:var(--bg-elevated); padding:10px; border-radius:var(--radius-sm); margin-bottom:14px; text-align:right;">
-            <div style="font-size:11px; font-weight:800; color:var(--text-primary); margin-bottom:4px;">تقديم طعن ومراجعة للإدارة:</div>
-            <textarea class="ios-textarea-field" id="banAppealReasonInput" placeholder="اكتب سبب طلب رفع القيد أو توضيحك للإدارة..."></textarea>
-            <button class="btn-brand-solid" style="margin-top:8px; font-size:11.5px; padding:8px;" onclick="submitBanAppealAction()">إرسال الطعن للإدارة</button>
+            <div style="font-size:11px; font-weight:800; color:var(--text-primary); margin-bottom:4px;">تقديم طعن لمراجعة الإدارة:</div>
+            <textarea class="ios-textarea-field" id="banAppealReasonInput" placeholder="اكتب سبب طلب رفع القيد وتوضيحك للإدارة..."></textarea>
+            <button class="btn-brand-solid" style="margin-top:8px; font-size:11.5px; padding:8px;" onclick="submitBanAppealAction()">إرسال الطعن للإدارة فوراً</button>
         </div>
 
         <button class="btn-brand-outline" style="width:100%; font-size:11px; color:var(--text-dim); border-color:var(--border-subtle);" onclick="logoutCustomerSession()">تسجيل الخروج والعودة</button>
+    </div>
+</div>
+
+<!-- شاشة إغلاق المحل مع التايمر -->
+<div id="storeClosedOverlay">
+    <div class="clean-card" style="max-width:360px; border:1.5px solid var(--brand-theme); background:var(--bg-card); padding:26px 18px;">
+        <div style="font-size:18px; font-weight:900; color:var(--brand-theme); margin-bottom:8px;">عذراً، المحل مغلق حالياً</div>
+        <p style="font-size:12px; color:var(--text-secondary); line-height:1.6; margin-bottom:14px;" id="storeClosedMsg">
+            أوقات العمل لفرع كفرسوم من 6:30 صباحاً حتى 3:00 فجراً، ولفرع سما الروسان من 4:00 عصراً حتى 3:00 فجراً.
+        </p>
+        <div class="num-font" style="font-size:22px; font-weight:900; color:var(--brand-theme); margin-bottom:14px;" id="storeOpenCountdownTimer">--:--:--</div>
+        <button class="btn-brand-solid" onclick="bypassStoreClosedForReview()">معاينة المنيو والخدمات</button>
     </div>
 </div>
 
@@ -713,34 +693,8 @@
             <button class="btn-brand-solid" style="margin-top:8px;" onclick="sendReplyFromNotificationModal()">إرسال ردك للإدارة</button>
         </div>
 
-        <div id="notifNoReplyNotice" style="display:none; border-top:1px dashed var(--border-subtle); padding-top:10px; font-size:11px; color:var(--text-dim); text-align:center;">
-            هذا إشعار إداري / ترويجي عام للعلم فقط ولا يتطلب رداً.
-        </div>
-    </div>
-</div>
-
-<!-- نافذة تعديل بيانات الحساب وكلمة المرور -->
-<div id="modalEditAccountSecurity" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.7); z-index:8500; align-items:center; justify-content:center; padding:16px;">
-    <div class="clean-card" style="width:100%; max-width:390px;">
-        <div class="clean-title">
-            <span>تعديل بيانات الحساب والأمان</span>
-            <button style="background:none; border:none; font-size:18px; cursor:pointer;" onclick="closeEditAccountModal()">✕</button>
-        </div>
-
-        <div style="display:flex; flex-direction:column; gap:10px;">
-            <div>
-                <span style="font-size:11.5px; font-weight:700;">الاسم الكامل:</span>
-                <input type="text" class="ios-input-field" id="editProfNameInput">
-            </div>
-            <div>
-                <span style="font-size:11.5px; font-weight:700;">الوصف التعريفي:</span>
-                <input type="text" class="ios-input-field" id="editProfBioInput" placeholder="محب للقهوة والمذاق الرفيع...">
-            </div>
-            <div style="border-top:1px dashed var(--border-subtle); padding-top:10px;">
-                <span style="font-size:11.5px; font-weight:800; color:var(--brand-theme);">تغيير كلمة المرور:</span>
-                <input type="password" class="ios-input-field num-font" id="editProfPassInput" placeholder="اتركه فارغاً إن لم ترغب بالتغيير" style="margin-top:4px;">
-            </div>
-            <button class="btn-brand-solid" style="margin-top:6px;" onclick="saveAccountModifications()">حفظ التعديلات فوراً</button>
+        <div id="notifNoReplyNotice" style="display:none; border-top:1px dashed var(--border-subtle); padding-top:10px; font-size:11px; color:var(--status-warning); text-align:center; font-weight:700;">
+            هذا إشعار إداري / ترويجي عام للعلم فقط ولا يمكن الرد عليه.
         </div>
     </div>
 </div>
@@ -782,7 +736,7 @@
         <div class="search-container">
             <div class="search-bar">
                 <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--text-dim)" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
-                <input type="text" class="search-input" id="menuSearchInput" oninput="renderMenuProducts()" placeholder="ابحث بين أكثر من 100 صنف فاخر...">
+                <input type="text" class="search-input" id="menuSearchInput" oninput="renderMenuProducts()" placeholder="ابحث بين الأصناف الفاخرة...">
             </div>
         </div>
 
@@ -790,7 +744,7 @@
         <div class="product-grid" id="menuGridContainer"></div>
     </div>
 
-    <!-- 2. شاشة تسجيل الدخول وإنشاء الحساب -->
+    <!-- 2. شاشة تسجيل الدخول وإنشاء حساب أردني صارم (07 وطول 10 أرقام) -->
     <div id="screen-auth" class="app-screen">
         <header class="header">
             <button class="header-btn" onclick="navigateRouter('screen-home')" aria-label="عودة">
@@ -803,7 +757,7 @@
             <div class="clean-card" style="max-width:380px; margin:20px auto 0;">
                 <div style="text-align:center; margin-bottom:16px;">
                     <div style="font-size:16px; font-weight:900; color:var(--brand-theme);" id="authFormTitle">تسجيل حسابك في كافيه كورنر</div>
-                    <div style="font-size:11.5px; color:var(--text-secondary); margin-top:4px;" id="authFormSubtitle">سجل دخولك لتتمكن من الطلب وتتبع نقاطك وشكاويك بخصوصية تامة.</div>
+                    <div style="font-size:11.5px; color:var(--text-secondary); margin-top:4px;" id="authFormSubtitle">أدخل رقم هاتفك الأردني (07xxxxxxxx) للطلب وتتبع النقاط بخصوصية تامة.</div>
                 </div>
 
                 <div style="display:flex; border-radius:var(--radius-sm); background:var(--bg-elevated); padding:4px; margin-bottom:14px;">
@@ -820,7 +774,7 @@
                     <div>
                         <span style="font-size:11.5px; font-weight:700;">رقم الهاتف الأردني (يبدأ بـ 07):</span>
                         <input type="tel" class="ios-input-field num-font" id="authPhoneInput" placeholder="07xxxxxxxx" maxlength="10" required>
-                        <span style="font-size:9.5px; color:var(--text-dim); display:block; margin-top:3px;">* يجب أن يتكون من 10 أرقام دقيقة (مثال: 0790123456).</span>
+                        <span style="font-size:9.5px; color:var(--text-dim); display:block; margin-top:3px;">* 10 أرقام دقيقة وتبدأ بـ 07 (مثال: 0790123456).</span>
                     </div>
 
                     <div>
@@ -846,7 +800,7 @@
         <div class="scrollable-content">
             <div class="clean-card">
                 <div class="clean-title">إرسال شكوى أو مقترح مباشر للإدارة</div>
-                <div style="font-size:11.5px; color:var(--text-secondary); margin-bottom:12px;">صوتك ورأيك في كافيه كورنر يصل مباشرة إلى إدارة المحل بخصوصية معزولة تماماً.</div>
+                <div style="font-size:11.5px; color:var(--text-secondary); margin-bottom:12px;">صوتك ورأيك يصل مباشرة إلى إدارة المحل بخصوصية معزولة تماماً.</div>
                 <div style="display:flex; flex-direction:column; gap:8px;">
                     <select class="ios-input-field" id="feedbackCategory">
                         <option value="اقتراح تطويري">اقتراح تطويري</option>
@@ -864,7 +818,7 @@
         </div>
     </div>
 
-    <!-- 4. شاشة حسابي الشخصي الفاخرة -->
+    <!-- 4. شاشة حسابي الشخصي العالمية الفاخرة -->
     <div id="screen-user-profile" class="app-screen">
         <header class="header">
             <button class="header-btn" onclick="navigateRouter('screen-home')" aria-label="عودة">
@@ -875,78 +829,41 @@
         </header>
 
         <div class="scrollable-content">
-            <div class="profile-luxury-hero">
-                <div style="display:flex; align-items:center; gap:14px;">
-                    <div style="width:68px; height:68px; border-radius:50%; background:var(--bg-elevated); border:2.5px solid var(--brand-theme); display:flex; align-items:center; justify-content:center; color:var(--brand-theme); flex-shrink:0;">
-                        <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
-                    </div>
-                    <div>
-                        <div style="font-size:17px; font-weight:900;" id="profDisplayName">العميل العزيز</div>
-                        <div class="num-font" style="font-size:12px; color:var(--text-secondary); margin-top:2px;" id="profDisplayPhone">07xxxxxxxx</div>
-                        <div style="font-size:11px; color:var(--text-dim); margin-top:3px;" id="profDisplayBio">محب للقهوة والمذاق الرفيع في كافيه كورنر.</div>
-                        <div class="profile-user-badge">
-                            <span>عضو مميز</span>
-                            <span>•</span>
-                            <span class="num-font" id="profStatPoints">0</span>
-                            <span>نقطة</span>
-                        </div>
-                    </div>
+            <div style="background:linear-gradient(145deg, var(--bg-card), var(--bg-elevated)); border:1px solid var(--border-accent); border-radius:var(--radius-lg); padding:24px 18px; margin-bottom:16px; text-align:center;">
+                <div style="position:relative; width:80px; height:80px; margin:0 auto 12px;">
+                    <img src="" id="profUserAvatarImg" style="width:100%; height:100%; border-radius:50%; object-fit:cover; border:2.5px solid var(--brand-theme);" onerror="this.src='https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200&q=80'">
+                    <input type="file" id="uploadUserAvatarFile" accept="image/*" style="display:none;" onchange="handleUserAvatarUpload(event)">
+                    <button type="button" style="position:absolute; bottom:0; left:0; background:var(--brand-theme); color:#fff; border:none; border-radius:50%; width:28px; height:28px; cursor:pointer; font-size:12px; display:flex; align-items:center; justify-content:center;" onclick="document.getElementById('uploadUserAvatarFile').click()">📷</button>
+                </div>
+                <div style="font-size:18px; font-weight:900;" id="profDisplayName">العميل العزيز</div>
+                <div class="num-font" style="font-size:12px; color:var(--text-secondary); margin-top:2px;" id="profDisplayPhone">07xxxxxxxx</div>
+                <div style="font-size:11px; color:var(--text-dim); margin-top:4px;" id="profDisplayBio">محب للقهوة والمذاق الرفيع في كافيه كورنر.</div>
+                <div style="display:inline-flex; align-items:center; gap:6px; padding:4px 14px; border-radius:var(--radius-full); background:var(--brand-glow); color:var(--brand-theme); font-size:11.5px; font-weight:800; border:1px solid var(--border-accent); margin-top:8px;">
+                    <span>نقاط الولاء:</span>
+                    <span class="num-font" id="profStatPoints">0</span>
                 </div>
             </div>
 
-            <div class="profile-action-row" onclick="openEditAccountModal()">
-                <div style="display:flex; align-items:center; gap:12px;">
-                    <div class="profile-action-icon">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg>
+            <div class="clean-card">
+                <div class="clean-title">تعديل بيانات الحساب والأمان</div>
+                <div style="display:flex; flex-direction:column; gap:8px;">
+                    <div>
+                        <span style="font-size:11.5px; font-weight:700;">الاسم الكامل:</span>
+                        <input type="text" class="ios-input-field" id="editProfNameInput">
                     </div>
                     <div>
-                        <div style="font-size:13.5px; font-weight:900;">تعديل البيانات والأمان</div>
-                        <div style="font-size:10.5px; color:var(--text-secondary);">تغيير الاسم، الوصف، وكلمة المرور</div>
-                    </div>
-                </div>
-                <div style="color:var(--text-dim);">❮</div>
-            </div>
-
-            <div class="profile-action-row" onclick="navigateRouter('screen-invoices')">
-                <div style="display:flex; align-items:center; gap:12px;">
-                    <div class="profile-action-icon">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>
+                        <span style="font-size:11.5px; font-weight:700;">الوصف التعريفي:</span>
+                        <input type="text" class="ios-input-field" id="editProfBioInput" placeholder="محب للقهوة...">
                     </div>
                     <div>
-                        <div style="font-size:13.5px; font-weight:900;">سجل فواتيري السابقة</div>
-                        <div style="font-size:10.5px; color:var(--text-secondary);">استعراض فواتير الطلبات السابقة وتفاصيلها</div>
+                        <span style="font-size:11.5px; font-weight:700;">كلمة المرور الجديدة:</span>
+                        <input type="password" class="ios-input-field num-font" id="editProfPassInput" placeholder="اتركه فارغاً إن لم ترغب بالتغيير">
                     </div>
+                    <button class="btn-brand-solid" style="margin-top:6px;" onclick="saveAccountModifications()">حفظ التعديلات فوراً</button>
                 </div>
-                <div style="color:var(--text-dim);">❮</div>
             </div>
 
-            <div class="profile-action-row" onclick="navigateRouter('screen-rewards')">
-                <div style="display:flex; align-items:center; gap:12px;">
-                    <div class="profile-action-icon">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
-                    </div>
-                    <div>
-                        <div style="font-size:13.5px; font-weight:900;">متجر المكافآت والنقاط</div>
-                        <div style="font-size:10.5px; color:var(--text-secondary);">استبدال النقاط بمشروبات وحلويات مجاناً</div>
-                    </div>
-                </div>
-                <div style="color:var(--text-dim);">❮</div>
-            </div>
-
-            <div class="profile-action-row" onclick="navigateRouter('screen-feedback')">
-                <div style="display:flex; align-items:center; gap:12px;">
-                    <div class="profile-action-icon">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
-                    </div>
-                    <div>
-                        <div style="font-size:13.5px; font-weight:900;">الشكاوى والمقترحات</div>
-                        <div style="font-size:10.5px; color:var(--text-secondary);">مراسلة الإدارة مباشرة بخصوصية تامة</div>
-                    </div>
-                </div>
-                <div style="color:var(--text-dim);">❮</div>
-            </div>
-
-            <div style="margin-top:20px;">
+            <div style="margin-top:16px;">
                 <button class="btn-brand-outline" style="width:100%; color:var(--status-danger); border-color:var(--status-danger); font-size:12px; padding:10px;" onclick="logoutCustomerSession()">تسجيل الخروج من الحساب</button>
             </div>
         </div>
@@ -996,14 +913,11 @@
                     <span>اختر النكهات أو مكس الصوصات</span>
                     <span style="font-size:10px; color:var(--text-secondary);">(لغاية 3 نكهات)</span>
                 </div>
-                <div style="font-size:10.5px; color:var(--text-secondary); margin-bottom:8px;">
-                    * في حال اختيار مكس نكهات، يُحسب السعر تلقائياً بناءً على <strong>سعر النكهة الأعلى</strong>.
-                </div>
                 <div id="psSaucesContainer" style="display:flex; flex-direction:column; gap:6px;"></div>
             </div>
 
             <div class="clean-card" id="psAddonsCardWrapper" style="margin: 0 14px 10px; display:none;">
-                <div class="clean-title">إضافات الصنف</div>
+                <div class="clean-title">الإضافات والمستلزمات المتاحة</div>
                 <div id="psAddonsContainer" style="display:flex; flex-direction:column; gap:6px;"></div>
             </div>
 
@@ -1069,7 +983,7 @@
             </div>
 
             <div class="clean-card">
-                <div class="clean-title">طرق الدفع المتاحة للفرع المختار</div>
+                <div class="clean-title">طرق الدفع المفصولة للفرع المختار</div>
                 <div id="cartPaymentMethodsContainer" style="display:flex; flex-direction:column; gap:6px;"></div>
             </div>
 
@@ -1095,7 +1009,7 @@
         </div>
     </div>
 
-    <!-- 8. شاشة تتبع طلبي -->
+    <!-- 8. شاشة تتبع طلبي (مدة بقاء الطلب 1 ساعة بعد التاكيد أو الالغاء للزبون) -->
     <div id="screen-order-tracking" class="app-screen">
         <header class="header">
             <button class="header-btn" onclick="navigateRouter('screen-home')" aria-label="عودة">
@@ -1128,28 +1042,59 @@
         </div>
     </div>
 
-    <!-- 10. شاشة أرشيف الفواتير السابقة -->
-    <div id="screen-invoices" class="app-screen">
+    <!-- 10. شاشة العروض والخصومات -->
+    <div id="screen-offers" class="app-screen">
         <header class="header">
             <button class="header-btn" onclick="navigateRouter('screen-home')" aria-label="عودة">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
             </button>
-            <div style="font-weight:900; font-size:15px; color:var(--brand-theme);">سجل الفواتير السابقة</div>
+            <div style="font-weight:900; font-size:15px; color:var(--brand-theme);">العروض والخصومات</div>
+            <div style="width:38px;"></div>
+        </header>
+        <div class="scrollable-content">
+            <div id="clientOffersContainer"></div>
+        </div>
+    </div>
+
+    <!-- 11. شاشة فروعنا والتواصل -->
+    <div id="screen-branches" class="app-screen">
+        <header class="header">
+            <button class="header-btn" onclick="navigateRouter('screen-home')" aria-label="عودة">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+            </button>
+            <div style="font-weight:900; font-size:15px; color:var(--brand-theme);">فروعنا والتواصل</div>
             <div style="width:38px;"></div>
         </header>
         <div class="scrollable-content">
             <div class="clean-card">
-                <div class="clean-title">فلترة الفواتير حسب التاريخ</div>
-                <div style="display:flex; gap:6px;">
-                    <input type="date" class="ios-input-field num-font" id="filterInvoiceDate" onchange="renderInvoicesArchiveList()">
-                    <button class="btn-brand-outline" onclick="document.getElementById('filterInvoiceDate').value=''; renderInvoicesArchiveList();">إلغاء الفلتر</button>
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+                    <span style="font-size:15px; font-weight:900; color:var(--brand-theme);">فرع كفرسوم</span>
+                    <span class="header-hours-badge">مفتوح الآن</span>
                 </div>
+                <div style="font-size:12px; color:var(--text-secondary); line-height:1.7;">
+                    <div><strong>الموقع:</strong> الشارع الرئيسي - مقابل مجمع المحلات</div>
+                    <div><strong>أوقات العمل:</strong> 6:30 صباحاً حتى 3:00 فجراً</div>
+                    <div><strong>واتساب:</strong> <span class="num-font">0790155906</span></div>
+                </div>
+                <a href="https://wa.me/962790155906" target="_blank" class="btn-brand-solid" style="margin-top:10px;">محادثة الفرع عبر واتساب</a>
             </div>
-            <div id="customerInvoicesArchiveList"></div>
+
+            <div class="clean-card">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+                    <span style="font-size:15px; font-weight:900; color:var(--brand-theme);">فرع سما الروسان</span>
+                    <span class="header-hours-badge">مفتوح الآن</span>
+                </div>
+                <div style="font-size:12px; color:var(--text-secondary); line-height:1.7;">
+                    <div><strong>الموقع:</strong> الشارع العام - بجانب البلدية</div>
+                    <div><strong>أوقات العمل:</strong> 4:00 عصراً حتى 3:00 فجراً</div>
+                    <div><strong>واتساب:</strong> <span class="num-font">0790155906</span></div>
+                </div>
+                <a href="https://wa.me/962790155906" target="_blank" class="btn-brand-solid" style="margin-top:10px;">محادثة الفرع عبر واتساب</a>
+            </div>
         </div>
     </div>
 
-    <!-- 11. شاشة المطور Tech Hub -->
+    <!-- 12. شاشة المطور Tech Hub -->
     <div id="screen-developer" class="app-screen">
         <header class="header" style="background: rgba(8, 13, 22, 0.95); border-bottom: 1px solid #24364A;">
             <button class="header-btn" onclick="navigateRouter('screen-home')" aria-label="عودة" style="background:#101A29; border-color:#24364A; color:#F4F7FB;">
@@ -1172,96 +1117,10 @@
                     <a href="https://www.instagram.com/o_yd" target="_blank" id="devIgLinkBtn" style="border:1px solid #55DDF3; color:#55DDF3; font-weight:800; padding:9px; border-radius:8px; flex:1; text-align:center; text-decoration:none;">Instagram</a>
                 </div>
             </div>
-
-            <div class="clean-card" style="background:#101A29; border:1px solid #24364A; color:#F4F7FB;">
-                <div style="font-size:13.5px; font-weight:900; color:#55DDF3; margin-bottom:10px;">حالة النظام الحية | Diagnostics</div>
-                <div style="display:grid; grid-template-columns:1fr 1fr; gap:6px;">
-                    <div style="background:#080D16; border:1px solid #24364A; border-radius:8px; padding:8px 10px; display:flex; align-items:center; justify-content:space-between;">
-                        <div>
-                            <div style="font-size:9.5px; color:#9BAEC3;">محرك الويب وDOM</div>
-                            <div style="font-size:11px; font-weight:800; color:#F4F7FB;">يعمل بسلاسة</div>
-                        </div>
-                        <div style="width:8px; height:8px; border-radius:50%; background:#10B981;"></div>
-                    </div>
-                    <div style="background:#080D16; border:1px solid #24364A; border-radius:8px; padding:8px 10px; display:flex; align-items:center; justify-content:space-between;">
-                        <div>
-                            <div style="font-size:9.5px; color:#9BAEC3;">المزامنة السحابية</div>
-                            <div style="font-size:11px; font-weight:800; color:#F4F7FB;" id="stCloudStatus">متصل ومباشر</div>
-                        </div>
-                        <div style="width:8px; height:8px; border-radius:50%; background:#10B981;"></div>
-                    </div>
-                </div>
-            </div>
         </div>
     </div>
 
-    <!-- 12. شاشة العروض والخصومات -->
-    <div id="screen-offers" class="app-screen">
-        <header class="header">
-            <button class="header-btn" onclick="navigateRouter('screen-home')" aria-label="عودة">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
-            </button>
-            <div style="font-weight:900; font-size:15px; color:var(--brand-theme);">العروض والخصومات</div>
-            <div style="width:38px;"></div>
-        </header>
-        <div class="scrollable-content">
-            <div id="clientOffersContainer"></div>
-        </div>
-    </div>
-
-    <!-- 13. شاشة مجتمع شاركنا بصورة -->
-    <div id="screen-moments" class="app-screen">
-        <header class="header">
-            <button class="header-btn" onclick="navigateRouter('screen-home')" aria-label="عودة">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
-            </button>
-            <div style="font-weight:900; font-size:15px; color:var(--brand-theme);">شاركنا بصورة</div>
-            <button class="btn-brand-solid" style="width:auto; padding:4px 12px; font-size:11px;" onclick="openNewMomentModal()">+ نشر تجربة</button>
-        </header>
-        <div class="scrollable-content">
-            <div id="communityFeedContainer"></div>
-        </div>
-    </div>
-
-    <!-- 14. شاشة فروعنا والتواصل -->
-    <div id="screen-branches" class="app-screen">
-        <header class="header">
-            <button class="header-btn" onclick="navigateRouter('screen-home')" aria-label="عودة">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
-            </button>
-            <div style="font-weight:900; font-size:15px; color:var(--brand-theme);">فروعنا والتواصل</div>
-            <div style="width:38px;"></div>
-        </header>
-        <div class="scrollable-content">
-            <div class="clean-card">
-                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
-                    <span style="font-size:15px; font-weight:900; color:var(--brand-theme);" id="branchCardTitle0">فرع كفرسوم</span>
-                    <span class="header-hours-badge">مفتوح الآن</span>
-                </div>
-                <div style="font-size:12px; color:var(--text-secondary); line-height:1.7;">
-                    <div><strong>الموقع:</strong> <span id="locBranch0">الشارع الرئيسي - مقابل مجمع المحلات التجارية</span></div>
-                    <div><strong>أوقات العمل:</strong> <span id="hoursBranch0">6:30 صباحاً حتى 3:00 فجراً يومياً</span></div>
-                    <div><strong>واتساب:</strong> <span class="num-font" id="phoneBranch0">0790155906</span></div>
-                </div>
-                <a href="https://wa.me/962790155906" target="_blank" id="waLinkBranch0" class="btn-brand-solid" style="margin-top:10px;">محادثة الفرع عبر واتساب</a>
-            </div>
-
-            <div class="clean-card">
-                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
-                    <span style="font-size:15px; font-weight:900; color:var(--brand-theme);" id="branchCardTitle1">فرع سما الروسان</span>
-                    <span class="header-hours-badge">مفتوح الآن</span>
-                </div>
-                <div style="font-size:12px; color:var(--text-secondary); line-height:1.7;">
-                    <div><strong>الموقع:</strong> <span id="locBranch1">الشارع العام - بجانب مبنى البلدية</span></div>
-                    <div><strong>أوقات العمل:</strong> <span id="hoursBranch1">4:00 عصراً حتى 3:00 فجراً يومياً</span></div>
-                    <div><strong>واتساب:</strong> <span class="num-font" id="phoneBranch1">0790155906</span></div>
-                </div>
-                <a href="https://wa.me/962790155906" target="_blank" id="waLinkBranch1" class="btn-brand-solid" style="margin-top:10px;">محادثة الفرع عبر واتساب</a>
-            </div>
-        </div>
-    </div>
-
-    <!-- 15. شاشة تسجيل دخول الإدارة -->
+    <!-- 13. شاشة تسجيل دخول الإدارة -->
     <div id="screen-admin-login" class="app-screen">
         <header class="header">
             <button class="header-btn" onclick="navigateRouter('screen-home')" aria-label="عودة">
@@ -1279,7 +1138,7 @@
         </div>
     </div>
 
-    <!-- 16. لوحة تحكم الإدارة الشاملة (Admin Hub الكاملة بـ 14 خدمة تنفيذية) -->
+    <!-- 14. لوحة تحكم الإدارة الشاملة (Admin Hub الكاملة مع تحديث الإصدار التلقائي بعد 10 تعديلات) -->
     <div id="screen-admin-dashboard" class="app-screen">
         <header class="header">
             <div style="font-weight:900; font-size:14px; color:var(--brand-theme);">COFFEE CORNER — Admin Hub</div>
@@ -1289,168 +1148,94 @@
         <div class="scrollable-content" style="padding:0;">
             <div id="adminMainHubView" style="display:block;">
                 <div class="admin-hub-grid">
-                    <!-- 1. الطلبات والتايمر -->
                     <div class="admin-hub-card" onclick="openAdminSubSection('orders')">
-                        <div class="admin-hub-icon-wrap">
-                            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
-                        </div>
+                        <div class="admin-hub-icon-wrap">⏱</div>
                         <div>
                             <div class="admin-hub-card-title">الطلبات الحية والتايمر</div>
-                            <div class="admin-hub-card-sub">تحديد وقت التجهيز والمسار</div>
+                            <div class="admin-hub-card-sub">تجهيز ومتابعة مسار التوصيل أو الاستلام</div>
                         </div>
                     </div>
 
-                    <!-- 2. المنتجات والمخزون -->
                     <div class="admin-hub-card" onclick="openAdminSubSection('products')">
-                        <div class="admin-hub-icon-wrap">
-                            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8h1a4 4 0 0 1 0 8h-1"></path><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"></path><line x1="6" y1="1" x2="6" y2="4"></line><line x1="10" y1="1" x2="10" y2="4"></line><line x1="14" y1="1" x2="14" y2="4"></line></svg>
-                        </div>
+                        <div class="admin-hub-icon-wrap">☕</div>
                         <div>
                             <div class="admin-hub-card-title">المنتجات (100+ صنف)</div>
                             <div class="admin-hub-card-sub">الأحجام، النكهات، والإضافات</div>
                         </div>
                     </div>
 
-                    <!-- 3. تعديل الهوية وبيانات المطور -->
                     <div class="admin-hub-card" onclick="openAdminSubSection('brandAndDev')">
-                        <div class="admin-hub-icon-wrap">
-                            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
-                        </div>
+                        <div class="admin-hub-icon-wrap">⚙️</div>
                         <div>
                             <div class="admin-hub-card-title">الهوية وبيانات المطور</div>
                             <div class="admin-hub-card-sub">رفع الشعار والترويسة والمطور</div>
                         </div>
                     </div>
 
-                    <!-- 4. طرق الدفع المفصولة -->
                     <div class="admin-hub-card" onclick="openAdminSubSection('paymentsAdmin')">
-                        <div class="admin-hub-icon-wrap">
-                            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect><line x1="1" y1="10" x2="23" y2="10"></line></svg>
-                        </div>
+                        <div class="admin-hub-icon-wrap">💳</div>
                         <div>
                             <div class="admin-hub-card-title">طرق الدفع المفصولة</div>
                             <div class="admin-hub-card-sub">إدارة شعارات وطرق كل فرع</div>
                         </div>
                     </div>
 
-                    <!-- 5. الشكاوى والمقترحات -->
                     <div class="admin-hub-card" onclick="openAdminSubSection('feedbackAdmin')">
                         <span class="admin-card-badge num-font" id="badgeHubFeedbackCount">0</span>
-                        <div class="admin-hub-icon-wrap">
-                            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
-                        </div>
+                        <div class="admin-hub-icon-wrap">💬</div>
                         <div>
-                            <div class="admin-hub-card-title">الشكاوى والمقترحات</div>
-                            <div class="admin-hub-card-sub">رد الإدارة التلقائي بـ 72 ساعة</div>
+                            <div class="admin-hub-card-title">الشكاوى والطعون</div>
+                            <div class="admin-hub-card-sub">فك الحظر والرد المباشر</div>
                         </div>
                     </div>
 
-                    <!-- 6. إرسال الإشعارات -->
                     <div class="admin-hub-card" onclick="openAdminSubSection('notificationsAdmin')">
-                        <div class="admin-hub-icon-wrap">
-                            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
-                        </div>
+                        <div class="admin-hub-icon-wrap">🔔</div>
                         <div>
-                            <div class="admin-hub-card-title">إرسال الإشعارات والتنبيهات</div>
-                            <div class="admin-hub-card-sub">فردي وجماعي متكتك للزبائن</div>
+                            <div class="admin-hub-card-title">إرسال الإشعارات والنقاط</div>
+                            <div class="admin-hub-card-sub">فردي وجماعي متكتك</div>
                         </div>
                     </div>
 
-                    <!-- 7. توزيع نقاط الولاء -->
-                    <div class="admin-hub-card" onclick="openAdminSubSection('loyaltyPointsAdmin')">
-                        <div class="admin-hub-icon-wrap">
-                            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
-                        </div>
-                        <div>
-                            <div class="admin-hub-card-title">توزيع نقاط الولاء</div>
-                            <div class="admin-hub-card-sub">منح نقاط فردية أو جماعية للجميع</div>
-                        </div>
-                    </div>
-
-                    <!-- 8. دليل حسابات الزبائن -->
                     <div class="admin-hub-card" onclick="openAdminSubSection('customers')">
-                        <div class="admin-hub-icon-wrap">
-                            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
-                        </div>
+                        <div class="admin-hub-icon-wrap">👥</div>
                         <div>
                             <div class="admin-hub-card-title">دليل الزبائن والولاء</div>
-                            <div class="admin-hub-card-sub">تعديل النقاط وحظر الحسابات</div>
+                            <div class="admin-hub-card-sub">تعديل النقاط وحظر الحسابات برقم الهاتف</div>
                         </div>
                     </div>
 
-                    <!-- 9. إدارة استبدال النقاط -->
                     <div class="admin-hub-card" onclick="openAdminSubSection('redeemManager')">
-                        <div class="admin-hub-icon-wrap">
-                            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><path d="M8 12h8"></path><path d="M12 8v8"></path></svg>
-                        </div>
+                        <div class="admin-hub-icon-wrap">🎁</div>
                         <div>
                             <div class="admin-hub-card-title">استبدال النقاط والمكافآت</div>
                             <div class="admin-hub-card-sub">إضافة أصناف المكافآت المجانية</div>
                         </div>
                     </div>
 
-                    <!-- 10. العروض والكوبونات -->
                     <div class="admin-hub-card" onclick="openAdminSubSection('coupons')">
-                        <div class="admin-hub-icon-wrap">
-                            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path></svg>
-                        </div>
+                        <div class="admin-hub-icon-wrap">🏷️</div>
                         <div>
                             <div class="admin-hub-card-title">العروض والكوبونات</div>
-                            <div class="admin-hub-card-sub">الخصومات ونشر العروض</div>
+                            <div class="admin-hub-card-sub">كوبونات الخصم بالوقت والتاريخ</div>
                         </div>
                     </div>
 
-                    <!-- 11. الفروع وأرقام التواصل -->
-                    <div class="admin-hub-card" onclick="openAdminSubSection('branchesConfig')">
-                        <div class="admin-hub-icon-wrap">
-                            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
-                        </div>
-                        <div>
-                            <div class="admin-hub-card-title">الفروع وأرقام الهواتف</div>
-                            <div class="admin-hub-card-sub">الواتساب وأوقات العمل والبلدات</div>
-                        </div>
-                    </div>
-
-                    <!-- 12. أرشيف الفواتير المكتملة -->
-                    <div class="admin-hub-card" onclick="openAdminSubSection('invoicesAdmin')">
-                        <div class="admin-hub-icon-wrap">
-                            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>
-                        </div>
-                        <div>
-                            <div class="admin-hub-card-title">أرشيف الفواتير المكتملة</div>
-                            <div class="admin-hub-card-sub">استعراض وتدقيق الفواتير السابقة</div>
-                        </div>
-                    </div>
-
-                    <!-- 13. الثيمات والوضع الداكن -->
                     <div class="admin-hub-card" onclick="openAdminSubSection('themes')">
-                        <div class="admin-hub-icon-wrap">
-                            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><path d="M12 2a14.5 14.5 0 0 0 0 20 10 10 0 0 0 0-20"></path></svg>
-                        </div>
+                        <div class="admin-hub-icon-wrap">🎨</div>
                         <div>
                             <div class="admin-hub-card-title">الثيمات والوضع الداكن</div>
                             <div class="admin-hub-card-sub">ألوان ملكية وأسود حالك نقي</div>
                         </div>
                     </div>
-
-                    <!-- 14. التقارير والإحصائيات -->
-                    <div class="admin-hub-card" onclick="openAdminSubSection('reports')">
-                        <div class="admin-hub-icon-wrap">
-                            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
-                        </div>
-                        <div>
-                            <div class="admin-hub-card-title">التقارير والإحصائيات</div>
-                            <div class="admin-hub-card-sub">المبيعات وفلترة التواريخ وتصفير</div>
-                        </div>
-                    </div>
                 </div>
             </div>
 
-            <!-- الأقسام الفرعية للوحة الأدمن الـ 14 -->
+            <!-- أقسام الأدمن الفرعية -->
             <div id="subView-orders" class="admin-sub-view">
                 <button class="btn-brand-outline" style="margin-bottom:10px;" onclick="backToAdminMainHub()">← العودة للوحة الرئيسية</button>
                 <div class="clean-card">
-                    <div class="clean-title">إدارة الطلبات الواردة</div>
+                    <div class="clean-title">إدارة الطلبات الحية (الاستلام vs التوصيل)</div>
                     <div id="adminLiveOrdersContainer"></div>
                 </div>
             </div>
@@ -1469,65 +1254,44 @@
             <div id="subView-brandAndDev" class="admin-sub-view">
                 <button class="btn-brand-outline" style="margin-bottom:10px;" onclick="backToAdminMainHub()">← العودة للوحة الرئيسية</button>
                 <div class="clean-card">
-                    <div class="clean-title">تعديل شعار المتجر والترويسة (Logo & Header)</div>
+                    <div class="clean-title">تعديل شعار المتجر والترويسة</div>
                     <div style="display:flex; align-items:center; gap:12px; margin-bottom:10px;">
                         <img src="./logo.png" id="admLogoPreview" style="width:58px; height:58px; border-radius:50%; object-fit:cover; border:2px solid var(--brand-theme);">
                         <div>
                             <input type="file" id="uploadStoreLogoInput" accept="image/*" style="display:none;" onchange="handleStoreLogoUpload(event)">
-                            <button type="button" class="btn-brand-outline" onclick="document.getElementById('uploadStoreLogoInput').click()">رفع شعار جديد من الهاتف</button>
+                            <button type="button" class="btn-brand-outline" onclick="document.getElementById('uploadStoreLogoInput').click()">رفع شعار جديد</button>
                         </div>
                     </div>
                     <div style="display:flex; flex-direction:column; gap:8px;">
-                        <input type="text" class="ios-input-field" id="admBrandTitleInput" placeholder="اسم المتجر في الترويسة (مثال: كافيه كورنر)">
-                        <input type="text" class="ios-input-field" id="admBrandSubInput" placeholder="الوصف الفرعي في الترويسة">
+                        <input type="text" class="ios-input-field" id="admBrandTitleInput" placeholder="اسم المتجر">
+                        <input type="text" class="ios-input-field" id="admBrandSubInput" placeholder="الوصف الفرعي">
                     </div>
                 </div>
-
-                <div class="clean-card">
-                    <div class="clean-title">تعديل بيانات وصورة المطور (Developer Hub)</div>
-                    <div style="display:flex; align-items:center; gap:12px; margin-bottom:12px;">
-                        <img src="" id="admDevAvatarPreview" style="width:58px; height:58px; border-radius:50%; object-fit:cover; border:2px solid #55DDF3;">
-                        <div>
-                            <input type="file" id="uploadDevAvatarInput" accept="image/*" style="display:none;" onchange="handleDevAvatarUpload(event)">
-                            <button type="button" class="btn-brand-outline" style="border-color:#55DDF3; color:#55DDF3;" onclick="document.getElementById('uploadDevAvatarInput').click()">رفع صورة المطور من الهاتف</button>
-                        </div>
-                    </div>
-                    <div style="display:flex; flex-direction:column; gap:8px;">
-                        <input type="text" class="ios-input-field" id="admDevNameInput" placeholder="اسم المطور (مثال: المهندس عمر عبيدات)">
-                        <textarea class="ios-textarea-field" id="admDevBioInput" placeholder="النبذة التعريفية للمطور..."></textarea>
-                        <input type="tel" class="ios-input-field num-font" id="admDevWaInput" placeholder="رقم واتساب المطور (مثال: 962796433698)">
-                        <input type="text" class="ios-input-field" id="admDevIgInput" placeholder="رابط حساب إنستغرام المطور">
-                    </div>
-                </div>
-
-                <button class="btn-brand-solid" onclick="saveBrandAndDeveloperSettings()">حفظ وتثبيت الشعار وبيانات المطور</button>
+                <button class="btn-brand-solid" onclick="saveBrandAndDeveloperSettings()">حفظ وتثبيت إعدادات الهوية</button>
             </div>
 
             <div id="subView-paymentsAdmin" class="admin-sub-view">
                 <button class="btn-brand-outline" style="margin-bottom:10px;" onclick="backToAdminMainHub()">← العودة للوحة الرئيسية</button>
                 <div class="clean-card">
-                    <div class="clean-title">إضافة طريقة دفع خاصة بفرع معين</div>
+                    <div class="clean-title">إضافة طريقة دفع مع الشعار لكل فرع</div>
                     <div style="display:flex; flex-direction:column; gap:8px;">
                         <select class="ios-input-field" id="newPayBranchSelect">
                             <option value="0">فرع كفرسوم فقط</option>
                             <option value="1">فرع سما الروسان فقط</option>
                         </select>
-                        <input type="text" class="ios-input-field" id="newPayMethodName" placeholder="اسم طريقة الدفع (مثال: كليك CliQ أو محفظة أورنج)">
-                        <input type="text" class="ios-input-field" id="newPayMethodDesc" placeholder="التفاصيل أو الرقم المستعار للتحويل">
-                        
+                        <input type="text" class="ios-input-field" id="newPayMethodName" placeholder="اسم طريقة الدفع (مثال: كليك CliQ)">
+                        <input type="text" class="ios-input-field" id="newPayMethodDesc" placeholder="التفاصيل أو الرقم المستعار">
                         <div>
-                            <span style="font-size:11px; font-weight:700;">شعار طريقة الدفع من الهاتف:</span>
+                            <span style="font-size:11px; font-weight:700;">شعار طريقة الدفع:</span>
                             <div style="display:flex; align-items:center; gap:8px; margin-top:4px;">
                                 <img src="" id="newPayLogoPreview" style="width:36px; height:36px; border-radius:6px; object-fit:contain; border:1px solid var(--border-subtle); display:none;">
                                 <input type="file" id="uploadPayLogoFile" accept="image/*" style="display:none;" onchange="handlePaymentLogoUpload(event)">
                                 <button type="button" class="btn-brand-outline" onclick="document.getElementById('uploadPayLogoFile').click()">رفع شعار</button>
                             </div>
                         </div>
-
-                        <button class="btn-brand-solid" onclick="saveCustomPaymentMethod()">حفظ طريقة الدفع للفرع</button>
+                        <button class="btn-brand-solid" onclick="saveCustomPaymentMethod()">حفظ طريقة الدفع</button>
                     </div>
-
-                    <div class="clean-title" style="margin-top:14px;">طرق الدفع المفعلة حالياً</div>
+                    <div class="clean-title" style="margin-top:14px;">طرق الدفع المفعلة</div>
                     <div id="adminPaymentMethodsList"></div>
                 </div>
             </div>
@@ -1535,7 +1299,7 @@
             <div id="subView-feedbackAdmin" class="admin-sub-view">
                 <button class="btn-brand-outline" style="margin-bottom:10px;" onclick="backToAdminMainHub()">← العودة للوحة الرئيسية</button>
                 <div class="clean-card">
-                    <div class="clean-title">صندوق الشكاوى والمقترحات الواردة</div>
+                    <div class="clean-title">صندوق الشكاوى وطعون فك الحظر الواردة</div>
                     <div id="adminFeedbackControlList"></div>
                 </div>
             </div>
@@ -1543,13 +1307,13 @@
             <div id="subView-notificationsAdmin" class="admin-sub-view">
                 <button class="btn-brand-outline" style="margin-bottom:10px;" onclick="backToAdminMainHub()">← العودة للوحة الرئيسية</button>
                 <div class="clean-card">
-                    <div class="clean-title">إرسال إشعار فوري معزول أو عام</div>
+                    <div class="clean-title">إرسال إشعار فوري (فردي أو جماعي)</div>
                     <div style="display:flex; flex-direction:column; gap:8px;">
                         <div>
                             <span style="font-size:11.5px; font-weight:700;">المستلم:</span>
                             <select class="ios-input-field" id="notifTargetMode" onchange="toggleNotifCustomerPicker()">
-                                <option value="all">كافة الزبائن المسجلين (عام)</option>
-                                <option value="single">زبون محدد فقط (معزول وخاص)</option>
+                                <option value="all">كافة الزبائن (جماعي)</option>
+                                <option value="single">زبون محدد (فردي)</option>
                             </select>
                         </div>
                         <div id="notifSinglePickerWrap" style="display:none;">
@@ -1558,28 +1322,25 @@
                         </div>
                         <input type="text" class="ios-input-field" id="admNotifTitleInput" placeholder="عنوان الإشعار">
                         <textarea class="ios-textarea-field" id="admNotifBodyInput" placeholder="نص الإشعار..."></textarea>
-                        <button class="btn-brand-solid" onclick="dispatchAdminNotification()">إرسال الإشعار فوراً</button>
+                        <button class="btn-brand-solid" onclick="dispatchAdminNotification()">إرسال الإشعار فوراً أونلاين</button>
                     </div>
                 </div>
-            </div>
 
-            <div id="subView-loyaltyPointsAdmin" class="admin-sub-view">
-                <button class="btn-brand-outline" style="margin-bottom:10px;" onclick="backToAdminMainHub()">← العودة للوحة الرئيسية</button>
-                <div class="clean-card">
-                    <div class="clean-title">توزيع نقاط ولاء وهدايا (جماعي أو فردي)</div>
+                <div class="clean-card" style="margin-top:10px;">
+                    <div class="clean-title">توزيع نقاط ولاء وهدايا (فردي أو جماعي)</div>
                     <div style="display:flex; flex-direction:column; gap:8px;">
                         <div>
                             <span style="font-size:11.5px; font-weight:700;">المستفيد من النقاط:</span>
                             <select class="ios-input-field" id="pointsTargetMode" onchange="togglePointsCustomerPicker()">
-                                <option value="all">كافة الزبائن بلا استثناء</option>
-                                <option value="single">زبون محدد</option>
+                                <option value="all">كافة الزبائن (جماعي)</option>
+                                <option value="single">زبون محدد (فردي)</option>
                             </select>
                         </div>
                         <div id="pointsSinglePickerWrap" style="display:none;">
                             <select class="ios-input-field" id="pointsSingleUserSelect"></select>
                         </div>
                         <input type="number" class="ios-input-field num-font" id="admGrantPointsAmount" placeholder="عدد النقاط الممنوحة (مثال: 20)">
-                        <button class="btn-brand-solid" onclick="grantPointsToCustomers()">منح وتثبيت النقاط في الحسابات</button>
+                        <button class="btn-brand-solid" onclick="grantPointsToCustomers()">منح وتثبيت النقاط</button>
                     </div>
                 </div>
             </div>
@@ -1587,12 +1348,11 @@
             <div id="subView-customers" class="admin-sub-view">
                 <button class="btn-brand-outline" style="margin-bottom:10px;" onclick="backToAdminMainHub()">← العودة للوحة الرئيسية</button>
                 <div class="clean-card">
-                    <div class="clean-title">البحث المباشر برقم الهاتف وفك/فرض الحظر</div>
+                    <div class="clean-title">دليل الزبائن وحظر/فك الحظر برقم الهاتف</div>
                     <div style="display:flex; gap:6px; margin-bottom:12px;">
                         <input type="tel" class="ios-input-field num-font" id="adminCustomerSearchPhone" placeholder="07xxxxxxxx">
                         <button class="btn-brand-solid" style="width:auto; padding:0 12px; font-size:11px;" onclick="searchAndOpenCustomerDossier()">بحث</button>
                     </div>
-                    <div class="clean-title">دليل الزبائن المسجلين</div>
                     <div id="adminCustomersListContainer"></div>
                 </div>
             </div>
@@ -1600,13 +1360,25 @@
             <div id="subView-redeemManager" class="admin-sub-view">
                 <button class="btn-brand-outline" style="margin-bottom:10px;" onclick="backToAdminMainHub()">← العودة للوحة الرئيسية</button>
                 <div class="clean-card">
-                    <div class="clean-title">إضافة صنف استبدال نقاط جديد</div>
+                    <div class="clean-title">إضافة صنف استبدال نقاط جديد (بالوصف والصورة والسعر الأصلي)</div>
                     <div style="display:flex; flex-direction:column; gap:8px; margin-bottom:12px;">
-                        <input type="text" class="ios-input-field" id="newRedeemItemName" placeholder="اسم صنف المكافأة (مثال: وافل نوتيلا مجاني)">
-                        <input type="number" class="ios-input-field num-font" id="newRedeemItemPoints" placeholder="عدد النقاط المطلوبة للاستبدال (مثال: 50)">
+                        <input type="text" class="ios-input-field" id="newRedeemItemName" placeholder="اسم صنف المكافأة">
+                        <input type="number" step="0.25" class="ios-input-field num-font" id="newRedeemItemOriginalPrice" placeholder="السعر الأصلي للصنف (د.أ)">
+                        <input type="number" class="ios-input-field num-font" id="newRedeemItemPoints" placeholder="عدد النقاط المطلوبة للاستبدال">
+                        <textarea class="ios-textarea-field" id="newRedeemItemDesc" placeholder="وصف المكافأة..."></textarea>
+                        
+                        <div>
+                            <span style="font-size:11px; font-weight:700;">صورة صنف المكافأة:</span>
+                            <div style="display:flex; align-items:center; gap:8px; margin-top:4px;">
+                                <img src="" id="newRedeemImgPreview" style="width:40px; height:40px; border-radius:6px; object-fit:contain; border:1px solid var(--border-subtle); display:none;">
+                                <input type="file" id="uploadRedeemImgFile" accept="image/*" style="display:none;" onchange="handleRedeemImageUpload(event)">
+                                <button type="button" class="btn-brand-outline" onclick="document.getElementById('uploadRedeemImgFile').click()">رفع صورة المكافأة</button>
+                            </div>
+                        </div>
+
                         <button class="btn-brand-solid" onclick="saveNewRedeemItemAdmin()">حفظ الصنف في متجر المكافآت</button>
                     </div>
-                    <div class="clean-title">الأصناف المتاحة للاستبدال حالياً</div>
+                    <div class="clean-title">الأصناف المتاحة للاستبدال</div>
                     <div id="adminRedeemControlList"></div>
                 </div>
             </div>
@@ -1614,42 +1386,19 @@
             <div id="subView-coupons" class="admin-sub-view">
                 <button class="btn-brand-outline" style="margin-bottom:10px;" onclick="backToAdminMainHub()">← العودة للوحة الرئيسية</button>
                 <div class="clean-card">
-                    <div class="clean-title">إضافة عرض ترويجي جديد</div>
+                    <div class="clean-title">إشاء كود خصم بالوقت والتاريخ والملاحظة</div>
                     <div style="display:flex; flex-direction:column; gap:8px; margin-bottom:12px;">
-                        <input type="text" class="ios-input-field" id="newOfferTitleInput" placeholder="عنوان العرض">
-                        <textarea class="ios-textarea-field" id="newOfferDescInput" placeholder="تفاصيل العرض..."></textarea>
-                        <button class="btn-brand-solid" onclick="saveNewOfferFromAdmin()">نشر العرض فوراً للجميع</button>
+                        <input type="text" class="ios-input-field num-font" id="newCouponCode" placeholder="كود الخصم (مثال: EID20)" style="text-transform:uppercase;">
+                        <input type="number" class="ios-input-field num-font" id="newCouponDiscount" placeholder="نسبة الخصم % (مثال: 15)">
+                        <div>
+                            <span style="font-size:11px;">تاريخ انتهاء الصلاحية:</span>
+                            <input type="date" class="ios-input-field num-font" id="newCouponExpiry">
+                        </div>
+                        <textarea class="ios-textarea-field" id="newCouponNotes" placeholder="ملاحظة حول الكود أو شروطه..."></textarea>
+                        <button class="btn-brand-solid" onclick="saveNewCouponAdmin()">حفظ وتفعيل الكود أونلاين</button>
                     </div>
-                    <div id="adminOffersListContainer"></div>
-                </div>
-            </div>
-
-            <div id="subView-branchesConfig" class="admin-sub-view">
-                <button class="btn-brand-outline" style="margin-bottom:10px;" onclick="backToAdminMainHub()">← العودة للوحة الرئيسية</button>
-                <div class="clean-card">
-                    <div class="clean-title">إعدادات فرع كفرسوم</div>
-                    <div style="display:flex; flex-direction:column; gap:8px; margin-bottom:14px;">
-                        <input type="tel" class="ios-input-field num-font" id="admBranch0Phone" placeholder="رقم هاتف / واتساب الفرع">
-                        <input type="text" class="ios-input-field" id="admBranch0Hours" placeholder="أوقات العمل">
-                        <input type="text" class="ios-input-field" id="admBranch0Loc" placeholder="الموقع بالتفصيل">
-                    </div>
-
-                    <div class="clean-title">إعدادات فرع سما الروسان</div>
-                    <div style="display:flex; flex-direction:column; gap:8px; margin-bottom:14px;">
-                        <input type="tel" class="ios-input-field num-font" id="admBranch1Phone" placeholder="رقم هاتف / واتساب الفرع">
-                        <input type="text" class="ios-input-field" id="admBranch1Hours" placeholder="أوقات العمل">
-                        <input type="text" class="ios-input-field" id="admBranch1Loc" placeholder="الموقع بالتفصيل">
-                    </div>
-
-                    <button class="btn-brand-solid" onclick="saveBranchesSettingsFromAdmin()">حفظ وتحديث بيانات الفروع</button>
-                </div>
-            </div>
-
-            <div id="subView-invoicesAdmin" class="admin-sub-view">
-                <button class="btn-brand-outline" style="margin-bottom:10px;" onclick="backToAdminMainHub()">← العودة للوحة الرئيسية</button>
-                <div class="clean-card">
-                    <div class="clean-title">أرشيف كافة الفواتير والطلبات المكتملة</div>
-                    <div id="adminAllInvoicesArchiveList"></div>
+                    <div class="clean-title">الكوبونات النشطة</div>
+                    <div id="adminCouponsListContainer"></div>
                 </div>
             </div>
 
@@ -1667,31 +1416,6 @@
                     </div>
                 </div>
             </div>
-
-            <div id="subView-reports" class="admin-sub-view">
-                <button class="btn-brand-outline" style="margin-bottom:10px;" onclick="backToAdminMainHub()">← العودة للوحة الرئيسية</button>
-                <div class="clean-card">
-                    <div class="clean-title">تحديد فترة تقرير المبيعات</div>
-                    <div style="display:flex; gap:6px; margin-bottom:10px;">
-                        <input type="date" class="ios-input-field num-font" id="filterRepStartDate">
-                        <input type="date" class="ios-input-field num-font" id="filterRepEndDate">
-                        <button class="btn-brand-solid" style="width:auto; padding:0 12px; font-size:11px;" onclick="filterAnalyticsByDates()">فلترة</button>
-                    </div>
-
-                    <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-bottom:10px;">
-                        <div style="background:var(--bg-surface); padding:8px; border-radius:var(--radius-sm); border:1px solid var(--border-subtle);">
-                            <div style="font-size:10px; color:var(--text-secondary);">صافي الإيرادات</div>
-                            <div class="num-font" style="font-size:16px; font-weight:900; color:var(--brand-theme);" id="repNetRevenue">0.00 د.أ</div>
-                        </div>
-                        <div style="background:var(--bg-surface); padding:8px; border-radius:var(--radius-sm); border:1px solid var(--border-subtle);">
-                            <div style="font-size:10px; color:var(--text-secondary);">الطلبات المكتملة</div>
-                            <div class="num-font" style="font-size:16px; font-weight:900; color:var(--brand-theme);" id="repValidOrdersCount">0</div>
-                        </div>
-                    </div>
-
-                    <button class="btn-brand-outline" style="width:100%; color:var(--status-danger); border-color:var(--status-danger); margin-top:6px;" onclick="resetAllStoreAnalyticsPrompt()">تصفير إحصائيات المبيعات</button>
-                </div>
-            </div>
         </div>
     </div>
 
@@ -1704,9 +1428,7 @@
             </div>
             
             <div style="display:flex; align-items:center; gap:12px; margin-bottom:12px;">
-                <div style="width:50px; height:50px; border-radius:50%; background:var(--bg-elevated); border:2px solid var(--brand-theme); display:flex; align-items:center; justify-content:center; color:var(--brand-theme);">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
-                </div>
+                <div style="width:50px; height:50px; border-radius:50%; background:var(--bg-elevated); border:2px solid var(--brand-theme); display:flex; align-items:center; justify-content:center; color:var(--brand-theme);">👤</div>
                 <div>
                     <div style="font-weight:900; font-size:14px;" id="dosFullName">الاسم</div>
                     <div style="font-size:11px; color:var(--text-secondary);" class="num-font" id="dosPhone">الهاتف</div>
@@ -1737,32 +1459,7 @@
         </div>
     </div>
 
-    <!-- نافذة نشر تجربة مصورة -->
-    <div id="modalNewMoment" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.7); z-index:4000; align-items:center; justify-content:center; padding:16px;">
-        <div class="clean-card" style="width:100%; max-width:400px; max-height:90vh; overflow-y:auto;">
-            <div class="clean-title">
-                <span>مشاركة تجربة مصورة</span>
-                <button style="background:none; border:none; font-size:16px; cursor:pointer;" onclick="closeNewMomentModal()">✕</button>
-            </div>
-            
-            <div style="display:flex; flex-direction:column; gap:10px;">
-                <div>
-                    <input type="file" id="momentFileInput" accept="image/*" style="display:none;" onchange="handleMomentImageSelect(event)">
-                    <button type="button" class="btn-brand-outline" style="width:100%;" onclick="document.getElementById('momentFileInput').click()">اختيار صورة من هاتفك</button>
-                </div>
-
-                <div id="momentPreviewBox" style="display:none; width:100%; background:#000; border-radius:var(--radius-sm); overflow:hidden; text-align:center;">
-                    <img src="" id="momentPreviewImg" style="width:100%; max-height:240px; object-fit:contain;">
-                </div>
-
-                <textarea class="ios-textarea-field" id="momentTextInput" placeholder="اكتب تعليقك حول تجربتك..."></textarea>
-                
-                <button class="btn-brand-solid" onclick="publishCustomerMoment()">نشر المشاركة للجميع</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- شاشة تعديل وإضافة الصنف -->
+    <!-- شاشة تعديل وإضافة الصنف مع التحكم الكامل بالنكهات والأحجام والإضافات -->
     <div id="screen-product-editor" class="app-screen">
         <header class="header">
             <button class="header-btn" onclick="navigateRouter('screen-admin-dashboard'); openAdminSubSection('products');" aria-label="عودة">
@@ -1810,14 +1507,14 @@
                         <div id="interactiveSaucesContainer" style="display:flex; flex-direction:column; gap:6px; margin-top:8px;"></div>
                     </div>
 
-                    <!-- خيارات الإضافات للصنف -->
+                    <!-- إضافات الصنف الفعالة -->
                     <div style="border:1px solid var(--border-subtle); padding:10px; border-radius:var(--radius-sm);">
-                        <span style="font-size:12px; font-weight:800; display:block; margin-bottom:6px;">الإضافات المتاحة لهذا الصنف:</span>
+                        <span style="font-size:12px; font-weight:800; display:block; margin-bottom:6px;">الإضافات الفعالة لهذا الصنف:</span>
                         <div style="display:grid; grid-template-columns:1fr 1fr; gap:6px; font-size:11px;" id="editorAddonsCheckboxes"></div>
                     </div>
 
                     <div>
-                        <span style="font-size:11.5px; font-weight:700;">صورة الصنف (تتناسق تلقائياً دون أي قص):</span>
+                        <span style="font-size:11.5px; font-weight:700;">صورة الصنف (تتناسق تلقائياً دون قص):</span>
                         <div style="display:flex; align-items:center; gap:10px; margin-top:4px;">
                             <div style="width:65px; height:65px; background:#000; border-radius:var(--radius-sm); overflow:hidden; display:flex; align-items:center; justify-content:center;">
                                 <img src="" id="editProdImagePreview" style="width:100%; height:100%; object-fit:contain;">
@@ -1834,7 +1531,7 @@
 
 </div>
 
-<!-- القائمة الجانبية الكاملة والمنسقة بشعارات SVG ورقم الإصدار 7.5.0 -->
+<!-- القائمة الجانبية المحدثة (بدون مشاركنا بصورة ولا فواتير، مع زر عودة للرئيسية) -->
 <div class="sidebar-mask" id="sidebarMask" onclick="closeSidebarDrawer()"></div>
 <div class="sidebar-drawer" id="sidebarDrawer">
     <div class="sidebar-top">
@@ -1845,9 +1542,7 @@
     <div class="sidebar-menu-list">
         <div class="sidebar-item-card" onclick="navigateRouter('screen-home'); closeSidebarDrawer();">
             <div class="sidebar-item-right">
-                <div class="sidebar-icon-sq">
-                    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path></svg>
-                </div>
+                <div class="sidebar-icon-sq">🏠</div>
                 <div class="sidebar-item-title">الصفحة الرئيسية</div>
             </div>
             <div style="color:var(--text-dim);">❮</div>
@@ -1855,9 +1550,7 @@
 
         <div class="sidebar-item-card" onclick="checkAuthAndNavigate('screen-rewards'); closeSidebarDrawer();">
             <div class="sidebar-item-right">
-                <div class="sidebar-icon-sq">
-                    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
-                </div>
+                <div class="sidebar-icon-sq">⭐</div>
                 <div class="sidebar-item-title">استبدال نقاطي</div>
             </div>
             <div style="color:var(--text-dim);">❮</div>
@@ -1865,9 +1558,7 @@
 
         <div class="sidebar-item-card" onclick="navigateRouter('screen-offers'); closeSidebarDrawer();">
             <div class="sidebar-item-right">
-                <div class="sidebar-icon-sq">
-                    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path></svg>
-                </div>
+                <div class="sidebar-icon-sq">🏷️</div>
                 <div class="sidebar-item-title">العروض والخصومات</div>
             </div>
             <div style="color:var(--text-dim);">❮</div>
@@ -1875,9 +1566,7 @@
 
         <div class="sidebar-item-card" onclick="checkAuthAndNavigate('screen-order-tracking'); closeSidebarDrawer();">
             <div class="sidebar-item-right">
-                <div class="sidebar-icon-sq">
-                    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
-                </div>
+                <div class="sidebar-icon-sq">⏱️</div>
                 <div class="sidebar-item-title">تتبع طلبي والتايمر</div>
             </div>
             <div style="color:var(--text-dim);">❮</div>
@@ -1885,49 +1574,23 @@
 
         <div class="sidebar-item-card" onclick="checkAuthAndNavigate('screen-user-profile'); closeSidebarDrawer();">
             <div class="sidebar-item-right">
-                <div class="sidebar-icon-sq">
-                    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
-                </div>
-                <div class="sidebar-item-title">حسابي والشارات</div>
-            </div>
-            <div style="color:var(--text-dim);">❮</div>
-        </div>
-
-        <div class="sidebar-item-card" onclick="checkAuthAndNavigate('screen-invoices'); closeSidebarDrawer();">
-            <div class="sidebar-item-right">
-                <div class="sidebar-icon-sq">
-                    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
-                </div>
-                <div class="sidebar-item-title">سجل الفواتير السابقة</div>
+                <div class="sidebar-icon-sq">👤</div>
+                <div class="sidebar-item-title">حسابي الشخصي</div>
             </div>
             <div style="color:var(--text-dim);">❮</div>
         </div>
 
         <div class="sidebar-item-card" onclick="checkAuthAndNavigate('screen-feedback'); closeSidebarDrawer();">
             <div class="sidebar-item-right">
-                <div class="sidebar-icon-sq">
-                    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
-                </div>
+                <div class="sidebar-icon-sq">💬</div>
                 <div class="sidebar-item-title">الشكاوى والاقتراحات</div>
-            </div>
-            <div style="color:var(--text-dim);">❮</div>
-        </div>
-
-        <div class="sidebar-item-card" onclick="navigateRouter('screen-moments'); closeSidebarDrawer();">
-            <div class="sidebar-item-right">
-                <div class="sidebar-icon-sq">
-                    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path><circle cx="12" cy="13" r="4"></circle></svg>
-                </div>
-                <div class="sidebar-item-title">شاركنا بصورة</div>
             </div>
             <div style="color:var(--text-dim);">❮</div>
         </div>
 
         <div class="sidebar-item-card" onclick="navigateRouter('screen-branches'); closeSidebarDrawer();">
             <div class="sidebar-item-right">
-                <div class="sidebar-icon-sq">
-                    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="10"></circle><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"></polygon></svg>
-                </div>
+                <div class="sidebar-icon-sq">📍</div>
                 <div class="sidebar-item-title">فروعنا والتواصل</div>
             </div>
             <div style="color:var(--text-dim);">❮</div>
@@ -1935,9 +1598,7 @@
 
         <div class="sidebar-item-card" onclick="navigateRouter('screen-developer'); closeSidebarDrawer();">
             <div class="sidebar-item-right">
-                <div class="sidebar-icon-sq">
-                    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>
-                </div>
+                <div class="sidebar-icon-sq">💻</div>
                 <div class="sidebar-item-title">المطور</div>
             </div>
             <div style="color:var(--text-dim);">❮</div>
@@ -1945,12 +1606,7 @@
     </div>
 
     <div class="sidebar-footer-bar">
-        <div onclick="toggleThemeMode()" style="cursor:pointer; color:var(--brand-theme);">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
-        </div>
-        <div style="font-size:11px; color:var(--text-dim);">
-            <span>الإصدار </span><span class="num-font">7.5.0</span>
-        </div>
+        <button class="btn-brand-outline" style="width:100%; font-size:11px;" onclick="navigateRouter('screen-home'); closeSidebarDrawer();">العودة للصفحة الرئيسية</button>
     </div>
 </div>
 
@@ -1967,7 +1623,7 @@
 
 <script>
 /* =========================================================
-   COFFEE CORNER PRO — MASTER PRODUCTION ENGINE
+   COFFEE CORNER PRO — MASTER CLOUD PRODUCTION ENGINE
    ========================================================= */
 
 const MASTER_PIN = "2001159393";
@@ -1984,15 +1640,15 @@ const FIREBASE_CONFIG = {
 let cloudDb = null;
 
 const MASTER_ADDONS_DICT = [
-    { id: "ad_cream", name: "قشطة بلدية", price: 0.50, isTool: false },
-    { id: "ad_nuts", name: "مكسرات مشكلة فاخرة", price: 0.50, isTool: false },
-    { id: "ad_honey", name: "عسل طبيعي", price: 0.50, isTool: false },
-    { id: "ad_fruits", name: "قطع فواكه إضافية", price: 0.50, isTool: false },
-    { id: "ad_whipped", name: "كريمة مخفوقة", price: 0.50, isTool: false },
-    { id: "ad_flavor", name: "نكهة إضافية خاصة", price: 0.50, isTool: false },
-    { id: "ad_straw", name: "شلمونة (شفاطة)", price: 0.00, isTool: true },
-    { id: "ad_knife", name: "سكين طعام", price: 0.00, isTool: true },
-    { id: "ad_fork", name: "شوكة طعام", price: 0.00, isTool: true }
+    { id: "ad_cream", name: "قشطة بلدية", price: 0.50 },
+    { id: "ad_nuts", name: "مكسرات مشكلة فاخرة", price: 0.50 },
+    { id: "ad_honey", name: "عسل طبيعي", price: 0.50 },
+    { id: "ad_fruits", name: "قطع فواكه إضافية", price: 0.50 },
+    { id: "ad_whipped", name: "كريمة مخفوقة", price: 0.50 },
+    { id: "ad_flavor", name: "نكهة إضافية خاصة", price: 0.50 },
+    { id: "ad_straw", name: "شلمونة (شفاطة)", price: 0.00 },
+    { id: "ad_knife", name: "سكين طعام", price: 0.00 },
+    { id: "ad_fork", name: "شوكة طعام", price: 0.00 }
 ];
 
 const DEFAULT_CATALOG = [
@@ -2046,15 +1702,15 @@ const DEFAULT_BRANCHES = [
     {
         name: "كفرسوم",
         whatsapp: "962790155906",
-        hours: "6:30 صباحاً حتى 3:00 فجراً يومياً",
-        location: "الشارع الرئيسي - مقابل مجمع المحلات التجارية",
-        towns: { "كفرسوم": 1.0, "سمر": 1.25, "سحم": 1.5, "حبراص": 1.25, "يبلا": 1.5, "الرفيد": 1.5, "حرثا": 1.5, "المزيريب": 1.5, "عقربا": 2.0, "حاتم": 1.75, "ملكا": 2.0, "أم قيس": 2.5, "المنصورة": 2.0 }
+        openHour: 6.5, // 6:30 AM
+        closeHour: 3.0, // 3:00 AM next day
+        towns: { "كفرسوم": 1.0, "سمر": 1.25, "سحم": 1.5, "حبراص": 1.25, "يبلا": 1.5, "الرفيد": 1.5, "حرثا": 1.5, "المزيريب": 1.5, "عقربا": 2.0, "حاتم": 1.75, "ملكا": 2.0, "أم قيس": 2.5 }
     },
     {
         name: "سما الروسان",
         whatsapp: "962790155906",
-        hours: "4:00 عصراً حتى 3:00 فجراً يومياً",
-        location: "الشارع العام - بجانب مبنى البلدية",
+        openHour: 16.0, // 4:00 PM
+        closeHour: 3.0, // 3:00 AM next day
         towns: { "سما الروسان": 1.0, "حبراص": 1.25, "حاتم": 1.5, "كفرسوم": 1.5, "إبدر": 1.75, "المخيبة": 2.5 }
     }
 ];
@@ -2063,9 +1719,7 @@ function safeGet(key, defaultVal) {
     try {
         const val = localStorage.getItem(key);
         if (!val) return defaultVal;
-        const parsed = JSON.parse(val);
-        if (Array.isArray(defaultVal) && (!Array.isArray(parsed) || parsed.length === 0)) return defaultVal;
-        return parsed;
+        return JSON.parse(val);
     } catch(e) { return defaultVal; }
 }
 
@@ -2085,16 +1739,15 @@ let productsCatalog = safeGet('cc_catalog', DEFAULT_CATALOG);
 let branchesData = safeGet('cc_branches', DEFAULT_BRANCHES);
 let customerFeedbacks = safeGet('cc_feedbacks', []);
 let customerNotifications = safeGet('cc_notifications', []);
-let communityMoments = safeGet('cc_moments', []);
-let systemCoupons = safeGet('cc_coupons', { "CORNER10": { discount: 10, isActive: true } });
+let systemCoupons = safeGet('cc_coupons', { "CORNER10": { discount: 10, expiry: "2026-12-31", notes: "خصم خاص لعشاق كافيه كورنر", isActive: true } });
 let systemOffers = safeGet('cc_offers', [{ id: "off1", title: "عرض الويكند الخاص", desc: "خصم 10% على أصناف الوافل باستخدام الكود CORNER10" }]);
 let customPaymentMethods = safeGet('cc_payment_methods', [
-    { id: "pm_c0", branch: "0", name: "دفع نقدي (كاش) - كفرسوم", desc: "الدفع عند الاستلام", logo: "" },
-    { id: "pm_c1", branch: "1", name: "دفع نقدي (كاش) - سما الروسان", desc: "الدفع عند الاستلام", logo: "" }
+    { id: "pm_c0", branch: "0", name: "دفع نقدي (كاش)", desc: "عند الاستلام", logo: "" },
+    { id: "pm_c1", branch: "1", name: "دفع نقدي (كاش)", desc: "عند الاستلام", logo: "" }
 ]);
 let redeemCatalog = safeGet('cc_redeem_catalog', [
-    { id: "rd1", name: "آيس كوفي إسباني مجاني", points: 30, desc: "استبدل 30 نقطة بمشروب بارد منعش" },
-    { id: "rd2", name: "وافل نوتيلا مجاني", points: 50, desc: "استبدل 50 نقطة بوافل نوتيلا ساخن" }
+    { id: "rd1", name: "آيس كوفي إسباني مجاني", points: 30, price: 1.50, desc: "مشروب بارد منعش", img: "" },
+    { id: "rd2", name: "وافل نوتيلا مجاني", points: 50, price: 2.00, desc: "وافل ساخن بالنوتيلا", img: "" }
 ]);
 
 let brandAndDevSettings = safeGet('cc_brand_dev_config', {
@@ -2108,9 +1761,13 @@ let brandAndDevSettings = safeGet('cc_brand_dev_config', {
     devIg: "https://www.instagram.com/o_yd"
 });
 
+let adminEditsCounter = safeGet('cc_admin_edits_count', 0);
+let currentAppVersion = safeGet('cc_app_version', '7.5.0');
+
 let authMode = 'register';
 let selectedDossierUserPhone = null;
 let activeViewingNotifId = null;
+let bypassStoreLock = false;
 
 window.appState = {
     cartBranch: 0,
@@ -2125,15 +1782,68 @@ window.appState = {
     editorSauces: []
 };
 
-// ==========================================
-// التحقق الأردني الصارم ومنع تكرار الحسابات
-// ==========================================
+// التحقق الأردني الصارم (07 وبطول 10 أرقام دقيقة)
 function validateJordanianPhoneNumber(phone) {
     const clean = (phone || '').replace(/\s+/g, '');
     const regex = /^07[789]\d{7}$/;
     return regex.test(clean);
 }
 
+// فحص أوقات العمل وإغلاق المتجر
+function checkStoreOpenHours() {
+    if (bypassStoreLock) {
+        document.getElementById('storeClosedOverlay').style.display = 'none';
+        return;
+    }
+    const now = new Date();
+    const currentHour = now.getHours() + (now.getMinutes() / 60);
+
+    // فرع كفرسوم (0): 6:30 صباحاً إلى 3:00 فجراً
+    // فرع سما الروسان (1): 4:00 عصراً إلى 3:00 فجراً
+    const isBranch0Open = (currentHour >= 6.5 || currentHour < 3.0);
+    const isBranch1Open = (currentHour >= 16.0 || currentHour < 3.0);
+
+    const overlay = document.getElementById('storeClosedOverlay');
+    const badge = document.getElementById('mainStoreOpenBadge');
+
+    if (badge) {
+        if (isBranch0Open || isBranch1Open) {
+            badge.innerText = "مفتوح الآن";
+            badge.className = "header-hours-badge";
+            if (overlay) overlay.style.display = 'none';
+        } else {
+            badge.innerText = "مغلق حالياً";
+            badge.className = "header-hours-badge closed";
+            if (overlay) {
+                overlay.style.display = 'flex';
+                updateStoreCountdown(6.5);
+            }
+        }
+    }
+}
+
+window.bypassStoreClosedForReview = function() {
+    bypassStoreLock = true;
+    document.getElementById('storeClosedOverlay').style.display = 'none';
+    window.showToastMsg("تم تفعيل وضع المعاينة وتصفح المنيو");
+};
+
+function updateStoreCountdown(targetHour) {
+    const timerEl = document.getElementById('storeOpenCountdownTimer');
+    if (!timerEl) return;
+    const now = new Date();
+    const target = new Date();
+    target.setHours(Math.floor(targetHour), (targetHour % 1) * 60, 0, 0);
+    if (now > target) target.setDate(target.getDate() + 1);
+
+    const diff = target - now;
+    const h = Math.floor(diff / 3600000);
+    const m = Math.floor((diff % 3600000) / 60000);
+    const s = Math.floor((diff % 60000) / 1000);
+    timerEl.innerText = `يفتح خلال: ${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+}
+
+// حظر الحساب والطعن
 function checkUserBannedStateAndLockout() {
     const overlay = document.getElementById('bannedAccountOverlay');
     if (!overlay) return;
@@ -2148,14 +1858,14 @@ function checkUserBannedStateAndLockout() {
 window.submitBanAppealAction = function() {
     if (!currentAuthenticatedUser) return;
     const reason = (document.getElementById('banAppealReasonInput').value || '').trim();
-    if (!reason) return window.showToastMsg("يرجى كتابة سبب الطعن أو التوضيح للإدارة");
+    if (!reason) return window.showToastMsg("يرجى كتابة سبب طلب رفع القيد");
 
     const appealObj = {
         id: "fb_appeal_" + Date.now(),
         customerPhone: currentAuthenticatedUser.phone,
         customerName: currentAuthenticatedUser.name,
         category: "طعن بقرار حظر الحساب",
-        text: `[طلب مراجعة حظر حساب]: ${reason}`,
+        text: `[طلب مراجعة قيد الحظر]: ${reason}`,
         reply: "",
         repliedAt: null,
         createdAt: Date.now(),
@@ -2167,12 +1877,10 @@ window.submitBanAppealAction = function() {
     if (cloudDb) cloudDb.collection('feedbacks').doc(appealObj.id).set(appealObj).catch(e=>console.warn(e));
 
     document.getElementById('banAppealReasonInput').value = '';
-    window.showToastMsg("تم تقديم الطعن للإدارة بنجاح وسيتم تدقيقه في قسم الشكاوى");
+    window.showToastMsg("تم إرسال الطعن للإدارة بنجاح");
 };
 
-// ==========================================
-// تسجيل الدخول وإنشاء الحساب
-// ==========================================
+// المصادقة والتسجيل
 window.switchAuthMode = function(mode) {
     authMode = mode;
     document.getElementById('tabAuthRegister').classList.toggle('active', mode === 'register');
@@ -2188,7 +1896,7 @@ window.handleCustomerAuthSubmit = function(event) {
     if (!phone || !pass) return window.showToastMsg("يرجى ملء جميع الحقول");
 
     if (!validateJordanianPhoneNumber(phone)) {
-        return window.showToastMsg("رقم الهاتف غير صالح! يجب أن يبدأ بـ 07 ويتكون من 10 أرقام دقيقة (مثال: 079xxxxxxx)");
+        return window.showToastMsg("رقم الهاتف غير صالح! يجب أن يتكون من 10 أرقام دقيقة ويبدأ بـ 07 (مثال: 0790123456)");
     }
 
     if (authMode === 'register') {
@@ -2196,7 +1904,7 @@ window.handleCustomerAuthSubmit = function(event) {
         if (!name) return window.showToastMsg("يرجى إدخال اسمك الكريم");
         
         if (allRegisteredCustomers[phone]) {
-            return window.showToastMsg("هذا الرقم مسجل بالفعل مسبقاً! قم بالتحويل إلى تسجيل الدخول");
+            return window.showToastMsg("هذا الرقم مسجل مسبقاً! قم بالتحويل إلى تسجيل الدخول");
         }
 
         const newUser = { 
@@ -2206,6 +1914,7 @@ window.handleCustomerAuthSubmit = function(event) {
             points: 15, 
             ordersCount: 0, 
             bio: "محب للقهوة والمذاق الرفيع في كافيه كورنر.", 
+            avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200&q=80",
             createdAt: Date.now() 
         };
 
@@ -2225,7 +1934,6 @@ window.handleCustomerAuthSubmit = function(event) {
     }
 
     updateHomeNoticeBanner();
-    checkDailySmartGreeting();
     checkUserBannedStateAndLockout();
 
     if (window._postAuthDestination) {
@@ -2266,19 +1974,19 @@ function updateHomeNoticeBanner() {
     }
 }
 
-// ==========================================
-// إدارة تعديل الحساب والأمان
-// ==========================================
-window.openEditAccountModal = function() {
-    if (!currentAuthenticatedUser) return;
-    document.getElementById('editProfNameInput').value = currentAuthenticatedUser.name || '';
-    document.getElementById('editProfBioInput').value = currentAuthenticatedUser.bio || '';
-    document.getElementById('editProfPassInput').value = '';
-    document.getElementById('modalEditAccountSecurity').style.display = 'flex';
-};
-
-window.closeEditAccountModal = function() {
-    document.getElementById('modalEditAccountSecurity').style.display = 'none';
+// تعديل الحساب والصورة الشخصية
+window.handleUserAvatarUpload = function(event) {
+    const file = event.target.files[0];
+    if (!file || !currentAuthenticatedUser) return;
+    compressImageNative(file, 200, 0.85, base64Url => {
+        document.getElementById('profUserAvatarImg').src = base64Url;
+        currentAuthenticatedUser.avatar = base64Url;
+        allRegisteredCustomers[currentAuthenticatedUser.phone] = currentAuthenticatedUser;
+        safeSet('cc_users_directory', allRegisteredCustomers);
+        safeSet('cc_active_client_user', currentAuthenticatedUser);
+        if (cloudDb) cloudDb.collection('users').doc(currentAuthenticatedUser.phone).set(currentAuthenticatedUser).catch(e=>console.warn(e));
+        window.showToastMsg("تم تحديث صورتك الشخصية");
+    });
 };
 
 window.saveAccountModifications = function() {
@@ -2299,7 +2007,6 @@ window.saveAccountModifications = function() {
 
     if (cloudDb) cloudDb.collection('users').doc(currentAuthenticatedUser.phone).set(currentAuthenticatedUser).catch(e=>console.warn(e));
 
-    closeEditAccountModal();
     renderUserProfileDetails();
     updateHomeNoticeBanner();
     window.showToastMsg("تم حفظ وتحديث بيانات حسابك بنجاح");
@@ -2307,29 +2014,17 @@ window.saveAccountModifications = function() {
 
 function renderUserProfileDetails() {
     if (!currentAuthenticatedUser) return;
+    document.getElementById('profUserAvatarImg').src = currentAuthenticatedUser.avatar || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200&q=80';
     document.getElementById('profDisplayName').innerText = currentAuthenticatedUser.name;
     document.getElementById('profDisplayPhone').innerText = currentAuthenticatedUser.phone;
     document.getElementById('profDisplayBio').innerText = currentAuthenticatedUser.bio || 'محب للقهوة والمذاق الرفيع في كافيه كورنر.';
     document.getElementById('profStatPoints').innerText = currentAuthenticatedUser.points || 0;
+    document.getElementById('editProfNameInput').value = currentAuthenticatedUser.name || '';
+    document.getElementById('editProfBioInput').value = currentAuthenticatedUser.bio || '';
+    document.getElementById('editProfPassInput').value = '';
 }
 
-// ==========================================
-// نظام الإشعارات المطور ونافذة العرض الكاملة
-// ==========================================
-function checkDailySmartGreeting() {
-    const todayStr = new Date().toDateString();
-    const lastGreet = localStorage.getItem('cc_last_daily_greet');
-    if (lastGreet !== todayStr) {
-        localStorage.setItem('cc_last_daily_greet', todayStr);
-        const userName = currentAuthenticatedUser ? currentAuthenticatedUser.name : 'صديقنا الرائع';
-        addNotificationRecord(
-            `صباح الخير والروقان يا ${userName}`,
-            `يومك سعيد من كافيه كورنر! جاهزون لنقدم لك أشهى المشروبات والحلويات الساخنة والباردة اليوم. نتمنى لك أوقاتاً ممتعة مليئة بالطاقة.`,
-            'all'
-        );
-    }
-}
-
+// الإشعارات وعزل الخصوصية التام
 function addNotificationRecord(title, desc, targetPhone = 'all', isFeedbackReply = false) {
     const newNotif = {
         id: "nt_" + Date.now(),
@@ -2349,12 +2044,10 @@ function addNotificationRecord(title, desc, targetPhone = 'all', isFeedbackReply
 function updateNotificationBadge() {
     const badge = document.getElementById('unreadNotifCountBadge');
     if (!badge) return;
-
     if (!currentAuthenticatedUser) {
         badge.style.display = 'none';
         return;
     }
-
     const myNotifs = customerNotifications.filter(n => n.targetPhone === 'all' || n.targetPhone === currentAuthenticatedUser.phone);
     const unread = myNotifs.filter(n => !n.isRead).length;
 
@@ -2386,7 +2079,7 @@ function renderCustomerNotifications() {
         <div class="clean-card" onclick="openFullNotificationModal('${n.id}')" style="margin-bottom:8px; cursor:pointer; ${!n.isRead ? 'border-right:3px solid var(--brand-theme); background:var(--brand-glow);' : ''}">
             <div style="display:flex; justify-content:space-between; align-items:center;">
                 <div style="font-weight:900; font-size:13px; color:var(--brand-theme);">${n.title}</div>
-                <div style="font-size:10px; color:var(--text-dim);">اضغط للقراءة ❯</div>
+                <div style="font-size:10px; color:var(--text-dim);">فتح الإشعار ❯</div>
             </div>
             <div style="font-size:11.5px; color:var(--text-secondary); margin-top:3px; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden;">${n.desc}</div>
             <div class="num-font" style="font-size:9.5px; color:var(--text-dim); margin-top:4px;">${n.time}</div>
@@ -2411,7 +2104,7 @@ window.openFullNotificationModal = function(id) {
     const replyArea = document.getElementById('notifReplyActionArea');
     const noReplyNotice = document.getElementById('notifNoReplyNotice');
 
-    if (n.title.includes("شكوى") || n.title.includes("مقترح") || n.isFeedbackReply) {
+    if (n.title.includes("شكوى") || n.title.includes("مقترح") || n.title.includes("طعن") || n.isFeedbackReply) {
         replyArea.style.display = 'block';
         noReplyNotice.style.display = 'none';
         document.getElementById('notifCustomerReplyInput').value = '';
@@ -2437,8 +2130,8 @@ window.sendReplyFromNotificationModal = function() {
         id: "fb_rep_" + Date.now(),
         customerPhone: currentAuthenticatedUser.phone,
         customerName: currentAuthenticatedUser.name,
-        category: "متابعة رد شكوى",
-        text: `[رد مستمر على الإشعار]: ${text}`,
+        category: "متابعة رد شكوى / طعن",
+        text: `[رد مستمر من الزبون]: ${text}`,
         reply: "",
         repliedAt: null,
         createdAt: Date.now(),
@@ -2450,7 +2143,7 @@ window.sendReplyFromNotificationModal = function() {
     if (cloudDb) cloudDb.collection('feedbacks').doc(feedbackObj.id).set(feedbackObj).catch(e=>console.warn(e));
 
     closeFullNotificationModal();
-    window.showToastMsg("تم إرسال ردك لإدارة المحل بنجاح");
+    window.showToastMsg("تم إرسال ردك للإدارة بنجاح");
 };
 
 window.clearAllNotifications = function() {
@@ -2459,22 +2152,20 @@ window.clearAllNotifications = function() {
     safeSet('cc_notifications', customerNotifications);
     renderCustomerNotifications();
     updateNotificationBadge();
-    window.showToastMsg("تم تفريغ الإشعارات الخاصة بك");
+    window.showToastMsg("تم تفريغ إشعاراتك الخاصة");
 };
 
-// ==========================================
-// الشكاوى والاقتراحات + احتساب 72 ساعة للاختفاء
-// ==========================================
+// الشكاوى والاقتراحات وطعون الحظر (اختفاء بعد 72 ساعة من الرد)
 window.submitCustomerFeedback = function() {
     if (!currentAuthenticatedUser) {
         window._postAuthDestination = 'screen-feedback';
-        window.showToastMsg("يرجى تسجيل الدخول أولاً لإرسال مقترحك");
+        window.showToastMsg("يرجى تسجيل الدخول أولاً لإرسال ملاحظتك");
         return window.navigateRouter('screen-auth');
     }
 
     const cat = document.getElementById('feedbackCategory').value;
     const content = (document.getElementById('feedbackContentInput').value || '').trim();
-    if (!content) return window.showToastMsg("يرجى كتابة نص الملاحظة أو الاقتراح");
+    if (!content) return window.showToastMsg("يرجى كتابة نص الملاحظة أو الشكوى");
 
     const feedbackObj = {
         id: "fb_" + Date.now(),
@@ -2494,7 +2185,7 @@ window.submitCustomerFeedback = function() {
 
     document.getElementById('feedbackContentInput').value = '';
     renderCustomerFeedbacks();
-    window.showToastMsg("تم إرسال شكواك/مقترحك مباشرة للإدارة");
+    window.showToastMsg("تم إرسال الشكوى أو الطعن مباشرة للإدارة");
 };
 
 function renderCustomerFeedbacks() {
@@ -2511,7 +2202,7 @@ function renderCustomerFeedbacks() {
     });
 
     if (!visibleFeedbacks.length) {
-        container.innerHTML = `<div style="text-align:center; padding:16px; color:var(--text-secondary); font-size:12px;">لا توجد شكاوى أو اقتراحات حالية</div>`;
+        container.innerHTML = `<div style="text-align:center; padding:16px; color:var(--text-secondary); font-size:12px;">لا توجد شكاوى أو طعون حالية</div>`;
         return;
     }
 
@@ -2526,7 +2217,7 @@ function renderCustomerFeedbacks() {
                 <div style="background:var(--brand-glow); border:1px dashed var(--brand-theme); border-radius:var(--radius-sm); padding:8px 10px; margin-top:8px; font-size:11.5px;">
                     <div style="font-weight:900; color:var(--brand-theme); margin-bottom:2px;">رد الإدارة الرسمي:</div>
                     <div>${f.reply}</div>
-                    <div style="font-size:9.5px; color:var(--text-dim); margin-top:4px;">* تختفي هذه الملاحظة تلقائياً بعد 72 ساعة من الرد.</div>
+                    <div style="font-size:9.5px; color:var(--text-dim); margin-top:4px;">* تختفي هذه الملاحظة بعد 72 ساعة من الرد.</div>
                 </div>
             ` : `<div style="font-size:10.5px; color:var(--status-warning); margin-top:6px;">قيد مراجعة الإدارة...</div>`}
         </div>
@@ -2537,26 +2228,40 @@ function renderAdminFeedbacksManager() {
     const container = document.getElementById('adminFeedbackControlList');
     if (!container) return;
 
-    if (!customerFeedbacks.length) {
-        container.innerHTML = `<div style="text-align:center; padding:14px; color:var(--text-secondary); font-size:12px;">لا توجد شكاوى واردة حالياً</div>`;
+    const now = Date.now();
+    const SEVENTY_TWO_HOURS = 72 * 60 * 60 * 1000;
+    const activeFeedbacks = customerFeedbacks.filter(f => !(f.repliedAt && (now - f.repliedAt > SEVENTY_TWO_HOURS)));
+
+    if (!activeFeedbacks.length) {
+        container.innerHTML = `<div style="text-align:center; padding:14px; color:var(--text-secondary); font-size:12px;">لا توجد شكاوى أو طعون واردة حالياً</div>`;
         return;
     }
 
-    container.innerHTML = customerFeedbacks.map(f => `
-        <div class="clean-card" style="margin-bottom:8px;">
-            <div style="display:flex; justify-content:space-between; align-items:center;">
-                <div style="font-weight:900; font-size:13px;">${f.customerName} (<span class="num-font">${f.customerPhone}</span>)</div>
-                <span class="header-hours-badge">${f.category}</span>
-            </div>
-            <div style="font-size:12px; margin:6px 0;">${f.text}</div>
-            ${f.reply ? `<div style="font-size:11px; color:var(--status-success);"><strong>ردك السابق:</strong> ${f.reply}</div>` : `
-                <div style="display:flex; gap:6px; margin-top:6px;">
-                    <input type="text" class="ios-input-field" id="replyInput_${f.id}" placeholder="اكتب ردك للزبون...">
-                    <button class="btn-brand-solid" style="width:auto; padding:0 12px; font-size:11px;" onclick="submitAdminFeedbackReply('${f.id}')">إرسال الرد</button>
+    container.innerHTML = activeFeedbacks.map(f => {
+        const isBanned = bannedCustomersList.includes(f.customerPhone);
+        return `
+            <div class="clean-card" style="margin-bottom:8px; ${isBanned ? 'border-color:var(--status-danger);' : ''}">
+                <div style="display:flex; justify-content:space-between; align-items:center;">
+                    <div style="font-weight:900; font-size:13px;">${f.customerName} (<span class="num-font">${f.customerPhone}</span>)</div>
+                    <span class="header-hours-badge">${f.category}</span>
                 </div>
-            `}
-        </div>
-    `).join('');
+                <div style="font-size:12px; margin:6px 0;">${f.text}</div>
+                ${f.reply ? `<div style="font-size:11px; color:var(--status-success);"><strong>ردك السابق:</strong> ${f.reply}</div>` : `
+                    <div style="display:flex; gap:6px; margin-top:6px;">
+                        <input type="text" class="ios-input-field" id="replyInput_${f.id}" placeholder="اكتب ردك للزبون...">
+                        <button class="btn-brand-solid" style="width:auto; padding:0 12px; font-size:11px;" onclick="submitAdminFeedbackReply('${f.id}')">إرسال الرد</button>
+                    </div>
+                `}
+                <div style="margin-top:8px; display:flex; gap:6px; align-items:center;">
+                    ${isBanned ? `
+                        <button class="btn-brand-outline" style="padding:4px 10px; font-size:10.5px; color:var(--status-success); border-color:var(--status-success);" onclick="adminDirectUnban('${f.customerPhone}')">فك الحظر عن هذا الزبون فوراً ✓</button>
+                    ` : `
+                        <button class="btn-brand-outline" style="padding:4px 10px; font-size:10.5px; color:var(--status-danger); border-color:var(--status-danger);" onclick="adminDirectBan('${f.customerPhone}')">حظر هذا الزبون ✕</button>
+                    `}
+                </div>
+            </div>
+        `;
+    }).join('');
 }
 
 window.submitAdminFeedbackReply = function(id) {
@@ -2573,14 +2278,31 @@ window.submitAdminFeedbackReply = function(id) {
     safeSet('cc_feedbacks', customerFeedbacks);
     if (cloudDb) cloudDb.collection('feedbacks').doc(id).update({ reply: text, repliedAt: fb.repliedAt }).catch(e=>console.warn(e));
 
-    addNotificationRecord("تم الرد على مقترحك/شكواك", `قامت الإدارة بالرد على ملاحظتك:\n"${text}"`, fb.customerPhone, true);
+    addNotificationRecord("تم الرد على ملاحظتك أو طعنك", `قامت الإدارة بالرد على شكواك/طعنك:\n"${text}"`, fb.customerPhone, true);
     renderAdminFeedbacksManager();
     window.showToastMsg("تم إرسال الرد للزبون بنجاح!");
 };
 
-// ==========================================
-// إدارة المنيو وتخصيص الأصناف والأحجام والنكهات
-// ==========================================
+window.adminDirectUnban = function(phone) {
+    bannedCustomersList = bannedCustomersList.filter(p => p !== phone);
+    safeSet('cc_banned_users', bannedCustomersList);
+    if (cloudDb) cloudDb.collection('settings').doc('banned_users').set({ list: bannedCustomersList }).catch(e=>console.warn(e));
+    addNotificationRecord("تم قبول طعنك ورفع القيد", "قامت إدارة كافيه كورنر بفك الحظر عن حسابك بنجاح. أهلاً بك!", phone);
+    checkUserBannedStateAndLockout();
+    renderAdminFeedbacksManager();
+    window.showToastMsg("تم فك الحظر عن العميل بنجاح فوراً!");
+};
+
+window.adminDirectBan = function(phone) {
+    if (!bannedCustomersList.includes(phone)) bannedCustomersList.push(phone);
+    safeSet('cc_banned_users', bannedCustomersList);
+    if (cloudDb) cloudDb.collection('settings').doc('banned_users').set({ list: bannedCustomersList }).catch(e=>console.warn(e));
+    checkUserBannedStateAndLockout();
+    renderAdminFeedbacksManager();
+    window.showToastMsg("تم حظر العميل");
+};
+
+// إدارة المنيو وتخصيص الأصناف
 function renderCategoryChips() {
     const container = document.getElementById('categoryScrollChips');
     if (!container) return;
@@ -2810,9 +2532,449 @@ function refreshCartDockStatus() {
     }
 }
 
+// السلة وطرق الدفع المنفصلة
+function renderCartItemsList() {
+    const container = document.getElementById('cartItemsList');
+    if (!container) return;
+    if (!window.appState.cart.length) {
+        container.innerHTML = `<div style="text-align:center; padding:16px; color:var(--text-secondary); font-size:12px;">السلة فارغة حالياً</div>`;
+        return;
+    }
+    container.innerHTML = window.appState.cart.map((item, idx) => `
+        <div style="display:flex; justify-content:space-between; align-items:center; padding:8px 0; border-bottom:1px dashed var(--border-subtle);">
+            <div>
+                <div style="font-weight:900; font-size:13px;">${item.qty}x ${item.name} (${item.sizeName})</div>
+                ${item.sauceInfo ? `<div style="font-size:11px; color:var(--brand-theme);">${item.sauceInfo}</div>` : ''}
+                ${item.addonsInfo ? `<div style="font-size:10.5px; color:var(--text-secondary);">إضافات: ${item.addonsInfo}</div>` : ''}
+                ${item.notes ? `<div style="font-size:10px; color:var(--text-dim);">ملاحظة: ${item.notes}</div>` : ''}
+            </div>
+            <div style="text-align:left;">
+                <div class="num-font" style="font-weight:900; color:var(--brand-theme); font-size:13px;">${item.lineTotal.toFixed(2)} د.أ</div>
+                <button style="font-size:10px; color:var(--status-danger); background:none; border:none; cursor:pointer;" onclick="removeCartItem(${idx})">حذف</button>
+            </div>
+        </div>
+    `).join('');
+    populateCartTownsSelect();
+    renderCartPaymentOptions();
+}
+
+window.removeCartItem = function(index) {
+    window.appState.cart.splice(index, 1);
+    safeSet('cc_cart', window.appState.cart);
+    renderCartItemsList();
+    recalculateCartSummary();
+    refreshCartDockStatus();
+};
+
+window.switchCartBranch = function(branchIdx) {
+    window.appState.cartBranch = branchIdx;
+    document.getElementById('btnBranch0').classList.toggle('active', branchIdx === 0);
+    document.getElementById('btnBranch1').classList.toggle('active', branchIdx === 1);
+    populateCartTownsSelect();
+    renderCartPaymentOptions();
+    recalculateCartSummary();
+};
+
+window.switchDeliveryMode = function(mode) {
+    window.appState.deliveryMode = mode;
+    document.getElementById('btnModeDelivery').classList.toggle('active', mode === 'delivery');
+    document.getElementById('btnModePickup').classList.toggle('active', mode === 'pickup');
+    document.getElementById('deliveryFieldsArea').style.display = (mode === 'delivery') ? 'block' : 'none';
+    recalculateCartSummary();
+};
+
+function populateCartTownsSelect() {
+    const sel = document.getElementById('cartTownSelect');
+    if (!sel) return;
+    const b = branchesData[window.appState.cartBranch] || branchesData[0];
+    sel.innerHTML = Object.entries(b.towns).map(([town, fee]) => `
+        <option value="${fee}">${town} (أجور التوصيل: ${parseFloat(fee).toFixed(2)} د.أ)</option>
+    `).join('');
+}
+
+window.applyUserCouponDiscount = function() {
+    const code = (document.getElementById('cartCouponCodeInput').value || '').trim().toUpperCase();
+    if (!code) return;
+    const coupon = systemCoupons[code];
+    if (coupon && coupon.isActive) {
+        // التحقق من التاريخ
+        if (coupon.expiry && new Date(coupon.expiry) < new Date()) {
+            return window.showToastMsg("عذراً، هذا الكوبون منتهي الصلاحية");
+        }
+        window.appState.activeCouponDiscount = coupon.discount;
+        document.getElementById('couponAppliedBadge').style.display = 'block';
+        document.getElementById('couponAppliedBadge').innerText = `تم تطبيق الكوبون (خصم ${window.appState.activeCouponDiscount}%) — ${coupon.notes || ''}`;
+        recalculateCartSummary();
+        window.showToastMsg("تم تطبيق الخصم بنجاح");
+    } else {
+        window.showToastMsg("كوبون الخصم غير صحيح أو غير مفعل");
+    }
+};
+
+window.recalculateCartSummary = function() {
+    const sub = window.appState.cart.reduce((s, i) => s + i.lineTotal, 0);
+    let del = 0;
+    if (window.appState.deliveryMode === 'delivery') {
+        const sel = document.getElementById('cartTownSelect');
+        if (sel && sel.value) del = parseFloat(sel.value);
+    }
+
+    let discountAmount = 0;
+    if (window.appState.activeCouponDiscount > 0) {
+        discountAmount = (sub * window.appState.activeCouponDiscount) / 100;
+        document.getElementById('sumDiscountRow').style.display = 'flex';
+        document.getElementById('sumDiscount').innerText = `-${discountAmount.toFixed(2)} د.أ`;
+    } else {
+        document.getElementById('sumDiscountRow').style.display = 'none';
+    }
+
+    const total = (sub - discountAmount) + del;
+    document.getElementById('sumSubtotal').innerText = `${sub.toFixed(2)} د.أ`;
+    document.getElementById('sumTotal').innerText = `${total.toFixed(2)} د.أ`;
+};
+
+function renderCartPaymentOptions() {
+    const container = document.getElementById('cartPaymentMethodsContainer');
+    if (!container) return;
+    const curBranch = window.appState.cartBranch.toString();
+    const branchMethods = customPaymentMethods.filter(m => m.branch === curBranch);
+
+    if (!branchMethods.length) {
+        container.innerHTML = `<div style="font-size:11.5px; color:var(--text-dim);">الدفع نقداً عند الاستلام</div>`;
+        window.appState.selectedPaymentMethod = "دفع نقدي";
+        return;
+    }
+
+    container.innerHTML = branchMethods.map((m, idx) => `
+        <label style="display:flex; justify-content:space-between; align-items:center; padding:9px 12px; background:var(--bg-surface); border-radius:var(--radius-sm); border:1px solid var(--border-subtle); cursor:pointer;">
+            <div style="display:flex; align-items:center; gap:8px;">
+                ${m.logo ? `<img src="${m.logo}" style="width:28px; height:28px; object-fit:contain; border-radius:4px;">` : ''}
+                <div>
+                    <div style="font-size:12px; font-weight:800;">${m.name}</div>
+                    <div style="font-size:10px; color:var(--text-secondary);">${m.desc}</div>
+                </div>
+            </div>
+            <input type="radio" name="cartPayOpt" value="${m.name}" ${idx === 0 ? 'checked' : ''} onchange="window.appState.selectedPaymentMethod=this.value">
+        </label>
+    `).join('');
+
+    window.appState.selectedPaymentMethod = branchMethods[0].name;
+}
+
+window.dispatchOrderAndInitiateTracking = function() {
+    if (!currentAuthenticatedUser) {
+        window._postAuthDestination = 'screen-cart';
+        window.showToastMsg("يرجى تسجيل الدخول أولاً لإتمام الطلب");
+        return window.navigateRouter('screen-auth');
+    }
+    if (bannedCustomersList.includes(currentAuthenticatedUser.phone)) {
+        checkUserBannedStateAndLockout();
+        return window.showToastMsg("هذا الحساب مقيد ولا يمكنه الطلب");
+    }
+    if (!window.appState.cart.length) return window.showToastMsg("سلة المشتريات فارغة");
+
+    const branch = branchesData[window.appState.cartBranch];
+    const sub = window.appState.cart.reduce((s, i) => s + i.lineTotal, 0);
+    const del = window.appState.deliveryMode === 'delivery' ? parseFloat(document.getElementById('cartTownSelect').value || 0) : 0;
+    const discountAmount = (sub * window.appState.activeCouponDiscount) / 100;
+    const total = (sub - discountAmount) + del;
+    const orderNumber = 'ORD-' + Math.floor(1000 + Math.random() * 9000);
+
+    const newOrderObj = {
+        orderId: orderNumber,
+        customerPhone: currentAuthenticatedUser.phone,
+        customerName: currentAuthenticatedUser.name,
+        branchName: branch.name,
+        branchId: window.appState.cartBranch,
+        deliveryMode: window.appState.deliveryMode,
+        paymentMethod: window.appState.selectedPaymentMethod || "دفع نقدي",
+        items: [...window.appState.cart],
+        subtotal: sub,
+        discount: discountAmount,
+        deliveryFee: del,
+        totalAmount: total,
+        status: 'received',
+        prepMinutes: 0,
+        prepStartedAt: null,
+        prepEndsAt: null,
+        createdAt: Date.now(),
+        finishedAt: null,
+        timestamp: new Date().toLocaleTimeString('ar-JO', { hour: '2-digit', minute: '2-digit' })
+    };
+
+    activeOrdersList.unshift(newOrderObj);
+    safeSet('cc_orders', activeOrdersList);
+    if (cloudDb) cloudDb.collection('orders').doc(orderNumber).set(newOrderObj).catch(e=>console.warn(e));
+
+    currentAuthenticatedUser.ordersCount = (currentAuthenticatedUser.ordersCount || 0) + 1;
+    currentAuthenticatedUser.points = (currentAuthenticatedUser.points || 0) + Math.floor(total * 2);
+    allRegisteredCustomers[currentAuthenticatedUser.phone] = currentAuthenticatedUser;
+    safeSet('cc_users_directory', allRegisteredCustomers);
+    safeSet('cc_active_client_user', currentAuthenticatedUser);
+    if (cloudDb) cloudDb.collection('users').doc(currentAuthenticatedUser.phone).set(currentAuthenticatedUser).catch(e=>console.warn(e));
+
+    window.appState.cart = [];
+    localStorage.removeItem('cc_cart');
+    refreshCartDockStatus();
+
+    let msg = `*طلب جديد أونلاين | كافيه كورنر*\nرقم الطلب: ${orderNumber}\nالفرع: ${branch.name}\nالعميل: ${currentAuthenticatedUser.name} (${currentAuthenticatedUser.phone})\nنوع الاستلام: ${newOrderObj.deliveryMode === 'delivery' ? 'توصيل' : 'استلام من الفرع'}\nطريقة الدفع: ${newOrderObj.paymentMethod}\n----------------\n`;
+    newOrderObj.items.forEach((it, i) => {
+        msg += `${i+1}. *${it.qty}x ${it.name}* (${it.sizeName})${it.sauceInfo ? ` - ${it.sauceInfo}` : ''}${it.addonsInfo ? ` - إضافات: ${it.addonsInfo}` : ''} - ${it.lineTotal.toFixed(2)} د.أ\n`;
+    });
+    msg += `----------------\nالإجمالي: ${total.toFixed(2)} د.أ\n`;
+
+    window.open(`https://wa.me/${branch.whatsapp}?text=${encodeURIComponent(msg)}`, '_blank');
+    window.showToastMsg("تم إرسال الطلب بنجاح");
+    window.navigateRouter('screen-order-tracking');
+};
+
+// تتبع الطلبات مع بقاء الطلب لمدة ساعة للزبون بعد الاكتمال أو الإلغاء
+function renderOrderTrackingView() {
+    const container = document.getElementById('activeOrderTrackingView');
+    if (!container) return;
+
+    if (!currentAuthenticatedUser) {
+        container.innerHTML = `<div style="text-align:center; padding:30px 14px; font-size:12px; color:var(--text-secondary);">يرجى تسجيل الدخول لتتبع طلباتك الخاصة</div>`;
+        return;
+    }
+
+    const now = Date.now();
+    const ONE_HOUR = 60 * 60 * 1000;
+
+    // تصفية طلبات الزبون: الطلبات النشطة أو المكتملة/الملغاة التي لم يمضِ عليها ساعة واحدة
+    const myOrders = activeOrdersList.filter(o => {
+        if (o.customerPhone !== currentAuthenticatedUser.phone) return false;
+        if (o.status === 'completed' || o.status === 'cancelled') {
+            if (o.finishedAt && (now - o.finishedAt > ONE_HOUR)) return false;
+        }
+        return true;
+    });
+
+    if (!myOrders.length) {
+        container.innerHTML = `
+            <div class="clean-card" style="text-align:center; padding:30px 14px;">
+                <div style="font-weight:900; font-size:14px; margin-bottom:4px;">لا توجد طلبات جارية أو حديثة لك حالياً</div>
+                <div style="font-size:11px; color:var(--text-secondary);">يبقى الطلب ظاهراً في شاشة التتبع لمدة ساعة واحدة بعد إتمام أو إلغاء التأكيد.</div>
+            </div>
+        `;
+        return;
+    }
+
+    container.innerHTML = myOrders.map(order => {
+        let statusTitle = "تم استلام طلبك وبانتظار الموافقة";
+        let isPickup = order.deliveryMode === 'pickup';
+
+        if (order.status === 'preparing') {
+            statusTitle = isPickup ? "جاري تجهيز طلبك داخل الفرع" : "جاري تحضير طلبك وتجهيزه للتوصيل";
+        } else if (order.status === 'onway') {
+            statusTitle = isPickup ? "طلبك جاهز تماماً للاستلام الآن في الفرع!" : "طلبك مع كابتن التوصيل وفي الطريق إليك!";
+        } else if (order.status === 'completed') {
+            statusTitle = "تم تسليم الطلب بنجاح. شكراً لاختياركم كافيه كورنر!";
+        } else if (order.status === 'cancelled') {
+            statusTitle = "عذراً، تم إلغاء هذا الطلب من قبل الإدارة.";
+        }
+
+        let timerHTML = "";
+        if (order.status === 'preparing' && order.prepEndsAt) {
+            const remaining = Math.max(0, order.prepEndsAt - now);
+            const m = Math.floor(remaining / 60000);
+            const s = Math.floor((remaining % 60000) / 1000);
+            timerHTML = `
+                <div style="background:var(--brand-glow); border:1px solid var(--border-accent); border-radius:var(--radius-md); padding:10px; text-align:center; margin:8px 0;">
+                    <div style="font-size:10.5px; color:var(--text-secondary);">الوقت التقديري المتبقي:</div>
+                    <div class="num-font" style="font-size:22px; font-weight:900; color:var(--brand-theme); margin:2px 0;">${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}</div>
+                </div>
+            `;
+        }
+
+        return `
+            <div class="clean-card" style="margin-bottom:10px; ${order.status === 'completed' ? 'border-color:var(--status-success);' : ''} ${order.status === 'cancelled' ? 'border-color:var(--status-danger);' : ''}">
+                <div style="display:flex; justify-content:space-between; align-items:center;">
+                    <span class="num-font" style="font-weight:900; color:var(--brand-theme);">#${order.orderId}</span>
+                    <span class="header-hours-badge">${isPickup ? 'استلام من المحل' : 'توصيل'}</span>
+                </div>
+                <div style="font-size:13px; font-weight:900; margin-top:6px; color:var(--text-primary);">${statusTitle}</div>
+                ${timerHTML}
+                <div style="font-size:11px; color:var(--text-secondary); margin-top:6px;">
+                    ${order.items.map(it => `• ${it.qty}x ${it.name} (${it.sizeName})`).join(' ، ')}
+                </div>
+                <div style="font-size:12px; font-weight:900; margin-top:8px;">الإجمالي: <span class="num-font" style="color:var(--brand-theme);">${order.totalAmount.toFixed(2)} د.أ</span></div>
+            </div>
+        `;
+    }).join('');
+}
+
+// استبدال النقاط مع الصورة والوصف والسعر الأصلي
+function renderRedeemStoreView() {
+    const points = currentAuthenticatedUser ? (currentAuthenticatedUser.points || 0) : 0;
+    const balanceEl = document.getElementById('userRedeemPointsBalance');
+    if (balanceEl) balanceEl.innerText = points;
+
+    const container = document.getElementById('clientRedeemItemsList');
+    if (!container) return;
+
+    if (!redeemCatalog.length) {
+        container.innerHTML = `<div style="text-align:center; padding:20px; color:var(--text-secondary); font-size:12px;">لا توجد أصناف مكافآت حالياً</div>`;
+        return;
+    }
+
+    container.innerHTML = redeemCatalog.map(item => `
+        <div class="clean-card" style="display:flex; align-items:center; gap:12px; margin-bottom:10px;">
+            <img src="${item.img || 'https://images.unsplash.com/photo-1517701550927-30cf4be1aaf9?w=200&q=80'}" style="width:60px; height:60px; border-radius:var(--radius-sm); object-fit:cover; background:#000;">
+            <div style="flex:1;">
+                <div style="font-size:13.5px; font-weight:900;">${item.name}</div>
+                <div style="font-size:10.5px; color:var(--text-secondary); margin:2px 0;">${item.desc || ''}</div>
+                <div style="font-size:11px;">السعر الأصلي: <span class="num-font" style="text-decoration:line-through; color:var(--text-dim);">${parseFloat(item.price || 0).toFixed(2)} د.أ</span></div>
+            </div>
+            <div style="text-align:left;">
+                <div class="num-font" style="font-weight:900; color:var(--brand-theme); font-size:13px; margin-bottom:4px;">${item.points} نقطة</div>
+                <button class="btn-brand-solid" style="width:auto; padding:5px 12px; font-size:11px;" onclick="claimRedeemRewardItem('${item.id}')">استبدال</button>
+            </div>
+        </div>
+    `).join('');
+}
+
+window.claimRedeemRewardItem = function(id) {
+    if (!currentAuthenticatedUser) {
+        window._postAuthDestination = 'screen-rewards';
+        window.showToastMsg("يرجى تسجيل الدخول أولاً");
+        return window.navigateRouter('screen-auth');
+    }
+    const item = redeemCatalog.find(x => x.id === id);
+    if (!item) return;
+
+    if ((currentAuthenticatedUser.points || 0) < item.points) {
+        return window.showToastMsg("رصيد نقاطك غير كافٍ لاستبدال هذه المكافأة");
+    }
+
+    currentAuthenticatedUser.points -= item.points;
+    allRegisteredCustomers[currentAuthenticatedUser.phone] = currentAuthenticatedUser;
+    safeSet('cc_users_directory', allRegisteredCustomers);
+    safeSet('cc_active_client_user', currentAuthenticatedUser);
+    if (cloudDb) cloudDb.collection('users').doc(currentAuthenticatedUser.phone).set(currentAuthenticatedUser).catch(e=>console.warn(e));
+
+    window.appState.cart.push({
+        id: "rw_" + Date.now(),
+        name: item.name,
+        qty: 1,
+        sizeName: "مجاني (مكافأة)",
+        sauceInfo: "",
+        unitPrice: 0.00,
+        notes: "صنف مجاني مستبدل بنقاط الولاء",
+        lineTotal: 0.00
+    });
+    safeSet('cc_cart', window.appState.cart);
+    refreshCartDockStatus();
+
+    renderRedeemStoreView();
+    window.showToastMsg("تم استبدال المكافأة بنجاح وتم إضافتها لسلة مشترياتك!");
+    window.navigateRouter('screen-cart');
+};
+
 // ==========================================
-// إدارة المنتجات والأحجام التفاعلية بالأدمن
+// لوحة الإدارة (Admin Hub) الكاملة والمنظمة
 // ==========================================
+function renderAdminLiveOrdersManager() {
+    const container = document.getElementById('adminLiveOrdersContainer');
+    if (!container) return;
+
+    const liveOrders = activeOrdersList.filter(o => o.status !== 'completed' && o.status !== 'cancelled');
+
+    if (!liveOrders.length) {
+        container.innerHTML = `<div style="text-align:center; padding:16px; color:var(--text-secondary); font-size:12px;">لا توجد طلبات جارية حالياً</div>`;
+        return;
+    }
+
+    container.innerHTML = liveOrders.map(o => {
+        const isPickup = o.deliveryMode === 'pickup';
+        return `
+            <div class="clean-card" style="margin-bottom:8px;">
+                <div style="display:flex; justify-content:space-between; align-items:center;">
+                    <span class="num-font" style="font-weight:900; color:var(--brand-theme);">#${o.orderId}</span>
+                    <span class="header-hours-badge">${isPickup ? 'استلام من الفرع' : 'توصيل'} • ${o.branchName}</span>
+                </div>
+                <div style="font-size:12.5px; font-weight:900; margin-top:4px;">${o.customerName} (<span class="num-font">${o.customerPhone}</span>)</div>
+                <div style="font-size:11px; color:var(--text-secondary); margin:4px 0;">
+                    ${o.items.map(it => `${it.qty}x ${it.name}${it.sauceInfo ? ` (${it.sauceInfo})` : ''}`).join(' ، ')}
+                </div>
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+                    <span class="num-font" style="font-weight:900; color:var(--brand-theme);">${o.totalAmount.toFixed(2)} د.أ</span>
+                    <span style="font-size:10.5px; font-weight:800; color:var(--text-dim);">${o.status}</span>
+                </div>
+
+                <div style="display:flex; gap:4px; flex-wrap:wrap; border-top:1px dashed var(--border-subtle); padding-top:6px;">
+                    <button class="btn-brand-outline" style="padding:4px 8px; font-size:10px;" onclick="setOrderPrepTimerPrompt('${o.orderId}')">⏱ بدء التحضير بتايمر</button>
+                    ${isPickup ? `
+                        <button class="btn-brand-outline" style="padding:4px 8px; font-size:10px;" onclick="updateOrderStatusAdmin('${o.orderId}', 'onway')">جاهز للاستلام بالمحل ✓</button>
+                    ` : `
+                        <button class="btn-brand-outline" style="padding:4px 8px; font-size:10px;" onclick="updateOrderStatusAdmin('${o.orderId}', 'onway')">مع كابتن التوصيل 🛵</button>
+                    `}
+                    <button class="btn-brand-solid" style="width:auto; padding:4px 10px; font-size:10px; background:var(--status-success);" onclick="completeOrderAdmin('${o.orderId}')">تم التسليم ✓</button>
+                    <button class="btn-brand-outline" style="padding:4px 8px; font-size:10px; color:var(--status-danger); border-color:var(--status-danger);" onclick="cancelOrderAdmin('${o.orderId}')">إلغاء ✕</button>
+                </div>
+            </div>
+        `;
+    }).join('');
+}
+
+window.setOrderPrepTimerPrompt = function(orderId) {
+    const minsStr = prompt("أدخل وقت التحضير بالدقائق (مثال: 15):", "15");
+    if (!minsStr) return;
+    const mins = parseInt(minsStr);
+    if (isNaN(mins) || mins <= 0) return window.showToastMsg("رقم غير صالح");
+
+    const o = activeOrdersList.find(x => x.orderId === orderId);
+    if (!o) return;
+
+    o.status = 'preparing';
+    o.prepMinutes = mins;
+    o.prepStartedAt = Date.now();
+    o.prepEndsAt = Date.now() + (mins * 60 * 1000);
+
+    safeSet('cc_orders', activeOrdersList);
+    if (cloudDb) cloudDb.collection('orders').doc(orderId).update({
+        status: 'preparing', prepMinutes: mins, prepStartedAt: o.prepStartedAt, prepEndsAt: o.prepEndsAt
+    }).catch(e=>console.warn(e));
+
+    renderAdminLiveOrdersManager();
+    window.showToastMsg(`تم بدء تحضير الطلب بتايمر ${mins} دقيقة!`);
+};
+
+window.updateOrderStatusAdmin = function(orderId, st) {
+    const o = activeOrdersList.find(x => x.orderId === orderId);
+    if (!o) return;
+    o.status = st;
+    safeSet('cc_orders', activeOrdersList);
+    if (cloudDb) cloudDb.collection('orders').doc(orderId).update({ status: st }).catch(e=>console.warn(e));
+    renderAdminLiveOrdersManager();
+    window.showToastMsg("تم تحديث حالة الطلب");
+};
+
+window.completeOrderAdmin = function(orderId) {
+    const o = activeOrdersList.find(x => x.orderId === orderId);
+    if (!o) return;
+    o.status = 'completed';
+    o.finishedAt = Date.now();
+    safeSet('cc_orders', activeOrdersList);
+    if (cloudDb) cloudDb.collection('orders').doc(orderId).update({ status: 'completed', finishedAt: o.finishedAt }).catch(e=>console.warn(e));
+    renderAdminLiveOrdersManager();
+    window.showToastMsg("تم تسليم الطلب");
+};
+
+window.cancelOrderAdmin = function(orderId) {
+    const reason = prompt("سبب الإلغاء للزبون:", "الضغط التشغيلي");
+    if (reason === null) return;
+    const o = activeOrdersList.find(x => x.orderId === orderId);
+    if (!o) return;
+    o.status = 'cancelled';
+    o.finishedAt = Date.now();
+    safeSet('cc_orders', activeOrdersList);
+    if (cloudDb) cloudDb.collection('orders').doc(orderId).update({ status: 'cancelled', finishedAt: o.finishedAt }).catch(e=>console.warn(e));
+    renderAdminLiveOrdersManager();
+    window.showToastMsg("تم إلغاء الطلب");
+};
+
+// إدارة المنتجات والصنف
 window.openProductEditorModal = function(productId) {
     window.appState.editorSizes = [];
     window.appState.editorSauces = [];
@@ -2943,6 +3105,7 @@ window.saveProductEditorRecord = function() {
 
     if (cloudDb) cloudDb.collection('catalog').doc('products_list').set({ items: productsCatalog }).catch(e=>console.warn(e));
 
+    checkAdminEditsCounter();
     window.showToastMsg("تم حفظ الصنف بنجاح وتحديث المتجر فوراً!");
     window.navigateRouter('screen-admin-dashboard');
     openAdminSubSection('products');
@@ -2975,12 +3138,139 @@ window.deleteProductFromCatalog = function(productId) {
     renderMenuProducts();
     renderAdminProductsManager();
     if (cloudDb) cloudDb.collection('catalog').doc('products_list').set({ items: productsCatalog }).catch(e=>console.warn(e));
+    checkAdminEditsCounter();
     window.showToastMsg("تم حذف الصنف أونلاين!");
 };
 
-// ==========================================
-// إدارة طرق الدفع المفصولة لكل فرع
-// ==========================================
+function checkAdminEditsCounter() {
+    adminEditsCounter++;
+    safeSet('cc_admin_edits_count', adminEditsCounter);
+    if (adminEditsCounter >= 10) {
+        adminEditsCounter = 0;
+        safeSet('cc_admin_edits_count', 0);
+        let parts = currentAppVersion.split('.');
+        parts[2] = parseInt(parts[2] || 0) + 1;
+        currentAppVersion = parts.join('.');
+        safeSet('cc_app_version', currentAppVersion);
+        window.showToastMsg(`تم ترقية رقم الإصدار التلقائي إلى v${currentAppVersion}`);
+    }
+}
+
+// الكوبونات والعروض بالوقت والتاريخ والملاحظة
+window.saveNewCouponAdmin = function() {
+    const code = (document.getElementById('newCouponCode').value || '').trim().toUpperCase();
+    const discount = parseFloat(document.getElementById('newCouponDiscount').value);
+    const expiry = document.getElementById('newCouponExpiry').value;
+    const notes = document.getElementById('newCouponNotes').value.trim();
+
+    if (!code || isNaN(discount)) return window.showToastMsg("أدخل الكود ونسبة الخصم بشكل صحيح");
+
+    systemCoupons[code] = { discount, expiry, notes, isActive: true };
+    safeSet('cc_coupons', systemCoupons);
+    if (cloudDb) cloudDb.collection('settings').doc('coupons').set(systemCoupons).catch(e=>console.warn(e));
+
+    document.getElementById('newCouponCode').value = '';
+    document.getElementById('newCouponDiscount').value = '';
+    document.getElementById('newCouponExpiry').value = '';
+    document.getElementById('newCouponNotes').value = '';
+    renderAdminCouponsManager();
+    checkAdminEditsCounter();
+    window.showToastMsg("تم حفظ وتفعيل كوبون الخصم أونلاين!");
+};
+
+function renderAdminCouponsManager() {
+    const container = document.getElementById('adminCouponsListContainer');
+    if (!container) return;
+    container.innerHTML = Object.entries(systemCoupons).map(([code, c]) => `
+        <div style="display:flex; justify-content:space-between; align-items:center; background:var(--bg-surface); padding:8px 10px; border-radius:var(--radius-sm); border:1px solid var(--border-subtle); margin-bottom:6px;">
+            <div>
+                <div class="num-font" style="font-size:13px; font-weight:900; color:var(--brand-theme);">${code} (خصم ${c.discount}%)</div>
+                <div style="font-size:10px; color:var(--text-secondary);">ينتهي في: ${c.expiry || 'غير محدد'} • ${c.notes || ''}</div>
+            </div>
+            <button class="btn-brand-outline" style="padding:3px 6px; font-size:10px; color:var(--status-danger); border-color:var(--status-danger);" onclick="deleteCouponAdmin('${code}')">حذف</button>
+        </div>
+    `).join('');
+}
+
+window.deleteCouponAdmin = function(code) {
+    delete systemCoupons[code];
+    safeSet('cc_coupons', systemCoupons);
+    if (cloudDb) cloudDb.collection('settings').doc('coupons').set(systemCoupons).catch(e=>console.warn(e));
+    renderAdminCouponsManager();
+    window.showToastMsg("تم حذف الكوبون");
+};
+
+// أصناف الاستبدال بالصورة والوصف والسعر الأصلي
+window.handleRedeemImageUpload = function(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+    compressImageNative(file, 300, 0.85, base64Url => {
+        const preview = document.getElementById('newRedeemImgPreview');
+        preview.src = base64Url;
+        preview.style.display = 'block';
+        window._tempRedeemImg = base64Url;
+    });
+};
+
+window.saveNewRedeemItemAdmin = function() {
+    const name = document.getElementById('newRedeemItemName').value.trim();
+    const originalPrice = parseFloat(document.getElementById('newRedeemItemOriginalPrice').value);
+    const points = parseInt(document.getElementById('newRedeemItemPoints').value);
+    const desc = document.getElementById('newRedeemItemDesc').value.trim();
+    const img = window._tempRedeemImg || "";
+
+    if (!name || isNaN(points) || isNaN(originalPrice)) return window.showToastMsg("أدخل اسم الصنف والسعر والنقاط بشكل صحيح");
+
+    redeemCatalog.unshift({
+        id: "rd_" + Date.now(),
+        name,
+        price: originalPrice,
+        points,
+        desc,
+        img
+    });
+
+    safeSet('cc_redeem_catalog', redeemCatalog);
+    if (cloudDb) cloudDb.collection('settings').doc('redeem_catalog').set({ items: redeemCatalog }).catch(e=>console.warn(e));
+
+    document.getElementById('newRedeemItemName').value = '';
+    document.getElementById('newRedeemItemOriginalPrice').value = '';
+    document.getElementById('newRedeemItemPoints').value = '';
+    document.getElementById('newRedeemItemDesc').value = '';
+    document.getElementById('newRedeemImgPreview').style.display = 'none';
+    window._tempRedeemImg = null;
+
+    renderAdminRedeemManager();
+    checkAdminEditsCounter();
+    window.showToastMsg("تم حفظ صنف الاستبدال في متجر المكافآت أونلاين!");
+};
+
+function renderAdminRedeemManager() {
+    const container = document.getElementById('adminRedeemControlList');
+    if (!container) return;
+    container.innerHTML = redeemCatalog.map(r => `
+        <div style="display:flex; justify-content:space-between; align-items:center; background:var(--bg-surface); padding:8px 10px; border-radius:var(--radius-sm); border:1px solid var(--border-subtle); margin-bottom:6px;">
+            <div style="display:flex; align-items:center; gap:8px;">
+                <img src="${r.img || 'https://images.unsplash.com/photo-1517701550927-30cf4be1aaf9?w=200&q=80'}" style="width:36px; height:36px; border-radius:6px; object-fit:cover;">
+                <div>
+                    <div style="font-size:12.5px; font-weight:900;">${r.name}</div>
+                    <div style="font-size:10px; color:var(--text-secondary);"><span class="num-font" style="color:var(--brand-theme); font-weight:800;">${r.points} نقطة</span> • السعر: ${parseFloat(r.price).toFixed(2)} د.أ</div>
+                </div>
+            </div>
+            <button class="btn-brand-outline" style="padding:3px 6px; font-size:10px; color:var(--status-danger); border-color:var(--status-danger);" onclick="deleteRedeemItemAdmin('${r.id}')">حذف</button>
+        </div>
+    `).join('');
+}
+
+window.deleteRedeemItemAdmin = function(id) {
+    redeemCatalog = redeemCatalog.filter(r => r.id !== id);
+    safeSet('cc_redeem_catalog', redeemCatalog);
+    if (cloudDb) cloudDb.collection('settings').doc('redeem_catalog').set({ items: redeemCatalog }).catch(e=>console.warn(e));
+    renderAdminRedeemManager();
+    window.showToastMsg("تم حذف الصنف");
+};
+
+// إدارة طرق الدفع بالشعارات المنفصلة
 window.handlePaymentLogoUpload = function(event) {
     const file = event.target.files[0];
     if (!file) return;
@@ -3012,6 +3302,7 @@ window.saveCustomPaymentMethod = function() {
 
     renderAdminPaymentMethodsList();
     renderCartPaymentOptions();
+    checkAdminEditsCounter();
     window.showToastMsg("تم حفظ طريقة الدفع للفرع بنجاح!");
 };
 
@@ -3041,567 +3332,7 @@ window.deletePaymentMethodAdmin = function(id) {
     window.showToastMsg("تم حذف طريقة الدفع");
 };
 
-function renderCartPaymentOptions() {
-    const container = document.getElementById('cartPaymentMethodsContainer');
-    if (!container) return;
-    const curBranch = window.appState.cartBranch.toString();
-    const branchMethods = customPaymentMethods.filter(m => m.branch === curBranch);
-
-    if (!branchMethods.length) {
-        container.innerHTML = `<div style="font-size:11.5px; color:var(--text-dim);">الدفع نقداً عند الاستلام</div>`;
-        window.appState.selectedPaymentMethod = "دفع نقدي";
-        return;
-    }
-
-    container.innerHTML = branchMethods.map((m, idx) => `
-        <label style="display:flex; justify-content:space-between; align-items:center; padding:9px 12px; background:var(--bg-surface); border-radius:var(--radius-sm); border:1px solid var(--border-subtle); cursor:pointer;">
-            <div style="display:flex; align-items:center; gap:8px;">
-                ${m.logo ? `<img src="${m.logo}" style="width:28px; height:28px; object-fit:contain; border-radius:4px;">` : ''}
-                <div>
-                    <div style="font-size:12px; font-weight:800;">${m.name}</div>
-                    <div style="font-size:10px; color:var(--text-secondary);">${m.desc}</div>
-                </div>
-            </div>
-            <input type="radio" name="cartPayOpt" value="${m.name}" ${idx === 0 ? 'checked' : ''} onchange="window.appState.selectedPaymentMethod=this.value">
-        </label>
-    `).join('');
-
-    window.appState.selectedPaymentMethod = branchMethods[0].name;
-}
-
-// ==========================================
-// السلة والدفع وتتبع الطلب التفاعلي
-// ==========================================
-function renderCartItemsList() {
-    const container = document.getElementById('cartItemsList');
-    if (!container) return;
-    if (!window.appState.cart.length) {
-        container.innerHTML = `<div style="text-align:center; padding:16px; color:var(--text-secondary); font-size:12px;">السلة فارغة حالياً</div>`;
-        return;
-    }
-    container.innerHTML = window.appState.cart.map((item, idx) => `
-        <div style="display:flex; justify-content:space-between; align-items:center; padding:8px 0; border-bottom:1px dashed var(--border-subtle);">
-            <div>
-                <div style="font-weight:900; font-size:13px;">${item.qty}x ${item.name} (${item.sizeName})</div>
-                ${item.sauceInfo ? `<div style="font-size:11px; color:var(--brand-theme);">${item.sauceInfo}</div>` : ''}
-                ${item.addonsInfo ? `<div style="font-size:10.5px; color:var(--text-secondary);">إضافات: ${item.addonsInfo}</div>` : ''}
-                ${item.notes ? `<div style="font-size:10px; color:var(--text-dim);">ملاحظة: ${item.notes}</div>` : ''}
-            </div>
-            <div style="text-align:left;">
-                <div class="num-font" style="font-weight:900; color:var(--brand-theme); font-size:13px;">${item.lineTotal.toFixed(2)} د.أ</div>
-                <button style="font-size:10px; color:var(--status-danger); background:none; border:none; cursor:pointer;" onclick="removeCartItem(${idx})">حذف</button>
-            </div>
-        </div>
-    `).join('');
-    populateCartTownsSelect();
-    renderCartPaymentOptions();
-}
-
-window.removeCartItem = function(index) {
-    window.appState.cart.splice(index, 1);
-    safeSet('cc_cart', window.appState.cart);
-    renderCartItemsList();
-    recalculateCartSummary();
-    refreshCartDockStatus();
-};
-
-window.switchCartBranch = function(branchIdx) {
-    window.appState.cartBranch = branchIdx;
-    document.getElementById('btnBranch0').classList.toggle('active', branchIdx === 0);
-    document.getElementById('btnBranch1').classList.toggle('active', branchIdx === 1);
-    populateCartTownsSelect();
-    renderCartPaymentOptions();
-    recalculateCartSummary();
-};
-
-window.switchDeliveryMode = function(mode) {
-    window.appState.deliveryMode = mode;
-    document.getElementById('btnModeDelivery').classList.toggle('active', mode === 'delivery');
-    document.getElementById('btnModePickup').classList.toggle('active', mode === 'pickup');
-    document.getElementById('deliveryFieldsArea').style.display = (mode === 'delivery') ? 'block' : 'none';
-    recalculateCartSummary();
-};
-
-function populateCartTownsSelect() {
-    const sel = document.getElementById('cartTownSelect');
-    if (!sel) return;
-    const b = branchesData[window.appState.cartBranch] || branchesData[0];
-    sel.innerHTML = Object.entries(b.towns).map(([town, fee]) => `
-        <option value="${fee}">${town} (أجور التوصيل: ${parseFloat(fee).toFixed(2)} د.أ)</option>
-    `).join('');
-}
-
-window.applyUserCouponDiscount = function() {
-    const code = (document.getElementById('cartCouponCodeInput').value || '').trim().toUpperCase();
-    if (!code) return;
-    if (systemCoupons[code] && systemCoupons[code].isActive) {
-        window.appState.activeCouponDiscount = systemCoupons[code].discount;
-        document.getElementById('couponAppliedBadge').style.display = 'block';
-        document.getElementById('couponAppliedBadge').innerText = `تم تطبيق الكوبون (خصم ${window.appState.activeCouponDiscount}%)`;
-        recalculateCartSummary();
-        window.showToastMsg("تم تطبيق الخصم");
-    } else {
-        window.showToastMsg("كوبون الخصم غير صحيح أو منتهي");
-    }
-};
-
-window.recalculateCartSummary = function() {
-    const sub = window.appState.cart.reduce((s, i) => s + i.lineTotal, 0);
-    let del = 0;
-    if (window.appState.deliveryMode === 'delivery') {
-        const sel = document.getElementById('cartTownSelect');
-        if (sel && sel.value) del = parseFloat(sel.value);
-    }
-
-    let discountAmount = 0;
-    if (window.appState.activeCouponDiscount > 0) {
-        discountAmount = (sub * window.appState.activeCouponDiscount) / 100;
-        document.getElementById('sumDiscountRow').style.display = 'flex';
-        document.getElementById('sumDiscount').innerText = `-${discountAmount.toFixed(2)} د.أ`;
-    } else {
-        document.getElementById('sumDiscountRow').style.display = 'none';
-    }
-
-    const total = (sub - discountAmount) + del;
-    document.getElementById('sumSubtotal').innerText = `${sub.toFixed(2)} د.أ`;
-    document.getElementById('sumTotal').innerText = `${total.toFixed(2)} د.أ`;
-};
-
-window.dispatchOrderAndInitiateTracking = function() {
-    if (!currentAuthenticatedUser) return checkAuthAndProceedToCart();
-    if (bannedCustomersList.includes(currentAuthenticatedUser.phone)) {
-        checkUserBannedStateAndLockout();
-        return window.showToastMsg("هذا الحساب مقيد ولا يمكنه الطلب");
-    }
-    if (!window.appState.cart.length) return window.showToastMsg("سلة المشتريات فارغة");
-
-    const branch = branchesData[window.appState.cartBranch];
-    const sub = window.appState.cart.reduce((s, i) => s + i.lineTotal, 0);
-    const del = window.appState.deliveryMode === 'delivery' ? parseFloat(document.getElementById('cartTownSelect').value || 0) : 0;
-    const discountAmount = (sub * window.appState.activeCouponDiscount) / 100;
-    const total = (sub - discountAmount) + del;
-    const orderNumber = 'ORD-' + Math.floor(1000 + Math.random() * 9000);
-
-    const newOrderObj = {
-        orderId: orderNumber,
-        customerPhone: currentAuthenticatedUser.phone,
-        customerName: currentAuthenticatedUser.name,
-        branchName: branch.name,
-        branchId: window.appState.cartBranch,
-        deliveryMode: window.appState.deliveryMode,
-        paymentMethod: window.appState.selectedPaymentMethod || "دفع نقدي",
-        items: [...window.appState.cart],
-        subtotal: sub,
-        discount: discountAmount,
-        deliveryFee: del,
-        totalAmount: total,
-        status: 'received',
-        prepMinutes: 0,
-        prepStartedAt: null,
-        prepEndsAt: null,
-        createdAt: Date.now(),
-        finishedAt: null,
-        timestamp: new Date().toLocaleTimeString('ar-JO', { hour: '2-digit', minute: '2-digit' })
-    };
-
-    activeOrdersList.unshift(newOrderObj);
-    safeSet('cc_orders', activeOrdersList);
-    if (cloudDb) cloudDb.collection('orders').doc(orderNumber).set(newOrderObj).catch(e=>console.warn(e));
-
-    currentAuthenticatedUser.ordersCount = (currentAuthenticatedUser.ordersCount || 0) + 1;
-    currentAuthenticatedUser.points = (currentAuthenticatedUser.points || 0) + Math.floor(total * 2);
-    allRegisteredCustomers[currentAuthenticatedUser.phone] = currentAuthenticatedUser;
-    safeSet('cc_users_directory', allRegisteredCustomers);
-    safeSet('cc_active_client_user', currentAuthenticatedUser);
-    if (cloudDb) cloudDb.collection('users').doc(currentAuthenticatedUser.phone).set(currentAuthenticatedUser).catch(e=>console.warn(e));
-
-    window.appState.cart = [];
-    localStorage.removeItem('cc_cart');
-    refreshCartDockStatus();
-
-    let msg = `*طلب جديد أونلاين | كافيه كورنر*\nرقم الطلب: ${orderNumber}\nالفرع: ${branch.name}\nالعميل: ${currentAuthenticatedUser.name} (${currentAuthenticatedUser.phone})\nنوع الاستلام: ${newOrderObj.deliveryMode === 'delivery' ? 'توصيل' : 'استلام من الفرع'}\nطريقة الدفع: ${newOrderObj.paymentMethod}\n----------------\n`;
-    newOrderObj.items.forEach((it, i) => {
-        msg += `${i+1}. *${it.qty}x ${it.name}* (${it.sizeName})${it.sauceInfo ? ` - ${it.sauceInfo}` : ''}${it.addonsInfo ? ` - إضافات: ${it.addonsInfo}` : ''} - ${it.lineTotal.toFixed(2)} د.أ\n`;
-    });
-    msg += `----------------\nالإجمالي: ${total.toFixed(2)} د.أ\n`;
-
-    window.open(`https://wa.me/${branch.whatsapp}?text=${encodeURIComponent(msg)}`, '_blank');
-    window.showToastMsg("تم إرسال الطلب بنجاح");
-    window.navigateRouter('screen-order-tracking');
-};
-
-function renderOrderTrackingView() {
-    const container = document.getElementById('activeOrderTrackingView');
-    if (!container) return;
-
-    if (!currentAuthenticatedUser) {
-        container.innerHTML = `<div style="text-align:center; padding:30px 14px; font-size:12px; color:var(--text-secondary);">يرجى تسجيل الدخول لتتبع طلباتك الخاصة</div>`;
-        return;
-    }
-
-    const myOrders = activeOrdersList.filter(o => o.customerPhone === currentAuthenticatedUser.phone && o.status !== 'completed' && o.status !== 'cancelled');
-
-    if (!myOrders.length) {
-        container.innerHTML = `
-            <div class="clean-card" style="text-align:center; padding:30px 14px;">
-                <div style="font-weight:900; font-size:14px; margin-bottom:4px;">لا توجد طلبات جارية لك حالياً</div>
-                <div style="font-size:11px; color:var(--text-secondary);">طلباتك المكتملة تنتقل تلقائياً لسجل الفواتير السابقة بخصوصية تامة.</div>
-            </div>
-        `;
-        return;
-    }
-
-    const now = Date.now();
-
-    container.innerHTML = myOrders.map(order => {
-        let statusTitle = "تم استلام طلبك وبانتظار الموافقة";
-        let isPickup = order.deliveryMode === 'pickup';
-
-        if (order.status === 'preparing') {
-            statusTitle = isPickup ? "جاري تجهيز وتحضير طلبك داخل الفرع" : "جاري تحضير طلبك وتجهيزه للتوصيل";
-        } else if (order.status === 'onway') {
-            statusTitle = isPickup ? "طلبك جاهز تماماً للاستلام الآن في الفرع!" : "طلبك مع كابتن التوصيل وفي الطريق إليك!";
-        }
-
-        let timerHTML = "";
-        if (order.status === 'preparing' && order.prepEndsAt) {
-            const remaining = Math.max(0, order.prepEndsAt - now);
-            const m = Math.floor(remaining / 60000);
-            const s = Math.floor((remaining % 60000) / 1000);
-            timerHTML = `
-                <div style="background:var(--brand-glow); border:1px solid var(--border-accent); border-radius:var(--radius-md); padding:10px; text-align:center; margin:8px 0;">
-                    <div style="font-size:10.5px; color:var(--text-secondary);">الوقت التقديري المتبقي لاكتمال التجهيز:</div>
-                    <div class="num-font" style="font-size:22px; font-weight:900; color:var(--brand-theme); margin:2px 0;">${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}</div>
-                </div>
-            `;
-        }
-
-        return `
-            <div class="clean-card" style="margin-bottom:10px;">
-                <div style="display:flex; justify-content:space-between; align-items:center;">
-                    <span class="num-font" style="font-weight:900; color:var(--brand-theme);">#${order.orderId}</span>
-                    <span class="header-hours-badge">${isPickup ? 'استلام من المحل' : 'توصيل'}</span>
-                </div>
-                <div style="font-size:13px; font-weight:900; margin-top:6px; color:var(--text-primary);">${statusTitle}</div>
-                ${timerHTML}
-                <div style="font-size:11px; color:var(--text-secondary); margin-top:6px;">
-                    ${order.items.map(it => `• ${it.qty}x ${it.name} (${it.sizeName})`).join(' ، ')}
-                </div>
-                <div style="font-size:12px; font-weight:900; margin-top:8px;">الإجمالي: <span class="num-font" style="color:var(--brand-theme);">${order.totalAmount.toFixed(2)} د.أ</span></div>
-            </div>
-        `;
-    }).join('');
-}
-
-// ==========================================
-// إدارة الطلبات الحية في لوحة الإدارة
-// ==========================================
-function renderAdminLiveOrdersManager() {
-    const container = document.getElementById('adminLiveOrdersContainer');
-    if (!container) return;
-
-    const liveOrders = activeOrdersList.filter(o => o.status !== 'completed' && o.status !== 'cancelled');
-
-    if (!liveOrders.length) {
-        container.innerHTML = `<div style="text-align:center; padding:16px; color:var(--text-secondary); font-size:12px;">لا توجد طلبات جارية حالياً</div>`;
-        return;
-    }
-
-    container.innerHTML = liveOrders.map(o => {
-        const isPickup = o.deliveryMode === 'pickup';
-        return `
-            <div class="clean-card" style="margin-bottom:8px;">
-                <div style="display:flex; justify-content:space-between; align-items:center;">
-                    <span class="num-font" style="font-weight:900; color:var(--brand-theme);">#${o.orderId}</span>
-                    <span class="header-hours-badge">${isPickup ? 'استلام من الفرع' : 'توصيل'} • ${o.branchName}</span>
-                </div>
-                <div style="font-size:12.5px; font-weight:900; margin-top:4px;">${o.customerName} (<span class="num-font">${o.customerPhone}</span>)</div>
-                <div style="font-size:11px; color:var(--text-secondary); margin:4px 0;">
-                    ${o.items.map(it => `${it.qty}x ${it.name}${it.sauceInfo ? ` (${it.sauceInfo})` : ''}`).join(' ، ')}
-                </div>
-                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
-                    <span class="num-font" style="font-weight:900; color:var(--brand-theme);">${o.totalAmount.toFixed(2)} د.أ</span>
-                    <span style="font-size:10.5px; font-weight:800; color:var(--text-dim);">${o.status}</span>
-                </div>
-
-                <div style="display:flex; gap:4px; flex-wrap:wrap; border-top:1px dashed var(--border-subtle); padding-top:6px;">
-                    <button class="btn-brand-outline" style="padding:4px 8px; font-size:10px;" onclick="setOrderPrepTimerPrompt('${o.orderId}')">⏱ بدء التحضير بتايمر</button>
-                    ${isPickup ? `
-                        <button class="btn-brand-outline" style="padding:4px 8px; font-size:10px;" onclick="updateOrderStatusAdmin('${o.orderId}', 'onway')">جاهز للاستلام بالمحل ✓</button>
-                    ` : `
-                        <button class="btn-brand-outline" style="padding:4px 8px; font-size:10px;" onclick="updateOrderStatusAdmin('${o.orderId}', 'onway')">مع كابتن التوصيل 🛵</button>
-                    `}
-                    <button class="btn-brand-solid" style="width:auto; padding:4px 10px; font-size:10px; background:var(--status-success);" onclick="completeOrderAdmin('${o.orderId}')">تم التسليم ✓</button>
-                    <button class="btn-brand-outline" style="padding:4px 8px; font-size:10px; color:var(--status-danger); border-color:var(--status-danger);" onclick="cancelOrderAdmin('${o.orderId}')">إلغاء ✕</button>
-                </div>
-            </div>
-        `;
-    }).join('');
-}
-
-window.setOrderPrepTimerPrompt = function(orderId) {
-    const minsStr = prompt("أدخل وقت التحضير بالدقائق (مثال: 15):", "15");
-    if (!minsStr) return;
-    const mins = parseInt(minsStr);
-    if (isNaN(mins) || mins <= 0) return window.showToastMsg("رقم غير صالح");
-
-    const o = activeOrdersList.find(x => x.orderId === orderId);
-    if (!o) return;
-
-    o.status = 'preparing';
-    o.prepMinutes = mins;
-    o.prepStartedAt = Date.now();
-    o.prepEndsAt = Date.now() + (mins * 60 * 1000);
-
-    safeSet('cc_orders', activeOrdersList);
-    if (cloudDb) cloudDb.collection('orders').doc(orderId).update({
-        status: 'preparing', prepMinutes: mins, prepStartedAt: o.prepStartedAt, prepEndsAt: o.prepEndsAt
-    }).catch(e=>console.warn(e));
-
-    renderAdminLiveOrdersManager();
-    window.showToastMsg(`تم بدء تحضير الطلب بتايمر ${mins} دقيقة!`);
-};
-
-window.updateOrderStatusAdmin = function(orderId, st) {
-    const o = activeOrdersList.find(x => x.orderId === orderId);
-    if (!o) return;
-    o.status = st;
-    safeSet('cc_orders', activeOrdersList);
-    if (cloudDb) cloudDb.collection('orders').doc(orderId).update({ status: st }).catch(e=>console.warn(e));
-    renderAdminLiveOrdersManager();
-    window.showToastMsg("تم تحديث حالة الطلب");
-};
-
-window.completeOrderAdmin = function(orderId) {
-    const o = activeOrdersList.find(x => x.orderId === orderId);
-    if (!o) return;
-    o.status = 'completed';
-    o.finishedAt = Date.now();
-    safeSet('cc_orders', activeOrdersList);
-    if (cloudDb) cloudDb.collection('orders').doc(orderId).update({ status: 'completed', finishedAt: o.finishedAt }).catch(e=>console.warn(e));
-    renderAdminLiveOrdersManager();
-    window.showToastMsg("تم تسليم الطلب وأرشفته في الفواتير");
-};
-
-window.cancelOrderAdmin = function(orderId) {
-    const reason = prompt("سبب الإلغاء للزبون:", "الضغط التشغيلي");
-    if (reason === null) return;
-    const o = activeOrdersList.find(x => x.orderId === orderId);
-    if (!o) return;
-    o.status = 'cancelled';
-    o.finishedAt = Date.now();
-    safeSet('cc_orders', activeOrdersList);
-    if (cloudDb) cloudDb.collection('orders').doc(orderId).update({ status: 'cancelled', finishedAt: o.finishedAt }).catch(e=>console.warn(e));
-    renderAdminLiveOrdersManager();
-    window.showToastMsg("تم إلغاء الطلب");
-};
-
-// ==========================================
-// أرشيف الفواتير السابقة وتنظيف السحابة (24 ساعة)
-// ==========================================
-function cleanupCloudOrdersDaily() {
-    const now = Date.now();
-    const TWENTY_FOUR_HOURS = 24 * 60 * 60 * 1000;
-    activeOrdersList.forEach(o => {
-        if ((o.status === 'completed' || o.status === 'cancelled') && o.finishedAt && (now - o.finishedAt > TWENTY_FOUR_HOURS)) {
-            if (cloudDb) cloudDb.collection('orders').doc(o.orderId).delete().catch(e=>console.warn(e));
-        }
-    });
-}
-
-function renderInvoicesArchiveList() {
-    const container = document.getElementById('customerInvoicesArchiveList');
-    if (!container || !currentAuthenticatedUser) return;
-
-    const dateFilter = document.getElementById('filterInvoiceDate').value;
-    let myFinished = activeOrdersList.filter(o => o.customerPhone === currentAuthenticatedUser.phone && o.status === 'completed');
-
-    if (dateFilter) {
-        myFinished = myFinished.filter(o => new Date(o.createdAt).toISOString().split('T')[0] === dateFilter);
-    }
-
-    if (!myFinished.length) {
-        container.innerHTML = `<div style="text-align:center; padding:16px; color:var(--text-secondary); font-size:12px;">لا توجد فواتير مكتملة في هذا التاريخ</div>`;
-        return;
-    }
-
-    container.innerHTML = myFinished.map(inv => `
-        <div class="clean-card" style="margin-bottom:8px;">
-            <div style="display:flex; justify-content:space-between; align-items:center;">
-                <span class="num-font" style="font-weight:900; color:var(--brand-theme);">#${inv.orderId}</span>
-                <span style="font-size:10px; color:var(--text-dim);">${new Date(inv.createdAt).toLocaleDateString('ar-JO')}</span>
-            </div>
-            <div style="font-size:11.5px; color:var(--text-secondary); margin:4px 0;">
-                ${inv.items.map(it => `${it.qty}x ${it.name} (${it.sizeName})`).join(' ، ')}
-            </div>
-            <div style="display:flex; justify-content:space-between; align-items:center; border-top:1px dashed var(--border-subtle); padding-top:4px;">
-                <span style="font-size:11px; color:var(--text-secondary);">${inv.deliveryMode === 'pickup' ? 'استلام من المحل' : 'توصيل'} • ${inv.paymentMethod}</span>
-                <span class="num-font" style="font-weight:900; color:var(--brand-theme);">${inv.totalAmount.toFixed(2)} د.أ</span>
-            </div>
-        </div>
-    `).join('');
-}
-
-// ==========================================
-// البحث المباشر برقم الهاتف وفك/فرض الحظر
-// ==========================================
-window.searchAndOpenCustomerDossier = function() {
-    const phone = (document.getElementById('adminCustomerSearchPhone').value || '').trim();
-    if (!phone) return window.showToastMsg("أدخل رقم الهاتف للبحث");
-
-    if (allRegisteredCustomers[phone]) {
-        openCustomerDossierModal(phone);
-    } else {
-        window.showToastMsg("لم يتم العثور على أي حساب مسجل بهذا الرقم");
-    }
-};
-
-window.openCustomerDossierModal = function(phone) {
-    selectedDossierUserPhone = phone;
-    const user = allRegisteredCustomers[phone];
-    if (!user) return;
-
-    document.getElementById('modalAdminCustomerDossier').style.display = 'flex';
-    document.getElementById('dosCustomerNameTitle').innerText = `ملف العميل: ${user.name}`;
-    document.getElementById('dosFullName').innerText = user.name;
-    document.getElementById('dosPhone').innerText = user.phone;
-    document.getElementById('dosPointsVal').innerText = user.points || 0;
-    document.getElementById('dosOrdersVal').innerText = user.ordersCount || 0;
-    document.getElementById('inputCustomPointsAmount').value = '';
-
-    const isBanned = bannedCustomersList.includes(phone);
-    const banBtn = document.getElementById('btnToggleCustomerBan');
-    banBtn.innerText = isBanned ? "فك القيد والحظر عن العميل ✓" : "حظر وتقييد العميل نهائياً ✕";
-    banBtn.style.color = isBanned ? "var(--status-success)" : "var(--status-danger)";
-    banBtn.style.borderColor = isBanned ? "var(--status-success)" : "var(--status-danger)";
-};
-
-window.closeCustomerDossierModal = function() {
-    document.getElementById('modalAdminCustomerDossier').style.display = 'none';
-    selectedDossierUserPhone = null;
-};
-
-window.applyCustomPointsDelta = function(isAdd) {
-    if (!selectedDossierUserPhone) return;
-    const pts = parseInt(document.getElementById('inputCustomPointsAmount').value);
-    if (isNaN(pts) || pts <= 0) return window.showToastMsg("أدخل عدد نقاط صحيح");
-
-    const user = allRegisteredCustomers[selectedDossierUserPhone];
-    if (!user) return;
-
-    user.points = isAdd ? (user.points || 0) + pts : Math.max(0, (user.points || 0) - pts);
-    allRegisteredCustomers[selectedDossierUserPhone] = user;
-    safeSet('cc_users_directory', allRegisteredCustomers);
-    if (cloudDb) cloudDb.collection('users').doc(selectedDossierUserPhone).set(user).catch(e=>console.warn(e));
-
-    if (currentAuthenticatedUser && currentAuthenticatedUser.phone === selectedDossierUserPhone) {
-        currentAuthenticatedUser = user;
-        safeSet('cc_active_client_user', currentAuthenticatedUser);
-        renderUserProfileDetails();
-    }
-
-    document.getElementById('dosPointsVal').innerText = user.points;
-    renderAdminCustomersList();
-    window.showToastMsg("تم تعديل النقاط بنجاح");
-};
-
-window.toggleCustomerBanStatus = function() {
-    if (!selectedDossierUserPhone) return;
-    const phone = selectedDossierUserPhone;
-    if (bannedCustomersList.includes(phone)) {
-        bannedCustomersList = bannedCustomersList.filter(p => p !== phone);
-        window.showToastMsg("تم فك الحظر والتقييد عن الحساب بنجاح ✓");
-    } else {
-        bannedCustomersList.push(phone);
-        window.showToastMsg("تم حظر وتقييد الحساب ومنعه من الطلب ✕");
-    }
-
-    safeSet('cc_banned_users', bannedCustomersList);
-    if (cloudDb) cloudDb.collection('settings').doc('banned_users').set({ list: bannedCustomersList }).catch(e=>console.warn(e));
-
-    closeCustomerDossierModal();
-    renderAdminCustomersList();
-    checkUserBannedStateAndLockout();
-};
-
-function renderAdminCustomersList() {
-    const container = document.getElementById('adminCustomersListContainer');
-    if (!container) return;
-    const users = Object.values(allRegisteredCustomers);
-    if (!users.length) {
-        container.innerHTML = `<div style="text-align:center; padding:12px; color:var(--text-secondary); font-size:12px;">لا يوجد زبائن مسجلين</div>`;
-        return;
-    }
-    container.innerHTML = users.map(u => {
-        const isBanned = bannedCustomersList.includes(u.phone);
-        return `
-            <div class="clean-card" style="margin-bottom:6px; ${isBanned ? 'border-color:var(--status-danger); background:rgba(239,68,68,0.04);' : ''}">
-                <div style="display:flex; justify-content:space-between; align-items:center;">
-                    <div>
-                        <div style="font-size:13px; font-weight:900;">${u.name} ${isBanned ? '<span style="color:var(--status-danger); font-size:10px;">[مقيد ومحظور]</span>' : ''}</div>
-                        <div class="num-font" style="font-size:11px; color:var(--text-secondary);">${u.phone}</div>
-                    </div>
-                    <div style="text-align:left;">
-                        <div class="num-font" style="font-weight:900; color:var(--brand-theme);">${u.points || 0} نقطة</div>
-                        <button class="btn-brand-outline" style="padding:2px 8px; font-size:10px; margin-top:4px;" onclick="openCustomerDossierModal('${u.phone}')">فتح الملف</button>
-                    </div>
-                </div>
-            </div>
-        `;
-    }).join('');
-}
-
-// ==========================================
-// باقي الخدمات التنفيذية بالأدمن
-// ==========================================
-window.saveBrandAndDeveloperSettings = function() {
-    brandAndDevSettings.brandTitle = document.getElementById('admBrandTitleInput').value.trim() || "كافيه كورنر";
-    brandAndDevSettings.brandSub = document.getElementById('admBrandSubInput').value.trim();
-    brandAndDevSettings.devName = document.getElementById('admDevNameInput').value.trim() || "المهندس عمر عبيدات";
-    brandAndDevSettings.devBio = document.getElementById('admDevBioInput').value.trim();
-    brandAndDevSettings.devWa = document.getElementById('admDevWaInput').value.trim() || "962796433698";
-    brandAndDevSettings.devIg = document.getElementById('admDevIgInput').value.trim() || "https://www.instagram.com/o_yd";
-
-    safeSet('cc_brand_dev_config', brandAndDevSettings);
-    if (cloudDb) cloudDb.collection('settings').doc('brand_dev').set(brandAndDevSettings).catch(e=>console.warn(e));
-
-    applyBrandAndDevSettingsToDOM();
-    window.showToastMsg("تم حفظ وتثبيت الشعار والترويسة وبيانات المطور بنجاح!");
-};
-
-function applyBrandAndDevSettingsToDOM() {
-    const s = brandAndDevSettings;
-    document.getElementById('mainHeaderLogoImg').src = s.storeLogo || "./logo.png";
-    document.getElementById('mainHeaderBrandTitle').innerText = s.brandTitle || "كافيه كورنر";
-    document.getElementById('mainHeaderBrandSub').innerText = s.brandSub || "";
-    document.getElementById('devHubAvatarImg').src = s.devAvatar || "./logo.png";
-    document.getElementById('devHubNameDisplay').innerText = s.devName || "المهندس عمر عبيدات";
-    document.getElementById('devHubBioDisplay').innerText = s.devBio || "";
-    document.getElementById('devWaLinkBtn').href = `https://wa.me/${s.devWa || "962796433698"}`;
-    document.getElementById('devIgLinkBtn').href = s.devIg || "https://www.instagram.com/o_yd";
-}
-
-window.handleStoreLogoUpload = function(event) {
-    const file = event.target.files[0];
-    if (!file) return;
-    compressImageNative(file, 200, 0.9, base64Url => {
-        document.getElementById('admLogoPreview').src = base64Url;
-        brandAndDevSettings.storeLogo = base64Url;
-    });
-};
-
-window.handleDevAvatarUpload = function(event) {
-    const file = event.target.files[0];
-    if (!file) return;
-    compressImageNative(file, 300, 0.9, base64Url => {
-        document.getElementById('admDevAvatarPreview').src = base64Url;
-        brandAndDevSettings.devAvatar = base64Url;
-    });
-};
-
-// ==========================================
-// محرك الثيمات الملكية الفاخرة
-// ==========================================
+// الثيمات
 const THEME_PRESETS = {
     gold: { brand: '#c59b63', glow: 'rgba(197, 155, 99, 0.16)', hover: '#b3884f' },
     ruby: { brand: '#e11d48', glow: 'rgba(225, 29, 72, 0.16)', hover: '#be123c' },
@@ -3622,6 +3353,7 @@ window.applyThemeEngine = function(themeKey) {
 
     if (activeSessionUser && cloudDb) {
         cloudDb.collection('settings').doc('theme').set({ themeKey, updatedAt: Date.now() }).catch(e=>console.warn(e));
+        checkAdminEditsCounter();
         window.showToastMsg("تم تفعيل وتثبيت الثيم للجميع أونلاين!");
     }
 };
@@ -3637,17 +3369,64 @@ function applyThemeToDOM() {
     else document.body.classList.remove('dark-mode');
 }
 
-// ==========================================
-// المزامنة السحابية اللحظية (Firestore)
-// ==========================================
+// ضغط الصور
+function compressImageNative(file, maxWidth, quality, callback) {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = event => {
+        const img = new Image();
+        img.src = event.target.result;
+        img.onload = () => {
+            let width = img.width;
+            let height = img.height;
+            if (width > maxWidth) {
+                height = Math.round((height * maxWidth) / width);
+                width = maxWidth;
+            }
+            const canvas = document.createElement('canvas');
+            canvas.width = width;
+            canvas.height = height;
+            const ctx = canvas.getContext('2d');
+            ctx.drawImage(img, 0, 0, width, height);
+            callback(canvas.toDataURL('image/jpeg', quality));
+        };
+    };
+}
+
+window.handleStoreLogoUpload = function(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+    compressImageNative(file, 200, 0.9, base64Url => {
+        document.getElementById('admLogoPreview').src = base64Url;
+        brandAndDevSettings.storeLogo = base64Url;
+    });
+};
+
+window.saveBrandAndDeveloperSettings = function() {
+    brandAndDevSettings.brandTitle = document.getElementById('admBrandTitleInput').value.trim() || "كافيه كورنر";
+    brandAndDevSettings.brandSub = document.getElementById('admBrandSubInput').value.trim();
+
+    safeSet('cc_brand_dev_config', brandAndDevSettings);
+    if (cloudDb) cloudDb.collection('settings').doc('brand_dev').set(brandAndDevSettings).catch(e=>console.warn(e));
+
+    applyBrandAndDevSettingsToDOM();
+    checkAdminEditsCounter();
+    window.showToastMsg("تم حفظ وتثبيت الهوية أونلاين!");
+};
+
+function applyBrandAndDevSettingsToDOM() {
+    const s = brandAndDevSettings;
+    document.getElementById('mainHeaderLogoImg').src = s.storeLogo || "./logo.png";
+    document.getElementById('mainHeaderBrandTitle').innerText = s.brandTitle || "كافيه كورنر";
+    document.getElementById('mainHeaderBrandSub').innerText = s.brandSub || "";
+}
+
+// المزامنة السحابية الحية
 function initCloudFirestoreSafe() {
     try {
         if (window.firebase) {
             if (!firebase.apps.length) firebase.initializeApp(FIREBASE_CONFIG);
             cloudDb = firebase.firestore();
-
-            const stEl = document.getElementById('stCloudStatus');
-            if (stEl) stEl.innerText = "متصل ومتزامن لحظياً";
 
             cloudDb.collection('orders').orderBy('createdAt', 'desc').limit(50)
                 .onSnapshot(snapshot => {
@@ -3661,42 +3440,23 @@ function initCloudFirestoreSafe() {
                     }
                 }, e=>console.warn(e));
 
-            cloudDb.collection('users').onSnapshot(snapshot => {
-                snapshot.forEach(docSnap => {
-                    allRegisteredCustomers[docSnap.id] = docSnap.data();
-                });
-                safeSet('cc_users_directory', allRegisteredCustomers);
-                if (currentAuthenticatedUser && allRegisteredCustomers[currentAuthenticatedUser.phone]) {
-                    currentAuthenticatedUser = allRegisteredCustomers[currentAuthenticatedUser.phone];
-                    safeSet('cc_active_client_user', currentAuthenticatedUser);
-                    renderUserProfileDetails();
-                }
-            }, e=>console.warn(e));
-
-            cloudDb.collection('catalog').doc('products_list').onSnapshot(docSnap => {
-                if (docSnap.exists && Array.isArray(docSnap.data().items)) {
-                    productsCatalog = docSnap.data().items;
-                    safeSet('cc_catalog', productsCatalog);
-                    renderCategoryChips();
-                    renderMenuProducts();
-                    if (activeSessionUser) renderAdminProductsManager();
-                }
-            }, e=>console.warn(e));
-
-            cloudDb.collection('settings').doc('banned_users').onSnapshot(docSnap => {
-                if (docSnap.exists && Array.isArray(docSnap.data().list)) {
-                    bannedCustomersList = docSnap.data().list;
-                    safeSet('cc_banned_users', bannedCustomersList);
-                    checkUserBannedStateAndLockout();
-                }
-            }, e=>console.warn(e));
+            cloudDb.collection('feedbacks').orderBy('createdAt', 'desc')
+                .onSnapshot(snapshot => {
+                    const cloudFbs = [];
+                    snapshot.forEach(docSnap => cloudFbs.push(docSnap.data()));
+                    if (cloudFbs.length > 0) {
+                        customerFeedbacks = cloudFbs;
+                        safeSet('cc_feedbacks', customerFeedbacks);
+                        if (activeSessionUser) renderAdminFeedbacksManager();
+                        renderCustomerFeedbacks();
+                    }
+                }, e=>console.warn(e));
         }
     } catch(err) {
         console.warn("Firebase init:", err);
     }
 }
 
-// لوحة الإدارة الرئيسية
 let secretClickCount = 0;
 let secretTimer = null;
 window.handleSecretAdminTrigger = function() {
@@ -3739,27 +3499,21 @@ window.openAdminSubSection = function(sectionKey) {
     if (sectionKey === 'feedbackAdmin') renderAdminFeedbacksManager();
     if (sectionKey === 'customers') renderAdminCustomersList();
     if (sectionKey === 'paymentsAdmin') renderAdminPaymentMethodsList();
-    if (sectionKey === 'brandAndDev') populateBrandAndDevSettingsInputs();
+    if (sectionKey === 'redeemManager') renderAdminRedeemManager();
+    if (sectionKey === 'coupons') renderAdminCouponsManager();
 };
 
 window.backToAdminMainHub = function() {
     document.querySelectorAll('.admin-sub-view').forEach(v => v.classList.remove('active'));
     document.getElementById('adminMainHubView').style.display = 'block';
     const badgeFb = document.getElementById('badgeHubFeedbackCount');
-    if (badgeFb) badgeFb.innerText = customerFeedbacks.filter(f => !f.reply).length;
+    if (badgeFb) {
+        const now = Date.now();
+        const SEVENTY_TWO_HOURS = 72 * 60 * 60 * 1000;
+        const activeFb = customerFeedbacks.filter(f => !(f.repliedAt && (now - f.repliedAt > SEVENTY_TWO_HOURS)));
+        badgeFb.innerText = activeFb.filter(f => !f.reply).length;
+    }
 };
-
-function populateBrandAndDevSettingsInputs() {
-    const s = brandAndDevSettings;
-    document.getElementById('admLogoPreview').src = s.storeLogo || "./logo.png";
-    document.getElementById('admBrandTitleInput').value = s.brandTitle || "كافيه كورنر";
-    document.getElementById('admBrandSubInput').value = s.brandSub || "";
-    document.getElementById('admDevAvatarPreview').src = s.devAvatar || "./logo.png";
-    document.getElementById('admDevNameInput').value = s.devName || "";
-    document.getElementById('admDevBioInput').value = s.devBio || "";
-    document.getElementById('admDevWaInput').value = s.devWa || "";
-    document.getElementById('admDevIgInput').value = s.devIg || "";
-}
 
 window.navigateRouter = function(screenId) {
     document.getElementById('sidebarMask')?.classList.remove('active');
@@ -3788,13 +3542,14 @@ window.navigateRouter = function(screenId) {
         renderUserProfileDetails();
     } else if (screenId === 'screen-order-tracking') {
         renderOrderTrackingView();
-    } else if (screenId === 'screen-invoices') {
-        renderInvoicesArchiveList();
+    } else if (screenId === 'screen-rewards') {
+        renderRedeemStoreView();
     } else {
         refreshCartDockStatus();
     }
 
     checkUserBannedStateAndLockout();
+    checkStoreOpenHours();
 };
 
 window.openSidebarDrawer = function() {
@@ -3827,37 +3582,6 @@ window.checkAuthAndProceedToCart = function() {
     }
 };
 
-function compressImageNative(file, maxWidth, quality, callback) {
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onload = event => {
-        const img = new Image();
-        img.src = event.target.result;
-        img.onload = () => {
-            let width = img.width;
-            let height = img.height;
-            if (width > maxWidth) {
-                height = Math.round((height * maxWidth) / width);
-                width = maxWidth;
-            }
-            const canvas = document.createElement('canvas');
-            canvas.width = width;
-            canvas.height = height;
-            const ctx = canvas.getContext('2d');
-            ctx.drawImage(img, 0, 0, width, height);
-            callback(canvas.toDataURL('image/jpeg', quality));
-        };
-    };
-}
-
-window.handleProductImageUpload = function(event) {
-    const file = event.target.files[0];
-    if (!file) return;
-    compressImageNative(file, 400, 0.85, base64Url => {
-        document.getElementById('editProdImagePreview').src = base64Url;
-    });
-};
-
 window.showToastMsg = function(msg) {
     const toast = document.getElementById('systemToast');
     if (!toast) return;
@@ -3867,16 +3591,23 @@ window.showToastMsg = function(msg) {
     window._toastTimer = setTimeout(() => toast.classList.remove('active'), 2500);
 };
 
-// تشغيل التايمر الحي للطلبات
+// تنظيف الطلبات المكتملة للأدمن بعد يوم كامل (24 ساعة)
+function cleanupAdminOrdersDaily() {
+    const now = Date.now();
+    const TWENTY_FOUR_HOURS = 24 * 60 * 60 * 1000;
+    activeOrdersList = activeOrdersList.filter(o => {
+        if ((o.status === 'completed' || o.status === 'cancelled') && o.finishedAt) {
+            if (now - o.finishedAt > TWENTY_FOUR_HOURS) return false;
+        }
+        return true;
+    });
+    safeSet('cc_orders', activeOrdersList);
+}
+
+// فحص دوري كل ثانية
 setInterval(() => {
-    const orderScreen = document.getElementById('screen-order-tracking');
-    if (orderScreen && orderScreen.classList.contains('active')) {
-        renderOrderTrackingView();
-    }
-    const admOrders = document.getElementById('subView-orders');
-    if (admOrders && admOrders.classList.contains('active')) {
-        renderAdminLiveOrdersManager();
-    }
+    checkStoreOpenHours();
+    cleanupAdminOrdersDaily();
 }, 1000);
 
 function bootstrapApp() {
@@ -3886,10 +3617,9 @@ function bootstrapApp() {
     renderCategoryChips();
     renderMenuProducts();
     updateHomeNoticeBanner();
-    checkDailySmartGreeting();
     updateNotificationBadge();
     checkUserBannedStateAndLockout();
-    cleanupCloudOrdersDaily();
+    checkStoreOpenHours();
     setTimeout(initCloudFirestoreSafe, 400);
 }
 
