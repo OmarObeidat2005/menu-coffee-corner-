@@ -445,93 +445,107 @@
             text-align: center;
         }
 
-        /* بطاقة العضوية التنفيذية في ملفي الشخصي */
-        .membership-passport-card {
-            background: linear-gradient(135deg, #1b1612 0%, #2a221b 100%);
-            border: 1px solid rgba(197, 155, 99, 0.4);
+        /* واجهة الحساب الشخصي العصرية الفاخرة */
+        .modern-profile-hero {
+            background: var(--bg-surface);
+            border: 1px solid var(--border-subtle);
             border-radius: var(--radius-lg);
-            padding: 18px;
-            color: #fbf8f5;
+            padding: 20px 16px;
+            text-align: center;
             position: relative;
-            overflow: hidden;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
             margin-bottom: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.03);
         }
-        .passport-top-row {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 16px;
-            border-bottom: 1px solid rgba(197, 155, 99, 0.2);
-            padding-bottom: 12px;
-        }
-        .passport-brand {
-            font-size: 11px;
-            font-weight: 800;
-            letter-spacing: 1px;
-            color: var(--brand-theme);
-        }
-        .passport-tier-pill {
-            background: rgba(197, 155, 99, 0.15);
-            border: 1px solid var(--brand-theme);
-            color: var(--brand-theme);
-            font-size: 10px;
-            font-weight: 800;
-            padding: 3px 9px;
-            border-radius: var(--radius-full);
-        }
-        .passport-body {
-            display: flex;
-            align-items: center;
-            gap: 14px;
-            margin-bottom: 16px;
-        }
-        .passport-avatar-wrap {
+        .profile-avatar-center {
             position: relative;
-            width: 65px;
-            height: 65px;
-            flex-shrink: 0;
+            width: 86px;
+            height: 86px;
+            margin: 0 auto 12px;
         }
-        .passport-avatar-img {
+        .profile-avatar-center img {
             width: 100%;
             height: 100%;
             border-radius: 50%;
             object-fit: cover;
-            border: 2px solid var(--brand-theme);
+            border: 2.5px solid var(--brand-theme);
+            background: var(--bg-elevated);
         }
-        .passport-user-info {
-            flex: 1;
-            min-width: 0;
-        }
-        .passport-user-name {
-            font-size: 16px;
-            font-weight: 900;
+        .profile-avatar-badge-btn {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            background: var(--brand-theme);
             color: #ffffff;
-            margin-bottom: 3px;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            border: 2px solid var(--bg-surface);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
         }
-        .passport-user-bio {
-            font-size: 11px;
-            color: #bfaea0;
-            line-height: 1.4;
+        .profile-gender-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 10.5px;
+            font-weight: 800;
+            padding: 2px 10px;
+            border-radius: var(--radius-full);
+            background: var(--bg-elevated);
+            color: var(--text-secondary);
+            border: 1px solid var(--border-subtle);
+            margin-top: 4px;
         }
-        .passport-stats-grid {
+        .gender-selector-group {
             display: grid;
-            grid-template-columns: repeat(2, 1fr);
+            grid-template-columns: 1fr 1fr;
             gap: 8px;
-            background: rgba(0,0,0,0.25);
-            border-radius: var(--radius-sm);
+        }
+        .gender-opt-btn {
             padding: 10px;
+            border-radius: var(--radius-sm);
+            background: var(--bg-surface);
+            border: 1px solid var(--border-subtle);
+            color: var(--text-secondary);
+            font-size: 12px;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            cursor: pointer;
+            transition: 0.15s ease;
+        }
+        .gender-opt-btn.active {
+            border-color: var(--brand-theme);
+            background: var(--brand-glow);
+            color: var(--brand-theme);
+            font-weight: 900;
+        }
+        .profile-stats-duo {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            margin-top: 14px;
+            padding-top: 14px;
+            border-top: 1px dashed var(--border-subtle);
+        }
+        .profile-stat-unit {
             text-align: center;
         }
-        .passport-stat-box span:first-child {
+        .profile-stat-unit span:first-child {
             display: block;
-            font-size: 16px;
+            font-size: 18px;
             font-weight: 900;
             color: var(--brand-theme);
         }
-        .passport-stat-box span:last-child {
-            font-size: 10px;
-            color: #bfaea0;
+        .profile-stat-unit span:last-child {
+            font-size: 10.5px;
+            color: var(--text-secondary);
+            font-weight: 700;
         }
 
         /* شبكة لوحة الإدارة */
@@ -860,6 +874,20 @@
                         <input type="text" class="ios-input-field" id="authNameInput" placeholder="أدخل اسمك الكريم">
                     </div>
 
+                    <div id="regGenderFieldWrap">
+                        <span style="font-size:11.5px; font-weight:700;">الجنس:</span>
+                        <div class="gender-selector-group" style="margin-top:4px;">
+                            <button type="button" class="gender-opt-btn active" id="btnAuthGenderMale" onclick="selectAuthGender('ذكر')">
+                                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="10" cy="14" r="5"></circle><line x1="19" y1="5" x2="13.6" y2="10.4"></line><line x1="19" y1="5" x2="14" y2="5"></line><line x1="19" y1="5" x2="19" y2="10"></line></svg>
+                                <span>ذكر</span>
+                            </button>
+                            <button type="button" class="gender-opt-btn" id="btnAuthGenderFemale" onclick="selectAuthGender('أنثى')">
+                                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="9" r="5"></circle><line x1="12" y1="14" x2="12" y2="21"></line><line x1="9" y1="18" x2="15" y2="18"></line></svg>
+                                <span>أنثى</span>
+                            </button>
+                        </div>
+                    </div>
+
                     <div>
                         <span style="font-size:11.5px; font-weight:700;">رقم الهاتف الأردني (يبدأ بـ 07):</span>
                         <input type="tel" class="ios-input-field num-font" id="authPhoneInput" placeholder="07xxxxxxxx" maxlength="10" required>
@@ -914,62 +942,123 @@
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
             </button>
             <div style="font-weight:900; font-size:15px; color:var(--brand-theme);">ملفي الشخصي</div>
-            <button class="btn-brand-outline" style="padding:4px 8px; font-size:10.5px; color:var(--status-danger); border-color:var(--status-danger);" onclick="logoutCustomerSession()">خروج</button>
+            <button class="btn-brand-outline" style="padding:5px 10px; font-size:11px; color:var(--status-danger); border-color:var(--status-danger); display:flex; align-items:center; gap:4px;" onclick="logoutCustomerSession()">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+                <span>خروج</span>
+            </button>
         </header>
 
         <div class="scrollable-content">
-            <div class="membership-passport-card">
-                <div class="passport-top-row">
-                    <span class="passport-brand">COFFEE CORNER PRIVILEGE</span>
-                    <span class="passport-tier-pill">عضوية برونزية مميزة</span>
+            <!-- كرت الهوية الشخصية الحديث -->
+            <div class="modern-profile-hero">
+                <div class="profile-avatar-center">
+                    <img src="" id="profUserAvatarImg" onerror="this.src='https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200&q=80'" alt="الصورة الشخصية">
+                    <input type="file" id="uploadUserAvatarFile" accept="image/*" style="display:none;" onchange="handleUserAvatarUpload(event)">
+                    <button type="button" class="profile-avatar-badge-btn" onclick="document.getElementById('uploadUserAvatarFile').click()" title="تغيير الصورة الشخصية">
+                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path><circle cx="12" cy="13" r="4"></circle></svg>
+                    </button>
                 </div>
-                <div class="passport-body">
-                    <div class="passport-avatar-wrap">
-                        <img src="" id="profUserAvatarImg" class="passport-avatar-img" onerror="this.src='https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200&q=80'">
-                        <input type="file" id="uploadUserAvatarFile" accept="image/*" style="display:none;" onchange="handleUserAvatarUpload(event)">
-                        <button type="button" style="position:absolute; bottom:0; left:0; background:var(--brand-theme); color:#fff; border:none; border-radius:50%; width:24px; height:24px; cursor:pointer; font-size:11px; display:flex; align-items:center; justify-content:center;" onclick="document.getElementById('uploadUserAvatarFile').click()">
-                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path><circle cx="12" cy="13" r="4"></circle></svg>
-                        </button>
-                    </div>
-                    <div class="passport-user-info">
-                        <div class="passport-user-name" id="profDisplayName">العميل العزيز</div>
-                        <div class="num-font" style="font-size:11px; color:#bfaea0; margin-bottom:2px;" id="profDisplayPhone">07xxxxxxxx</div>
-                        <div class="passport-user-bio" id="profDisplayBio">محب للقهوة والمذاق الرفيع في كافيه كورنر.</div>
-                    </div>
+
+                <div style="font-size:17px; font-weight:900; color:var(--text-primary);" id="profDisplayName">العميل العزيز</div>
+                <div class="num-font" style="font-size:12px; color:var(--text-dim); margin-top:2px;" id="profDisplayPhone">07xxxxxxxx</div>
+                
+                <div style="display:flex; justify-content:center; align-items:center; gap:6px; margin-top:6px;">
+                    <span class="profile-gender-pill" id="profDisplayGender">
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="10"></circle></svg>
+                        <span id="profDisplayGenderText">ذكر</span>
+                    </span>
+                    <span class="header-hours-badge" id="profDisplayTierBadge">عضوية برونزية</span>
                 </div>
-                <div class="passport-stats-grid">
-                    <div class="passport-stat-box">
-                        <span class="num-font" id="profStatOrders">0</span>
-                        <span>الطلبات</span>
-                    </div>
-                    <div class="passport-stat-box">
+
+                <p style="font-size:11.5px; color:var(--text-secondary); line-height:1.5; margin:10px auto 0; max-width:320px;" id="profDisplayBio">
+                    محب للقهوة والمذاق الرفيع في كافيه كورنر.
+                </p>
+
+                <div class="profile-stats-duo">
+                    <div class="profile-stat-unit">
                         <span class="num-font" id="profStatPoints">0</span>
-                        <span>نقاط الولاء</span>
+                        <span>رصيد نقاط الولاء</span>
+                    </div>
+                    <div class="profile-stat-unit" style="border-right:1px solid var(--border-subtle);">
+                        <span class="num-font" id="profStatOrders">0</span>
+                        <span>إجمالي الطلبات المكتملة</span>
                     </div>
                 </div>
             </div>
 
+            <!-- بطاقة تعديل البيانات الشخصية -->
             <div class="clean-card">
-                <div class="clean-title">تعديل بيانات الحساب والأمان</div>
-                <div style="display:flex; flex-direction:column; gap:8px;">
+                <div class="clean-title">
+                    <span>تعديل البيانات الأساسية</span>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+                </div>
+                
+                <div style="display:flex; flex-direction:column; gap:10px;">
                     <div>
                         <span style="font-size:11.5px; font-weight:700;">الاسم الكامل:</span>
-                        <input type="text" class="ios-input-field" id="editProfNameInput">
+                        <input type="text" class="ios-input-field" id="editProfNameInput" placeholder="أدخل اسمك الكريم">
                     </div>
+
                     <div>
-                        <span style="font-size:11.5px; font-weight:700;">الوصف التعريفي:</span>
-                        <input type="text" class="ios-input-field" id="editProfBioInput" placeholder="محب للقهوة...">
+                        <span style="font-size:11.5px; font-weight:700;">تحديد الجنس:</span>
+                        <div class="gender-selector-group" style="margin-top:4px;">
+                            <button type="button" class="gender-opt-btn active" id="btnEditGenderMale" onclick="selectEditProfileGender('ذكر')">
+                                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="10" cy="14" r="5"></circle><line x1="19" y1="5" x2="13.6" y2="10.4"></line><line x1="19" y1="5" x2="14" y2="5"></line><line x1="19" y1="5" x2="19" y2="10"></line></svg>
+                                <span>ذكر</span>
+                            </button>
+                            <button type="button" class="gender-opt-btn" id="btnEditGenderFemale" onclick="selectEditProfileGender('أنثى')">
+                                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="9" r="5"></circle><line x1="12" y1="14" x2="12" y2="21"></line><line x1="9" y1="18" x2="15" y2="18"></line></svg>
+                                <span>أنثى</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div>
+                        <span style="font-size:11.5px; font-weight:700;">رقم الهاتف الأردني (معرّف الحساب):</span>
+                        <input type="tel" class="ios-input-field num-font" id="editProfPhoneInput" placeholder="07xxxxxxxx" maxlength="10">
+                        <span style="font-size:9.5px; color:var(--text-dim); display:block; margin-top:2px;">* عند تغيير رقم الهاتف، سيتم تحديث معرّف تسجيل دخولك وسجلات الإدارة تلقائياً.</span>
+                    </div>
+
+                    <div>
+                        <span style="font-size:11.5px; font-weight:700;">الوصف التعريفي (Bio):</span>
+                        <textarea class="ios-textarea-field" id="editProfBioInput" placeholder="اكتب نبذة أو تفضيلاتك في القهوة..." style="height:60px;"></textarea>
+                    </div>
+
+                    <button class="btn-brand-solid" onclick="saveBasicProfileModifications()">حفظ وتحديث البيانات الشخصية</button>
+                </div>
+            </div>
+
+            <!-- بطاقة أمان الحساب وتغيير كلمة المرور -->
+            <div class="clean-card">
+                <div class="clean-title">
+                    <span>أمان الحساب وتغيير كلمة المرور</span>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+                </div>
+
+                <div style="display:flex; flex-direction:column; gap:8px;">
+                    <div>
+                        <span style="font-size:11.5px; font-weight:700;">كلمة المرور الحالية:</span>
+                        <input type="password" class="ios-input-field num-font" id="editProfCurrentPassInput" placeholder="••••••••">
                     </div>
                     <div>
                         <span style="font-size:11.5px; font-weight:700;">كلمة المرور الجديدة:</span>
-                        <input type="password" class="ios-input-field num-font" id="editProfPassInput" placeholder="اتركه فارغاً إن لم ترغب بالتغيير">
+                        <input type="password" class="ios-input-field num-font" id="editProfNewPassInput" placeholder="••••••••">
                     </div>
-                    <button class="btn-brand-solid" style="margin-top:6px;" onclick="saveAccountModifications()">حفظ التعديلات فوراً</button>
+                    <div>
+                        <span style="font-size:11.5px; font-weight:700;">تأكيد كلمة المرور الجديدة:</span>
+                        <input type="password" class="ios-input-field num-font" id="editProfConfirmPassInput" placeholder="••••••••">
+                    </div>
+
+                    <button class="btn-brand-solid" style="margin-top:4px;" onclick="changeCustomerPasswordAction()">تحديث كلمة المرور فوراً</button>
                 </div>
             </div>
 
-            <div style="margin-top:16px;">
-                <button class="btn-brand-outline" style="width:100%; color:var(--status-danger); border-color:var(--status-danger); font-size:12px; padding:10px;" onclick="logoutCustomerSession()">تسجيل الخروج من الحساب</button>
+            <!-- زر تسجيل الخروج الصريح -->
+            <div style="margin-top:14px; margin-bottom:20px;">
+                <button class="btn-brand-outline" style="width:100%; color:var(--status-danger); border-color:var(--status-danger); font-size:12.5px; padding:12px; font-weight:900; display:flex; align-items:center; justify-content:center; gap:6px;" onclick="logoutCustomerSession()">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+                    <span>تسجيل الخروج من الحساب</span>
+                </button>
             </div>
         </div>
     </div>
@@ -1456,11 +1545,42 @@
             <div id="subView-customers" class="admin-sub-view">
                 <button class="btn-brand-outline" style="margin-bottom:10px;" onclick="backToAdminMainHub()">← العودة للوحة الرئيسية</button>
                 <div class="clean-card">
-                    <div class="clean-title">دليل الزبائن وحظر/فك الحظر برقم الهاتف</div>
-                    <div style="display:flex; gap:6px; margin-bottom:12px;">
-                        <input type="tel" class="ios-input-field num-font" id="adminCustomerSearchPhone" placeholder="07xxxxxxxx">
-                        <button class="btn-brand-solid" style="width:auto; padding:0 12px; font-size:11px;" onclick="searchAndOpenCustomerDossier()">بحث</button>
+                    <div class="clean-title">
+                        <span>مركز قيادة والتحكم بالزبائن</span>
+                        <button class="btn-brand-outline" style="font-size:10px; padding:3px 8px;" onclick="copyCustomerNumbersToClipboard()">نسخ أرقام الزبائن</button>
                     </div>
+
+                    <!-- شريط إحصائيات الزبائن الحي -->
+                    <div style="display:grid; grid-template-columns:repeat(4, 1fr); gap:6px; margin-bottom:12px;">
+                        <div style="background:var(--bg-elevated); padding:8px 4px; border-radius:var(--radius-sm); text-align:center;">
+                            <div style="font-size:9.5px; color:var(--text-secondary);">المسجلين</div>
+                            <div class="num-font" style="font-size:15px; font-weight:900; color:var(--brand-theme);" id="custStatTotalCount">0</div>
+                        </div>
+                        <div style="background:var(--bg-elevated); padding:8px 4px; border-radius:var(--radius-sm); text-align:center;">
+                            <div style="font-size:9.5px; color:var(--text-secondary);">المحظورين</div>
+                            <div class="num-font" style="font-size:15px; font-weight:900; color:var(--status-danger);" id="custStatBannedCount">0</div>
+                        </div>
+                        <div style="background:var(--bg-elevated); padding:8px 4px; border-radius:var(--radius-sm); text-align:center;">
+                            <div style="font-size:9.5px; color:var(--text-secondary);">إجمالي النقاط</div>
+                            <div class="num-font" style="font-size:15px; font-weight:900; color:var(--status-warning);" id="custStatTotalPoints">0</div>
+                        </div>
+                        <div style="background:var(--bg-elevated); padding:8px 4px; border-radius:var(--radius-sm); text-align:center;">
+                            <div style="font-size:9.5px; color:var(--text-secondary);">VIP الماسيين</div>
+                            <div class="num-font" style="font-size:15px; font-weight:900; color:var(--status-info);" id="custStatVipCount">0</div>
+                        </div>
+                    </div>
+
+                    <!-- شريط البحث والفلترة الذكي -->
+                    <div style="display:flex; flex-direction:column; gap:8px; margin-bottom:12px;">
+                        <input type="text" class="ios-input-field" id="adminCustomerSearchPhone" placeholder="ابحث بالاسم أو رقم الهاتف..." oninput="renderAdminCustomersList()">
+                        <div style="display:flex; gap:4px; overflow-x:auto; padding-bottom:2px;">
+                            <button class="btn-brand-outline active" style="font-size:10.5px; padding:4px 9px;" id="filterCust_all" onclick="setCustomerFilterMode('all')">الكل</button>
+                            <button class="btn-brand-outline" style="font-size:10.5px; padding:4px 9px;" id="filterCust_active" onclick="setCustomerFilterMode('active')">النشطون</button>
+                            <button class="btn-brand-outline" style="font-size:10.5px; padding:4px 9px;" id="filterCust_banned" onclick="setCustomerFilterMode('banned')">المحظورون</button>
+                            <button class="btn-brand-outline" style="font-size:10.5px; padding:4px 9px;" id="filterCust_vip" onclick="setCustomerFilterMode('vip')">VIP (100+ نقطة)</button>
+                        </div>
+                    </div>
+
                     <div id="adminCustomersListContainer"></div>
                 </div>
             </div>
@@ -1527,45 +1647,102 @@
         </div>
     </div>
 
-    <!-- نافذة تفاصيل ملف العميل للأدمن (Dossier) -->
+    <!-- نافذة تفاصيل ملف العميل للأدمن المتطورة (Full Dossier Command) -->
     <div id="modalAdminCustomerDossier" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.7); z-index:4500; align-items:center; justify-content:center; padding:14px;">
-        <div class="clean-card" style="width:100%; max-width:400px; max-height:90vh; overflow-y:auto;">
+        <div class="clean-card" style="width:100%; max-width:440px; max-height:92vh; overflow-y:auto;">
             <div class="clean-title">
-                <span id="dosCustomerNameTitle">ملف العميل</span>
-                <button style="background:none; border:none; font-size:16px; cursor:pointer;" onclick="closeCustomerDossierModal()">✕</button>
+                <span id="dosCustomerNameTitle">ملف العميل المتقدم</span>
+                <button style="background:none; border:none; font-size:18px; cursor:pointer;" onclick="closeCustomerDossierModal()">✕</button>
             </div>
             
-            <div style="display:flex; align-items:center; gap:12px; margin-bottom:12px;">
-                <div style="width:50px; height:50px; border-radius:50%; background:var(--bg-elevated); border:2px solid var(--brand-theme); display:flex; align-items:center; justify-content:center; color:var(--brand-theme);">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
-                </div>
-                <div>
-                    <div style="font-weight:900; font-size:14px;" id="dosFullName">الاسم</div>
-                    <div style="font-size:11px; color:var(--text-secondary);" class="num-font" id="dosPhone">الهاتف</div>
+            <div style="display:flex; align-items:center; gap:12px; margin-bottom:12px; border-bottom:1px solid var(--border-subtle); padding-bottom:10px;">
+                <img src="" id="dosAvatarImg" style="width:56px; height:56px; border-radius:50%; object-fit:cover; border:2px solid var(--brand-theme); flex-shrink:0;" onerror="this.src='https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200&q=80'">
+                <div style="flex:1; min-width:0;">
+                    <div style="font-weight:900; font-size:15px; display:flex; align-items:center; gap:6px;">
+                        <span id="dosFullName">الاسم</span>
+                        <span class="profile-gender-pill" id="dosGenderBadge" style="font-size:9.5px; padding:1px 6px;">ذكر</span>
+                    </div>
+                    <div style="font-size:11px; color:var(--text-secondary); display:flex; align-items:center; gap:6px; margin-top:2px;" class="num-font">
+                        <span id="dosPhone">07xxxxxxxx</span>
+                        <button class="btn-brand-outline" style="padding:1px 6px; font-size:9.5px;" onclick="copySelectedUserPhone()">نسخ</button>
+                        <a id="dosWaDirectLink" target="_blank" class="btn-brand-outline" style="padding:1px 6px; font-size:9.5px; color:var(--status-success); border-color:var(--status-success);">واتساب</a>
+                    </div>
+                    <div style="margin-top:4px;">
+                        <span class="header-hours-badge" id="dosTierBadge">عضوية برونزية</span>
+                    </div>
                 </div>
             </div>
 
-            <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-bottom:12px;">
+            <!-- إحصائيات العميل -->
+            <div style="display:grid; grid-template-columns:repeat(3, 1fr); gap:6px; margin-bottom:10px;">
                 <div style="background:var(--bg-elevated); padding:8px; border-radius:var(--radius-sm); text-align:center;">
-                    <div style="font-size:10px; color:var(--text-secondary);">رصيد النقاط</div>
+                    <div style="font-size:9.5px; color:var(--text-secondary);">رصيد النقاط</div>
                     <div class="num-font" style="font-size:16px; font-weight:900; color:var(--brand-theme);" id="dosPointsVal">0</div>
                 </div>
                 <div style="background:var(--bg-elevated); padding:8px; border-radius:var(--radius-sm); text-align:center;">
-                    <div style="font-size:10px; color:var(--text-secondary);">إجمالي الطلبات</div>
+                    <div style="font-size:9.5px; color:var(--text-secondary);">إجمالي الطلبات</div>
                     <div class="num-font" style="font-size:16px; font-weight:900;" id="dosOrdersVal">0</div>
                 </div>
-            </div>
-
-            <div class="clean-card" style="padding:10px; margin-bottom:10px;">
-                <div style="font-size:11.5px; font-weight:800; margin-bottom:6px;">تعديل حر للنقاط (إضافة أو خصم):</div>
-                <div style="display:flex; gap:6px;">
-                    <input type="number" class="ios-input-field num-font" id="inputCustomPointsAmount" placeholder="عدد النقاط">
-                    <button class="btn-brand-solid" style="width:auto; padding:0 10px; font-size:11px;" onclick="applyCustomPointsDelta(true)">+ إضافة</button>
-                    <button class="btn-brand-outline" style="width:auto; padding:0 10px; font-size:11px; color:var(--status-danger); border-color:var(--status-danger);" onclick="applyCustomPointsDelta(false)">- خصم</button>
+                <div style="background:var(--bg-elevated); padding:8px; border-radius:var(--radius-sm); text-align:center;">
+                    <div style="font-size:9.5px; color:var(--text-secondary);">حالة الحساب</div>
+                    <div style="font-size:11px; font-weight:900;" id="dosStatusText">نشط ✓</div>
                 </div>
             </div>
 
-            <button class="btn-brand-outline" style="width:100%; color:var(--status-danger); border-color:var(--status-danger);" id="btnToggleCustomerBan" onclick="toggleCustomerBanStatus()">حظر العميل من الطلب</button>
+            <!-- تعديل النقاط مع السبب والتسجيل -->
+            <div class="clean-card" style="padding:10px; margin-bottom:8px; background:var(--bg-surface);">
+                <div style="font-size:11.5px; font-weight:800; margin-bottom:6px; color:var(--brand-theme);">التحكم السريع بالنقاط:</div>
+                <div style="display:flex; gap:6px; margin-bottom:6px;">
+                    <input type="number" class="ios-input-field num-font" id="inputCustomPointsAmount" placeholder="عدد النقاط">
+                    <button class="btn-brand-solid" style="width:auto; padding:0 12px; font-size:11px;" onclick="applyCustomPointsDelta(true)">+ إضافة</button>
+                    <button class="btn-brand-outline" style="width:auto; padding:0 12px; font-size:11px; color:var(--status-danger); border-color:var(--status-danger);" onclick="applyCustomPointsDelta(false)">- خصم</button>
+                </div>
+                <input type="text" class="ios-input-field" id="inputCustomPointsReason" placeholder="سبب الإضافة/الخصم (اختياري)..." style="font-size:11px; padding:6px 10px;">
+            </div>
+
+            <!-- تعديل الرتبة الإدارية -->
+            <div class="clean-card" style="padding:10px; margin-bottom:8px; background:var(--bg-surface);">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+                    <span style="font-size:11.5px; font-weight:800; color:var(--brand-theme);">مستوى العضوية:</span>
+                    <button class="btn-brand-solid" style="width:auto; padding:2px 10px; font-size:10.5px;" onclick="updateCustomerTierLevel()">تثبيت الرتبة</button>
+                </div>
+                <select class="ios-input-field" id="selectCustomerTierLevel">
+                    <option value="عضو جديد">عضو جديد</option>
+                    <option value="عضوية برونزية مميزة">عضوية برونزية مميزة</option>
+                    <option value="عضوية فضية راقية">عضوية فضية راقية</option>
+                    <option value="عضوية ذهبية ملكية">عضوية ذهبية ملكية</option>
+                    <option value="عضوية VIP ماسية">عضوية VIP ماسية</option>
+                </select>
+            </div>
+
+            <!-- إرسال إشعار فوري مباشر للعميل -->
+            <div class="clean-card" style="padding:10px; margin-bottom:8px; background:var(--bg-surface);">
+                <div style="font-size:11.5px; font-weight:800; margin-bottom:6px; color:var(--brand-theme);">إرسال إشعار فوري لهذا العميل:</div>
+                <input type="text" class="ios-input-field" id="dossierDirectNotifTitle" placeholder="عنوان الإشعار..." style="margin-bottom:6px; font-size:11.5px;">
+                <textarea class="ios-textarea-field" id="dossierDirectNotifBody" placeholder="نص الرسالة المباشرة..." style="height:55px; margin-bottom:6px;"></textarea>
+                <button class="btn-brand-solid" style="padding:6px; font-size:11px;" onclick="sendDirectNotificationFromDossier()">إرسال الإشعار لحسابه فوراً</button>
+            </div>
+
+            <!-- ملاحظات الإدارة السرية حول العميل -->
+            <div class="clean-card" style="padding:10px; margin-bottom:8px; background:var(--bg-surface);">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+                    <span style="font-size:11.5px; font-weight:800; color:var(--text-secondary);">ملاحظات الإدارة السرية:</span>
+                    <button class="btn-brand-outline" style="font-size:10px; padding:2px 8px;" onclick="saveCustomerAdminNotes()">حفظ الملاحظة</button>
+                </div>
+                <textarea class="ios-textarea-field" id="dossierAdminNotes" placeholder="اكتب ملاحظات خاصة حول تفضيلات العميل، سلوك الطلب، أو تنبيهات للمحل..." style="height:55px;"></textarea>
+            </div>
+
+            <!-- آخر طلبات العميل -->
+            <div class="clean-card" style="padding:10px; margin-bottom:10px; background:var(--bg-surface);">
+                <div style="font-size:11.5px; font-weight:800; margin-bottom:6px; color:var(--text-secondary);">سجل طلبات العميل الأخيرة:</div>
+                <div id="dossierOrdersHistoryContainer" style="max-height:130px; overflow-y:auto; font-size:11px;"></div>
+            </div>
+
+            <!-- إجراءات الحظر وإلغاء الحظر والطعون -->
+            <div style="display:flex; gap:6px;">
+                <button class="btn-brand-outline" style="flex:1; color:var(--status-danger); border-color:var(--status-danger);" id="btnToggleCustomerBan" onclick="toggleCustomerBanStatus()">حظر العميل من الطلب</button>
+                <button class="btn-brand-outline" style="flex:1;" onclick="closeCustomerDossierModal()">إغلاق الملف</button>
+            </div>
         </div>
     </div>
 
@@ -1891,9 +2068,12 @@ let adminEditsCounter = safeGet('cc_admin_edits_count', 0);
 let currentAppVersion = safeGet('cc_app_version', '7.5.0');
 
 let authMode = 'register';
+let selectedAuthGender = 'ذكر';
+let selectedEditProfileGender = 'ذكر';
 let selectedDossierUserPhone = null;
 let activeViewingNotifId = null;
 let bypassStoreLock = false;
+let customerListFilterMode = 'all';
 
 window.appState = {
     cartBranch: 0,
@@ -2004,12 +2184,20 @@ window.submitBanAppealAction = function() {
     window.showToastMsg("تم إرسال الطعن للإدارة بنجاح");
 };
 
+// تحديد الجنس في شاشة التسجيل
+window.selectAuthGender = function(gender) {
+    selectedAuthGender = gender;
+    document.getElementById('btnAuthGenderMale').classList.toggle('active', gender === 'ذكر');
+    document.getElementById('btnAuthGenderFemale').classList.toggle('active', gender === 'أنثى');
+};
+
 // المصادقة والتسجيل
 window.switchAuthMode = function(mode) {
     authMode = mode;
     document.getElementById('tabAuthRegister').classList.toggle('active', mode === 'register');
     document.getElementById('tabAuthLogin').classList.toggle('active', mode === 'login');
     document.getElementById('regNameFieldWrap').style.display = (mode === 'register') ? 'block' : 'none';
+    document.getElementById('regGenderFieldWrap').style.display = (mode === 'register') ? 'block' : 'none';
     document.getElementById('btnSubmitAuth').innerText = (mode === 'register') ? 'إنشاء حساب جديد' : 'دخول فوري';
 };
 
@@ -2034,11 +2222,14 @@ window.handleCustomerAuthSubmit = function(event) {
         const newUser = { 
             name, 
             phone, 
+            gender: selectedAuthGender || 'ذكر',
             password: pass, 
             points: 15, 
             ordersCount: 0, 
             bio: "محب للقهوة والمذاق الرفيع في كافيه كورنر.", 
-            avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200&q=80",
+            avatar: selectedAuthGender === 'أنثى' 
+                ? "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=200&q=80"
+                : "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200&q=80",
             createdAt: Date.now() 
         };
 
@@ -2074,7 +2265,7 @@ window.logoutCustomerSession = function() {
     localStorage.removeItem('cc_active_client_user');
     checkUserBannedStateAndLockout();
     updateHomeNoticeBanner();
-    window.showToastMsg("تم تسجيل الخروج");
+    window.showToastMsg("تم تسجيل الخروج بنجاح");
     window.navigateRouter('screen-home');
 };
 
@@ -2109,44 +2300,143 @@ window.handleUserAvatarUpload = function(event) {
         safeSet('cc_users_directory', allRegisteredCustomers);
         safeSet('cc_active_client_user', currentAuthenticatedUser);
         if (cloudDb) cloudDb.collection('users').doc(currentAuthenticatedUser.phone).set(currentAuthenticatedUser).catch(e=>console.warn(e));
-        window.showToastMsg("تم تحديث صورتك الشخصية");
+        window.showToastMsg("تم تحديث صورتك الشخصية بنجاح");
     });
 };
 
-window.saveAccountModifications = function() {
+window.selectEditProfileGender = function(gender) {
+    selectedEditProfileGender = gender;
+    document.getElementById('btnEditGenderMale').classList.toggle('active', gender === 'ذكر');
+    document.getElementById('btnEditGenderFemale').classList.toggle('active', gender === 'أنثى');
+};
+
+window.saveBasicProfileModifications = function() {
     if (!currentAuthenticatedUser) return;
+    const oldPhone = currentAuthenticatedUser.phone;
     const name = document.getElementById('editProfNameInput').value.trim();
+    const newPhone = document.getElementById('editProfPhoneInput').value.trim();
     const bio = document.getElementById('editProfBioInput').value.trim();
-    const newPass = document.getElementById('editProfPassInput').value.trim();
 
     if (!name) return window.showToastMsg("يرجى كتابة الاسم");
+    if (!newPhone) return window.showToastMsg("يرجى إدخال رقم الهاتف");
+
+    if (!validateJordanianPhoneNumber(newPhone)) {
+        return window.showToastMsg("رقم الهاتف غير صالح! يجب أن يبدأ بـ 07 ويتكون من 10 أرقام (مثال: 0790123456)");
+    }
+
+    // فحص إذا كان الرقم الجديد مختلفاً ومسجلاً لمستخدم آخر
+    if (newPhone !== oldPhone && allRegisteredCustomers[newPhone]) {
+        return window.showToastMsg("رقم الهاتف هذا مسجل مسبقاً لحساب آخر!");
+    }
 
     currentAuthenticatedUser.name = name;
+    currentAuthenticatedUser.gender = selectedEditProfileGender || 'ذكر';
     currentAuthenticatedUser.bio = bio;
-    if (newPass) currentAuthenticatedUser.password = newPass;
 
+    // إذا تم تغيير رقم الهاتف، نقوم بنقل الحساب وتحديث المفاتيح السحابية
+    if (newPhone !== oldPhone) {
+        delete allRegisteredCustomers[oldPhone];
+        currentAuthenticatedUser.phone = newPhone;
+        allRegisteredCustomers[newPhone] = currentAuthenticatedUser;
+
+        // تحديث الطلبات والإشعارات الخاصة بالرقم الجديد
+        activeOrdersList.forEach(o => {
+            if (o.customerPhone === oldPhone) o.customerPhone = newPhone;
+        });
+        safeSet('cc_orders', activeOrdersList);
+
+        customerNotifications.forEach(n => {
+            if (n.targetPhone === oldPhone) n.targetPhone = newPhone;
+        });
+        safeSet('cc_notifications', customerNotifications);
+
+        if (cloudDb) {
+            cloudDb.collection('users').doc(oldPhone).delete().catch(e=>console.warn(e));
+            cloudDb.collection('users').doc(newPhone).set(currentAuthenticatedUser).catch(e=>console.warn(e));
+        }
+    } else {
+        allRegisteredCustomers[oldPhone] = currentAuthenticatedUser;
+        if (cloudDb) cloudDb.collection('users').doc(oldPhone).set(currentAuthenticatedUser).catch(e=>console.warn(e));
+    }
+
+    safeSet('cc_users_directory', allRegisteredCustomers);
+    safeSet('cc_active_client_user', currentAuthenticatedUser);
+
+    renderUserProfileDetails();
+    updateHomeNoticeBanner();
+    window.showToastMsg("تم حفظ وتحديث بيانات حسابك بنجاح!");
+};
+
+window.changeCustomerPasswordAction = function() {
+    if (!currentAuthenticatedUser) return;
+    const currentPass = document.getElementById('editProfCurrentPassInput').value.trim();
+    const newPass = document.getElementById('editProfNewPassInput').value.trim();
+    const confirmPass = document.getElementById('editProfConfirmPassInput').value.trim();
+
+    if (!currentPass || !newPass || !confirmPass) {
+        return window.showToastMsg("يرجى ملء جميع حقول كلمة المرور");
+    }
+
+    if (currentAuthenticatedUser.password && currentAuthenticatedUser.password !== currentPass) {
+        return window.showToastMsg("كلمة المرور الحالية غير صحيحة!");
+    }
+
+    if (newPass.length < 4) {
+        return window.showToastMsg("كلمة المرور الجديدة يجب أن تكون 4 خانات على الأقل");
+    }
+
+    if (newPass !== confirmPass) {
+        return window.showToastMsg("كلمة المرور الجديدة وتأكيدها غير متطابقين!");
+    }
+
+    currentAuthenticatedUser.password = newPass;
     allRegisteredCustomers[currentAuthenticatedUser.phone] = currentAuthenticatedUser;
     safeSet('cc_users_directory', allRegisteredCustomers);
     safeSet('cc_active_client_user', currentAuthenticatedUser);
 
-    if (cloudDb) cloudDb.collection('users').doc(currentAuthenticatedUser.phone).set(currentAuthenticatedUser).catch(e=>console.warn(e));
+    if (cloudDb) {
+        cloudDb.collection('users').doc(currentAuthenticatedUser.phone).update({ password: newPass }).catch(e=>console.warn(e));
+    }
 
-    renderUserProfileDetails();
-    updateHomeNoticeBanner();
-    window.showToastMsg("تم حفظ وتحديث بيانات حسابك بنجاح");
+    document.getElementById('editProfCurrentPassInput').value = '';
+    document.getElementById('editProfNewPassInput').value = '';
+    document.getElementById('editProfConfirmPassInput').value = '';
+
+    window.showToastMsg("تم تغيير وتحديث كلمة المرور بنجاح!");
 };
 
 function renderUserProfileDetails() {
     if (!currentAuthenticatedUser) return;
-    document.getElementById('profUserAvatarImg').src = currentAuthenticatedUser.avatar || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200&q=80';
-    document.getElementById('profDisplayName').innerText = currentAuthenticatedUser.name;
-    document.getElementById('profDisplayPhone').innerText = currentAuthenticatedUser.phone;
-    document.getElementById('profDisplayBio').innerText = currentAuthenticatedUser.bio || 'محب للقهوة والمذاق الرفيع في كافيه كورنر.';
-    document.getElementById('profStatPoints').innerText = currentAuthenticatedUser.points || 0;
-    document.getElementById('profStatOrders').innerText = currentAuthenticatedUser.ordersCount || 0;
-    document.getElementById('editProfNameInput').value = currentAuthenticatedUser.name || '';
-    document.getElementById('editProfBioInput').value = currentAuthenticatedUser.bio || '';
-    document.getElementById('editProfPassInput').value = '';
+    const u = currentAuthenticatedUser;
+    const gender = u.gender || 'ذكر';
+    selectedEditProfileGender = gender;
+
+    document.getElementById('profUserAvatarImg').src = u.avatar || (gender === 'أنثى' 
+        ? 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=200&q=80' 
+        : 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200&q=80');
+
+    document.getElementById('profDisplayName').innerText = u.name;
+    document.getElementById('profDisplayPhone').innerText = u.phone;
+    document.getElementById('profDisplayBio').innerText = u.bio || 'محب للقهوة والمذاق الرفيع في كافيه كورنر.';
+    document.getElementById('profDisplayGenderText').innerText = gender;
+    
+    const pts = parseInt(u.points) || 0;
+    const tier = u.tier || (pts >= 200 ? 'عضوية VIP ماسية' : (pts >= 100 ? 'عضوية ذهبية ملكية' : (pts >= 40 ? 'عضوية فضية راقية' : 'عضوية برونزية مميزة')));
+    document.getElementById('profDisplayTierBadge').innerText = tier;
+
+    document.getElementById('profStatPoints').innerText = pts;
+    document.getElementById('profStatOrders').innerText = u.ordersCount || 0;
+
+    // تعبئة حقول التعديل
+    document.getElementById('editProfNameInput').value = u.name || '';
+    document.getElementById('editProfPhoneInput').value = u.phone || '';
+    document.getElementById('editProfBioInput').value = u.bio || '';
+    document.getElementById('btnEditGenderMale').classList.toggle('active', gender === 'ذكر');
+    document.getElementById('btnEditGenderFemale').classList.toggle('active', gender === 'أنثى');
+
+    document.getElementById('editProfCurrentPassInput').value = '';
+    document.getElementById('editProfNewPassInput').value = '';
+    document.getElementById('editProfConfirmPassInput').value = '';
 }
 
 // الإشعارات وعزل الخصوصية التام
@@ -3676,6 +3966,341 @@ window.backToAdminMainHub = function() {
         const SEVENTY_TWO_HOURS = 72 * 60 * 60 * 1000;
         const activeFb = customerFeedbacks.filter(f => !(f.repliedAt && (now - f.repliedAt > SEVENTY_TWO_HOURS)));
         badgeFb.innerText = activeFb.filter(f => !f.reply).length;
+    }
+};
+
+/* =========================================================
+   محرك إدارة الزبائن المتقدم ولوحة القيادة الشاملة (Customers Hub)
+   ========================================================= */
+window.setCustomerFilterMode = function(mode) {
+    customerListFilterMode = mode;
+    ['all', 'active', 'banned', 'vip'].forEach(m => {
+        const btn = document.getElementById('filterCust_' + m);
+        if (btn) btn.classList.toggle('active', m === mode);
+    });
+    renderAdminCustomersList();
+};
+
+function updateCustomerCommandStats() {
+    const users = Object.values(allRegisteredCustomers);
+    const totalEl = document.getElementById('custStatTotalCount');
+    const bannedEl = document.getElementById('custStatBannedCount');
+    const pointsEl = document.getElementById('custStatTotalPoints');
+    const vipEl = document.getElementById('custStatVipCount');
+
+    if (!totalEl) return;
+
+    const totalUsers = users.length;
+    const bannedCount = users.filter(u => bannedCustomersList.includes(u.phone)).length;
+    const totalPoints = users.reduce((sum, u) => sum + (parseInt(u.points) || 0), 0);
+    const vipCount = users.filter(u => (parseInt(u.points) || 0) >= 100).length;
+
+    totalEl.innerText = totalUsers;
+    bannedEl.innerText = bannedCount;
+    pointsEl.innerText = totalPoints;
+    vipEl.innerText = vipCount;
+}
+
+window.renderAdminCustomersList = function() {
+    const container = document.getElementById('adminCustomersListContainer');
+    if (!container) return;
+
+    updateCustomerCommandStats();
+
+    const searchInput = document.getElementById('adminCustomerSearchPhone');
+    const query = searchInput ? (searchInput.value || '').trim().toLowerCase() : '';
+
+    let users = Object.values(allRegisteredCustomers);
+
+    // تطبيق فلتر الحالة
+    if (customerListFilterMode === 'banned') {
+        users = users.filter(u => bannedCustomersList.includes(u.phone));
+    } else if (customerListFilterMode === 'active') {
+        users = users.filter(u => !bannedCustomersList.includes(u.phone));
+    } else if (customerListFilterMode === 'vip') {
+        users = users.filter(u => (parseInt(u.points) || 0) >= 100);
+    }
+
+    // تطبيق البحث النصي
+    if (query) {
+        users = users.filter(u => (u.name || '').toLowerCase().includes(query) || (u.phone || '').includes(query));
+    }
+
+    if (!users.length) {
+        container.innerHTML = `<div style="text-align:center; padding:18px; color:var(--text-secondary); font-size:12px;">لا يوجد زبائن يطابقون خيارات البحث الحالية</div>`;
+        return;
+    }
+
+    container.innerHTML = users.map(u => {
+        const isBanned = bannedCustomersList.includes(u.phone);
+        const pts = parseInt(u.points) || 0;
+        const tier = u.tier || (pts >= 200 ? 'عضوية VIP ماسية' : (pts >= 100 ? 'عضوية ذهبية ملكية' : (pts >= 40 ? 'عضوية فضية راقية' : 'عضوية برونزية مميزة')));
+        const gender = u.gender || 'ذكر';
+
+        return `
+            <div class="clean-card" style="margin-bottom:8px; ${isBanned ? 'border-color:var(--status-danger); background:rgba(239,68,68,0.03);' : ''}">
+                <div style="display:flex; justify-content:space-between; align-items:center;">
+                    <div style="display:flex; align-items:center; gap:10px;">
+                        <img src="${u.avatar || (gender === 'أنثى' ? 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=200&q=80' : 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200&q=80')}" style="width:42px; height:42px; border-radius:50%; object-fit:cover; border:1.5px solid var(--brand-theme); flex-shrink:0;">
+                        <div>
+                            <div style="font-weight:900; font-size:13.5px; display:flex; align-items:center; gap:6px;">
+                                <span>${u.name}</span>
+                                <span class="profile-gender-pill" style="font-size:9px; padding:1px 6px;">${gender}</span>
+                                ${isBanned ? '<span style="color:var(--status-danger); font-size:10px;">[محظور]</span>' : ''}
+                            </div>
+                            <div style="font-size:10.5px; color:var(--text-secondary);" class="num-font">${u.phone} • <span style="color:var(--brand-theme); font-weight:800;">${tier}</span></div>
+                        </div>
+                    </div>
+                    <div style="text-align:left;">
+                        <div class="num-font" style="font-size:14px; font-weight:900; color:var(--brand-theme);">${pts} نقطة</div>
+                        <div style="font-size:9.5px; color:var(--text-dim);">${u.ordersCount || 0} طلبات</div>
+                    </div>
+                </div>
+
+                <div style="display:flex; gap:6px; margin-top:10px; border-top:1px dashed var(--border-subtle); padding-top:8px;">
+                    <button class="btn-brand-solid" style="flex:1; padding:6px; font-size:11px;" onclick="openCustomerFullDossier('${u.phone}')">فتح الملف والتحكم الكامل</button>
+                    ${isBanned ? `
+                        <button class="btn-brand-outline" style="padding:6px 10px; font-size:11px; color:var(--status-success); border-color:var(--status-success);" onclick="adminDirectUnban('${u.phone}')">فك الحظر</button>
+                    ` : `
+                        <button class="btn-brand-outline" style="padding:6px 10px; font-size:11px; color:var(--status-danger); border-color:var(--status-danger);" onclick="adminDirectBan('${u.phone}')">حظر</button>
+                    `}
+                </div>
+            </div>
+        `;
+    }).join('');
+};
+
+window.openCustomerFullDossier = function(phone) {
+    selectedDossierUserPhone = phone;
+    const user = allRegisteredCustomers[phone];
+    if (!user) return;
+
+    const isBanned = bannedCustomersList.includes(phone);
+    const pts = parseInt(user.points) || 0;
+    const ordersCount = parseInt(user.ordersCount) || 0;
+    const tier = user.tier || (pts >= 200 ? 'عضوية VIP ماسية' : (pts >= 100 ? 'عضوية ذهبية ملكية' : (pts >= 40 ? 'عضوية فضية راقية' : 'عضوية برونزية مميزة')));
+    const gender = user.gender || 'ذكر';
+
+    document.getElementById('dosCustomerNameTitle').innerText = `ملف الزبون: ${user.name}`;
+    document.getElementById('dosFullName').innerText = user.name;
+    document.getElementById('dosGenderBadge').innerText = gender;
+    document.getElementById('dosPhone').innerText = user.phone;
+    document.getElementById('dosAvatarImg').src = user.avatar || (gender === 'أنثى' 
+        ? 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=200&q=80' 
+        : 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200&q=80');
+
+    document.getElementById('dosPointsVal').innerText = pts;
+    document.getElementById('dosOrdersVal').innerText = ordersCount;
+    document.getElementById('dosTierBadge').innerText = tier;
+    document.getElementById('selectCustomerTierLevel').value = tier;
+    document.getElementById('dosStatusText').innerText = isBanned ? 'محظور ومقيد ✕' : 'نشط ومعتمد ✓';
+    document.getElementById('dosStatusText').style.color = isBanned ? 'var(--status-danger)' : 'var(--status-success)';
+    document.getElementById('dosWaDirectLink').href = `https://wa.me/962${user.phone.replace(/^0+/, '')}`;
+
+    document.getElementById('dossierAdminNotes').value = user.adminNotes || '';
+    document.getElementById('inputCustomPointsAmount').value = '';
+    document.getElementById('inputCustomPointsReason').value = '';
+    document.getElementById('dossierDirectNotifTitle').value = '';
+    document.getElementById('dossierDirectNotifBody').value = '';
+
+    // تعيين زر الحظر / فك الحظر
+    const banBtn = document.getElementById('btnToggleCustomerBan');
+    if (isBanned) {
+        banBtn.innerText = "فك الحظر عن هذا العميل فوراً ✓";
+        banBtn.style.color = "var(--status-success)";
+        banBtn.style.borderColor = "var(--status-success)";
+    } else {
+        banBtn.innerText = "حظر وتقييد هذا العميل ✕";
+        banBtn.style.color = "var(--status-danger)";
+        banBtn.style.borderColor = "var(--status-danger)";
+    }
+
+    // عرض سجل طلبات الزبون
+    renderCustomerOrdersInDossier(phone);
+
+    document.getElementById('modalAdminCustomerDossier').style.display = 'flex';
+};
+
+function renderCustomerOrdersInDossier(phone) {
+    const container = document.getElementById('dossierOrdersHistoryContainer');
+    if (!container) return;
+
+    const userOrders = activeOrdersList.filter(o => o.customerPhone === phone);
+
+    if (!userOrders.length) {
+        container.innerHTML = `<div style="color:var(--text-dim); text-align:center; padding:8px;">لا توجد طلبات مسجلة لهذا الزبون حتى الآن</div>`;
+        return;
+    }
+
+    container.innerHTML = userOrders.map(o => `
+        <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px dashed var(--border-subtle); padding:5px 0;">
+            <div>
+                <span class="num-font" style="font-weight:900; color:var(--brand-theme);">#${o.orderId}</span>
+                <span style="color:var(--text-secondary); margin-right:4px;">${o.branchName || ''} (${o.deliveryMode === 'pickup' ? 'استلام' : 'توصيل'})</span>
+            </div>
+            <div style="text-align:left;">
+                <span class="num-font" style="font-weight:800;">${parseFloat(o.totalAmount || 0).toFixed(2)} د.أ</span>
+                <span style="font-size:9.5px; margin-right:4px; color:${o.status === 'completed' ? 'var(--status-success)' : (o.status === 'cancelled' ? 'var(--status-danger)' : 'var(--status-warning)')};">[${o.status}]</span>
+            </div>
+        </div>
+    `).join('');
+}
+
+window.closeCustomerDossierModal = function() {
+    document.getElementById('modalAdminCustomerDossier').style.display = 'none';
+    selectedDossierUserPhone = null;
+};
+
+window.copySelectedUserPhone = function() {
+    if (!selectedDossierUserPhone) return;
+    const input = document.createElement('input');
+    input.value = selectedDossierUserPhone;
+    document.body.appendChild(input);
+    input.select();
+    document.execCommand('copy');
+    document.body.removeChild(input);
+    window.showToastMsg("تم نسخ رقم الهاتف للحافظة: " + selectedDossierUserPhone);
+};
+
+window.copyCustomerNumbersToClipboard = function() {
+    const phones = Object.values(allRegisteredCustomers).map(u => u.phone).filter(Boolean);
+    if (!phones.length) return window.showToastMsg("لا توجد أرقام مسجلة حالياً");
+    const text = phones.join('\n');
+    const input = document.createElement('textarea');
+    input.value = text;
+    document.body.appendChild(input);
+    input.select();
+    document.execCommand('copy');
+    document.body.removeChild(input);
+    window.showToastMsg(`تم نسخ ${phones.length} رقم زبون بنجاح`);
+};
+
+window.applyCustomPointsDelta = function(isAdd) {
+    if (!selectedDossierUserPhone) return;
+    const amountVal = parseInt(document.getElementById('inputCustomPointsAmount').value);
+    if (isNaN(amountVal) || amountVal <= 0) return window.showToastMsg("أدخل عدد نقاط صالح أكبر من الصفر");
+
+    const reason = document.getElementById('inputCustomPointsReason').value.trim() || (isAdd ? "مكافأة ولاء إدارية" : "تعديل رصيد إداري");
+    const user = allRegisteredCustomers[selectedDossierUserPhone];
+    if (!user) return;
+
+    const currentPts = parseInt(user.points) || 0;
+    const newPts = isAdd ? (currentPts + amountVal) : Math.max(0, currentPts - amountVal);
+
+    user.points = newPts;
+    allRegisteredCustomers[selectedDossierUserPhone] = user;
+    safeSet('cc_users_directory', allRegisteredCustomers);
+
+    if (cloudDb) {
+        cloudDb.collection('users').doc(selectedDossierUserPhone).update({ points: newPts }).catch(e => console.warn(e));
+    }
+
+    // إشعار الزبون بالحركة
+    addNotificationRecord(
+        isAdd ? "إضافة نقاط لرصيدك ⭐" : "تعديل رصيد النقاط",
+        isAdd ? `أهدتك إدارة كافيه كورنر ${amountVal} نقطة! السبب: ${reason}` : `تم خصم ${amountVal} نقطة من حسابك. السبب: ${reason}`,
+        selectedDossierUserPhone
+    );
+
+    document.getElementById('dosPointsVal').innerText = newPts;
+    document.getElementById('inputCustomPointsAmount').value = '';
+    document.getElementById('inputCustomPointsReason').value = '';
+
+    renderAdminCustomersList();
+    checkAdminEditsCounter();
+    window.showToastMsg(`تم ${isAdd ? 'إضافة' : 'خصم'} ${amountVal} نقطة بنجاح أونلاين!`);
+};
+
+window.updateCustomerTierLevel = function() {
+    if (!selectedDossierUserPhone) return;
+    const selectedTier = document.getElementById('selectCustomerTierLevel').value;
+    const user = allRegisteredCustomers[selectedDossierUserPhone];
+    if (!user) return;
+
+    user.tier = selectedTier;
+    allRegisteredCustomers[selectedDossierUserPhone] = user;
+    safeSet('cc_users_directory', allRegisteredCustomers);
+
+    if (cloudDb) {
+        cloudDb.collection('users').doc(selectedDossierUserPhone).update({ tier: selectedTier }).catch(e => console.warn(e));
+    }
+
+    addNotificationRecord(
+        "ترقية مستوى العضوية في كافيه كورنر 👑",
+        `تهانينا! قامت الإدارة بترقية عضويتك إلى "${selectedTier}". استمتع بالمزايا والخصومات الحصرية!`,
+        selectedDossierUserPhone
+    );
+
+    document.getElementById('dosTierBadge').innerText = selectedTier;
+    renderAdminCustomersList();
+    checkAdminEditsCounter();
+    window.showToastMsg("تم تثبيت رتبة العميل بنجاح أونلاين!");
+};
+
+window.saveCustomerAdminNotes = function() {
+    if (!selectedDossierUserPhone) return;
+    const notes = document.getElementById('dossierAdminNotes').value.trim();
+    const user = allRegisteredCustomers[selectedDossierUserPhone];
+    if (!user) return;
+
+    user.adminNotes = notes;
+    allRegisteredCustomers[selectedDossierUserPhone] = user;
+    safeSet('cc_users_directory', allRegisteredCustomers);
+
+    if (cloudDb) {
+        cloudDb.collection('users').doc(selectedDossierUserPhone).update({ adminNotes: notes }).catch(e => console.warn(e));
+    }
+
+    checkAdminEditsCounter();
+    window.showToastMsg("تم حفظ الملاحظة الإدارية السرية حول العميل");
+};
+
+window.sendDirectNotificationFromDossier = function() {
+    if (!selectedDossierUserPhone) return;
+    const title = document.getElementById('dossierDirectNotifTitle').value.trim();
+    const body = document.getElementById('dossierDirectNotifBody').value.trim();
+
+    if (!title || !body) return window.showToastMsg("يرجى كتابة عنوان ونص الإشعار أولاً");
+
+    addNotificationRecord(title, body, selectedDossierUserPhone);
+
+    document.getElementById('dossierDirectNotifTitle').value = '';
+    document.getElementById('dossierDirectNotifBody').value = '';
+
+    window.showToastMsg("تم إرسال الإشعار لحساب الزبون مباشرة أونلاين!");
+};
+
+window.toggleCustomerBanStatus = function() {
+    if (!selectedDossierUserPhone) return;
+    const phone = selectedDossierUserPhone;
+    if (bannedCustomersList.includes(phone)) {
+        adminDirectUnban(phone);
+        document.getElementById('dosStatusText').innerText = 'نشط ومعتمد ✓';
+        document.getElementById('dosStatusText').style.color = 'var(--status-success)';
+        document.getElementById('btnToggleCustomerBan').innerText = "حظر وتقييد هذا العميل ✕";
+        document.getElementById('btnToggleCustomerBan').style.color = "var(--status-danger)";
+        document.getElementById('btnToggleCustomerBan').style.borderColor = "var(--status-danger)";
+    } else {
+        adminDirectBan(phone);
+        document.getElementById('dosStatusText').innerText = 'محظور ومقيد ✕';
+        document.getElementById('dosStatusText').style.color = 'var(--status-danger)';
+        document.getElementById('btnToggleCustomerBan').innerText = "فك الحظر عن هذا العميل فوراً ✓";
+        document.getElementById('btnToggleCustomerBan').style.color = "var(--status-success)";
+        document.getElementById('btnToggleCustomerBan').style.borderColor = "var(--status-success)";
+    }
+    renderAdminCustomersList();
+};
+
+window.searchAndOpenCustomerDossier = function() {
+    const input = document.getElementById('adminCustomerSearchPhone');
+    const val = input ? input.value.trim() : '';
+    if (!val) return renderAdminCustomersList();
+
+    const user = allRegisteredCustomers[val];
+    if (user) {
+        openCustomerFullDossier(val);
+    } else {
+        renderAdminCustomersList();
     }
 };
 
