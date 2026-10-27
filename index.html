@@ -12,6 +12,7 @@
 
     <!-- Firebase SDK Compat -->
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
 
     <style>
@@ -1086,6 +1087,32 @@
 
             <div class="clean-card" style="padding:8px 10px;">
                 <div style="display:flex; flex-direction:column; gap:6px;">
+                    <button type="button" class="sidebar-item-card" style="padding:10px 12px; margin-bottom:0;" onclick="openEditProfileModal()">
+                        <div class="sidebar-item-right">
+                            <div class="sidebar-icon-sq">
+                                <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+                            </div>
+                            <div>
+                                <div class="sidebar-item-title" style="font-size:12.5px;">تعديل البيانات الأساسية</div>
+                                <div style="font-size:10px; color:var(--text-secondary);">تغيير الاسم، الجنس، رقم الهاتف، والوصف</div>
+                            </div>
+                        </div>
+                        <div style="color:var(--text-dim); font-size:12px;">❮</div>
+                    </button>
+
+                    <button type="button" class="sidebar-item-card" style="padding:10px 12px; margin-bottom:0;" onclick="openChangePasswordModal()">
+                        <div class="sidebar-item-right">
+                            <div class="sidebar-icon-sq">
+                                <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+                            </div>
+                            <div>
+                                <div class="sidebar-item-title" style="font-size:12.5px;">أمان الحساب وكلمة المرور</div>
+                                <div style="font-size:10px; color:var(--text-secondary);">تغيير كلمة المرور وتأمين الحساب</div>
+                            </div>
+                        </div>
+                        <div style="color:var(--text-dim); font-size:12px;">❮</div>
+                    </button>
+
                     <button type="button" class="sidebar-item-card" style="padding:10px 12px; margin-bottom:0;" onclick="navigateRouter('screen-rewards')">
                         <div class="sidebar-item-right">
                             <div class="sidebar-icon-sq">
@@ -1114,70 +1141,6 @@
                 </div>
             </div>
 
-            <div class="clean-card">
-                <div class="clean-title">
-                    <span>تعديل البيانات الأساسية</span>
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
-                </div>
-                
-                <div style="display:flex; flex-direction:column; gap:10px;">
-                    <div>
-                        <span style="font-size:11.5px; font-weight:700;">الاسم الكامل:</span>
-                        <input type="text" class="ios-input-field" id="editProfNameInput" placeholder="أدخل اسمك الكريم">
-                    </div>
-
-                    <div>
-                        <span style="font-size:11.5px; font-weight:700;">تحديد الجنس:</span>
-                        <div class="gender-selector-group" style="margin-top:4px;">
-                            <button type="button" class="gender-opt-btn active" id="btnEditGenderMale" onclick="selectEditProfileGender('ذكر')">
-                                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="10" cy="14" r="5"></circle><line x1="19" y1="5" x2="13.6" y2="10.4"></line><line x1="19" y1="5" x2="14" y2="5"></line><line x1="19" y1="5" x2="19" y2="10"></line></svg>
-                                <span>ذكر</span>
-                            </button>
-                            <button type="button" class="gender-opt-btn" id="btnEditGenderFemale" onclick="selectEditProfileGender('أنثى')">
-                                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="9" r="5"></circle><line x1="12" y1="14" x2="12" y2="21"></line><line x1="9" y1="18" x2="15" y2="18"></line></svg>
-                                <span>أنثى</span>
-                            </button>
-                        </div>
-                    </div>
-
-                    <div>
-                        <span style="font-size:11.5px; font-weight:700;">رقم الهاتف الأردني (معرّف الحساب):</span>
-                        <input type="tel" class="ios-input-field num-font" id="editProfPhoneInput" placeholder="07xxxxxxxx" maxlength="10">
-                    </div>
-
-                    <div>
-                        <span style="font-size:11.5px; font-weight:700;">الوصف التعريفي (Bio):</span>
-                        <textarea class="ios-textarea-field" id="editProfBioInput" placeholder="اكتب نبذة أو تفضيلاتك في القهوة..." style="height:60px;"></textarea>
-                    </div>
-
-                    <button class="btn-brand-solid" onclick="saveBasicProfileModifications()">حفظ وتحديث البيانات الشخصية</button>
-                </div>
-            </div>
-
-            <div class="clean-card">
-                <div class="clean-title">
-                    <span>أمان الحساب وتغيير كلمة المرور</span>
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
-                </div>
-
-                <div style="display:flex; flex-direction:column; gap:8px;">
-                    <div>
-                        <span style="font-size:11.5px; font-weight:700;">كلمة المرور الحالية:</span>
-                        <input type="password" class="ios-input-field num-font" id="editProfCurrentPassInput" placeholder="••••••••">
-                    </div>
-                    <div>
-                        <span style="font-size:11.5px; font-weight:700;">كلمة المرور الجديدة:</span>
-                        <input type="password" class="ios-input-field num-font" id="editProfNewPassInput" placeholder="••••••••">
-                    </div>
-                    <div>
-                        <span style="font-size:11.5px; font-weight:700;">تأكيد كلمة المرور الجديدة:</span>
-                        <input type="password" class="ios-input-field num-font" id="editProfConfirmPassInput" placeholder="••••••••">
-                    </div>
-
-                    <button class="btn-brand-solid" style="margin-top:4px;" onclick="changeCustomerPasswordAction()">تحديث كلمة المرور فوراً</button>
-                </div>
-            </div>
-
             <div style="margin-top:14px; margin-bottom:20px; display:flex; flex-direction:column; gap:8px;">
                 <button class="btn-brand-outline" style="width:100%; color:var(--text-secondary); border-color:var(--border-subtle); font-size:12px; padding:10px; font-weight:800; display:flex; align-items:center; justify-content:center; gap:6px;" onclick="logoutCustomerSession()">
                     <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
@@ -1188,6 +1151,82 @@
                     <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>
                     <span>حذف حسابي نهائياً وإلغاء كافة الطلبات</span>
                 </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- نافذة تعديل البيانات الشخصية المنبثقة -->
+    <div id="modalEditProfile" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.75); z-index:9100; align-items:center; justify-content:center; padding:16px;">
+        <div class="clean-card" style="width:100%; max-width:400px; max-height:90vh; overflow-y:auto; position:relative;">
+            <div class="clean-title">
+                <span>تعديل البيانات الأساسية</span>
+                <button style="background:none; border:none; font-size:18px; cursor:pointer;" onclick="closeEditProfileModal()">✕</button>
+            </div>
+            
+            <div style="display:flex; flex-direction:column; gap:10px;">
+                <div>
+                    <span style="font-size:11.5px; font-weight:700;">الاسم الكامل:</span>
+                    <input type="text" class="ios-input-field" id="editProfNameInput" placeholder="أدخل اسمك الكريم">
+                </div>
+
+                <div>
+                    <span style="font-size:11.5px; font-weight:700;">تحديد الجنس:</span>
+                    <div class="gender-selector-group" style="margin-top:4px;">
+                        <button type="button" class="gender-opt-btn active" id="btnEditGenderMale" onclick="selectEditProfileGender('ذكر')">
+                            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="10" cy="14" r="5"></circle><line x1="19" y1="5" x2="13.6" y2="10.4"></line><line x1="19" y1="5" x2="14" y2="5"></line><line x1="19" y1="5" x2="19" y2="10"></line></svg>
+                            <span>ذكر</span>
+                        </button>
+                        <button type="button" class="gender-opt-btn" id="btnEditGenderFemale" onclick="selectEditProfileGender('أنثى')">
+                            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="9" r="5"></circle><line x1="12" y1="14" x2="12" y2="21"></line><line x1="9" y1="18" x2="15" y2="18"></line></svg>
+                            <span>أنثى</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div>
+                    <span style="font-size:11.5px; font-weight:700;">رقم الهاتف الأردني (معرّف الحساب):</span>
+                    <input type="tel" class="ios-input-field num-font" id="editProfPhoneInput" placeholder="07xxxxxxxx" maxlength="10">
+                </div>
+
+                <div>
+                    <span style="font-size:11.5px; font-weight:700;">الوصف التعريفي (Bio):</span>
+                    <textarea class="ios-textarea-field" id="editProfBioInput" placeholder="اكتب نبذة أو تفضيلاتك في القهوة..." style="height:65px;"></textarea>
+                </div>
+
+                <div style="display:flex; gap:6px; margin-top:4px;">
+                    <button class="btn-brand-solid" style="flex:1;" onclick="saveBasicProfileModifications()">حفظ التعديلات</button>
+                    <button class="btn-brand-outline" onclick="closeEditProfileModal()">إلغاء</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- نافذة أمان الحساب وتغيير كلمة المرور المنبثقة -->
+    <div id="modalChangePassword" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.75); z-index:9100; align-items:center; justify-content:center; padding:16px;">
+        <div class="clean-card" style="width:100%; max-width:390px; position:relative;">
+            <div class="clean-title">
+                <span>تغيير كلمة المرور</span>
+                <button style="background:none; border:none; font-size:18px; cursor:pointer;" onclick="closeChangePasswordModal()">✕</button>
+            </div>
+
+            <div style="display:flex; flex-direction:column; gap:8px;">
+                <div>
+                    <span style="font-size:11.5px; font-weight:700;">كلمة المرور الحالية:</span>
+                    <input type="password" class="ios-input-field num-font" id="editProfCurrentPassInput" placeholder="••••••••">
+                </div>
+                <div>
+                    <span style="font-size:11.5px; font-weight:700;">كلمة المرور الجديدة:</span>
+                    <input type="password" class="ios-input-field num-font" id="editProfNewPassInput" placeholder="••••••••">
+                </div>
+                <div>
+                    <span style="font-size:11.5px; font-weight:700;">تأكيد كلمة المرور الجديدة:</span>
+                    <input type="password" class="ios-input-field num-font" id="editProfConfirmPassInput" placeholder="••••••••">
+                </div>
+
+                <div style="display:flex; gap:6px; margin-top:6px;">
+                    <button class="btn-brand-solid" style="flex:1;" onclick="changeCustomerPasswordAction()">تحديث كلمة المرور</button>
+                    <button class="btn-brand-outline" onclick="closeChangePasswordModal()">إلغاء</button>
+                </div>
             </div>
         </div>
     </div>
@@ -2324,6 +2363,10 @@ function initCloudFirestoreSafe() {
     try {
         if (window.firebase) {
             if (!firebase.apps.length) firebase.initializeApp(FIREBASE_CONFIG);
+            
+            // تسجيل دخول مجهول لضمان الأذونات السحابية
+            firebase.auth().signInAnonymously().catch(e => console.warn("Auth note:", e));
+            
             cloudDb = firebase.firestore();
 
             // 1. مزامنة الطلبات
@@ -2412,6 +2455,37 @@ function initCloudFirestoreSafe() {
                     }
                 }, e => console.warn("Brand sync error:", e));
 
+            // 8. مزامنة طرق الدفع
+            cloudDb.collection('settings').doc('payment_methods')
+                .onSnapshot(docSnap => {
+                    if (docSnap.exists && Array.isArray(docSnap.data().list)) {
+                        customPaymentMethods = docSnap.data().list;
+                        safeSet('cc_payment_methods', customPaymentMethods);
+                        if (activeSessionUser) renderAdminPaymentMethodsList();
+                    }
+                }, e => console.warn("Payments sync error:", e));
+
+            // 9. مزامنة الكوبونات
+            cloudDb.collection('settings').doc('coupons')
+                .onSnapshot(docSnap => {
+                    if (docSnap.exists && docSnap.data().data) {
+                        systemCoupons = docSnap.data().data;
+                        safeSet('cc_coupons', systemCoupons);
+                        if (activeSessionUser) renderAdminCouponsList();
+                    }
+                }, e => console.warn("Coupons sync error:", e));
+
+            // 10. مزامنة المكافآت
+            cloudDb.collection('settings').doc('redeem_catalog')
+                .onSnapshot(docSnap => {
+                    if (docSnap.exists && Array.isArray(docSnap.data().items)) {
+                        redeemCatalog = docSnap.data().items;
+                        safeSet('cc_redeem_catalog', redeemCatalog);
+                        if (activeSessionUser) renderAdminRedeemControlList();
+                        renderClientRedeemItems();
+                    }
+                }, e => console.warn("Redeem sync error:", e));
+
             const devSyncLbl = document.getElementById('devCloudSyncState');
             if (devSyncLbl) {
                 devSyncLbl.innerText = "ONLINE (CLOUD)";
@@ -2423,8 +2497,1217 @@ function initCloudFirestoreSafe() {
     }
 }
 
-// فحص الحظر
-function checkUserBannedStateAndLockout() {
+// دالة زيادة عداد تعديلات الأدمن وتحديث الإصدار تلقائياً
+function recordAdminEditAction() {
+    adminEditsCounter = (adminEditsCounter || 0) + 1;
+    safeSet('cc_admin_edits_count', adminEditsCounter);
+    if (adminEditsCounter >= 10) {
+        const parts = currentAppVersion.split('.').map(Number);
+        parts[2] = (parts[2] || 0) + 1;
+        currentAppVersion = parts.join('.');
+        adminEditsCounter = 0;
+        safeSet('cc_app_version', currentAppVersion);
+        safeSet('cc_admin_edits_count', 0);
+        const verLbl = document.getElementById('devAppVerLbl');
+        if (verLbl) verLbl.innerText = currentAppVersion;
+    }
+}
+
+// تشغيل الزر السري للوحة الإدارة (الضغط 5 مرات متتالية على الشعار)
+let secretAdminClicks = 0;
+let secretAdminTimer = null;
+window.handleSecretAdminTrigger = function() {
+    secretAdminClicks++;
+    clearTimeout(secretAdminTimer);
+    secretAdminTimer = setTimeout(() => { secretAdminClicks = 0; }, 2000);
+    
+    if (secretAdminClicks >= 4) {
+        secretAdminClicks = 0;
+        if (activeSessionUser) {
+            navigateRouter('screen-admin-dashboard');
+            backToAdminMainHub();
+        } else {
+            navigateRouter('screen-admin-login');
+        }
+    }
+};
+
+// تسجيل دخول الأدمن
+window.attemptAdminAuthentication = function() {
+    const pin = (document.getElementById('adminPassField')?.value || '').trim();
+    if (pin === MASTER_PIN) {
+        activeSessionUser = { role: "admin", loggedAt: Date.now() };
+        safeSet('cc_admin_session', activeSessionUser);
+        document.getElementById('adminPassField').value = '';
+        window.showToastMsg("تم تسجيل الدخول بنجاح إلى لوحة الإدارة");
+        navigateRouter('screen-admin-dashboard');
+        backToAdminMainHub();
+    } else {
+        window.showToastMsg("رمز المرور غير صحيح!");
+    }
+};
+
+// تسجيل خروج الأدمن
+window.exitAdminSession = function() {
+    activeSessionUser = null;
+    safeSet('cc_admin_session', null);
+    window.showToastMsg("تم تسجيل الخروج من لوحة الإدارة");
+    navigateRouter('screen-home');
+};
+
+// التنقل بين أقسام لوحة الإدارة
+window.openAdminSubSection = function(subKey) {
+    document.getElementById('adminMainHubView').style.display = 'none';
+    document.querySelectorAll('.admin-sub-view').forEach(v => v.classList.remove('active'));
+    
+    const target = document.getElementById('subView-' + subKey);
+    if (target) {
+        target.classList.add('active');
+        window.scrollTo({ top: 0, behavior: 'instant' });
+    }
+
+    if (subKey === 'orders') renderAdminLiveOrdersManager();
+    if (subKey === 'products') renderAdminProductsManager();
+    if (subKey === 'paymentsAdmin') renderAdminPaymentMethodsList();
+    if (subKey === 'feedbackAdmin') renderAdminFeedbackControlList();
+    if (subKey === 'notificationsAdmin') populateAdminCustomerDropdowns();
+    if (subKey === 'customers') renderAdminCustomersList();
+    if (subKey === 'redeemManager') renderAdminRedeemControlList();
+    if (subKey === 'coupons') renderAdminCouponsList();
+    if (subKey === 'brandAndDev') populateBrandAndDevFields();
+};
+
+window.backToAdminMainHub = function() {
+    document.querySelectorAll('.admin-sub-view').forEach(v => v.classList.remove('active'));
+    document.getElementById('adminMainHubView').style.display = 'block';
+    window.scrollTo({ top: 0, behavior: 'instant' });
+    updateAdminHubBadges();
+};
+
+function updateAdminHubBadges() {
+    const unreadFb = customerFeedbacks.filter(f => !f.reply).length;
+    const fbBadge = document.getElementById('badgeHubFeedbackCount');
+    if (fbBadge) fbBadge.innerText = unreadFb;
+}
+
+// 1. إدارة الطلبات الحية
+function renderAdminLiveOrdersManager() {
+    const container = document.getElementById('adminLiveOrdersContainer');
+    if (!container) return;
+
+    const oneDayAgo = Date.now() - (24 * 60 * 60 * 1000);
+    const validOrders = activeOrdersList.filter(o => o.createdAt >= oneDayAgo);
+
+    if (validOrders.length === 0) {
+        container.innerHTML = `<div style="text-align:center; padding:20px; font-size:12px; color:var(--text-dim);">لا توجد طلبات حية في آخر 24 ساعة.</div>`;
+        return;
+    }
+
+    container.innerHTML = validOrders.map(order => {
+        const isPickup = (order.mode === 'pickup');
+        let statusBadgeColor = "var(--brand-theme)";
+        let statusAr = "قيد الانتظار";
+        if (order.status === 'accepted') { statusBadgeColor = "var(--status-info)"; statusAr = "جاري التحضير"; }
+        if (order.status === 'ready') { statusBadgeColor = "var(--status-warning)"; statusAr = isPickup ? "جاهز للاستلام بالفرع" : "مع كابتن التوصيل"; }
+        if (order.status === 'completed') { statusBadgeColor = "var(--status-success)"; statusAr = "مكتمل ومسلّم"; }
+        if (order.status === 'cancelled') { statusBadgeColor = "var(--status-danger)"; statusAr = "ملغي"; }
+
+        return `
+            <div style="background:var(--bg-surface); border:1px solid var(--border-subtle); border-radius:var(--radius-sm); padding:10px; margin-bottom:10px;">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+                    <div>
+                        <strong class="num-font" style="color:var(--brand-theme);">${order.orderId}</strong>
+                        <span style="font-size:11px; margin-right:6px;">${order.customerName} (${order.customerPhone})</span>
+                    </div>
+                    <span style="font-size:10px; padding:2px 8px; border-radius:var(--radius-full); background:rgba(0,0,0,0.06); color:${statusBadgeColor}; font-weight:800;">${statusAr}</span>
+                </div>
+                
+                <div style="font-size:11px; color:var(--text-secondary); margin-bottom:6px;">
+                    ${order.branchName} • <strong>${isPickup ? 'استلام من المحل' : 'توصيل: ' + order.town}</strong> • الدفع: ${order.paymentMethod}
+                </div>
+
+                <div style="background:var(--bg-elevated); padding:6px 8px; border-radius:var(--radius-sm); font-size:11px; margin-bottom:8px;">
+                    ${order.items.map(i => `<div>• ${i.name} (${i.qty}×) ${i.size ? '['+i.size+']' : ''}</div>`).join('')}
+                    <div style="font-weight:900; margin-top:4px;" class="num-font">الإجمالي: ${parseFloat(order.total).toFixed(2)} د.أ</div>
+                </div>
+
+                <div style="display:flex; gap:4px; flex-wrap:wrap;">
+                    ${order.status === 'pending' ? `
+                        <button class="btn-brand-solid" style="padding:4px 8px; font-size:10.5px; flex:1;" onclick="updateOrderStatusAction('${order.orderId}', 'accepted')">قبول الطلب</button>
+                    ` : ''}
+                    ${order.status === 'accepted' ? `
+                        <button class="btn-brand-solid" style="padding:4px 8px; font-size:10.5px; flex:1;" onclick="updateOrderStatusAction('${order.orderId}', 'ready')">${isPickup ? 'جاهز للاستلام بالفرع' : 'تسليم لكابتن التوصيل'}</button>
+                    ` : ''}
+                    ${order.status === 'ready' ? `
+                        <button class="btn-brand-solid" style="padding:4px 8px; font-size:10.5px; flex:1; background:var(--status-success);" onclick="updateOrderStatusAction('${order.orderId}', 'completed')">تم التسليم النهائي</button>
+                    ` : ''}
+                    ${order.status !== 'completed' && order.status !== 'cancelled' ? `
+                        <button class="btn-brand-outline" style="padding:4px 8px; font-size:10.5px; color:var(--status-danger); border-color:var(--status-danger);" onclick="updateOrderStatusAction('${order.orderId}', 'cancelled')">إلغاء</button>
+                    ` : ''}
+                </div>
+            </div>
+        `;
+    }).join('');
+}
+
+window.updateOrderStatusAction = function(orderId, newStatus) {
+    const ord = activeOrdersList.find(o => o.orderId === orderId);
+    if (!ord) return;
+    ord.status = newStatus;
+    safeSet('cc_orders', activeOrdersList);
+    if (cloudDb) cloudDb.collection('orders').doc(orderId).update({ status: newStatus }).catch(e => console.warn(e));
+    recordAdminEditAction();
+    renderAdminLiveOrdersManager();
+    window.showToastMsg("تم تحديث حالة الطلب");
+};
+
+// 2. إدارة المنتجات
+function renderAdminProductsManager() {
+    const container = document.getElementById('adminProductsControlList');
+    if (!container) return;
+
+    container.innerHTML = productsCatalog.map(p => `
+        <div style="display:flex; align-items:center; justify-content:space-between; padding:8px 0; border-bottom:1px solid var(--border-subtle);">
+            <div style="display:flex; align-items:center; gap:8px;">
+                <img src="${p.img}" style="width:36px; height:36px; border-radius:4px; object-fit:contain; background:#000;">
+                <div>
+                    <div style="font-size:12px; font-weight:800;">${p.name}</div>
+                    <div style="font-size:10px; color:var(--text-secondary);">${p.category} • <span class="num-font">${parseFloat(p.price).toFixed(2)} د.أ</span></div>
+                </div>
+            </div>
+            <div style="display:flex; gap:4px;">
+                <button class="btn-brand-outline" style="padding:3px 8px; font-size:10px;" onclick="openProductEditorModal('${p.id}')">تعديل</button>
+                <button class="btn-brand-outline" style="padding:3px 8px; font-size:10px; color:var(--status-danger); border-color:var(--status-danger);" onclick="deleteProductRecord('${p.id}')">حذف</button>
+            </div>
+        </div>
+    `).join('');
+}
+
+window.openProductEditorModal = function(prodId) {
+    navigateRouter('screen-product-editor');
+    if (prodId) {
+        const prod = productsCatalog.find(p => p.id === prodId);
+        if (!prod) return;
+        document.getElementById('editProdId').value = prod.id;
+        document.getElementById('editProdName').value = prod.name;
+        document.getElementById('editProdCategory').value = prod.category;
+        document.getElementById('editProdPrice').value = prod.price;
+        document.getElementById('editProdDesc').value = prod.desc || '';
+        document.getElementById('editProdImagePreview').src = prod.img || '';
+        window.appState.editorSizes = prod.sizesList ? JSON.parse(JSON.stringify(prod.sizesList)) : [];
+        window.appState.editorSauces = prod.saucesList ? JSON.parse(JSON.stringify(prod.saucesList)) : [];
+    } else {
+        document.getElementById('editProdId').value = '';
+        document.getElementById('editProdName').value = '';
+        document.getElementById('editProdCategory').value = '';
+        document.getElementById('editProdPrice').value = '';
+        document.getElementById('editProdDesc').value = '';
+        document.getElementById('editProdImagePreview').src = '';
+        window.appState.editorSizes = [];
+        window.appState.editorSauces = [];
+    }
+    renderEditorSizes();
+    renderEditorSauces();
+    renderEditorAddonsCheckboxes(prodId ? productsCatalog.find(p => p.id === prodId)?.allowedAddons : []);
+};
+
+window.addInteractiveSizeRow = function() {
+    window.appState.editorSizes.push({ name: "حجم جديد", extra: 0.00 });
+    renderEditorSizes();
+};
+
+function renderEditorSizes() {
+    const c = document.getElementById('interactiveSizesContainer');
+    if (!c) return;
+    c.innerHTML = window.appState.editorSizes.map((sz, idx) => `
+        <div style="display:flex; gap:6px;">
+            <input type="text" class="ios-input-field" value="${sz.name}" onchange="window.appState.editorSizes[${idx}].name=this.value" placeholder="اسم الحجم">
+            <input type="number" step="0.25" class="ios-input-field num-font" value="${sz.extra}" onchange="window.appState.editorSizes[${idx}].extra=parseFloat(this.value)||0" placeholder="+ السعر">
+            <button type="button" class="btn-brand-outline" style="color:var(--status-danger); border-color:var(--status-danger); padding:0 8px;" onclick="window.appState.editorSizes.splice(${idx},1); renderEditorSizes();">✕</button>
+        </div>
+    `).join('');
+}
+
+window.addInteractiveSauceRow = function() {
+    window.appState.editorSauces.push({ name: "نكهة جديدة", price: 2.00 });
+    renderEditorSauces();
+};
+
+function renderEditorSauces() {
+    const c = document.getElementById('interactiveSaucesContainer');
+    if (!c) return;
+    c.innerHTML = window.appState.editorSauces.map((sc, idx) => `
+        <div style="display:flex; gap:6px;">
+            <input type="text" class="ios-input-field" value="${sc.name}" onchange="window.appState.editorSauces[${idx}].name=this.value" placeholder="اسم النكهة">
+            <input type="number" step="0.25" class="ios-input-field num-font" value="${sc.price}" onchange="window.appState.editorSauces[${idx}].price=parseFloat(this.value)||0" placeholder="السعر">
+            <button type="button" class="btn-brand-outline" style="color:var(--status-danger); border-color:var(--status-danger); padding:0 8px;" onclick="window.appState.editorSauces.splice(${idx},1); renderEditorSauces();">✕</button>
+        </div>
+    `).join('');
+}
+
+function renderEditorAddonsCheckboxes(selectedIds = []) {
+    const c = document.getElementById('editorAddonsCheckboxes');
+    if (!c) return;
+    c.innerHTML = MASTER_ADDONS_DICT.map(ad => `
+        <label style="display:flex; align-items:center; gap:6px;">
+            <input type="checkbox" value="${ad.id}" class="editor-addon-cb" ${selectedIds && selectedIds.includes(ad.id) ? 'checked' : ''}>
+            <span>${ad.name}</span>
+        </label>
+    `).join('');
+}
+
+window.handleProductImageUpload = function(e) {
+    const file = e.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = function(evt) {
+        document.getElementById('editProdImagePreview').src = evt.target.result;
+    };
+    reader.readAsDataURL(file);
+};
+
+window.saveProductEditorRecord = function() {
+    const pid = document.getElementById('editProdId').value;
+    const name = document.getElementById('editProdName').value.trim();
+    const category = document.getElementById('editProdCategory').value.trim() || 'عام';
+    const price = parseFloat(document.getElementById('editProdPrice').value) || 0;
+    const desc = document.getElementById('editProdDesc').value.trim();
+    const img = document.getElementById('editProdImagePreview').src || 'https://images.unsplash.com/photo-1517701550927-30cf4be1aaf9?w=300&q=80';
+
+    if (!name) return window.showToastMsg("يرجى إدخال اسم الصنف");
+
+    const allowedAddons = Array.from(document.querySelectorAll('.editor-addon-cb:checked')).map(cb => cb.value);
+
+    const productObj = {
+        id: pid || ("p_" + Date.now()),
+        name, category, price, desc, img,
+        isAvailable: true,
+        hasSizes: window.appState.editorSizes.length > 0,
+        sizesList: window.appState.editorSizes,
+        hasSauces: window.appState.editorSauces.length > 0,
+        saucesList: window.appState.editorSauces,
+        allowedAddons
+    };
+
+    if (pid) {
+        const idx = productsCatalog.findIndex(p => p.id === pid);
+        if (idx !== -1) productsCatalog[idx] = productObj;
+    } else {
+        productsCatalog.unshift(productObj);
+    }
+
+    safeSet('cc_catalog', productsCatalog);
+    if (cloudDb) cloudDb.collection('catalog').doc('products_list').set({ items: productsCatalog }).catch(e => console.warn(e));
+    recordAdminEditAction();
+    window.showToastMsg("تم حفظ الصنف بنجاح أونلاين");
+    renderCategoryChips();
+    renderMenuProducts();
+    navigateRouter('screen-admin-dashboard');
+    openAdminSubSection('products');
+};
+
+window.deleteProductRecord = function(pid) {
+    productsCatalog = productsCatalog.filter(p => p.id !== pid);
+    safeSet('cc_catalog', productsCatalog);
+    if (cloudDb) cloudDb.collection('catalog').doc('products_list').set({ items: productsCatalog }).catch(e => console.warn(e));
+    recordAdminEditAction();
+    renderAdminProductsManager();
+    renderCategoryChips();
+    renderMenuProducts();
+    window.showToastMsg("تم حذف الصنف أونلاين");
+};
+
+// 3. تعديل الهوية وبيانات المطور
+function populateBrandAndDevFields() {
+    const s = brandAndDevSettings;
+    document.getElementById('admBrandTitleInput').value = s.brandTitle || '';
+    document.getElementById('admBrandSubInput').value = s.brandSub || '';
+    document.getElementById('admLogoPreview').src = s.storeLogo || './logo.png';
+    document.getElementById('admDevNameInput').value = s.devName || '';
+    document.getElementById('admDevBioInput').value = s.devBio || '';
+    document.getElementById('admDevWaInput').value = s.devWa || '';
+    document.getElementById('admDevIgInput').value = s.devIg || '';
+    document.getElementById('admDevAvatarPreview').src = s.devAvatar || './logo.png';
+}
+
+window.handleStoreLogoUpload = function(e) {
+    const file = e.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = function(evt) { document.getElementById('admLogoPreview').src = evt.target.result; };
+    reader.readAsDataURL(file);
+};
+
+window.handleDevAvatarUpload = function(e) {
+    const file = e.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = function(evt) { document.getElementById('admDevAvatarPreview').src = evt.target.result; };
+    reader.readAsDataURL(file);
+};
+
+window.saveBrandAndDeveloperSettings = function() {
+    brandAndDevSettings = {
+        storeLogo: document.getElementById('admLogoPreview').src,
+        brandTitle: document.getElementById('admBrandTitleInput').value.trim() || 'كافيه كورنر',
+        brandSub: document.getElementById('admBrandSubInput').value.trim() || '',
+        devAvatar: document.getElementById('admDevAvatarPreview').src,
+        devName: document.getElementById('admDevNameInput').value.trim() || 'المهندس عمر عبيدات',
+        devBio: document.getElementById('admDevBioInput').value.trim() || '',
+        devWa: document.getElementById('admDevWaInput').value.trim() || '962796433698',
+        devIg: document.getElementById('admDevIgInput').value.trim() || 'https://www.instagram.com/o_yd'
+    };
+
+    safeSet('cc_brand_dev_config', brandAndDevSettings);
+    if (cloudDb) cloudDb.collection('settings').doc('brand_dev').set(brandAndDevSettings).catch(e => console.warn(e));
+    applyBrandAndDevSettingsToDOM();
+    recordAdminEditAction();
+    window.showToastMsg("تم حفظ بيانات الهوية والمطور أونلاين بنجاح");
+};
+
+// 4. طرق الدفع المفصولة
+function renderAdminPaymentMethodsList() {
+    const container = document.getElementById('adminPaymentMethodsList');
+    if (!container) return;
+
+    container.innerHTML = customPaymentMethods.map(pm => `
+        <div style="display:flex; align-items:center; justify-content:space-between; padding:8px 0; border-bottom:1px solid var(--border-subtle);">
+            <div style="display:flex; align-items:center; gap:8px;">
+                ${pm.logo ? `<img src="${pm.logo}" style="width:28px; height:28px; border-radius:4px; object-fit:contain;">` : ''}
+                <div>
+                    <div style="font-size:12px; font-weight:800;">${pm.name} (${pm.branch === '0' ? 'كفرسوم' : 'سما الروسان'})</div>
+                    <div style="font-size:10px; color:var(--text-secondary);">${pm.desc || ''}</div>
+                </div>
+            </div>
+            <button class="btn-brand-outline" style="padding:2px 8px; font-size:10px; color:var(--status-danger); border-color:var(--status-danger);" onclick="deletePaymentMethodAction('${pm.id}')">حذف</button>
+        </div>
+    `).join('');
+}
+
+let newPayLogoData = "";
+window.handlePaymentLogoUpload = function(e) {
+    const file = e.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = function(evt) {
+        newPayLogoData = evt.target.result;
+        const prev = document.getElementById('newPayLogoPreview');
+        if (prev) { prev.src = newPayLogoData; prev.style.display = 'block'; }
+    };
+    reader.readAsDataURL(file);
+};
+
+window.saveCustomPaymentMethod = function() {
+    const branch = document.getElementById('newPayBranchSelect').value;
+    const name = document.getElementById('newPayMethodName').value.trim();
+    const desc = document.getElementById('newPayMethodDesc').value.trim();
+
+    if (!name) return window.showToastMsg("يرجى إدخال اسم طريقة الدفع");
+
+    const newMethod = {
+        id: "pm_" + Date.now(),
+        branch, name, desc,
+        logo: newPayLogoData || ""
+    };
+
+    customPaymentMethods.push(newMethod);
+    safeSet('cc_payment_methods', customPaymentMethods);
+    if (cloudDb) cloudDb.collection('settings').doc('payment_methods').set({ list: customPaymentMethods }).catch(e => console.warn(e));
+
+    document.getElementById('newPayMethodName').value = '';
+    document.getElementById('newPayMethodDesc').value = '';
+    newPayLogoData = "";
+    document.getElementById('newPayLogoPreview').style.display = 'none';
+
+    recordAdminEditAction();
+    renderAdminPaymentMethodsList();
+    window.showToastMsg("تم حفظ طريقة الدفع أونلاين");
+};
+
+window.deletePaymentMethodAction = function(pmId) {
+    customPaymentMethods = customPaymentMethods.filter(p => p.id !== pmId);
+    safeSet('cc_payment_methods', customPaymentMethods);
+    if (cloudDb) cloudDb.collection('settings').doc('payment_methods').set({ list: customPaymentMethods }).catch(e => console.warn(e));
+    recordAdminEditAction();
+    renderAdminPaymentMethodsList();
+    window.showToastMsg("تم حذف طريقة الدفع أونلاين");
+};
+
+// 5. الشكاوى والطعون
+function renderAdminFeedbackControlList() {
+    const container = document.getElementById('adminFeedbackControlList');
+    if (!container) return;
+
+    if (customerFeedbacks.length === 0) {
+        container.innerHTML = `<div style="text-align:center; padding:15px; font-size:11.5px; color:var(--text-dim);">صندوق الشكاوى والطعون فارغ حالياً.</div>`;
+        return;
+    }
+
+    container.innerHTML = customerFeedbacks.map(fb => `
+        <div style="background:var(--bg-surface); border:1px solid var(--border-subtle); border-radius:var(--radius-sm); padding:10px; margin-bottom:8px;">
+            <div style="display:flex; justify-content:space-between; font-size:11.5px; font-weight:800; margin-bottom:4px;">
+                <span>${fb.customerName} (${fb.customerPhone})</span>
+                <span class="num-font" style="color:var(--text-dim); font-size:10px;">${fb.dateStr || ''}</span>
+            </div>
+            <div style="font-size:11px; color:var(--brand-theme); font-weight:700; margin-bottom:4px;">${fb.category}</div>
+            <div style="font-size:11.5px; color:var(--text-primary); margin-bottom:8px; line-height:1.4;">${fb.text}</div>
+            
+            ${fb.reply ? `
+                <div style="background:var(--bg-elevated); padding:6px 8px; border-radius:var(--radius-sm); font-size:11px; margin-bottom:6px;">
+                    <strong>ردك:</strong> ${fb.reply}
+                </div>
+            ` : `
+                <div style="display:flex; gap:6px;">
+                    <input type="text" class="ios-input-field" id="replyInput_${fb.id}" placeholder="اكتب ردك للعميل..." style="font-size:11px; padding:6px 8px;">
+                    <button class="btn-brand-solid" style="width:auto; padding:0 12px; font-size:11px;" onclick="submitAdminReplyToFeedback('${fb.id}')">إرسال الرد</button>
+                </div>
+            `}
+            
+            ${fb.category.includes('طعن') && bannedCustomersList.includes(fb.customerPhone) ? `
+                <button class="btn-brand-outline" style="margin-top:6px; font-size:10.5px; color:var(--status-success); border-color:var(--status-success); width:100%;" onclick="unbanCustomerDirect('${fb.customerPhone}')">فك الحظر عن هذا العميل فوراً</button>
+            ` : ''}
+        </div>
+    `).join('');
+}
+
+window.submitAdminReplyToFeedback = function(fbId) {
+    const input = document.getElementById('replyInput_' + fbId);
+    const replyText = input ? input.value.trim() : '';
+    if (!replyText) return window.showToastMsg("يرجى كتابة نص الرد");
+
+    const fb = customerFeedbacks.find(f => f.id === fbId);
+    if (!fb) return;
+
+    fb.reply = replyText;
+    fb.repliedAt = Date.now();
+    safeSet('cc_feedbacks', customerFeedbacks);
+    if (cloudDb) cloudDb.collection('feedbacks').doc(fbId).update({ reply: replyText, repliedAt: fb.repliedAt }).catch(e => console.warn(e));
+
+    // إرسال إشعار للزبون بوجود رد
+    const notif = {
+        id: "notif_" + Date.now(),
+        targetPhone: fb.customerPhone,
+        title: "رد الإدارة على: " + fb.category,
+        body: replyText,
+        feedbackId: fb.id,
+        createdAt: Date.now(),
+        dateStr: new Date().toLocaleDateString('ar-JO')
+    };
+    customerNotifications.unshift(notif);
+    safeSet('cc_notifications', customerNotifications);
+    if (cloudDb) cloudDb.collection('notifications').doc(notif.id).set(notif).catch(e => console.warn(e));
+
+    recordAdminEditAction();
+    renderAdminFeedbackControlList();
+    window.showToastMsg("تم إرسال الرد والإشعار للعميل أونلاين");
+};
+
+window.unbanCustomerDirect = function(phone) {
+    bannedCustomersList = bannedCustomersList.filter(p => p !== phone);
+    safeSet('cc_banned_users', bannedCustomersList);
+    if (cloudDb) cloudDb.collection('settings').doc('banned_users').set({ list: bannedCustomersList }).catch(e => console.warn(e));
+    recordAdminEditAction();
+    renderAdminFeedbackControlList();
+    if (document.getElementById('subView-customers').classList.contains('active')) renderAdminCustomersList();
+    window.showToastMsg("تم فك الحظر عن العميل بنجاح");
+};
+
+// 6. إرسال الإشعارات وتوزيع النقاط
+function populateAdminCustomerDropdowns() {
+    const s1 = document.getElementById('notifSingleUserSelect');
+    const s2 = document.getElementById('pointsSingleUserSelect');
+    const users = Object.values(allRegisteredCustomers);
+
+    const opts = users.map(u => `<option value="${u.phone}">${u.name} (${u.phone})</option>`).join('');
+    if (s1) s1.innerHTML = opts;
+    if (s2) s2.innerHTML = opts;
+}
+
+window.toggleNotifCustomerPicker = function() {
+    const mode = document.getElementById('notifTargetMode').value;
+    document.getElementById('notifSinglePickerWrap').style.display = (mode === 'single') ? 'block' : 'none';
+};
+
+window.togglePointsCustomerPicker = function() {
+    const mode = document.getElementById('pointsTargetMode').value;
+    document.getElementById('pointsSinglePickerWrap').style.display = (mode === 'single') ? 'block' : 'none';
+};
+
+window.dispatchAdminNotification = function() {
+    const mode = document.getElementById('notifTargetMode').value;
+    const title = document.getElementById('admNotifTitleInput').value.trim();
+    const body = document.getElementById('admNotifBodyInput').value.trim();
+
+    if (!title || !body) return window.showToastMsg("يرجى ملء عنوان ونص الإشعار");
+
+    let targetPhone = "all";
+    if (mode === 'single') {
+        targetPhone = document.getElementById('notifSingleUserSelect').value;
+    }
+
+    const notifObj = {
+        id: "notif_" + Date.now(),
+        targetPhone,
+        title, body,
+        createdAt: Date.now(),
+        dateStr: new Date().toLocaleDateString('ar-JO')
+    };
+
+    customerNotifications.unshift(notifObj);
+    safeSet('cc_notifications', customerNotifications);
+    if (cloudDb) cloudDb.collection('notifications').doc(notifObj.id).set(notifObj).catch(e => console.warn(e));
+
+    document.getElementById('admNotifTitleInput').value = '';
+    document.getElementById('admNotifBodyInput').value = '';
+    recordAdminEditAction();
+    window.showToastMsg("تم إرسال الإشعار أونلاين بنجاح");
+};
+
+window.grantPointsToCustomers = function() {
+    const mode = document.getElementById('pointsTargetMode').value;
+    const amount = parseInt(document.getElementById('admGrantPointsAmount').value, 10);
+
+    if (!amount || amount <= 0) return window.showToastMsg("يرجى إدخال عدد نقاط صالح");
+
+    if (mode === 'single') {
+        const phone = document.getElementById('pointsSingleUserSelect').value;
+        const u = allRegisteredCustomers[phone];
+        if (u) {
+            u.points = (u.points || 0) + amount;
+            if (cloudDb) cloudDb.collection('users').doc(phone).set(u).catch(e => console.warn(e));
+        }
+    } else {
+        Object.values(allRegisteredCustomers).forEach(u => {
+            u.points = (u.points || 0) + amount;
+            if (cloudDb) cloudDb.collection('users').doc(u.phone).set(u).catch(e => console.warn(e));
+        });
+    }
+
+    safeSet('cc_users_directory', allRegisteredCustomers);
+    document.getElementById('admGrantPointsAmount').value = '';
+    recordAdminEditAction();
+    window.showToastMsg("تم توزيع وتثبيت النقاط أونلاين بنجاح");
+};
+
+// 7. دليل الزبائن
+window.setCustomerFilterMode = function(mode) {
+    customerListFilterMode = mode;
+    ['all', 'active', 'banned', 'vip'].forEach(m => {
+        const btn = document.getElementById('filterCust_' + m);
+        if (btn) btn.classList.toggle('active', m === mode);
+    });
+    renderAdminCustomersList();
+};
+
+function renderAdminCustomersList() {
+    const container = document.getElementById('adminCustomersListContainer');
+    if (!container) return;
+
+    const users = Object.values(allRegisteredCustomers);
+    const searchVal = (document.getElementById('adminCustomerSearchPhone')?.value || '').trim().toLowerCase();
+
+    const filtered = users.filter(u => {
+        const isBanned = bannedCustomersList.includes(u.phone);
+        if (customerListFilterMode === 'active' && isBanned) return false;
+        if (customerListFilterMode === 'banned' && !isBanned) return false;
+        if (customerListFilterMode === 'vip' && (u.points || 0) < 50) return false;
+
+        if (searchVal) {
+            return (u.name && u.name.toLowerCase().includes(searchVal)) || (u.phone && u.phone.includes(searchVal));
+        }
+        return true;
+    });
+
+    // تحديث إحصائيات
+    document.getElementById('custStatTotalCount').innerText = users.length;
+    document.getElementById('custStatBannedCount').innerText = bannedCustomersList.length;
+    document.getElementById('custStatTotalPoints').innerText = users.reduce((sum, u) => sum + (u.points || 0), 0);
+    document.getElementById('custStatVipCount').innerText = users.filter(u => (u.points || 0) >= 50).length;
+
+    if (filtered.length === 0) {
+        container.innerHTML = `<div style="text-align:center; padding:15px; font-size:11.5px; color:var(--text-dim);">لا يوجد زبائن مطابقين.</div>`;
+        return;
+    }
+
+    container.innerHTML = filtered.map(u => {
+        const isBanned = bannedCustomersList.includes(u.phone);
+        return `
+            <div style="display:flex; align-items:center; justify-content:space-between; padding:8px 0; border-bottom:1px solid var(--border-subtle);">
+                <div>
+                    <div style="font-size:12px; font-weight:800;">${u.name} ${isBanned ? '<span style="color:var(--status-danger); font-size:10px;">(محظور)</span>' : ''}</div>
+                    <div style="font-size:10.5px; color:var(--text-secondary);" class="num-font">${u.phone} • النقاط: <strong>${u.points || 0}</strong></div>
+                </div>
+                <button class="btn-brand-outline" style="padding:3px 8px; font-size:10px;" onclick="openCustomerDossierModal('${u.phone}')">الملف والتحكم</button>
+            </div>
+        `;
+    }).join('');
+}
+
+window.openCustomerDossierModal = function(phone) {
+    selectedDossierUserPhone = phone;
+    const u = allRegisteredCustomers[phone];
+    if (!u) return;
+
+    document.getElementById('dosFullName').innerText = u.name || '';
+    document.getElementById('dosPhone').innerText = u.phone || '';
+    document.getElementById('dosGenderBadge').innerText = u.gender || 'ذكر';
+    document.getElementById('dosPointsVal').innerText = u.points || 0;
+    document.getElementById('dosOrdersVal').innerText = u.ordersCount || 0;
+    document.getElementById('dosWaDirectLink').href = "https://wa.me/962" + u.phone.slice(1);
+
+    const isBanned = bannedCustomersList.includes(phone);
+    document.getElementById('dosStatusText').innerText = isBanned ? 'محظور ✕' : 'نشط ✓';
+    document.getElementById('dosStatusText').style.color = isBanned ? 'var(--status-danger)' : 'var(--status-success)';
+    document.getElementById('btnToggleCustomerBan').innerText = isBanned ? 'فك الحظر عن العميل' : 'حظر العميل من الطلب';
+
+    document.getElementById('modalAdminCustomerDossier').style.display = 'flex';
+};
+
+window.closeCustomerDossierModal = function() {
+    document.getElementById('modalAdminCustomerDossier').style.display = 'none';
+};
+
+window.toggleCustomerBanStatus = function() {
+    if (!selectedDossierUserPhone) return;
+    const phone = selectedDossierUserPhone;
+    if (bannedCustomersList.includes(phone)) {
+        bannedCustomersList = bannedCustomersList.filter(p => p !== phone);
+        window.showToastMsg("تم فك الحظر عن العميل");
+    } else {
+        bannedCustomersList.push(phone);
+        window.showToastMsg("تم حظر العميل");
+    }
+
+    safeSet('cc_banned_users', bannedCustomersList);
+    if (cloudDb) cloudDb.collection('settings').doc('banned_users').set({ list: bannedCustomersList }).catch(e => console.warn(e));
+    recordAdminEditAction();
+    closeCustomerDossierModal();
+    renderAdminCustomersList();
+};
+
+window.applyCustomPointsDelta = function(isAdd) {
+    if (!selectedDossierUserPhone) return;
+    const amt = parseInt(document.getElementById('inputCustomPointsAmount').value, 10);
+    if (!amt || amt <= 0) return window.showToastMsg("أدخل عدد نقاط صالح");
+
+    const u = allRegisteredCustomers[selectedDossierUserPhone];
+    if (!u) return;
+
+    u.points = isAdd ? ((u.points || 0) + amt) : Math.max(0, (u.points || 0) - amt);
+    safeSet('cc_users_directory', allRegisteredCustomers);
+    if (cloudDb) cloudDb.collection('users').doc(selectedDossierUserPhone).set(u).catch(e => console.warn(e));
+
+    document.getElementById('dosPointsVal').innerText = u.points;
+    document.getElementById('inputCustomPointsAmount').value = '';
+    recordAdminEditAction();
+    renderAdminCustomersList();
+    window.showToastMsg("تم تحديث رصيد النقاط بنجاح أونلاين");
+};
+
+// 8. استبدال النقاط
+function renderAdminRedeemControlList() {
+    const c = document.getElementById('adminRedeemControlList');
+    if (!c) return;
+
+    c.innerHTML = redeemCatalog.map(it => `
+        <div style="display:flex; align-items:center; justify-content:space-between; padding:8px 0; border-bottom:1px solid var(--border-subtle);">
+            <div>
+                <div style="font-size:12px; font-weight:800;">${it.name}</div>
+                <div style="font-size:10px; color:var(--text-secondary);"><span class="num-font">${it.points}</span> نقطة • الأصل: <span class="num-font">${it.price}</span> د.أ</div>
+            </div>
+            <button class="btn-brand-outline" style="color:var(--status-danger); border-color:var(--status-danger); padding:2px 8px; font-size:10px;" onclick="deleteRedeemItemAdmin('${it.id}')">حذف</button>
+        </div>
+    `).join('');
+}
+
+let newRedeemImgData = "";
+window.handleRedeemImageUpload = function(e) {
+    const file = e.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = function(evt) {
+        newRedeemImgData = evt.target.result;
+        const p = document.getElementById('newRedeemImgPreview');
+        if (p) { p.src = newRedeemImgData; p.style.display = 'block'; }
+    };
+    reader.readAsDataURL(file);
+};
+
+window.saveNewRedeemItemAdmin = function() {
+    const name = document.getElementById('newRedeemItemName').value.trim();
+    const price = parseFloat(document.getElementById('newRedeemItemOriginalPrice').value) || 0;
+    const points = parseInt(document.getElementById('newRedeemItemPoints').value, 10) || 0;
+    const desc = document.getElementById('newRedeemItemDesc').value.trim();
+
+    if (!name || points <= 0) return window.showToastMsg("أدخل اسم ومقدار نقاط صالح");
+
+    const itemObj = {
+        id: "rd_" + Date.now(),
+        name, price, points, desc,
+        img: newRedeemImgData || 'https://images.unsplash.com/photo-1562376552-0d160a2f238d?w=200&q=80'
+    };
+
+    redeemCatalog.push(itemObj);
+    safeSet('cc_redeem_catalog', redeemCatalog);
+    if (cloudDb) cloudDb.collection('settings').doc('redeem_catalog').set({ items: redeemCatalog }).catch(e => console.warn(e));
+
+    document.getElementById('newRedeemItemName').value = '';
+    document.getElementById('newRedeemItemOriginalPrice').value = '';
+    document.getElementById('newRedeemItemPoints').value = '';
+    document.getElementById('newRedeemItemDesc').value = '';
+    newRedeemImgData = "";
+    document.getElementById('newRedeemImgPreview').style.display = 'none';
+
+    recordAdminEditAction();
+    renderAdminRedeemControlList();
+    renderClientRedeemItems();
+    window.showToastMsg("تم حفظ صنف المكافأة أونلاين");
+};
+
+window.deleteRedeemItemAdmin = function(rdId) {
+    redeemCatalog = redeemCatalog.filter(r => r.id !== rdId);
+    safeSet('cc_redeem_catalog', redeemCatalog);
+    if (cloudDb) cloudDb.collection('settings').doc('redeem_catalog').set({ items: redeemCatalog }).catch(e => console.warn(e));
+    recordAdminEditAction();
+    renderAdminRedeemControlList();
+    renderClientRedeemItems();
+    window.showToastMsg("تم حذف صنف المكافأة أونلاين");
+};
+
+// 9. الكوبونات
+function renderAdminCouponsList() {
+    const c = document.getElementById('adminCouponsListContainer');
+    if (!c) return;
+
+    const entries = Object.entries(systemCoupons);
+    if (entries.length === 0) {
+        c.innerHTML = `<div style="text-align:center; padding:10px; font-size:11px; color:var(--text-dim);">لا توجد كوبونات مفعلة حالياً.</div>`;
+        return;
+    }
+
+    c.innerHTML = entries.map(([code, cp]) => `
+        <div style="display:flex; align-items:center; justify-content:space-between; padding:8px 0; border-bottom:1px solid var(--border-subtle);">
+            <div>
+                <strong class="num-font" style="color:var(--brand-theme);">${code}</strong>
+                <span style="font-size:11px; margin-right:6px;">خصم ${cp.discount}%</span>
+                <div style="font-size:10px; color:var(--text-secondary);">${cp.notes || ''} (ينتهي: ${cp.expiry || 'دائم'})</div>
+            </div>
+            <button class="btn-brand-outline" style="color:var(--status-danger); border-color:var(--status-danger); padding:2px 8px; font-size:10px;" onclick="deleteCouponAdmin('${code}')">حذف</button>
+        </div>
+    `).join('');
+}
+
+window.saveNewCouponAdmin = function() {
+    const code = document.getElementById('newCouponCode').value.trim().toUpperCase();
+    const discount = parseInt(document.getElementById('newCouponDiscount').value, 10);
+    const expiry = document.getElementById('newCouponExpiry').value;
+    const notes = document.getElementById('newCouponNotes').value.trim();
+
+    if (!code || !discount) return window.showToastMsg("يرجى إدخال الكود ونسبة الخصم");
+
+    systemCoupons[code] = { discount, expiry, notes };
+    safeSet('cc_coupons', systemCoupons);
+    if (cloudDb) cloudDb.collection('settings').doc('coupons').set({ data: systemCoupons }).catch(e => console.warn(e));
+
+    document.getElementById('newCouponCode').value = '';
+    document.getElementById('newCouponDiscount').value = '';
+    document.getElementById('newCouponExpiry').value = '';
+    document.getElementById('newCouponNotes').value = '';
+
+    recordAdminEditAction();
+    renderAdminCouponsList();
+    window.showToastMsg("تم تفعيل الكوبون أونلاين بنجاح");
+};
+
+window.deleteCouponAdmin = function(code) {
+    delete systemCoupons[code];
+    safeSet('cc_coupons', systemCoupons);
+    if (cloudDb) cloudDb.collection('settings').doc('coupons').set({ data: systemCoupons }).catch(e => console.warn(e));
+    recordAdminEditAction();
+    renderAdminCouponsList();
+    window.showToastMsg("تم حذف الكوبون أونلاين");
+};
+
+// شاشة استبدال نقاط الزبون
+function renderClientRedeemItems() {
+    const c = document.getElementById('clientRedeemItemsList');
+    const balEl = document.getElementById('userRedeemPointsBalance');
+    if (balEl) balEl.innerText = currentAuthenticatedUser ? (currentAuthenticatedUser.points || 0) : 0;
+    if (!c) return;
+
+    if (redeemCatalog.length === 0) {
+        c.innerHTML = `<div style="text-align:center; padding:20px; font-size:11.5px; color:var(--text-dim);">لا توجد مكافآت متاحة حالياً.</div>`;
+        return;
+    }
+
+    c.innerHTML = redeemCatalog.map(it => `
+        <div class="clean-card" style="display:flex; align-items:center; justify-content:space-between; margin-bottom:8px;">
+            <div style="display:flex; align-items:center; gap:8px;">
+                <img src="${it.img}" style="width:40px; height:40px; border-radius:4px; object-fit:contain; background:#000;">
+                <div>
+                    <div style="font-size:12.5px; font-weight:800;">${it.name}</div>
+                    <div style="font-size:10px; color:var(--text-secondary);">${it.desc || ''}</div>
+                    <div style="font-size:11px; font-weight:900; color:var(--brand-theme);"><span class="num-font">${it.points}</span> نقطة</div>
+                </div>
+            </div>
+            <button class="btn-brand-solid" style="width:auto; padding:4px 10px; font-size:11px;" onclick="claimRedeemReward('${it.id}')">استبدال</button>
+        </div>
+    `).join('');
+}
+
+window.claimRedeemReward = function(rdId) {
+    if (!currentAuthenticatedUser) return window.showToastMsg("يرجى تسجيل الدخول أولاً");
+    const it = redeemCatalog.find(r => r.id === rdId);
+    if (!it) return;
+
+    const uPts = currentAuthenticatedUser.points || 0;
+    if (uPts < it.points) return window.showToastMsg("رصيدك الحالي لا يكفي لاستبدال هذا الصنف");
+
+    currentAuthenticatedUser.points = uPts - it.points;
+    allRegisteredCustomers[currentAuthenticatedUser.phone] = currentAuthenticatedUser;
+    safeSet('cc_users_directory', allRegisteredCustomers);
+    safeSet('cc_active_client_user', currentAuthenticatedUser);
+    if (cloudDb) cloudDb.collection('users').doc(currentAuthenticatedUser.phone).set(currentAuthenticatedUser).catch(e => console.warn(e));
+
+    renderClientRedeemItems();
+    renderUserProfileDetails();
+    window.showToastMsg("مبروك! تم استبدال المكافأة بنجاح وخصم النقاط");
+};
+
+// شاشة الإشعارات للزبون
+function updateUnreadNotificationsCounter() {
+    const badge = document.getElementById('unreadNotifCountBadge');
+    if (!badge) return;
+
+    if (!currentAuthenticatedUser) {
+        badge.style.display = 'none';
+        return;
+    }
+
+    const myNotifs = customerNotifications.filter(n => n.targetPhone === 'all' || n.targetPhone === currentAuthenticatedUser.phone);
+    if (myNotifs.length > 0) {
+        badge.style.display = 'flex';
+        badge.innerText = myNotifs.length;
+    } else {
+        badge.style.display = 'none';
+    }
+}
+
+function renderCustomerNotifications() {
+    const container = document.getElementById('customerNotificationsList');
+    if (!container) return;
+
+    if (!currentAuthenticatedUser) {
+        container.innerHTML = `<div style="text-align:center; padding:20px; font-size:11.5px; color:var(--text-dim);">يرجى تسجيل الدخول لعرض إشعاراتك الخاصة.</div>`;
+        return;
+    }
+
+    const myNotifs = customerNotifications.filter(n => n.targetPhone === 'all' || n.targetPhone === currentAuthenticatedUser.phone);
+
+    if (myNotifs.length === 0) {
+        container.innerHTML = `<div style="text-align:center; padding:20px; font-size:11.5px; color:var(--text-dim);">لا توجد إشعارات جديدة حالياً.</div>`;
+        return;
+    }
+
+    container.innerHTML = myNotifs.map(n => `
+        <div class="clean-card" style="margin-bottom:8px; cursor:pointer;" onclick="openFullNotificationModal('${n.id}')">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
+                <div style="font-size:12.5px; font-weight:900; color:var(--brand-theme);">${n.title}</div>
+                <div class="num-font" style="font-size:9.5px; color:var(--text-dim);">${n.dateStr || ''}</div>
+            </div>
+            <div style="font-size:11px; color:var(--text-primary); line-height:1.4;">${n.body}</div>
+        </div>
+    `).join('');
+}
+
+window.openFullNotificationModal = function(notifId) {
+    const n = customerNotifications.find(item => item.id === notifId);
+    if (!n) return;
+
+    activeViewingNotifId = notifId;
+    document.getElementById('notifModalTitle').innerText = n.title;
+    document.getElementById('notifModalTime').innerText = n.dateStr || '';
+    document.getElementById('notifModalBody').innerText = n.body;
+
+    const replyArea = document.getElementById('notifReplyActionArea');
+    const noReplyNotice = document.getElementById('notifNoReplyNotice');
+
+    if (n.feedbackId) {
+        replyArea.style.display = 'block';
+        noReplyNotice.style.display = 'none';
+    } else {
+        replyArea.style.display = 'none';
+        noReplyNotice.style.display = 'block';
+    }
+
+    document.getElementById('modalFullNotificationView').style.display = 'flex';
+};
+
+window.closeFullNotificationModal = function() {
+    document.getElementById('modalFullNotificationView').style.display = 'none';
+};
+
+window.sendReplyFromNotificationModal = function() {
+    const text = (document.getElementById('notifCustomerReplyInput')?.value || '').trim();
+    if (!text) return window.showToastMsg("يرجى كتابة ردك أولاً");
+
+    const n = customerNotifications.find(item => item.id === activeViewingNotifId);
+    if (!n || !n.feedbackId) return;
+
+    const replyFeedback = {
+        id: "fb_sub_" + Date.now(),
+        customerPhone: currentAuthenticatedUser.phone,
+        customerName: currentAuthenticatedUser.name,
+        category: "متابعة رد شكوى",
+        text: `[رد على الشكوى السابقة]: ${text}`,
+        reply: "",
+        createdAt: Date.now(),
+        dateStr: new Date().toLocaleDateString('ar-JO')
+    };
+
+    customerFeedbacks.unshift(replyFeedback);
+    safeSet('cc_feedbacks', customerFeedbacks);
+    if (cloudDb) cloudDb.collection('feedbacks').doc(replyFeedback.id).set(replyFeedback).catch(e => console.warn(e));
+
+    document.getElementById('notifCustomerReplyInput').value = '';
+    closeFullNotificationModal();
+    window.showToastMsg("تم إرسال ردك للإدارة بنجاح");
+};
+
+window.clearAllNotifications = function() {
+    if (!currentAuthenticatedUser) return;
+    customerNotifications = customerNotifications.filter(n => n.targetPhone !== 'all' && n.targetPhone !== currentAuthenticatedUser.phone);
+    safeSet('cc_notifications', customerNotifications);
+    renderCustomerNotifications();
+    updateUnreadNotificationsCounter();
+    window.showToastMsg("تم مسح الإشعارات");
+};
+
+// الشكاوى للزبون
+function renderCustomerFeedbacks() {
+    const c = document.getElementById('customerFeedbackList');
+    if (!c) return;
+
+    if (!currentAuthenticatedUser) {
+        c.innerHTML = `<div style="text-align:center; padding:15px; font-size:11px; color:var(--text-dim);">يرجى تسجيل الدخول لمتابعة شكاويك السابقة.</div>`;
+        return;
+    }
+
+    const myFbs = customerFeedbacks.filter(f => f.customerPhone === currentAuthenticatedUser.phone);
+    if (myFbs.length === 0) {
+        c.innerHTML = `<div style="text-align:center; padding:15px; font-size:11px; color:var(--text-dim);">لم تقم بإرسال أي شكاوى أو مقترحات سابقة.</div>`;
+        return;
+    }
+
+    c.innerHTML = myFbs.map(fb => `
+        <div class="clean-card" style="margin-bottom:8px;">
+            <div style="display:flex; justify-content:space-between; font-size:11.5px; font-weight:800; margin-bottom:4px;">
+                <span style="color:var(--brand-theme);">${fb.category}</span>
+                <span class="num-font" style="font-size:9.5px; color:var(--text-dim);">${fb.dateStr || ''}</span>
+            </div>
+            <div style="font-size:11.5px; color:var(--text-primary); margin-bottom:6px; line-height:1.4;">${fb.text}</div>
+            ${fb.reply ? `
+                <div style="background:var(--bg-elevated); padding:6px 8px; border-radius:var(--radius-sm); font-size:11px; color:var(--status-success); font-weight:700;">
+                    رد الإدارة: ${fb.reply}
+                </div>
+            ` : `
+                <div style="font-size:10px; color:var(--status-warning);">بانتظار مراجعة الإدارة والرد...</div>
+            `}
+        </div>
+    `).join('');
+}
+
+window.submitCustomerFeedback = function() {
+    if (!currentAuthenticatedUser) return window.showToastMsg("يرجى تسجيل الدخول أولاً");
+    const category = document.getElementById('feedbackCategory').value;
+    const text = (document.getElementById('feedbackContentInput').value || '').trim();
+
+    if (!text) return window.showToastMsg("يرجى كتابة تفاصيل الشكوى أو المقترح");
+
+    const fbObj = {
+        id: "fb_" + Date.now(),
+        customerPhone: currentAuthenticatedUser.phone,
+        customerName: currentAuthenticatedUser.name,
+        category, text,
+        reply: "",
+        createdAt: Date.now(),
+        dateStr: new Date().toLocaleDateString('ar-JO')
+    };
+
+    customerFeedbacks.unshift(fbObj);
+    safeSet('cc_feedbacks', customerFeedbacks);
+    if (cloudDb) cloudDb.collection('feedbacks').doc(fbObj.id).set(fbObj).catch(e => console.warn(e));
+
+    document.getElementById('feedbackContentInput').value = '';
+    renderCustomerFeedbacks();
+    window.showToastMsg("تم إرسال شكواك للإدارة بخصوصية تامة");
+};
+
+// النوافذ المنبثقة لملف المستخدم
+window.openEditProfileModal = function() {
+    if (!currentAuthenticatedUser) return;
+    document.getElementById('editProfNameInput').value = currentAuthenticatedUser.name || '';
+    document.getElementById('editProfPhoneInput').value = currentAuthenticatedUser.phone || '';
+    document.getElementById('editProfBioInput').value = currentAuthenticatedUser.bio || '';
+    selectedEditProfileGender = currentAuthenticatedUser.gender || 'ذكر';
+    document.getElementById('btnEditGenderMale').classList.toggle('active', selectedEditProfileGender === 'ذكر');
+    document.getElementById('btnEditGenderFemale').classList.toggle('active', selectedEditProfileGender === 'أنثى');
+    document.getElementById('modalEditProfile').style.display = 'flex';
+};
+
+window.closeEditProfileModal = function() {
+    document.getElementById('modalEditProfile').style.display = 'none';
+};
+
+window.selectEditProfileGender = function(g) {
+    selectedEditProfileGender = g;
+    document.getElementById('btnEditGenderMale').classList.toggle('active', g === 'ذكر');
+    document.getElementById('btnEditGenderFemale').classList.toggle('active', g === 'أنثى');
+};
+
+window.saveBasicProfileModifications = function() {
+    if (!currentAuthenticatedUser) return;
+    const name = document.getElementById('editProfNameInput').value.trim();
+    const phone = document.getElementById('editProfPhoneInput').value.trim();
+    const bio = document.getElementById('editProfBioInput').value.trim();
+
+    if (!name || !phone) return window.showToastMsg("الاسم ورقم الهاتف مطلوبان");
+    if (!validateJordanianPhoneNumber(phone)) return window.showToastMsg("رقم الهاتف يجب أن يبدأ بـ 07 ويتكون من 10 أرقام دقيقة");
+
+    const oldPhone = currentAuthenticatedUser.phone;
+    if (phone !== oldPhone && allRegisteredCustomers[phone]) {
+        return window.showToastMsg("رقم الهاتف هذا مستخدم لحساب آخر مسبقاً");
+    }
+
+    currentAuthenticatedUser.name = name;
+    currentAuthenticatedUser.gender = selectedEditProfileGender;
+    currentAuthenticatedUser.bio = bio;
+    currentAuthenticatedUser.phone = phone;
+
+    if (phone !== oldPhone) {
+        delete allRegisteredCustomers[oldPhone];
+        if (cloudDb) cloudDb.collection('users').doc(oldPhone).delete().catch(e => console.warn(e));
+    }
+
+    allRegisteredCustomers[phone] = currentAuthenticatedUser;
+    safeSet('cc_users_directory', allRegisteredCustomers);
+    safeSet('cc_active_client_user', currentAuthenticatedUser);
+    if (cloudDb) cloudDb.collection('users').doc(phone).set(currentAuthenticatedUser).catch(e => console.warn(e));
+
+    renderUserProfileDetails();
+    updateHomeNoticeBanner();
+    closeEditProfileModal();
+    window.showToastMsg("تم حفظ التعديلات بنجاح أونلاين");
+};
+
+window.openChangePasswordModal = function() {
+    document.getElementById('editProfCurrentPassInput').value = '';
+    document.getElementById('editProfNewPassInput').value = '';
+    document.getElementById('editProfConfirmPassInput').value = '';
+    document.getElementById('modalChangePassword').style.display = 'flex';
+};
+
+window.closeChangePasswordModal = function() {
+    document.getElementById('modalChangePassword').style.display = 'none';
+};
+
+window.changeCustomerPasswordAction = function() {
+    if (!currentAuthenticatedUser) return;
+    const cur = document.getElementById('editProfCurrentPassInput').value.trim();
+    const np = document.getElementById('editProfNewPassInput').value.trim();
+    const cp = document.getElementById('editProfConfirmPassInput').value.trim();
+
+    if (!cur || !np || !cp) return window.showToastMsg("يرجى ملء جميع حقول كلمة المرور");
+    if (currentAuthenticatedUser.password !== cur) return window.showToastMsg("كلمة المرور الحالية غير صحيحة");
+    if (np !== cp) return window.showToastMsg("كلمتا المرور الجديدتان غير متطابقتين");
+
+    currentAuthenticatedUser.password = np;
+    allRegisteredCustomers[currentAuthenticatedUser.phone] = currentAuthenticatedUser;
+    safeSet('cc_users_directory', allRegisteredCustomers);
+    safeSet('cc_active_client_user', currentAuthenticatedUser);
+    if (cloudDb) cloudDb.collection('users').doc(currentAuthenticatedUser.phone).set(currentAuthenticatedUser).catch(e => console.warn(e));
+
+    closeChangePasswordModal();
+    window.showToastMsg("تم تحديث كلمة المرور بنجاح");
+};
+
+window.handleUserAvatarUpload = function(e) {
+    if (!currentAuthenticatedUser) return;
+    const file = e.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = function(evt) {
+        currentAuthenticatedUser.avatar = evt.target.result;
+        allRegisteredCustomers[currentAuthenticatedUser.phone] = currentAuthenticatedUser;
+        safeSet('cc_users_directory', allRegisteredCustomers);
+        safeSet('cc_active_client_user', currentAuthenticatedUser);
+        if (cloudDb) cloudDb.collection('users').doc(currentAuthenticatedUser.phone).set(currentAuthenticatedUser).catch(e => console.warn(e));
+        renderUserProfileDetails();
+        window.showToastMsg("تم تحديث صورتك الشخصية أونلاين");
+    };
+    reader.readAsDataURL(file);
+};
+
+window.logoutCustomerSession = function() {
+    currentAuthenticatedUser = null;
+    safeSet('cc_active_client_user', null);
+    checkUserBannedStateAndLockout();
+    updateHomeNoticeBanner();
+    updateUnreadNotificationsCounter();
+    window.showToastMsg("تم تسجيل الخروج");
+    navigateRouter('screen-home');
+};
+
+window.promptDeleteCustomerAccountSelf = function() {
+    if (!currentAuthenticatedUser) return;
+    const phone = currentAuthenticatedUser.phone;
+    
+    // إلغاء الطلبات غير المسلمة
+    activeOrdersList = activeOrdersList.filter(o => o.customerPhone !== phone || o.status === 'completed');
+    safeSet('cc_orders', activeOrdersList);
+
+    delete allRegisteredCustomers[phone];
+    safeSet('cc_users_directory', allRegisteredCustomers);
+    if (cloudDb) cloudDb.collection('users').doc(phone).delete().catch(e => console.warn(e));
+
+    logoutCustomerSession();
+    window.showToastMsg("تم حذف حسابك وكافة طلباتك نهائياً");
+};
+
+// نافذة نسيت كلمة المرور
+window.openForgotPasswordModal = function() {
+    document.getElementById('forgotPhoneInput').value = '';
+    document.getElementById('forgotNewPassInput').value = '';
+    document.getElementById('forgotConfirmPassInput').value = '';
+    document.getElementById('modalForgotPassword').style.display = 'flex';
+};
+
+window.closeForgotPasswordModal = function() {
+    document.getElementById('modalForgotPassword').style.display = 'none';
+};
+
+window.handleForgotPasswordSubmit = function(e) {
+    e.preventDefault();
+    const phone = document.getElementById('forgotPhoneInput').value.trim();
+    const np = document.getElementById('forgotNewPassInput').value.trim();
+    const cp = document.getElementById('forgotConfirmPassInput').value.trim();
+
+    if (!phone || !np || !cp) return window.showToastMsg("يرجى ملء جميع الحقول");
+    if (!validateJordanianPhoneNumber(phone)) return window.showToastMsg("رقم الهاتف يجب أن يبدأ بـ 07 ويتكون من 10 أرقام دقيقة");
+    if (np !== cp) return window.showToastMsg("كلمتا المرور غير متطابقتين");
+
+    const u = allRegisteredCustomers[phone];
+    if (!u) return window.showToastMsg("رقم الهاتف هذا غير مسجل في كافيه كورنر");
+
+    u.password = np;
+    safeSet('cc_users_directory', allRegisteredCustomers);
+    if (cloudDb) cloudDb.collection('users').doc(phone).set(u).catch(e => console.warn(e));
+
+    closeForgotPasswordModal();
+    window.showToastMsg("تم تعيين كلمة المرور بنجاح، يمكنك تسجيل الدخول الآن");
+};
+
+window.checkUserBannedStateAndLockout = function() {
     const overlay = document.getElementById('bannedAccountOverlay');
     if (!overlay) return;
     if (currentAuthenticatedUser && bannedCustomersList.includes(currentAuthenticatedUser.phone)) {
@@ -2432,21 +3715,20 @@ function checkUserBannedStateAndLockout() {
     } else {
         overlay.style.display = 'none';
     }
-}
+};
 
 window.submitBanAppealAction = function() {
     if (!currentAuthenticatedUser) return;
-    const reason = (document.getElementById('banAppealReasonInput').value || '').trim();
-    if (!reason) return window.showToastMsg("يرجى كتابة سبب طلب رفع القيد");
+    const reason = (document.getElementById('banAppealReasonInput')?.value || '').trim();
+    if (!reason) return window.showToastMsg("يرجى كتابة سبب وتفاصيل الطعن");
 
     const appealObj = {
-        id: "fb_appeal_" + Date.now(),
+        id: "appeal_" + Date.now(),
         customerPhone: currentAuthenticatedUser.phone,
         customerName: currentAuthenticatedUser.name,
-        category: "طعن بقرار حظر الحساب",
-        text: `[طلب مراجعة قيد الحظر]: ${reason}`,
+        category: "طعن لفك الحظر والتقييد",
+        text: reason,
         reply: "",
-        repliedAt: null,
         createdAt: Date.now(),
         dateStr: new Date().toLocaleDateString('ar-JO')
     };
@@ -2519,64 +3801,60 @@ window.handleCustomerAuthSubmit = function(event) {
         if (!user || user.password !== pass) return window.showToastMsg("بيانات الدخول أو كلمة المرور غير صحيحة");
         currentAuthenticatedUser = user;
         safeSet('cc_active_client_user', currentAuthenticatedUser);
-        window.showToastMsg(`أهلاً بك مجدداً يا ${user.name}`);
+        window.showToastMsg("مرحباً بك مجدداً في كافيه كورنر");
     }
 
+    renderUserProfileDetails();
     updateHomeNoticeBanner();
     checkUserBannedStateAndLockout();
     updateUnreadNotificationsCounter();
-
-    if (window._postAuthDestination) {
-        const d = window._postAuthDestination;
-        window._postAuthDestination = null;
-        window.navigateRouter(d);
-    } else {
-        window.navigateRouter('screen-home');
-    }
+    navigateRouter('screen-home');
 };
 
-window.logoutCustomerSession = function() {
-    currentAuthenticatedUser = null;
-    localStorage.removeItem('cc_active_client_user');
-    checkUserBannedStateAndLockout();
-    updateHomeNoticeBanner();
-    updateUnreadNotificationsCounter();
-    window.showToastMsg("تم تسجيل الخروج بنجاح");
-    window.navigateRouter('screen-home');
+window.renderUserProfileDetails = function() {
+    if (!currentAuthenticatedUser) return;
+    const u = currentAuthenticatedUser;
+    
+    const nameEl = document.getElementById('profDisplayName');
+    if (nameEl) nameEl.innerText = u.name || 'العميل العزيز';
+    
+    const phoneEl = document.getElementById('profDisplayPhone');
+    if (phoneEl) phoneEl.innerText = u.phone || '';
+    
+    const bioEl = document.getElementById('profDisplayBio');
+    if (bioEl) bioEl.innerText = u.bio || 'محب للقهوة والمذاق الرفيع في كافيه كورنر.';
+    
+    const ptsEl = document.getElementById('profStatPoints');
+    if (ptsEl) ptsEl.innerText = u.points || 0;
+    
+    const ordEl = document.getElementById('profStatOrders');
+    if (ordEl) ordEl.innerText = u.ordersCount || 0;
+
+    const avatarImg = document.getElementById('profUserAvatarImg');
+    if (avatarImg) {
+        avatarImg.src = u.avatar || (u.gender === 'أنثى' 
+            ? "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=200&q=80"
+            : "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200&q=80");
+    }
+    
+    const genderPill = document.getElementById('profDisplayGenderText');
+    if (genderPill) genderPill.innerText = u.gender || 'ذكر';
 };
 
-function updateHomeNoticeBanner() {
-    const banner = document.getElementById('homeUserNoticeBanner');
-    if (!banner) return;
-    if (currentAuthenticatedUser) {
-        banner.innerHTML = `
-            <div class="auth-notice-card">
-                <div style="font-size:12px; font-weight:800;">مرحباً بك، <span style="color:var(--brand-theme);">${currentAuthenticatedUser.name}</span></div>
-                <div style="font-size:11px; color:var(--brand-theme); font-weight:900;" class="num-font">${currentAuthenticatedUser.points || 0} نقطة ولاء</div>
-            </div>
-        `;
-    } else {
-        banner.innerHTML = `
-            <div style="background:var(--brand-glow); border:1px solid var(--border-accent); padding:8px 12px; border-radius:var(--radius-sm); display:flex; justify-content:space-between; align-items:center;">
-                <div style="font-size:11.5px; font-weight:800;">سجل دخولك لتجميع النقاط والطلب المباشر</div>
-                <button class="btn-brand-solid" style="width:auto; padding:4px 10px; font-size:10.5px;" onclick="navigateRouter('screen-auth')">دخول / تسجيل</button>
-            </div>
-        `;
-    }
-}
-
-// عرض المنيو
-function renderCategoryChips() {
+window.renderCategoryChips = function() {
     const container = document.getElementById('categoryScrollChips');
     if (!container) return;
+    
     const cats = ["الكل", ...new Set(productsCatalog.map(p => p.category))];
-    container.innerHTML = cats.map(c => `
-        <div class="cat-chip ${c === window.appState.currentCategory ? 'active' : ''}" onclick="selectMenuCat('${c}')">${c}</div>
+    container.innerHTML = cats.map(cat => `
+        <button class="cat-chip ${window.appState.currentCategory === cat ? 'active' : ''}" onclick="selectMenuCategory('${cat}')">
+            ${cat}
+        </button>
     `).join('');
-}
+};
 
-window.selectMenuCat = function(c) {
-    window.appState.currentCategory = c;
+window.selectMenuCategory = function(cat) {
+    window.appState.currentCategory = cat;
     renderCategoryChips();
     renderMenuProducts();
 };
@@ -2584,870 +3862,572 @@ window.selectMenuCat = function(c) {
 window.renderMenuProducts = function() {
     const container = document.getElementById('menuGridContainer');
     if (!container) return;
-    const searchInput = document.getElementById('menuSearchInput');
-    const query = searchInput ? (searchInput.value || '').trim().toLowerCase() : '';
 
-    let filtered = productsCatalog;
-    if (window.appState.currentCategory !== "الكل") {
-        filtered = filtered.filter(p => p.category === window.appState.currentCategory);
-    }
-    if (query) {
-        filtered = filtered.filter(p => (p.name || '').toLowerCase().includes(query) || (p.desc || '').toLowerCase().includes(query));
-    }
+    const searchVal = (document.getElementById('menuSearchInput')?.value || '').trim().toLowerCase();
+    
+    const filtered = productsCatalog.filter(p => {
+        const matchesCat = (window.appState.currentCategory === "الكل" || p.category === window.appState.currentCategory);
+        const matchesSearch = !searchVal || p.name.toLowerCase().includes(searchVal) || (p.desc && p.desc.toLowerCase().includes(searchVal));
+        return matchesCat && matchesSearch;
+    });
 
-    if (!filtered.length) {
-        container.innerHTML = `<div style="grid-column: span 2; text-align:center; padding:30px; font-size:12px; color:var(--text-secondary);">لا توجد أصناف مطابقة للبحث</div>`;
+    if (filtered.length === 0) {
+        container.innerHTML = `
+            <div style="grid-column: 1 / -1; text-align: center; padding: 40px 10px; color: var(--text-dim);">
+                <div style="font-size: 14px; font-weight: 800; margin-bottom: 4px;">لا توجد أصناف مطابقة</div>
+                <div style="font-size: 11px;">يرجى تجربة البحث باسم آخر أو اختيار تصنيف مختلف</div>
+            </div>
+        `;
         return;
     }
 
-    container.innerHTML = filtered.map(p => {
-        const isAvail = p.isAvailable !== false;
-        return `
-            <div class="product-card ${!isAvail ? 'unavailable' : ''}" onclick="${isAvail ? `openProductCustomizer('${p.id}')` : `window.showToastMsg('هذا الصنف غير متوفر حالياً')`}">
-                <div class="product-img-box">
-                    <img src="${p.img}" class="product-img" alt="${p.name}" onerror="this.src='https://images.unsplash.com/photo-1517701550927-30cf4be1aaf9?w=400&q=80'">
+    container.innerHTML = filtered.map(item => `
+        <div class="product-card ${item.isAvailable === false ? 'unavailable' : ''}" onclick="openProductCustomizer('${item.id}')">
+            <div class="product-img-box">
+                <img src="${item.img}" class="product-img" alt="${item.name}" onerror="this.src='https://images.unsplash.com/photo-1517701550927-30cf4be1aaf9?w=300&q=80';">
+            </div>
+            <div class="product-meta">
+                <div>
+                    <div class="product-name">${item.name}</div>
+                    <div class="product-desc">${item.desc || ''}</div>
                 </div>
-                <div class="product-meta">
-                    <div>
-                        <div class="product-name">${p.name}</div>
-                        <div class="product-desc">${p.desc || ''}</div>
-                    </div>
-                    <div class="product-row-bottom">
-                        <div class="product-price num-font">${parseFloat(p.price).toFixed(2)} د.أ</div>
-                        <div class="btn-add-mini">${isAvail ? '+ إضافة' : 'مغلق'}</div>
-                    </div>
+                <div class="product-row-bottom">
+                    <div class="product-price num-font">${parseFloat(item.price).toFixed(2)} د.أ</div>
+                    <button class="btn-add-mini" type="button">طلب</button>
                 </div>
             </div>
-        `;
-    }).join('');
+        </div>
+    `).join('');
 };
 
-window.openProductCustomizer = function(productId) {
-    const item = productsCatalog.find(p => p.id === productId);
-    if (!item) return;
+window.openProductCustomizer = function(prodId) {
+    const prod = productsCatalog.find(p => p.id === prodId);
+    if (!prod) return;
 
-    window.appState.selectedProduct = item;
+    window.appState.selectedProduct = JSON.parse(JSON.stringify(prod));
     window.appState.productModalQty = 1;
-
-    document.getElementById('psHeroImg').src = item.img;
-    document.getElementById('psTitle').innerText = item.name;
-    document.getElementById('psDesc').innerText = item.desc || '';
-    document.getElementById('psBasePrice').innerText = `${parseFloat(item.price).toFixed(2)} د.أ`;
-    document.getElementById('psQtyDisplay').innerText = '1';
+    
+    document.getElementById('psTitle').innerText = prod.name;
+    document.getElementById('psDesc').innerText = prod.desc || '';
+    document.getElementById('psBasePrice').innerText = parseFloat(prod.price).toFixed(2) + " د.أ";
+    document.getElementById('psHeroImg').src = prod.img;
     document.getElementById('psNotes').value = '';
+    document.getElementById('psQtyDisplay').innerText = '1';
 
-    const sizeCard = document.getElementById('psSizeCardWrapper');
-    const saucesCard = document.getElementById('psSaucesCardWrapper');
-    const addonsCard = document.getElementById('psAddonsCardWrapper');
+    // أحجام
+    const sizeWrapper = document.getElementById('psSizeCardWrapper');
     const sizeContainer = document.getElementById('psSizeOptionsContainer');
-    const saucesContainer = document.getElementById('psSaucesContainer');
-    const addonsContainer = document.getElementById('psAddonsContainer');
-
-    if (item.hasSauces && Array.isArray(item.saucesList) && item.saucesList.length > 0) {
-        saucesCard.style.display = 'block';
-        saucesContainer.innerHTML = item.saucesList.map(s => `
-            <label style="display:flex; justify-content:space-between; align-items:center; padding:9px 12px; background:var(--bg-surface); border-radius:var(--radius-sm); border:1px solid var(--border-subtle); cursor:pointer;">
-                <div>
-                    <span style="font-size:12.5px; font-weight:700;">${s.name}</span>
-                    <span class="num-font" style="font-size:11px; color:var(--brand-theme); margin-right:6px;">(${parseFloat(s.price).toFixed(2)} د.أ)</span>
+    if (prod.hasSizes && prod.sizesList && prod.sizesList.length > 0) {
+        sizeWrapper.style.display = 'block';
+        window.appState.selectedSizeIndex = 0;
+        sizeContainer.innerHTML = prod.sizesList.map((sz, idx) => `
+            <label style="display:flex; align-items:center; justify-content:space-between; padding:8px 10px; background:var(--bg-surface); border:1px solid var(--border-subtle); border-radius:var(--radius-sm); cursor:pointer;">
+                <div style="display:flex; align-items:center; gap:8px;">
+                    <input type="radio" name="prodSizeChoice" value="${idx}" ${idx === 0 ? 'checked' : ''} onchange="window.appState.selectedSizeIndex = ${idx}; updateCustomizerPrice();">
+                    <span style="font-size:12px; font-weight:800;">${sz.name}</span>
                 </div>
-                <input type="checkbox" class="sauce-check-opt" value="${s.name}" data-price="${s.price}" onchange="handleSauceCheckChange(this)">
+                <span class="num-font" style="font-size:11.5px; color:var(--brand-theme);">${parseFloat(sz.extra) > 0 ? '+ ' + parseFloat(sz.extra).toFixed(2) + ' د.أ' : 'الأساسي'}</span>
             </label>
         `).join('');
     } else {
-        saucesCard.style.display = 'none';
+        sizeWrapper.style.display = 'none';
+        window.appState.selectedSizeIndex = -1;
     }
 
-    if (item.hasSizes && Array.isArray(item.sizesList) && item.sizesList.length > 0) {
-        sizeCard.style.display = 'block';
-        sizeContainer.innerHTML = item.sizesList.map((sz, idx) => `
-            <label style="display:flex; justify-content:space-between; align-items:center; padding:9px 12px; background:var(--bg-surface); border-radius:var(--radius-sm); border:1px solid var(--border-subtle); cursor:pointer;">
-                <span style="font-size:12.5px; font-weight:700;">${sz.name} ${sz.extra > 0 ? `(+${parseFloat(sz.extra).toFixed(2)} د.أ)` : ''}</span>
-                <input type="radio" name="prodSize" value="${sz.name}" data-extra="${sz.extra}" ${idx === 0 ? 'checked' : ''} onchange="updateProductCalculatedPrice()">
+    // نكهات وصوصات
+    const sauceWrapper = document.getElementById('psSaucesCardWrapper');
+    const sauceContainer = document.getElementById('psSaucesContainer');
+    if (prod.hasSauces && prod.saucesList && prod.saucesList.length > 0) {
+        sauceWrapper.style.display = 'block';
+        window.appState.selectedSauces = [];
+        sauceContainer.innerHTML = prod.saucesList.map(sc => `
+            <label style="display:flex; align-items:center; justify-content:space-between; padding:8px 10px; background:var(--bg-surface); border:1px solid var(--border-subtle); border-radius:var(--radius-sm); cursor:pointer;">
+                <div style="display:flex; align-items:center; gap:8px;">
+                    <input type="checkbox" value="${sc.name}" data-price="${sc.price}" onchange="handleSauceCheck(this)">
+                    <span style="font-size:12px; font-weight:800;">${sc.name}</span>
+                </div>
+                <span class="num-font" style="font-size:11.5px; color:var(--brand-theme);">${parseFloat(sc.price).toFixed(2)} د.أ</span>
             </label>
         `).join('');
     } else {
-        sizeCard.style.display = 'none';
+        sauceWrapper.style.display = 'none';
+        window.appState.selectedSauces = [];
     }
 
-    const itemAddons = item.allowedAddons || [];
-    if (itemAddons.length > 0) {
-        addonsCard.style.display = 'block';
-        const filteredAddons = MASTER_ADDONS_DICT.filter(ad => itemAddons.includes(ad.id));
-        addonsContainer.innerHTML = filteredAddons.map(ad => `
-            <label style="display:flex; justify-content:space-between; align-items:center; padding:8px 12px; background:var(--bg-surface); border-radius:var(--radius-sm); border:1px solid var(--border-subtle); cursor:pointer;">
-                <span style="font-size:12px; font-weight:700;">${ad.name} ${ad.price > 0 ? `(+${ad.price.toFixed(2)} د.أ)` : '(مجاني)'}</span>
-                <input type="checkbox" class="addon-check-opt" value="${ad.name}" data-price="${ad.price}" onchange="updateProductCalculatedPrice()">
+    // إضافات
+    const addonsWrapper = document.getElementById('psAddonsCardWrapper');
+    const addonsContainer = document.getElementById('psAddonsContainer');
+    const allowed = prod.allowedAddons || [];
+    const availableAddons = MASTER_ADDONS_DICT.filter(ad => allowed.includes(ad.id));
+    if (availableAddons.length > 0) {
+        addonsWrapper.style.display = 'block';
+        window.appState.selectedAddons = [];
+        addonsContainer.innerHTML = availableAddons.map(ad => `
+            <label style="display:flex; align-items:center; justify-content:space-between; padding:8px 10px; background:var(--bg-surface); border:1px solid var(--border-subtle); border-radius:var(--radius-sm); cursor:pointer;">
+                <div style="display:flex; align-items:center; gap:8px;">
+                    <input type="checkbox" value="${ad.name}" data-price="${ad.price}" onchange="handleAddonCheck(this)">
+                    <span style="font-size:12px; font-weight:800;">${ad.name}</span>
+                </div>
+                <span class="num-font" style="font-size:11.5px; color:var(--brand-theme);">${parseFloat(ad.price) > 0 ? '+ ' + parseFloat(ad.price).toFixed(2) + ' د.أ' : 'مجاني'}</span>
             </label>
         `).join('');
     } else {
-        addonsCard.style.display = 'none';
+        addonsWrapper.style.display = 'none';
+        window.appState.selectedAddons = [];
     }
 
-    updateProductCalculatedPrice();
-    window.navigateRouter('screen-product');
+    updateCustomizerPrice();
+    navigateRouter('screen-product');
 };
 
-window.handleSauceCheckChange = function(el) {
-    const checked = Array.from(document.querySelectorAll('.sauce-check-opt:checked'));
-    if (checked.length > 3) {
-        el.checked = false;
-        return window.showToastMsg("الحد الأقصى 3 نكهات فقط للمكس");
+window.handleSauceCheck = function(el) {
+    if (el.checked) {
+        if (window.appState.selectedSauces.length >= 3) {
+            el.checked = false;
+            return window.showToastMsg("يمكنك اختيار 3 نكهات أو صوصات كحد أقصى");
+        }
+        window.appState.selectedSauces.push({ name: el.value, price: parseFloat(el.dataset.price) || 0 });
+    } else {
+        window.appState.selectedSauces = window.appState.selectedSauces.filter(s => s.name !== el.value);
     }
-    updateProductCalculatedPrice();
+    updateCustomizerPrice();
+};
+
+window.handleAddonCheck = function(el) {
+    if (el.checked) {
+        window.appState.selectedAddons.push({ name: el.value, price: parseFloat(el.dataset.price) || 0 });
+    } else {
+        window.appState.selectedAddons = window.appState.selectedAddons.filter(a => a.name !== el.value);
+    }
+    updateCustomizerPrice();
 };
 
 window.adjustProductQty = function(delta) {
-    let q = window.appState.productModalQty + delta;
-    if (q >= 1 && q <= 30) {
-        window.appState.productModalQty = q;
-        document.getElementById('psQtyDisplay').innerText = q;
-        updateProductCalculatedPrice();
-    }
+    let q = (window.appState.productModalQty || 1) + delta;
+    if (q < 1) q = 1;
+    window.appState.productModalQty = q;
+    document.getElementById('psQtyDisplay').innerText = q;
+    updateCustomizerPrice();
 };
 
-window.updateProductCalculatedPrice = function() {
-    if (!window.appState.selectedProduct) return;
-    const p = window.appState.selectedProduct;
-    let base = parseFloat(p.price);
+window.updateCustomizerPrice = function() {
+    const prod = window.appState.selectedProduct;
+    if (!prod) return;
+    let unitPrice = parseFloat(prod.price) || 0;
 
-    if (p.hasSauces) {
-        const checked = Array.from(document.querySelectorAll('.sauce-check-opt:checked'));
-        if (checked.length > 0) {
-            const prices = checked.map(c => parseFloat(c.getAttribute('data-price') || 0));
-            base = Math.max(...prices);
-        }
+    if (prod.hasSizes && window.appState.selectedSizeIndex >= 0 && prod.sizesList[window.appState.selectedSizeIndex]) {
+        unitPrice += parseFloat(prod.sizesList[window.appState.selectedSizeIndex].extra) || 0;
     }
 
-    if (p.hasSizes) {
-        const sizeInput = document.querySelector('input[name="prodSize"]:checked');
-        if (sizeInput) {
-            base += parseFloat(sizeInput.getAttribute('data-extra') || 0);
-        }
+    if (prod.hasSauces && window.appState.selectedSauces && window.appState.selectedSauces.length > 0) {
+        const saucePrices = window.appState.selectedSauces.map(s => s.price);
+        unitPrice = Math.max(...saucePrices);
     }
 
-    const checkedAddons = Array.from(document.querySelectorAll('.addon-check-opt:checked'));
-    const addonsTotal = checkedAddons.reduce((sum, el) => sum + parseFloat(el.getAttribute('data-price') || 0), 0);
+    if (window.appState.selectedAddons) {
+        window.appState.selectedAddons.forEach(ad => { unitPrice += (parseFloat(ad.price) || 0); });
+    }
 
-    const total = (base + addonsTotal) * window.appState.productModalQty;
-    const calcEl = document.getElementById('psCalculatedPrice');
-    if (calcEl) calcEl.innerText = total.toFixed(2);
+    const total = unitPrice * (window.appState.productModalQty || 1);
+    const calculatedEl = document.getElementById('psCalculatedPrice');
+    if (calculatedEl) calculatedEl.innerText = total.toFixed(2);
 };
 
 window.confirmAddItemToCart = function() {
-    if (!window.appState.selectedProduct) return;
-    const p = window.appState.selectedProduct;
-    let unitPrice = parseFloat(p.price);
-    let sizeTitle = "عادي";
-    let saucesDesc = "";
+    const prod = window.appState.selectedProduct;
+    if (!prod) return;
 
-    if (p.hasSauces) {
-        const checked = Array.from(document.querySelectorAll('.sauce-check-opt:checked'));
-        if (checked.length === 0) return window.showToastMsg("يرجى اختيار نكهة واحدة على الأقل");
-        const prices = checked.map(c => parseFloat(c.getAttribute('data-price') || 0));
-        unitPrice = Math.max(...prices);
-        const names = checked.map(c => c.value);
-        saucesDesc = names.length === 1 ? `نكهة: ${names[0]}` : `مكس (${names.join(' + ')})`;
+    let finalUnitPrice = parseFloat(prod.price) || 0;
+    let sizeName = "";
+    if (prod.hasSizes && window.appState.selectedSizeIndex >= 0 && prod.sizesList[window.appState.selectedSizeIndex]) {
+        sizeName = prod.sizesList[window.appState.selectedSizeIndex].name;
+        finalUnitPrice += parseFloat(prod.sizesList[window.appState.selectedSizeIndex].extra) || 0;
     }
 
-    if (p.hasSizes) {
-        const sizeInput = document.querySelector('input[name="prodSize"]:checked');
-        if (sizeInput) {
-            sizeTitle = sizeInput.value;
-            unitPrice += parseFloat(sizeInput.getAttribute('data-extra') || 0);
-        }
+    let sauceNames = [];
+    if (prod.hasSauces && window.appState.selectedSauces && window.appState.selectedSauces.length > 0) {
+        sauceNames = window.appState.selectedSauces.map(s => s.name);
+        finalUnitPrice = Math.max(...window.appState.selectedSauces.map(s => s.price));
     }
 
-    const checkedAddons = Array.from(document.querySelectorAll('.addon-check-opt:checked'));
-    const addonsTotal = checkedAddons.reduce((sum, el) => sum + parseFloat(el.getAttribute('data-price') || 0), 0);
-    const addonsNames = checkedAddons.map(el => el.value);
+    let addonNames = [];
+    if (window.appState.selectedAddons) {
+        addonNames = window.appState.selectedAddons.map(a => a.name);
+        window.appState.selectedAddons.forEach(ad => { finalUnitPrice += (parseFloat(ad.price) || 0); });
+    }
 
-    unitPrice += addonsTotal;
+    const notes = (document.getElementById('psNotes')?.value || '').trim();
 
-    window.appState.cart.push({
-        id: "c_" + Date.now(),
-        name: p.name,
-        qty: window.appState.productModalQty,
-        sizeName: sizeTitle,
-        sauceInfo: saucesDesc,
-        addonsInfo: addonsNames.length > 0 ? addonsNames.join('، ') : '',
-        unitPrice: unitPrice,
-        notes: (document.getElementById('psNotes').value || '').trim(),
-        lineTotal: unitPrice * window.appState.productModalQty
-    });
+    const cartItem = {
+        cartId: "ci_" + Date.now() + "_" + Math.floor(Math.random() * 1000),
+        id: prod.id,
+        name: prod.name,
+        price: finalUnitPrice,
+        qty: window.appState.productModalQty || 1,
+        size: sizeName,
+        sauces: sauceNames,
+        addons: addonNames,
+        notes: notes,
+        img: prod.img
+    };
 
+    window.appState.cart.push(cartItem);
     safeSet('cc_cart', window.appState.cart);
     refreshCartDockStatus();
-    window.showToastMsg("تمت الإضافة للسلة");
-    window.navigateRouter('screen-home');
+    window.showToastMsg("تمت الإضافة للسلة بنجاح");
+    navigateRouter('screen-home');
 };
 
-function refreshCartDockStatus() {
+window.refreshCartDockStatus = function() {
     const dock = document.getElementById('floatingCartDock');
-    const countBadge = document.getElementById('dockBadgeCount');
-    const priceTotal = document.getElementById('dockPriceTotal');
     if (!dock) return;
 
-    const count = window.appState.cart.reduce((s, i) => s + i.qty, 0);
-    const sub = window.appState.cart.reduce((s, i) => s + i.lineTotal, 0);
+    const count = window.appState.cart.reduce((sum, item) => sum + item.qty, 0);
+    const total = window.appState.cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
 
-    if (count > 0) {
-        countBadge.innerText = count;
-        priceTotal.innerText = `${sub.toFixed(2)} د.أ`;
+    const badge = document.getElementById('dockBadgeCount');
+    const price = document.getElementById('dockPriceTotal');
+    if (badge) badge.innerText = count;
+    if (price) price.innerText = total.toFixed(2) + " د.أ";
+
+    const curScreen = document.querySelector('.app-screen.active')?.id;
+    if (count > 0 && curScreen === 'screen-home') {
         dock.classList.add('visible');
     } else {
         dock.classList.remove('visible');
     }
-}
+};
 
-// السلة
-function renderCartItemsList() {
+window.checkAuthAndProceedToCart = function() {
+    if (!currentAuthenticatedUser) {
+        window.showToastMsg("يرجى تسجيل الدخول أو إنشاء حساب لإتمام الطلب");
+        return navigateRouter('screen-auth');
+    }
+    renderCartScreen();
+    navigateRouter('screen-cart');
+};
+
+window.renderCartScreen = function() {
     const container = document.getElementById('cartItemsList');
     if (!container) return;
-    if (!window.appState.cart.length) {
-        container.innerHTML = `<div style="text-align:center; padding:16px; color:var(--text-secondary); font-size:12px;">السلة فارغة حالياً</div>`;
-        return;
-    }
-    container.innerHTML = window.appState.cart.map((item, idx) => `
-        <div style="display:flex; justify-content:space-between; align-items:center; padding:8px 0; border-bottom:1px dashed var(--border-subtle);">
-            <div>
-                <div style="font-weight:900; font-size:13px;">${item.qty}x ${item.name} (${item.sizeName})</div>
-                ${item.sauceInfo ? `<div style="font-size:11px; color:var(--brand-theme);">${item.sauceInfo}</div>` : ''}
-                ${item.addonsInfo ? `<div style="font-size:10.5px; color:var(--text-secondary);">إضافات: ${item.addonsInfo}</div>` : ''}
-                ${item.notes ? `<div style="font-size:10px; color:var(--text-dim);">ملاحظة: ${item.notes}</div>` : ''}
-            </div>
-            <div style="text-align:left;">
-                <div class="num-font" style="font-weight:900; color:var(--brand-theme); font-size:13px;">${item.lineTotal.toFixed(2)} د.أ</div>
-                <button style="font-size:10px; color:var(--status-danger); background:none; border:none; cursor:pointer;" onclick="removeCartItem(${idx})">حذف</button>
-            </div>
-        </div>
-    `).join('');
-    populateCartTownsSelect();
-    renderCartPaymentOptions();
-}
 
-window.removeCartItem = function(index) {
-    window.appState.cart.splice(index, 1);
-    safeSet('cc_cart', window.appState.cart);
-    renderCartItemsList();
+    if (window.appState.cart.length === 0) {
+        container.innerHTML = `
+            <div style="text-align:center; padding:30px 10px; color:var(--text-dim); font-size:12px;">
+                السلة فارغة حالياً. تفضل باختيار أشهى المشروبات والحلويات من المنيو!
+            </div>
+        `;
+    } else {
+        container.innerHTML = window.appState.cart.map(item => `
+            <div style="display:flex; align-items:center; justify-content:space-between; padding:10px 0; border-bottom:1px solid var(--border-subtle);">
+                <div style="display:flex; align-items:center; gap:10px;">
+                    <img src="${item.img}" style="width:44px; height:44px; border-radius:var(--radius-sm); object-fit:contain; background:#000;">
+                    <div>
+                        <div style="font-size:12.5px; font-weight:900;">${item.name}</div>
+                        <div style="font-size:10px; color:var(--text-secondary);">
+                            ${item.size ? 'الحجم: ' + item.size + ' | ' : ''}
+                            ${item.sauces && item.sauces.length > 0 ? item.sauces.join(', ') + ' | ' : ''}
+                            ${item.addons && item.addons.length > 0 ? item.addons.join('+ ') : ''}
+                        </div>
+                        <div class="num-font" style="font-size:12px; font-weight:800; color:var(--brand-theme);">${(item.price * item.qty).toFixed(2)} د.أ (${item.qty}×)</div>
+                    </div>
+                </div>
+                <button style="background:none; border:none; color:var(--status-danger); cursor:pointer; padding:6px;" onclick="removeCartItem('${item.cartId}')">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+                </button>
+            </div>
+        `).join('');
+    }
+
+    renderCartTowns();
+    renderCartPaymentMethods();
     recalculateCartSummary();
+};
+
+window.removeCartItem = function(cartId) {
+    window.appState.cart = window.appState.cart.filter(item => item.cartId !== cartId);
+    safeSet('cc_cart', window.appState.cart);
+    renderCartScreen();
     refreshCartDockStatus();
 };
 
-window.switchCartBranch = function(idx) {
-    window.appState.cartBranch = idx;
-    document.getElementById('btnBranch0').classList.toggle('active', idx === 0);
-    document.getElementById('btnBranch1').classList.toggle('active', idx === 1);
-    populateCartTownsSelect();
-    renderCartPaymentOptions();
+window.switchCartBranch = function(branchId) {
+    window.appState.cartBranch = branchId;
+    document.getElementById('btnBranch0').classList.toggle('active', branchId === 0);
+    document.getElementById('btnBranch1').classList.toggle('active', branchId === 1);
+    renderCartTowns();
+    renderCartPaymentMethods();
     recalculateCartSummary();
 };
 
-window.switchDeliveryMode = function(m) {
-    window.appState.deliveryMode = m;
-    document.getElementById('btnModeDelivery').classList.toggle('active', m === 'delivery');
-    document.getElementById('btnModePickup').classList.toggle('active', m === 'pickup');
-    document.getElementById('deliveryFieldsArea').style.display = (m === 'delivery') ? 'block' : 'none';
+window.switchDeliveryMode = function(mode) {
+    window.appState.deliveryMode = mode;
+    document.getElementById('btnModePickup').classList.toggle('active', mode === 'pickup');
+    document.getElementById('btnModeDelivery').classList.toggle('active', mode === 'delivery');
+    document.getElementById('deliveryFieldsArea').style.display = (mode === 'delivery') ? 'block' : 'none';
     recalculateCartSummary();
 };
 
-function populateCartTownsSelect() {
-    const sel = document.getElementById('cartTownSelect');
-    if (!sel) return;
-    const b = branchesData[window.appState.cartBranch] || branchesData[0];
-    sel.innerHTML = Object.entries(b.towns).map(([town, fee]) => `
-        <option value="${fee}">${town} (أجور التوصيل: ${parseFloat(fee).toFixed(2)} د.أ)</option>
+window.renderCartTowns = function() {
+    const select = document.getElementById('cartTownSelect');
+    if (!select) return;
+    const branch = branchesData[window.appState.cartBranch || 0];
+    select.innerHTML = Object.entries(branch.towns).map(([town, fee]) => `
+        <option value="${town}" data-fee="${fee}">${town} (+ ${parseFloat(fee).toFixed(2)} د.أ توصيل)</option>
     `).join('');
-}
-
-window.recalculateCartSummary = function() {
-    const sub = window.appState.cart.reduce((s, i) => s + i.lineTotal, 0);
-    let del = 0;
-    if (window.appState.deliveryMode === 'delivery') {
-        const sel = document.getElementById('cartTownSelect');
-        if (sel && sel.value) del = parseFloat(sel.value);
-    }
-    const total = sub + del;
-    document.getElementById('sumTotal').innerText = `${total.toFixed(2)} د.أ`;
 };
 
-function renderCartPaymentOptions() {
+window.renderCartPaymentMethods = function() {
     const container = document.getElementById('cartPaymentMethodsContainer');
     if (!container) return;
-    const curBranch = window.appState.cartBranch.toString();
-    const branchMethods = customPaymentMethods.filter(m => m.branch === curBranch);
 
-    if (!branchMethods.length) {
-        container.innerHTML = `<div style="font-size:11.5px; color:var(--text-dim);">الدفع نقداً عند الاستلام</div>`;
-        window.appState.selectedPaymentMethod = "دفع نقدي";
+    const currentBranchStr = String(window.appState.cartBranch || 0);
+    const methods = customPaymentMethods.filter(pm => pm.branch === currentBranchStr);
+
+    if (methods.length === 0) {
+        container.innerHTML = `<div style="font-size:11px; color:var(--text-secondary);">الدفع نقدي (كاش) عند الاستلام.</div>`;
+        window.appState.selectedPaymentMethod = "دفع نقدي (كاش)";
         return;
     }
 
-    container.innerHTML = branchMethods.map((m, idx) => `
-        <label style="display:flex; justify-content:space-between; align-items:center; padding:9px 12px; background:var(--bg-surface); border-radius:var(--radius-sm); border:1px solid var(--border-subtle); cursor:pointer;">
-            <div style="display:flex; align-items:center; gap:8px;">
-                ${m.logo ? `<img src="${m.logo}" style="width:28px; height:28px; object-fit:contain; border-radius:4px;">` : ''}
+    container.innerHTML = methods.map((pm, idx) => `
+        <label style="display:flex; align-items:center; justify-content:space-between; padding:9px 12px; background:var(--bg-surface); border:1px solid var(--border-subtle); border-radius:var(--radius-sm); cursor:pointer;">
+            <div style="display:flex; align-items:center; gap:10px;">
+                <input type="radio" name="cartPaymentOption" value="${pm.name}" ${idx === 0 ? 'checked' : ''} onchange="window.appState.selectedPaymentMethod = '${pm.name}';">
+                ${pm.logo ? `<img src="${pm.logo}" style="width:26px; height:26px; border-radius:4px; object-fit:contain;">` : ''}
                 <div>
-                    <div style="font-size:12px; font-weight:800;">${m.name}</div>
-                    <div style="font-size:10px; color:var(--text-secondary);">${m.desc}</div>
+                    <div style="font-size:12px; font-weight:800;">${pm.name}</div>
+                    <div style="font-size:10px; color:var(--text-secondary);">${pm.desc || ''}</div>
                 </div>
             </div>
-            <input type="radio" name="cartPayOpt" value="${m.name}" ${idx === 0 ? 'checked' : ''} onchange="window.appState.selectedPaymentMethod=this.value">
         </label>
     `).join('');
 
-    window.appState.selectedPaymentMethod = branchMethods[0].name;
-}
+    window.appState.selectedPaymentMethod = methods[0].name;
+};
+
+window.recalculateCartSummary = function() {
+    const subtotal = window.appState.cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
+    let deliveryFee = 0;
+
+    if (window.appState.deliveryMode === 'delivery' && window.appState.cart.length > 0) {
+        const select = document.getElementById('cartTownSelect');
+        if (select && select.selectedOptions[0]) {
+            deliveryFee = parseFloat(select.selectedOptions[0].dataset.fee) || 0;
+        }
+    }
+
+    const total = subtotal + deliveryFee;
+    const sumEl = document.getElementById('sumTotal');
+    if (sumEl) sumEl.innerText = total.toFixed(2) + " د.أ";
+};
 
 window.dispatchOrderAndInitiateTracking = function() {
     if (!currentAuthenticatedUser) {
-        window._postAuthDestination = 'screen-cart';
-        window.showToastMsg("يرجى تسجيل الدخول أولاً لإتمام الطلب");
-        return window.navigateRouter('screen-auth');
+        window.showToastMsg("يرجى تسجيل الدخول أولاً");
+        return navigateRouter('screen-auth');
     }
     if (bannedCustomersList.includes(currentAuthenticatedUser.phone)) {
-        checkUserBannedStateAndLockout();
-        return window.showToastMsg("هذا الحساب مقيد ولا يمكنه الطلب");
+        return checkUserBannedStateAndLockout();
     }
-    if (!window.appState.cart.length) return window.showToastMsg("سلة المشتريات فارغة");
+    if (window.appState.cart.length === 0) {
+        return window.showToastMsg("سلة المشتريات فارغة!");
+    }
 
-    const branch = branchesData[window.appState.cartBranch];
-    const sub = window.appState.cart.reduce((s, i) => s + i.lineTotal, 0);
-    const del = window.appState.deliveryMode === 'delivery' ? parseFloat(document.getElementById('cartTownSelect').value || 0) : 0;
-    const total = sub + del;
-    const orderNumber = 'ORD-' + Math.floor(1000 + Math.random() * 9000);
+    const branch = branchesData[window.appState.cartBranch || 0];
+    const subtotal = window.appState.cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
+    let deliveryFee = 0;
+    let townName = "استلام من الفرع";
 
-    const newOrderObj = {
-        orderId: orderNumber,
+    if (window.appState.deliveryMode === 'delivery') {
+        const select = document.getElementById('cartTownSelect');
+        townName = select ? select.value : "غير محدد";
+        deliveryFee = select && select.selectedOptions[0] ? (parseFloat(select.selectedOptions[0].dataset.fee) || 0) : 0;
+    }
+
+    const finalTotal = subtotal + deliveryFee;
+
+    const orderObj = {
+        orderId: "CC-" + Date.now().toString().slice(-6),
         customerPhone: currentAuthenticatedUser.phone,
         customerName: currentAuthenticatedUser.name,
+        branchId: branch.id,
         branchName: branch.name,
-        branchId: window.appState.cartBranch,
-        deliveryMode: window.appState.deliveryMode,
+        mode: window.appState.deliveryMode,
+        town: townName,
         paymentMethod: window.appState.selectedPaymentMethod || "دفع نقدي",
         items: [...window.appState.cart],
-        subtotal: sub,
-        deliveryFee: del,
-        totalAmount: total,
-        status: 'received',
-        createdAt: Date.now()
+        subtotal: subtotal,
+        deliveryFee: deliveryFee,
+        total: finalTotal,
+        status: "pending",
+        createdAt: Date.now(),
+        dateStr: new Date().toLocaleDateString('ar-JO'),
+        timeStr: new Date().toLocaleTimeString('ar-JO', { hour: '2-digit', minute: '2-digit' })
     };
 
-    activeOrdersList.unshift(newOrderObj);
+    activeOrdersList.unshift(orderObj);
     safeSet('cc_orders', activeOrdersList);
-    if (cloudDb) cloudDb.collection('orders').doc(orderNumber).set(newOrderObj).catch(e=>console.warn(e));
 
+    if (cloudDb) {
+        cloudDb.collection('orders').doc(orderObj.orderId).set(orderObj).catch(e => console.warn(e));
+    }
+
+    // تفريغ السلة وتحديث النقاط
+    window.appState.cart = [];
+    safeSet('cc_cart', []);
+    refreshCartDockStatus();
+
+    // إضافة نقطة تشجيعية
+    currentAuthenticatedUser.points = (currentAuthenticatedUser.points || 0) + 1;
     currentAuthenticatedUser.ordersCount = (currentAuthenticatedUser.ordersCount || 0) + 1;
-    currentAuthenticatedUser.points = (currentAuthenticatedUser.points || 0) + Math.floor(total * 2);
     allRegisteredCustomers[currentAuthenticatedUser.phone] = currentAuthenticatedUser;
     safeSet('cc_users_directory', allRegisteredCustomers);
     safeSet('cc_active_client_user', currentAuthenticatedUser);
     if (cloudDb) cloudDb.collection('users').doc(currentAuthenticatedUser.phone).set(currentAuthenticatedUser).catch(e=>console.warn(e));
 
-    window.appState.cart = [];
-    localStorage.removeItem('cc_cart');
-    refreshCartDockStatus();
-
-    let msg = `*طلب جديد أونلاين | كافيه كورنر*\nرقم الطلب: ${orderNumber}\nالفرع: ${branch.name}\nالعميل: ${currentAuthenticatedUser.name} (${currentAuthenticatedUser.phone})\nنوع الاستلام: ${newOrderObj.deliveryMode === 'delivery' ? 'توصيل' : 'استلام من الفرع'}\nطريقة الدفع: ${newOrderObj.paymentMethod}\n----------------\n`;
-    newOrderObj.items.forEach((it, i) => {
-        msg += `${i+1}. *${it.qty}x ${it.name}* (${it.sizeName})${it.sauceInfo ? ` - ${it.sauceInfo}` : ''}${it.addonsInfo ? ` - إضافات: ${it.addonsInfo}` : ''} - ${it.lineTotal.toFixed(2)} د.أ\n`;
-    });
-    msg += `----------------\nالإجمالي: ${total.toFixed(2)} د.أ\n`;
-
-    window.open(`https://wa.me/${branch.whatsapp}?text=${encodeURIComponent(msg)}`, '_blank');
-    window.showToastMsg("تم إرسال الطلب بنجاح");
-    window.navigateRouter('screen-order-tracking');
+    window.showToastMsg("تم إرسال طلبك بنجاح! جاري التجهيز...");
+    renderOrderTrackingView();
+    navigateRouter('screen-order-tracking');
 };
 
-function renderOrderTrackingView() {
+window.renderOrderTrackingView = function() {
     const container = document.getElementById('activeOrderTrackingView');
     if (!container) return;
 
     if (!currentAuthenticatedUser) {
-        container.innerHTML = `<div style="text-align:center; padding:30px 14px; font-size:12px; color:var(--text-secondary);">يرجى تسجيل الدخول لتتبع طلباتك الخاصة</div>`;
+        container.innerHTML = `<div style="text-align:center; padding:30px 10px; color:var(--text-dim);">يرجى تسجيل الدخول لمتابعة طلبك المباشر.</div>`;
         return;
     }
 
     const myOrders = activeOrdersList.filter(o => o.customerPhone === currentAuthenticatedUser.phone);
-
-    if (!myOrders.length) {
+    if (myOrders.length === 0) {
         container.innerHTML = `
             <div class="clean-card" style="text-align:center; padding:30px 14px;">
-                <div style="font-weight:900; font-size:14px; margin-bottom:4px;">لا توجد طلبات جارية لك حالياً</div>
+                <div style="font-size:14px; font-weight:800; color:var(--text-primary); margin-bottom:4px;">لا توجد طلبات جارية حالياً</div>
+                <div style="font-size:11.5px; color:var(--text-secondary); margin-bottom:12px;">اختر من المنيو وتابع تجهيز طلبك بالتايمر هنا مباشرة.</div>
+                <button class="btn-brand-solid" onclick="navigateRouter('screen-home')">تصفح المنيو الآن</button>
             </div>
         `;
         return;
     }
 
-    container.innerHTML = myOrders.map(order => `
-        <div class="clean-card" style="margin-bottom:10px;">
-            <div style="display:flex; justify-content:space-between; align-items:center;">
-                <span class="num-font" style="font-weight:900; color:var(--brand-theme);">#${order.orderId}</span>
-                <span class="header-hours-badge">${order.deliveryMode === 'pickup' ? 'استلام من الفرع' : 'توصيل'}</span>
+    const latest = myOrders[0];
+    const isPickup = (latest.mode === 'pickup');
+
+    let statusText = "تم إرسال الطلب، بانتظار تأكيد الفرع";
+    let stepNumber = 1;
+    if (latest.status === 'accepted') { statusText = "تم قبول الطلب وجاري تجهيزه في الفرع"; stepNumber = 2; }
+    else if (latest.status === 'ready') { statusText = isPickup ? "طلبك جاهز للاستلام الآن داخل الفرع!" : "الطلب مع كابتن التوصيل وفي الطريق إليك"; stepNumber = 3; }
+    else if (latest.status === 'completed') { statusText = isPickup ? "تم استلام الطلب بالهناء والشفاء" : "تم التوصيل بنجاح، شكراً لاختيارك كافيه كورنر"; stepNumber = 4; }
+    else if (latest.status === 'cancelled') { statusText = "تم إلغاء الطلب من قبل الإدارة"; stepNumber = 0; }
+
+    container.innerHTML = `
+        <div class="clean-card">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+                <div class="num-font" style="font-size:14px; font-weight:900; color:var(--brand-theme);">${latest.orderId}</div>
+                <div style="font-size:11px; color:var(--text-dim);" class="num-font">${latest.timeStr}</div>
             </div>
-            <div style="font-size:13px; font-weight:900; margin-top:6px; color:var(--text-primary);">${order.status}</div>
-            <div style="font-size:11px; color:var(--text-secondary); margin-top:6px;">
-                ${order.items.map(it => `• ${it.qty}x ${it.name} (${it.sizeName})`).join(' ، ')}
-            </div>
-            <div style="font-size:12px; font-weight:900; margin-top:8px;">الإجمالي: <span class="num-font" style="color:var(--brand-theme);">${order.totalAmount.toFixed(2)} د.أ</span></div>
-        </div>
-    `).join('');
-}
+            <div style="font-size:13.5px; font-weight:900; color:var(--text-primary); margin-bottom:4px;">${statusText}</div>
+            <div style="font-size:11px; color:var(--text-secondary); margin-bottom:12px;">${latest.branchName} • ${isPickup ? 'استلام من الفرع' : 'توصيل إلى ' + latest.town}</div>
 
-function renderRedeemStoreView() {
-    const points = currentAuthenticatedUser ? (currentAuthenticatedUser.points || 0) : 0;
-    const balanceEl = document.getElementById('userRedeemPointsBalance');
-    if (balanceEl) balanceEl.innerText = points;
-
-    const container = document.getElementById('clientRedeemItemsList');
-    if (!container) return;
-
-    container.innerHTML = redeemCatalog.map(item => `
-        <div class="clean-card" style="display:flex; align-items:center; gap:12px; margin-bottom:10px;">
-            <img src="${item.img}" style="width:60px; height:60px; border-radius:var(--radius-sm); object-fit:cover; background:#000;">
-            <div style="flex:1;">
-                <div style="font-size:13.5px; font-weight:900;">${item.name}</div>
-                <div style="font-size:10.5px; color:var(--text-secondary); margin:2px 0;">${item.desc || ''}</div>
-                <div style="font-size:11px;">السعر الأصلي: <span class="num-font" style="text-decoration:line-through; color:var(--text-dim);">${parseFloat(item.price || 0).toFixed(2)} د.أ</span></div>
-            </div>
-            <div style="text-align:left;">
-                <div class="num-font" style="font-weight:900; color:var(--brand-theme); font-size:13px; margin-bottom:4px;">${item.points} نقطة</div>
-                <button class="btn-brand-solid" style="width:auto; padding:5px 12px; font-size:11px;" onclick="claimRedeemRewardItem('${item.id}')">استبدال</button>
-            </div>
-        </div>
-    `).join('');
-}
-
-window.claimRedeemRewardItem = function(id) {
-    if (!currentAuthenticatedUser) {
-        window._postAuthDestination = 'screen-rewards';
-        window.showToastMsg("يرجى تسجيل الدخول أولاً");
-        return window.navigateRouter('screen-auth');
-    }
-    const item = redeemCatalog.find(x => x.id === id);
-    if (!item) return;
-
-    if ((currentAuthenticatedUser.points || 0) < item.points) {
-        return window.showToastMsg("رصيد نقاطك غير كافٍ لاستبدال هذه المكافأة");
-    }
-
-    currentAuthenticatedUser.points -= item.points;
-    allRegisteredCustomers[currentAuthenticatedUser.phone] = currentAuthenticatedUser;
-    safeSet('cc_users_directory', allRegisteredCustomers);
-    safeSet('cc_active_client_user', currentAuthenticatedUser);
-    if (cloudDb) cloudDb.collection('users').doc(currentAuthenticatedUser.phone).set(currentAuthenticatedUser).catch(e=>console.warn(e));
-
-    window.appState.cart.push({
-        id: "rw_" + Date.now(),
-        name: item.name,
-        qty: 1,
-        sizeName: "مجاني (مكافأة)",
-        sauceInfo: "",
-        unitPrice: 0.00,
-        notes: "صنف مجاني مستبدل بنقاط الولاء",
-        lineTotal: 0.00
-    });
-    safeSet('cc_cart', window.appState.cart);
-    refreshCartDockStatus();
-
-    renderRedeemStoreView();
-    window.showToastMsg("تم استبدال المكافأة بنجاح وتم إضافتها لسلة مشترياتك!");
-    window.navigateRouter('screen-cart');
-};
-
-// ==========================================
-// إدارة الإشعارات وتوزيع النقاط (Fix Real-time)
-// ==========================================
-function updateUnreadNotificationsCounter() {
-    const badge = document.getElementById('unreadNotifCountBadge');
-    if (!badge) return;
-    if (!currentAuthenticatedUser) {
-        badge.style.display = 'none';
-        return;
-    }
-    const myNotifs = customerNotifications.filter(n => 
-        (n.targetPhone === 'all' || n.targetPhone === currentAuthenticatedUser.phone) && !n.isRead
-    );
-    if (myNotifs.length > 0) {
-        badge.innerText = myNotifs.length > 99 ? '99+' : myNotifs.length;
-        badge.style.display = 'inline-flex';
-    } else {
-        badge.style.display = 'none';
-    }
-}
-
-function renderCustomerNotifications() {
-    const container = document.getElementById('customerNotificationsList');
-    if (!container) return;
-    if (!currentAuthenticatedUser) {
-        container.innerHTML = `<div style="text-align:center; padding:30px; font-size:12px; color:var(--text-secondary);">يرجى تسجيل الدخول لمشاهدة إشعاراتك وتنبيهاتك</div>`;
-        return;
-    }
-    const myNotifs = customerNotifications.filter(n => n.targetPhone === 'all' || n.targetPhone === currentAuthenticatedUser.phone);
-    if (!myNotifs.length) {
-        container.innerHTML = `<div style="text-align:center; padding:30px; font-size:12px; color:var(--text-secondary);">لا توجد إشعارات جديدة حالياً</div>`;
-        return;
-    }
-    container.innerHTML = myNotifs.map(n => `
-        <div class="clean-card" style="cursor:pointer; border-right:3px solid var(--brand-theme); margin-bottom:8px; opacity:${n.isRead ? '0.75' : '1'};" onclick="openFullNotificationModal('${n.id}')">
-            <div style="display:flex; justify-content:space-between; align-items:center;">
-                <div style="font-weight:900; font-size:13px; color:var(--text-primary);">${n.title}</div>
-                <div class="num-font" style="font-size:10px; color:var(--text-dim);">${n.dateStr || ''}</div>
-            </div>
-            <div style="font-size:11.5px; color:var(--text-secondary); margin-top:4px; line-height:1.4;">${n.body}</div>
-        </div>
-    `).join('');
-}
-
-window.openFullNotificationModal = function(notifId) {
-    const notif = customerNotifications.find(n => n.id === notifId);
-    if (!notif) return;
-    activeViewingNotifId = notifId;
-    notif.isRead = true;
-    safeSet('cc_notifications', customerNotifications);
-    updateUnreadNotificationsCounter();
-
-    document.getElementById('notifModalTitle').innerText = notif.title;
-    document.getElementById('notifModalTime').innerText = notif.dateStr || new Date().toLocaleString('ar-JO');
-    document.getElementById('notifModalBody').innerText = notif.body;
-
-    const replyArea = document.getElementById('notifReplyActionArea');
-    const noReply = document.getElementById('notifNoReplyNotice');
-
-    if (notif.allowReply && notif.feedbackId) {
-        replyArea.style.display = 'block';
-        noReply.style.display = 'none';
-    } else {
-        replyArea.style.display = 'none';
-        noReply.style.display = 'block';
-    }
-
-    document.getElementById('modalFullNotificationView').style.display = 'flex';
-};
-
-window.closeFullNotificationModal = function() {
-    document.getElementById('modalFullNotificationView').style.display = 'none';
-    activeViewingNotifId = null;
-    renderCustomerNotifications();
-};
-
-window.sendReplyFromNotificationModal = function() {
-    const text = (document.getElementById('notifCustomerReplyInput').value || '').trim();
-    if (!text) return window.showToastMsg("يرجى كتابة نص الرد");
-    const notif = customerNotifications.find(n => n.id === activeViewingNotifId);
-    if (!notif || !notif.feedbackId) return;
-
-    const fb = customerFeedbacks.find(f => f.id === notif.feedbackId);
-    if (fb) {
-        fb.customerFollowup = text;
-        fb.customerFollowupAt = Date.now();
-        safeSet('cc_feedbacks', customerFeedbacks);
-        if (cloudDb) cloudDb.collection('feedbacks').doc(fb.id).set(fb).catch(e=>console.warn(e));
-    }
-
-    document.getElementById('notifCustomerReplyInput').value = '';
-    closeFullNotificationModal();
-    window.showToastMsg("تم إرسال ردك للإدارة بنجاح");
-};
-
-window.clearAllNotifications = function() {
-    if (!currentAuthenticatedUser) return;
-    customerNotifications = customerNotifications.filter(n => n.targetPhone !== 'all' && n.targetPhone !== currentAuthenticatedUser.phone);
-    safeSet('cc_notifications', customerNotifications);
-    updateUnreadNotificationsCounter();
-    renderCustomerNotifications();
-    window.showToastMsg("تم مسح إشعاراتك بنجاح");
-};
-
-function populateAdminCustomerDropdowns() {
-    const selNotif = document.getElementById('notifSingleUserSelect');
-    const selPoints = document.getElementById('pointsSingleUserSelect');
-    const usersArr = Object.values(allRegisteredCustomers);
-
-    const opts = usersArr.map(u => `<option value="${u.phone}">${u.name} (${u.phone})</option>`).join('');
-
-    if (selNotif) selNotif.innerHTML = opts || '<option value="">لا يوجد زبائن مسجلين</option>';
-    if (selPoints) selPoints.innerHTML = opts || '<option value="">لا يوجد زبائن مسجلين</option>';
-}
-
-window.toggleNotifCustomerPicker = function() {
-    const mode = document.getElementById('notifTargetMode').value;
-    document.getElementById('notifSinglePickerWrap').style.display = (mode === 'single') ? 'block' : 'none';
-};
-
-window.togglePointsCustomerPicker = function() {
-    const mode = document.getElementById('pointsTargetMode').value;
-    document.getElementById('pointsSinglePickerWrap').style.display = (mode === 'single') ? 'block' : 'none';
-};
-
-window.dispatchAdminNotification = function() {
-    const mode = document.getElementById('notifTargetMode').value;
-    const title = (document.getElementById('admNotifTitleInput').value || '').trim();
-    const body = (document.getElementById('admNotifBodyInput').value || '').trim();
-
-    if (!title || !body) return window.showToastMsg("يرجى ملء عنوان ونص الإشعار");
-
-    let target = 'all';
-    if (mode === 'single') {
-        target = document.getElementById('notifSingleUserSelect').value;
-        if (!target) return window.showToastMsg("يرجى اختيار الزبون المستهدف");
-    }
-
-    const notifObj = {
-        id: "notif_" + Date.now(),
-        title: title,
-        body: body,
-        targetPhone: target,
-        isRead: false,
-        allowReply: false,
-        createdAt: Date.now(),
-        dateStr: new Date().toLocaleDateString('ar-JO') + ' ' + new Date().toLocaleTimeString('ar-JO', {hour:'2-digit', minute:'2-digit'})
-    };
-
-    customerNotifications.unshift(notifObj);
-    safeSet('cc_notifications', customerNotifications);
-    if (cloudDb) cloudDb.collection('notifications').doc(notifObj.id).set(notifObj).catch(e=>console.warn(e));
-
-    document.getElementById('admNotifTitleInput').value = '';
-    document.getElementById('admNotifBodyInput').value = '';
-    window.showToastMsg(mode === 'all' ? "تم بث الإشعار لكافة الزبائن أونلاين" : `تم إرسال الإشعار للزبون (${target})`);
-};
-
-window.grantPointsToCustomers = function() {
-    const mode = document.getElementById('pointsTargetMode').value;
-    const amount = parseInt(document.getElementById('admGrantPointsAmount').value || 0);
-    if (!amount || amount <= 0) return window.showToastMsg("يرجى إدخال عدد نقاط صالح");
-
-    if (mode === 'single') {
-        const targetPhone = document.getElementById('pointsSingleUserSelect').value;
-        if (!targetPhone || !allRegisteredCustomers[targetPhone]) return window.showToastMsg("يرجى اختيار الزبون");
-        
-        const u = allRegisteredCustomers[targetPhone];
-        u.points = (u.points || 0) + amount;
-        allRegisteredCustomers[targetPhone] = u;
-        safeSet('cc_users_directory', allRegisteredCustomers);
-        if (cloudDb) cloudDb.collection('users').doc(targetPhone).set(u).catch(e=>console.warn(e));
-
-        const notifObj = {
-            id: "notif_pts_" + Date.now(),
-            title: "هدية نقاط ولاء من الإدارة",
-            body: `مبروك! تم منحك ${amount} نقطة ولاء مجانية في حسابك. رصيدك الحالي: ${u.points} نقطة.`,
-            targetPhone: targetPhone,
-            isRead: false,
-            allowReply: false,
-            createdAt: Date.now(),
-            dateStr: new Date().toLocaleDateString('ar-JO')
-        };
-        customerNotifications.unshift(notifObj);
-        safeSet('cc_notifications', customerNotifications);
-        if (cloudDb) cloudDb.collection('notifications').doc(notifObj.id).set(notifObj).catch(e=>console.warn(e));
-
-        window.showToastMsg(`تم منح ${amount} نقطة للزبون (${u.name})`);
-    } else {
-        const phones = Object.keys(allRegisteredCustomers);
-        if (!phones.length) return window.showToastMsg("لا يوجد زبائن مسجلين لمنحهم النقاط");
-
-        phones.forEach(p => {
-            allRegisteredCustomers[p].points = (allRegisteredCustomers[p].points || 0) + amount;
-            if (cloudDb) cloudDb.collection('users').doc(p).set(allRegisteredCustomers[p]).catch(e=>console.warn(e));
-        });
-        safeSet('cc_users_directory', allRegisteredCustomers);
-
-        const notifObj = {
-            id: "notif_pts_all_" + Date.now(),
-            title: "مكافأة نقاط ولاء جماعية",
-            body: `بمناسبة مميزة، منحت الإدارة جميع الزبائن الكرام ${amount} نقطة ولاء مجاناً!`,
-            targetPhone: 'all',
-            isRead: false,
-            allowReply: false,
-            createdAt: Date.now(),
-            dateStr: new Date().toLocaleDateString('ar-JO')
-        };
-        customerNotifications.unshift(notifObj);
-        safeSet('cc_notifications', customerNotifications);
-        if (cloudDb) cloudDb.collection('notifications').doc(notifObj.id).set(notifObj).catch(e=>console.warn(e));
-
-        window.showToastMsg(`تم منح ${amount} نقطة لكافة الزبائن المسجلين أونلاين`);
-    }
-
-    document.getElementById('admGrantPointsAmount').value = '';
-    renderAdminCustomersList();
-};
-
-// ==========================================
-// إدارة الشكاوى والمقترحات
-// ==========================================
-window.submitCustomerFeedback = function() {
-    if (!currentAuthenticatedUser) {
-        window._postAuthDestination = 'screen-feedback';
-        window.showToastMsg("يرجى تسجيل الدخول أولاً لإرسال الشكوى");
-        return window.navigateRouter('screen-auth');
-    }
-    const cat = document.getElementById('feedbackCategory').value;
-    const content = (document.getElementById('feedbackContentInput').value || '').trim();
-    if (!content) return window.showToastMsg("يرجى كتابة نص الشكوى أو المقترح");
-
-    const fbObj = {
-        id: "fb_" + Date.now(),
-        customerPhone: currentAuthenticatedUser.phone,
-        customerName: currentAuthenticatedUser.name,
-        category: cat,
-        text: content,
-        reply: "",
-        repliedAt: null,
-        createdAt: Date.now(),
-        dateStr: new Date().toLocaleDateString('ar-JO')
-    };
-
-    customerFeedbacks.unshift(fbObj);
-    safeSet('cc_feedbacks', customerFeedbacks);
-    if (cloudDb) cloudDb.collection('feedbacks').doc(fbObj.id).set(fbObj).catch(e=>console.warn(e));
-
-    document.getElementById('feedbackContentInput').value = '';
-    renderCustomerFeedbacks();
-    window.showToastMsg("تم إرسال رسالتك للإدارة مباشرة بخصوصية تامة");
-};
-
-function renderCustomerFeedbacks() {
-    const container = document.getElementById('customerFeedbackList');
-    if (!container) return;
-    if (!currentAuthenticatedUser) {
-        container.innerHTML = `<div style="text-align:center; padding:20px; font-size:11.5px; color:var(--text-secondary);">سجل دخولك لمشاهدة سجل شكاويك والردود</div>`;
-        return;
-    }
-    const myFbs = customerFeedbacks.filter(f => f.customerPhone === currentAuthenticatedUser.phone);
-    if (!myFbs.length) {
-        container.innerHTML = `<div style="text-align:center; padding:20px; font-size:11.5px; color:var(--text-secondary);">لا توجد شكاوى أو مقترحات سابقة</div>`;
-        return;
-    }
-    container.innerHTML = myFbs.map(f => `
-        <div class="clean-card" style="margin-bottom:8px;">
-            <div style="display:flex; justify-content:space-between; align-items:center;">
-                <span style="font-weight:900; font-size:12px; color:var(--brand-theme);">${f.category}</span>
-                <span class="num-font" style="font-size:10px; color:var(--text-dim);">${f.dateStr || ''}</span>
-            </div>
-            <div style="font-size:12px; margin-top:4px;">${f.text}</div>
-            ${f.reply ? `
-                <div style="background:var(--bg-elevated); padding:8px; border-radius:var(--radius-sm); margin-top:8px; border-right:2px solid var(--brand-theme);">
-                    <div style="font-size:10.5px; font-weight:800; color:var(--brand-theme);">رد الإدارة:</div>
-                    <div style="font-size:11.5px; color:var(--text-primary); margin-top:2px;">${f.reply}</div>
+            <div style="display:flex; justify-content:space-between; margin-bottom:14px; position:relative;">
+                <div style="flex:1; text-align:center;">
+                    <div style="width:24px; height:24px; border-radius:50%; margin:0 auto 4px; display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:900; background:${stepNumber >= 1 ? 'var(--brand-theme)' : 'var(--bg-elevated)'}; color:${stepNumber >= 1 ? '#fff' : 'var(--text-dim)'};">1</div>
+                    <div style="font-size:9.5px; font-weight:700;">إرسال</div>
                 </div>
-            ` : `<div style="font-size:10px; color:var(--text-dim); margin-top:6px;">قيد المراجعة لدى الإدارة...</div>`}
-        </div>
-    `).join('');
-}
-
-function renderAdminFeedbackControlList() {
-    const container = document.getElementById('adminFeedbackControlList');
-    if (!container) return;
-    const badge = document.getElementById('badgeHubFeedbackCount');
-    const unreplied = customerFeedbacks.filter(f => !f.reply);
-    if (badge) badge.innerText = unreplied.length;
-
-    if (!customerFeedbacks.length) {
-        container.innerHTML = `<div style="text-align:center; padding:20px; font-size:12px; color:var(--text-secondary);">صندوق الشكاوى فارغ</div>`;
-        return;
-    }
-
-    container.innerHTML = customerFeedbacks.map(f => `
-        <div class="clean-card" style="margin-bottom:8px;">
-            <div style="display:flex; justify-content:space-between; align-items:center;">
-                <span style="font-weight:900; font-size:12px; color:var(--brand-theme);">${f.category} — ${f.customerName} (<span class="num-font">${f.customerPhone}</span>)</span>
-                <span class="num-font" style="font-size:10px; color:var(--text-dim);">${f.dateStr || ''}</span>
-            </div>
-            <div style="font-size:12px; margin-top:6px; line-height:1.4;">${f.text}</div>
-            
-            ${f.customerFollowup ? `
-                <div style="background:rgba(59, 130, 246, 0.08); padding:6px 10px; border-radius:6px; margin-top:6px; border-right:2px solid var(--status-info); font-size:11px;">
-                    <strong>رد الزبون المباشر:</strong> ${f.customerFollowup}
+                <div style="flex:1; text-align:center;">
+                    <div style="width:24px; height:24px; border-radius:50%; margin:0 auto 4px; display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:900; background:${stepNumber >= 2 ? 'var(--brand-theme)' : 'var(--bg-elevated)'}; color:${stepNumber >= 2 ? '#fff' : 'var(--text-dim)'};">2</div>
+                    <div style="font-size:9.5px; font-weight:700;">تحضير</div>
                 </div>
-            ` : ''}
+                <div style="flex:1; text-align:center;">
+                    <div style="width:24px; height:24px; border-radius:50%; margin:0 auto 4px; display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:900; background:${stepNumber >= 3 ? 'var(--brand-theme)' : 'var(--bg-elevated)'}; color:${stepNumber >= 3 ? '#fff' : 'var(--text-dim)'};">3</div>
+                    <div style="font-size:9.5px; font-weight:700;">${isPickup ? 'جاهز' : 'بالطريق'}</div>
+                </div>
+                <div style="flex:1; text-align:center;">
+                    <div style="width:24px; height:24px; border-radius:50%; margin:0 auto 4px; display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:900; background:${stepNumber >= 4 ? 'var(--status-success)' : 'var(--bg-elevated)'}; color:${stepNumber >= 4 ? '#fff' : 'var(--text-dim)'};">4</div>
+                    <div style="font-size:9.5px; font-weight:700;">تسليم</div>
+                </div>
+            </div>
 
-            <div style="margin-top:8px; border-top:1px dashed var(--border-subtle); padding-top:8px;">
-                ${f.reply ? `
-                    <div style="font-size:11px; color:var(--status-success); margin-bottom:4px;"><strong>تم الرد:</strong> ${f.reply}</div>
-                ` : `
-                    <div style="display:flex; gap:6px;">
-                        <input type="text" class="ios-input-field" id="adminReplyInput_${f.id}" placeholder="اكتب رد الإدارة هنا...">
-                        <button class="btn-brand-solid" style="width:auto; padding:0 12px; font-size:11px;" onclick="sendAdminReplyToFeedback('${f.id}')">إرسال</button>
+            <div style="background:var(--bg-elevated); padding:10px; border-radius:var(--radius-sm); margin-bottom:10px;">
+                <div style="font-size:11.5px; font-weight:800; margin-bottom:6px;">أصناف الطلب:</div>
+                ${latest.items.map(it => `
+                    <div style="display:flex; justify-content:space-between; font-size:11px; margin-bottom:3px;">
+                        <span>${it.name} (${it.qty}×) ${it.size ? '[' + it.size + ']' : ''}</span>
+                        <span class="num-font">${(it.price * it.qty).toFixed(2)} د.أ</span>
                     </div>
-                `}
+                `).join('')}
+                <div style="display:flex; justify-content:space-between; font-size:12px; font-weight:900; border-top:1px dashed var(--border-subtle); margin-top:6px; padding-top:6px;">
+                    <span>الإجمالي الكلي:</span>
+                    <span class="num-font" style="color:var(--brand-theme);">${parseFloat(latest.total).toFixed(2)} د.أ</span>
+                </div>
             </div>
+            
+            <a href="https://wa.me/${branchesData[latest.branchId || 0].whatsapp}?text=${encodeURIComponent('مرحباً كافيه كورنر، بخصوص طلبي رقم ' + latest.orderId)}" target="_blank" class="btn-brand-outline" style="width:100%; justify-content:center;">
+                محادثة الفرع واتساب بخصوص الطلب
+            </a>
         </div>
-    `).join('');
-}
-
-window.sendAdminReplyToFeedback = function(fbId) {
-    const input = document.getElementById('adminReplyInput_' + fbId);
-    if (!input) return;
-    const replyText = input.value.trim();
-    if (!replyText) return window.showToastMsg("يرجى كتابة نص الرد");
-
-    const fb = customerFeedbacks.find(f => f.id === fbId);
-    if (!fb) return;
-
-    fb.reply = replyText;
-    fb.repliedAt = Date.now();
-    safeSet('cc_feedbacks', customerFeedbacks);
-    if (cloudDb) cloudDb.collection('feedbacks').doc(fb.id).set(fb).catch(e=>console.warn(e));
-
-    // إشعار موجه للزبون مع إمكانية الرد
-    const notifObj = {
-        id: "notif_rep_" + Date.now(),
-        title: "رد الإدارة بخصوص: " + fb.category,
-        body: `عزيزنا ${fb.customerName}، رداً على رسالتك:\n"${replyText}"`,
-        targetPhone: fb.customerPhone,
-        feedbackId: fb.id,
-        isRead: false,
-        allowReply: true,
-        createdAt: Date.now(),
-        dateStr: new Date().toLocaleDateString('ar-JO') + ' ' + new Date().toLocaleTimeString('ar-JO', {hour:'2-digit', minute:'2-digit'})
-    };
-    customerNotifications.unshift(notifObj);
-    safeSet('cc_notifications', customerNotifications);
-    if (cloudDb) cloudDb.collection('notifications').doc(notifObj.id).set(notifObj).catch(e=>console.warn(e));
-
-    renderAdminFeedbackControlList();
-    window.showToastMsg("تم إرسال الرد للعميل وإشعاره فوراً");
+    `;
 };
 
-// ==========================================
-// التنقل والراوتر
-// ==========================================
 window.navigateRouter = function(screenId) {
-    document.getElementById('sidebarMask')?.classList.remove('active');
-    document.getElementById('sidebarDrawer')?.classList.remove('active');
-
-    document.querySelectorAll('.app-screen').forEach(s => s.classList.remove('active'));
+    document.querySelectorAll('.app-screen').forEach(scr => scr.classList.remove('active'));
     const target = document.getElementById(screenId);
     if (target) {
         target.classList.add('active');
-        window.scrollTo(0, 0);
+        window.scrollTo({ top: 0, behavior: 'instant' });
     }
+    refreshCartDockStatus();
+};
 
-    if (screenId === 'screen-cart') {
-        renderCartItemsList();
-        recalculateCartSummary();
-        document.getElementById('floatingCartDock')?.classList.remove('visible');
-    } else if (screenId === 'screen-home') {
-        renderMenuProducts();
-        updateHomeNoticeBanner();
-        refreshCartDockStatus();
-    } else if (screenId === 'screen-feedback') {
-        renderCustomerFeedbacks();
-    } else if (screenId === 'screen-notifications') {
-        renderCustomerNotifications();
-    } else if (screenId === 'screen-user-profile') {
-        renderUserProfileDetails();
-    } else if (screenId === 'screen-order-tracking') {
-        renderOrderTrackingView();
-    } else if (screenId === 'screen-rewards') {
-        renderRedeemStoreView();
+window.checkAuthAndNavigate = function(screenId) {
+    if (!currentAuthenticatedUser) {
+        window.showToastMsg("يرجى تسجيل الدخول أو إنشاء حساب أولاً");
+        return navigateRouter('screen-auth');
+    }
+    if (bannedCustomersList.includes(currentAuthenticatedUser.phone)) {
+        return checkUserBannedStateAndLockout();
+    }
+    if (screenId === 'screen-user-profile') renderUserProfileDetails();
+    if (screenId === 'screen-order-tracking') renderOrderTrackingView();
+    if (screenId === 'screen-rewards') renderClientRedeemItems();
+    if (screenId === 'screen-feedback') renderCustomerFeedbacks();
+    navigateRouter(screenId);
+};
+
+window.updateHomeNoticeBanner = function() {
+    const banner = document.getElementById('homeUserNoticeBanner');
+    if (!banner) return;
+    if (currentAuthenticatedUser) {
+        banner.innerHTML = `
+            <div class="auth-notice-card">
+                <div>
+                    <div style="font-size:12px; font-weight:900; color:var(--brand-theme);">أهلاً بك، ${currentAuthenticatedUser.name}</div>
+                    <div style="font-size:10px; color:var(--text-secondary);">رصيدك: <strong class="num-font">${currentAuthenticatedUser.points || 0}</strong> نقطة ولاء</div>
+                </div>
+                <button class="btn-brand-outline" style="font-size:10px; padding:3px 8px;" onclick="checkAuthAndNavigate('screen-rewards')">استبدال النقاط</button>
+            </div>
+        `;
     } else {
-        refreshCartDockStatus();
+        banner.innerHTML = `
+            <div class="auth-notice-card" onclick="navigateRouter('screen-auth')" style="cursor:pointer;">
+                <div>
+                    <div style="font-size:11.5px; font-weight:900; color:var(--brand-theme);">سجّل الآن في كافيه كورنر</div>
+                    <div style="font-size:10px; color:var(--text-secondary);">واحصل على 15 نقطة ترحيبية مجاناً مع طلبك الأول!</div>
+                </div>
+                <button class="btn-brand-solid" style="width:auto; font-size:10px; padding:4px 10px;">تسجيل</button>
+            </div>
+        `;
     }
+};
 
-    checkUserBannedStateAndLockout();
+window.showToastMsg = function(msg) {
+    const toast = document.getElementById('systemToast');
+    if (!toast) return;
+    toast.innerText = msg;
+    toast.classList.add('active');
+    setTimeout(() => { toast.classList.remove('active'); }, 2600);
 };
 
 window.openSidebarDrawer = function() {
@@ -3460,303 +4440,6 @@ window.closeSidebarDrawer = function() {
     document.getElementById('sidebarDrawer')?.classList.remove('active');
 };
 
-window.checkAuthAndNavigate = function(screenId) {
-    if (!currentAuthenticatedUser) {
-        window._postAuthDestination = screenId;
-        window.showToastMsg("يرجى تسجيل الدخول أولاً");
-        window.navigateRouter('screen-auth');
-    } else {
-        window.navigateRouter(screenId);
-    }
-};
-
-window.checkAuthAndProceedToCart = function() {
-    if (!currentAuthenticatedUser) {
-        window._postAuthDestination = 'screen-cart';
-        window.showToastMsg("يجب تسجيل الدخول قبل إتمام الطلب");
-        window.navigateRouter('screen-auth');
-    } else {
-        window.navigateRouter('screen-cart');
-    }
-};
-
-window.showToastMsg = function(msg) {
-    const toast = document.getElementById('systemToast');
-    if (!toast) return;
-    toast.innerText = msg;
-    toast.classList.add('active');
-    clearTimeout(window._toastTimer);
-    window._toastTimer = setTimeout(() => toast.classList.remove('active'), 2500);
-};
-
-// ==========================================
-// الإدارة الشاملة (Admin Hub)
-// ==========================================
-let secretClickCount = 0;
-let secretTimer = null;
-window.handleSecretAdminTrigger = function() {
-    secretClickCount++;
-    clearTimeout(secretTimer);
-    secretTimer = setTimeout(() => { secretClickCount = 0; }, 1500);
-    if (secretClickCount >= 4) {
-        secretClickCount = 0;
-        window.navigateRouter('screen-admin-login');
-    }
-};
-
-window.attemptAdminAuthentication = function() {
-    const pin = (document.getElementById('adminPassField').value || '').trim();
-    if (pin === MASTER_PIN) {
-        activeSessionUser = 'admin';
-        safeSet('cc_admin_session', 'admin');
-        document.getElementById('adminPassField').value = '';
-        window.navigateRouter('screen-admin-dashboard');
-        backToAdminMainHub();
-    } else {
-        window.showToastMsg("رمز المرور غير صحيح!");
-    }
-};
-
-window.exitAdminSession = function() {
-    activeSessionUser = null;
-    localStorage.removeItem('cc_admin_session');
-    window.navigateRouter('screen-home');
-};
-
-window.openAdminSubSection = function(sectionKey) {
-    document.getElementById('adminMainHubView').style.display = 'none';
-    document.querySelectorAll('.admin-sub-view').forEach(v => v.classList.remove('active'));
-    const sub = document.getElementById('subView-' + sectionKey);
-    if (sub) sub.classList.add('active');
-
-    if (sectionKey === 'orders') renderAdminLiveOrdersManager();
-    if (sectionKey === 'products') renderAdminProductsManager();
-    if (sectionKey === 'customers') renderAdminCustomersList();
-    if (sectionKey === 'feedbackAdmin') renderAdminFeedbackControlList();
-    if (sectionKey === 'notificationsAdmin') populateAdminCustomerDropdowns();
-};
-
-window.backToAdminMainHub = function() {
-    document.querySelectorAll('.admin-sub-view').forEach(v => v.classList.remove('active'));
-    document.getElementById('adminMainHubView').style.display = 'block';
-};
-
-function renderAdminLiveOrdersManager() {
-    const container = document.getElementById('adminLiveOrdersContainer');
-    if (!container) return;
-    if (!activeOrdersList.length) {
-        container.innerHTML = `<div style="text-align:center; padding:16px; color:var(--text-secondary); font-size:12px;">لا توجد طلبات جارية حالياً</div>`;
-        return;
-    }
-    container.innerHTML = activeOrdersList.map(o => `
-        <div class="clean-card" style="margin-bottom:8px;">
-            <div style="display:flex; justify-content:space-between; align-items:center;">
-                <span class="num-font" style="font-weight:900; color:var(--brand-theme);">#${o.orderId}</span>
-                <span class="header-hours-badge">${o.deliveryMode === 'pickup' ? 'استلام من الفرع' : 'توصيل'}</span>
-            </div>
-            <div style="font-size:12.5px; font-weight:900; margin-top:4px;">${o.customerName} (<span class="num-font">${o.customerPhone}</span>)</div>
-            <div style="font-size:12px; font-weight:900; margin-top:6px;">${parseFloat(o.totalAmount).toFixed(2)} د.أ</div>
-        </div>
-    `).join('');
-}
-
-function renderAdminProductsManager() {
-    const container = document.getElementById('adminProductsControlList');
-    if (!container) return;
-    container.innerHTML = productsCatalog.map(p => `
-        <div style="display:flex; justify-content:space-between; align-items:center; background:var(--bg-surface); padding:8px 10px; border-radius:var(--radius-sm); border:1px solid var(--border-subtle); margin-bottom:6px;">
-            <div style="display:flex; align-items:center; gap:8px;">
-                <img src="${p.img}" style="width:36px; height:36px; border-radius:var(--radius-sm); object-fit:contain; background:#000;">
-                <div>
-                    <div style="font-size:12.5px; font-weight:900;">${p.name}</div>
-                    <div style="font-size:10px; color:var(--text-secondary);">${p.category} • <span class="num-font">${parseFloat(p.price).toFixed(2)} د.أ</span></div>
-                </div>
-            </div>
-            <button class="btn-brand-outline" style="padding:3px 6px; font-size:10px; color:var(--status-danger); border-color:var(--status-danger);" onclick="deleteProductFromCatalog('${p.id}')">حذف</button>
-        </div>
-    `).join('');
-}
-
-window.deleteProductFromCatalog = function(productId) {
-    productsCatalog = productsCatalog.filter(x => x.id !== productId);
-    safeSet('cc_catalog', productsCatalog);
-    renderCategoryChips();
-    renderMenuProducts();
-    renderAdminProductsManager();
-    if (cloudDb) cloudDb.collection('catalog').doc('products_list').set({ items: productsCatalog }).catch(e=>console.warn(e));
-    window.showToastMsg("تم حذف الصنف أونلاين!");
-};
-
-// دليل الزبائن
-function renderAdminCustomersList() {
-    const container = document.getElementById('adminCustomersListContainer');
-    if (!container) return;
-
-    const users = Object.values(allRegisteredCustomers);
-    const searchVal = (document.getElementById('adminCustomerSearchPhone')?.value || '').trim().toLowerCase();
-
-    // إحصائيات
-    document.getElementById('custStatTotalCount').innerText = users.length;
-    document.getElementById('custStatBannedCount').innerText = bannedCustomersList.length;
-    document.getElementById('custStatTotalPoints').innerText = users.reduce((s, u) => s + (u.points || 0), 0);
-    document.getElementById('custStatVipCount').innerText = users.filter(u => (u.points || 0) >= 100).length;
-
-    let filtered = users;
-    if (customerListFilterMode === 'active') filtered = filtered.filter(u => !bannedCustomersList.includes(u.phone));
-    if (customerListFilterMode === 'banned') filtered = filtered.filter(u => bannedCustomersList.includes(u.phone));
-    if (customerListFilterMode === 'vip') filtered = filtered.filter(u => (u.points || 0) >= 100);
-
-    if (searchVal) {
-        filtered = filtered.filter(u => (u.name || '').toLowerCase().includes(searchVal) || (u.phone || '').includes(searchVal));
-    }
-
-    if (!filtered.length) {
-        container.innerHTML = `<div style="text-align:center; padding:20px; font-size:11.5px; color:var(--text-secondary);">لا يوجد زبائن مطابقين</div>`;
-        return;
-    }
-
-    container.innerHTML = filtered.map(u => {
-        const isBanned = bannedCustomersList.includes(u.phone);
-        return `
-            <div style="display:flex; justify-content:space-between; align-items:center; background:var(--bg-surface); padding:8px 10px; border-radius:var(--radius-sm); border:1px solid var(--border-subtle); margin-bottom:6px;">
-                <div>
-                    <div style="font-weight:900; font-size:12.5px;">${u.name} <span class="num-font" style="color:var(--text-dim); font-size:11px;">(${u.phone})</span></div>
-                    <div style="font-size:10.5px; color:var(--brand-theme); font-weight:800;">${u.points || 0} نقطة • ${isBanned ? '<span style="color:var(--status-danger);">محظور</span>' : '<span style="color:var(--status-success);">نشط</span>'}</div>
-                </div>
-                <button class="btn-brand-outline" style="padding:4px 8px; font-size:10.5px;" onclick="openAdminCustomerDossier('${u.phone}')">ملف العميل</button>
-            </div>
-        `;
-    }).join('');
-}
-
-window.setCustomerFilterMode = function(m) {
-    customerListFilterMode = m;
-    ['all', 'active', 'banned', 'vip'].forEach(k => {
-        document.getElementById('filterCust_' + k)?.classList.toggle('active', k === m);
-    });
-    renderAdminCustomersList();
-};
-
-window.openAdminCustomerDossier = function(phone) {
-    const user = allRegisteredCustomers[phone];
-    if (!user) return;
-    selectedDossierUserPhone = phone;
-
-    document.getElementById('dosFullName').innerText = user.name;
-    document.getElementById('dosPhone').innerText = user.phone;
-    document.getElementById('dosAvatarImg').src = user.avatar || "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200&q=80";
-    document.getElementById('dosGenderBadge').innerText = user.gender || 'ذكر';
-    document.getElementById('dosPointsVal').innerText = user.points || 0;
-    document.getElementById('dosOrdersVal').innerText = user.ordersCount || 0;
-    
-    const isBanned = bannedCustomersList.includes(phone);
-    document.getElementById('dosStatusText').innerText = isBanned ? 'محظور ✕' : 'نشط ✓';
-    document.getElementById('dosStatusText').style.color = isBanned ? 'var(--status-danger)' : 'var(--status-success)';
-    document.getElementById('btnToggleCustomerBan').innerText = isBanned ? 'فك قيد الحظر عن العميل' : 'حظر العميل من الطلب';
-
-    document.getElementById('dosWaDirectLink').href = `https://wa.me/962${phone.substring(1)}`;
-    document.getElementById('modalAdminCustomerDossier').style.display = 'flex';
-};
-
-window.closeCustomerDossierModal = function() {
-    document.getElementById('modalAdminCustomerDossier').style.display = 'none';
-    selectedDossierUserPhone = null;
-};
-
-window.copySelectedUserPhone = function() {
-    if (selectedDossierUserPhone) {
-        navigator.clipboard.writeText(selectedDossierUserPhone);
-        window.showToastMsg("تم نسخ رقم الهاتف");
-    }
-};
-
-window.applyCustomPointsDelta = function(isAdd) {
-    if (!selectedDossierUserPhone) return;
-    const amount = parseInt(document.getElementById('inputCustomPointsAmount').value || 0);
-    if (!amount || amount <= 0) return window.showToastMsg("أدخل عدد نقاط صحيح");
-
-    const u = allRegisteredCustomers[selectedDossierUserPhone];
-    if (!u) return;
-
-    if (isAdd) u.points = (u.points || 0) + amount;
-    else u.points = Math.max(0, (u.points || 0) - amount);
-
-    allRegisteredCustomers[selectedDossierUserPhone] = u;
-    safeSet('cc_users_directory', allRegisteredCustomers);
-    if (cloudDb) cloudDb.collection('users').doc(selectedDossierUserPhone).set(u).catch(e=>console.warn(e));
-
-    document.getElementById('dosPointsVal').innerText = u.points;
-    document.getElementById('inputCustomPointsAmount').value = '';
-    renderAdminCustomersList();
-    window.showToastMsg("تم تحديث النقاط بنجاح أونلاين");
-};
-
-window.toggleCustomerBanStatus = function() {
-    if (!selectedDossierUserPhone) return;
-    const phone = selectedDossierUserPhone;
-    const idx = bannedCustomersList.indexOf(phone);
-
-    if (idx > -1) {
-        bannedCustomersList.splice(idx, 1);
-        window.showToastMsg("تم فك الحظر عن العميل بنجاح");
-    } else {
-        bannedCustomersList.push(phone);
-        window.showToastMsg("تم حظر العميل بنجاح");
-    }
-
-    safeSet('cc_banned_users', bannedCustomersList);
-    if (cloudDb) cloudDb.collection('settings').doc('banned_users').set({ list: bannedCustomersList }).catch(e=>console.warn(e));
-
-    openAdminCustomerDossier(phone);
-    renderAdminCustomersList();
-};
-
-window.sendDirectNotificationFromDossier = function() {
-    if (!selectedDossierUserPhone) return;
-    const title = (document.getElementById('dossierDirectNotifTitle').value || '').trim();
-    const body = (document.getElementById('dossierDirectNotifBody').value || '').trim();
-    if (!title || !body) return window.showToastMsg("يرجى إدخال عنوان ونص الإشعار");
-
-    const notifObj = {
-        id: "notif_doss_" + Date.now(),
-        title: title,
-        body: body,
-        targetPhone: selectedDossierUserPhone,
-        isRead: false,
-        allowReply: false,
-        createdAt: Date.now(),
-        dateStr: new Date().toLocaleDateString('ar-JO') + ' ' + new Date().toLocaleTimeString('ar-JO', {hour:'2-digit', minute:'2-digit'})
-    };
-
-    customerNotifications.unshift(notifObj);
-    safeSet('cc_notifications', customerNotifications);
-    if (cloudDb) cloudDb.collection('notifications').doc(notifObj.id).set(notifObj).catch(e=>console.warn(e));
-
-    document.getElementById('dossierDirectNotifTitle').value = '';
-    document.getElementById('dossierDirectNotifBody').value = '';
-    window.showToastMsg("تم إرسال الإشعار لحساب العميل فوراً");
-};
-
-// الثيمات
-const THEME_PRESETS = {
-    gold: { brand: '#c59b63', glow: 'rgba(197, 155, 99, 0.16)', hover: '#b3884f' },
-    ruby: { brand: '#e11d48', glow: 'rgba(225, 29, 72, 0.16)', hover: '#be123c' },
-    sapphire: { brand: '#2563eb', glow: 'rgba(37, 99, 235, 0.16)', hover: '#1d4ed8' },
-    emerald: { brand: '#059669', glow: 'rgba(5, 150, 105, 0.16)', hover: '#047857' },
-    violet: { brand: '#7c3aed', glow: 'rgba(124, 58, 237, 0.16)', hover: '#6d28d9' },
-    titanium: { brand: '#94a3b8', glow: 'rgba(148, 163, 184, 0.18)', hover: '#64748b' }
-};
-
-window.applyThemeEngine = function(themeKey) {
-    const t = THEME_PRESETS[themeKey] || THEME_PRESETS.gold;
-    activeThemeName = themeKey;
-    safeSet('cc_active_theme_name', themeKey);
-
-    document.documentElement.style.setProperty('--brand-theme', t.brand);
-    document.documentElement.style.setProperty('--brand-glow', t.glow);
-    document.documentElement.style.setProperty('--brand-hover', t.hover);
-};
-
 window.toggleThemeMode = function() {
     isThemeDark = !isThemeDark;
     safeSet('cc_theme_dark', isThemeDark);
@@ -3764,43 +4447,77 @@ window.toggleThemeMode = function() {
 };
 
 function applyThemeToDOM() {
-    if (isThemeDark) document.body.classList.add('dark-mode');
-    else document.body.classList.remove('dark-mode');
+    if (isThemeDark) {
+        document.body.classList.add('dark-mode');
+    } else {
+        document.body.classList.remove('dark-mode');
+    }
 }
+
+window.applyThemeEngine = function(themeName) {
+    activeThemeName = themeName;
+    safeSet('cc_active_theme_name', themeName);
+    const root = document.documentElement;
+    if (themeName === 'ruby') {
+        root.style.setProperty('--brand-theme', '#e11d48');
+        root.style.setProperty('--brand-glow', 'rgba(225, 29, 72, 0.15)');
+    } else if (themeName === 'sapphire') {
+        root.style.setProperty('--brand-theme', '#2563eb');
+        root.style.setProperty('--brand-glow', 'rgba(37, 99, 235, 0.15)');
+    } else if (themeName === 'emerald') {
+        root.style.setProperty('--brand-theme', '#059669');
+        root.style.setProperty('--brand-glow', 'rgba(5, 150, 105, 0.15)');
+    } else if (themeName === 'violet') {
+        root.style.setProperty('--brand-theme', '#7c3aed');
+        root.style.setProperty('--brand-glow', 'rgba(124, 58, 237, 0.15)');
+    } else if (themeName === 'titanium') {
+        root.style.setProperty('--brand-theme', '#475569');
+        root.style.setProperty('--brand-glow', 'rgba(71, 85, 105, 0.15)');
+    } else {
+        root.style.setProperty('--brand-theme', '#c59b63');
+        root.style.setProperty('--brand-glow', 'rgba(197, 155, 99, 0.16)');
+    }
+    window.showToastMsg("تم تطبيق الثيم بنجاح");
+};
 
 function applyBrandAndDevSettingsToDOM() {
     const s = brandAndDevSettings;
-    const headerLogo = document.getElementById('mainHeaderLogoImg');
-    const headerTitle = document.getElementById('mainHeaderBrandTitle');
-    const headerSub = document.getElementById('mainHeaderBrandSub');
-
-    if (headerLogo) headerLogo.src = s.storeLogo || "./logo.png";
-    if (headerTitle) headerTitle.innerText = s.brandTitle || "كافيه كورنر";
-    if (headerSub) headerSub.innerText = s.brandSub || "";
-
-    const devAvatar = document.getElementById('devHubAvatarImg');
-    const devName = document.getElementById('devHubNameDisplay');
-    const devBio = document.getElementById('devHubBioDisplay');
-    const devWaBtn = document.getElementById('devWaLinkBtn');
-    const devIgBtn = document.getElementById('devIgLinkBtn');
-
-    if (devAvatar) devAvatar.src = s.devAvatar || s.storeLogo || "./logo.png";
-    if (devName) devName.innerText = s.devName || "المهندس عمر عبيدات";
-    if (devBio) devBio.innerText = s.devBio || "";
-    if (devWaBtn) devWaBtn.href = `https://wa.me/${(s.devWa || "962796433698").replace(/\+/g, '')}`;
-    if (devIgBtn) devIgBtn.href = s.devIg || "https://www.instagram.com/o_yd";
+    if (!s) return;
+    if (s.storeLogo) {
+        const logo = document.getElementById('mainHeaderLogoImg');
+        if (logo) logo.src = s.storeLogo;
+    }
+    if (s.brandTitle) {
+        const title = document.getElementById('mainHeaderBrandTitle');
+        if (title) title.innerText = s.brandTitle;
+    }
+    if (s.brandSub) {
+        const sub = document.getElementById('mainHeaderBrandSub');
+        if (sub) sub.innerText = s.brandSub;
+    }
+    if (s.devName) {
+        const dn = document.getElementById('devHubNameDisplay');
+        if (dn) dn.innerText = s.devName;
+    }
+    if (s.devBio) {
+        const db = document.getElementById('devHubBioDisplay');
+        if (db) db.innerText = s.devBio;
+    }
+    if (s.devAvatar) {
+        const da = document.getElementById('devHubAvatarImg');
+        if (da) da.src = s.devAvatar;
+    }
+    if (s.devWa) {
+        const wa = document.getElementById('devWaLinkBtn');
+        if (wa) wa.href = "https://wa.me/" + s.devWa.replace(/[^0-9]/g, '');
+    }
+    if (s.devIg) {
+        const ig = document.getElementById('devIgLinkBtn');
+        if (ig) ig.href = s.devIg;
+    }
 }
 
-function renderUserProfileDetails() {
-    if (!currentAuthenticatedUser) return;
-    const u = currentAuthenticatedUser;
-    document.getElementById('profDisplayName').innerText = u.name;
-    document.getElementById('profDisplayPhone').innerText = u.phone;
-    document.getElementById('profDisplayBio').innerText = u.bio || '';
-    document.getElementById('profStatPoints').innerText = u.points || 0;
-    document.getElementById('profStatOrders').innerText = u.ordersCount || 0;
-}
-
+// تشغيل التطبيق الموثوق
 function bootstrapApp() {
     try {
         applyThemeEngine(activeThemeName);
