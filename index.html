@@ -7,12 +7,12 @@
     
     <meta name="theme-color" content="#000000">
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com">
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&family=IBM+Plex+Sans+Arabic:wght@400;600;700&family=Plus+Jakarta+Sans:wght@600;700;800;900&family=Tajawal:wght@400;500;700;800;900&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;700;800;900&family=Tajawal:wght@400;500;700;800;900&display=swap" rel="stylesheet">
 
     <!-- Firebase SDK Compat -->
-    <script defer src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-    <script defer src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
 
     <style>
         :root {
@@ -189,11 +189,6 @@
             background: rgba(16, 185, 129, 0.12);
             color: var(--status-success);
             border: 1px solid rgba(16, 185, 129, 0.25);
-        }
-        .header-hours-badge.closed {
-            background: rgba(239, 68, 68, 0.12);
-            color: var(--status-danger);
-            border-color: rgba(239, 68, 68, 0.25);
         }
 
         .home-auth-banner {
@@ -418,7 +413,6 @@
             height: 70px;
         }
 
-        /* نافذة الحظر الصارمة */
         #bannedAccountOverlay {
             display: none;
             position: fixed;
@@ -431,21 +425,6 @@
             padding: 20px;
         }
 
-        /* نافذة غلق المتجر بانتظار أوقات الفتح */
-        #storeClosedOverlay {
-            display: none !important;
-            position: fixed;
-            inset: 0;
-            background: rgba(10, 8, 6, 0.95);
-            z-index: 99998;
-            backdrop-filter: blur(12px);
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-            text-align: center;
-        }
-
-        /* واجهة الحساب الشخصي العصرية الفاخرة */
         .modern-profile-hero {
             background: var(--bg-surface);
             border: 1px solid var(--border-subtle);
@@ -548,7 +527,6 @@
             font-weight: 700;
         }
 
-        /* شبكة لوحة الإدارة */
         .admin-hub-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
@@ -605,6 +583,135 @@
         .admin-sub-view.active {
             display: block;
         }
+
+        .dev-cyber-screen {
+            background: radial-gradient(circle at 50% 0%, #0d1b2a 0%, #060a12 60%, #020408 100%) !important;
+            color: #e0e9f5 !important;
+            min-height: 100vh;
+        }
+        .dev-glass-card {
+            background: rgba(16, 26, 43, 0.65);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(85, 221, 243, 0.22);
+            border-radius: var(--radius-lg);
+            padding: 20px 16px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4), inset 0 0 16px rgba(85, 221, 243, 0.05);
+            margin-bottom: 14px;
+            position: relative;
+            overflow: hidden;
+        }
+        .dev-avatar-cyber-wrap {
+            position: relative;
+            width: 100px;
+            height: 100px;
+            margin: 0 auto 14px;
+        }
+        .dev-avatar-cyber-wrap img {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2.5px solid #55DDF3;
+            box-shadow: 0 0 25px rgba(85, 221, 243, 0.35);
+            background: #0b1320;
+        }
+        .dev-online-pulse-ring {
+            position: absolute;
+            bottom: 4px;
+            right: 4px;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: #10b981;
+            border: 3px solid #0d1b2a;
+            box-shadow: 0 0 12px #10b981;
+        }
+        .dev-online-pulse-ring::after {
+            content: '';
+            position: absolute;
+            inset: -4px;
+            border-radius: 50%;
+            border: 2px solid #10b981;
+            animation: devPulseAnim 2s infinite ease-out;
+        }
+        @keyframes devPulseAnim {
+            0% { transform: scale(0.9); opacity: 1; }
+            100% { transform: scale(2.2); opacity: 0; }
+        }
+        .dev-badge-telecom {
+            background: rgba(85, 221, 243, 0.12);
+            border: 1px solid rgba(85, 221, 243, 0.4);
+            color: #55DDF3;
+            font-size: 11px;
+            font-weight: 800;
+            padding: 4px 14px;
+            border-radius: var(--radius-full);
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            margin-bottom: 10px;
+            direction: ltr;
+        }
+        .dev-metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+            margin-top: 14px;
+        }
+        .dev-metric-pill {
+            background: rgba(6, 12, 22, 0.7);
+            border: 1px solid rgba(85, 221, 243, 0.15);
+            border-radius: var(--radius-md);
+            padding: 10px 6px;
+            text-align: center;
+        }
+        .dev-metric-val {
+            font-size: 14px;
+            font-weight: 900;
+            color: #55DDF3;
+            display: block;
+        }
+        .dev-metric-lbl {
+            font-size: 9.5px;
+            color: #8da4be;
+            margin-top: 2px;
+            display: block;
+        }
+        .dev-cyber-btn-primary {
+            background: linear-gradient(135deg, #55DDF3 0%, #0099cc 100%);
+            color: #030811 !important;
+            font-weight: 900;
+            font-size: 12.5px;
+            padding: 11px 16px;
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            text-decoration: none;
+            box-shadow: 0 4px 18px rgba(85, 221, 243, 0.35);
+            transition: 0.2s ease;
+            flex: 1;
+        }
+        .dev-cyber-btn-primary:active { transform: scale(0.97); }
+        .dev-cyber-btn-secondary {
+            background: rgba(85, 221, 243, 0.08);
+            border: 1px solid rgba(85, 221, 243, 0.35);
+            color: #55DDF3 !important;
+            font-weight: 800;
+            font-size: 12.5px;
+            padding: 11px 16px;
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            text-decoration: none;
+            transition: 0.2s ease;
+            flex: 1;
+        }
+        .dev-cyber-btn-secondary:active { transform: scale(0.97); background: rgba(85, 221, 243, 0.18); }
 
         .floating-dock {
             position: fixed;
@@ -747,7 +854,7 @@
 </head>
 <body>
 
-<!-- شاشة حظر الحساب الصارمة مع تقديم طعن -->
+<!-- شاشة حظر الحساب -->
 <div id="bannedAccountOverlay">
     <div class="clean-card" style="max-width:390px; text-align:center; border:2px solid var(--status-danger); background:var(--bg-card); padding:24px 18px;">
         <div style="width:64px; height:64px; border-radius:50%; background:rgba(239, 68, 68, 0.15); color:var(--status-danger); display:flex; align-items:center; justify-content:center; margin:0 auto 14px;">
@@ -765,18 +872,6 @@
         </div>
 
         <button class="btn-brand-outline" style="width:100%; font-size:11px; color:var(--text-dim); border-color:var(--border-subtle);" onclick="logoutCustomerSession()">تسجيل الخروج والعودة</button>
-    </div>
-</div>
-
-<!-- شاشة إغلاق المحل مع التايمر -->
-<div id="storeClosedOverlay">
-    <div class="clean-card" style="max-width:360px; border:1.5px solid var(--brand-theme); background:var(--bg-card); padding:26px 18px;">
-        <div style="font-size:18px; font-weight:900; color:var(--brand-theme); margin-bottom:8px;">عذراً، المحل مغلق حالياً</div>
-        <p style="font-size:12px; color:var(--text-secondary); line-height:1.6; margin-bottom:14px;" id="storeClosedMsg">
-            أوقات العمل لفرع كفرسوم من 6:30 صباحاً حتى 3:00 فجراً، ولفرع سما الروسان من 4:00 عصراً حتى 3:00 فجراً.
-        </p>
-        <div class="num-font" style="font-size:22px; font-weight:900; color:var(--brand-theme); margin-bottom:14px;" id="storeOpenCountdownTimer">--:--:--</div>
-        <button class="btn-brand-solid" onclick="bypassStoreClosedForReview()">معاينة المنيو والخدمات</button>
     </div>
 </div>
 
@@ -847,7 +942,7 @@
         <div class="product-grid" id="menuGridContainer"></div>
     </div>
 
-    <!-- 2. شاشة تسجيل الدخول وإنشاء حساب أردني صارم (07 وطول 10 أرقام دقيقة) -->
+    <!-- 2. شاشة الحساب والتسجيل -->
     <div id="screen-auth" class="app-screen">
         <header class="header">
             <button class="header-btn" onclick="navigateRouter('screen-home')" aria-label="عودة">
@@ -903,7 +998,7 @@
                         <button type="button" style="background:none; border:none; color:var(--brand-theme); font-size:11px; font-weight:800; cursor:pointer;" onclick="openForgotPasswordModal()">نسيت كلمة المرور؟</button>
                     </div>
 
-                    <button type="submit" class="btn-brand-solid" style="margin-top:6px;" id="btnSubmitAuth">متابعة الدخول</button>
+                    <button type="submit" class="btn-brand-solid" style="margin-top:6px;" id="btnSubmitAuth">إنشاء حساب جديد</button>
                 </form>
             </div>
         </div>
@@ -939,7 +1034,7 @@
         </div>
     </div>
 
-    <!-- 4. شاشة حسابي الشخصي العالمية الفاخرة -->
+    <!-- 4. شاشة حسابي الشخصي -->
     <div id="screen-user-profile" class="app-screen">
         <header class="header">
             <button class="header-btn" onclick="navigateRouter('screen-home')" aria-label="عودة">
@@ -953,7 +1048,6 @@
         </header>
 
         <div class="scrollable-content">
-            <!-- كرت الهوية الشخصية الحديث -->
             <div class="modern-profile-hero">
                 <div class="profile-avatar-center">
                     <img src="" id="profUserAvatarImg" onerror="this.src='https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200&q=80'" alt="الصورة الشخصية">
@@ -990,7 +1084,6 @@
                 </div>
             </div>
 
-            <!-- قائمة الخيارات السريعة المدمجة داخل الحساب (استبدال النقاط والشكاوى) -->
             <div class="clean-card" style="padding:8px 10px;">
                 <div style="display:flex; flex-direction:column; gap:6px;">
                     <button type="button" class="sidebar-item-card" style="padding:10px 12px; margin-bottom:0;" onclick="navigateRouter('screen-rewards')">
@@ -1021,7 +1114,6 @@
                 </div>
             </div>
 
-            <!-- بطاقة تعديل البيانات الشخصية -->
             <div class="clean-card">
                 <div class="clean-title">
                     <span>تعديل البيانات الأساسية</span>
@@ -1051,7 +1143,6 @@
                     <div>
                         <span style="font-size:11.5px; font-weight:700;">رقم الهاتف الأردني (معرّف الحساب):</span>
                         <input type="tel" class="ios-input-field num-font" id="editProfPhoneInput" placeholder="07xxxxxxxx" maxlength="10">
-                        <span style="font-size:9.5px; color:var(--text-dim); display:block; margin-top:2px;">* عند تغيير رقم الهاتف، سيتم فحص الحجز وتحديث معرّف دخولك وسجلات الإدارة تلقائياً.</span>
                     </div>
 
                     <div>
@@ -1063,7 +1154,6 @@
                 </div>
             </div>
 
-            <!-- بطاقة أمان الحساب وتغيير كلمة المرور -->
             <div class="clean-card">
                 <div class="clean-title">
                     <span>أمان الحساب وتغيير كلمة المرور</span>
@@ -1088,7 +1178,6 @@
                 </div>
             </div>
 
-            <!-- أزرار الخروج وحذف الحساب بالكامل مع الإلغاء -->
             <div style="margin-top:14px; margin-bottom:20px; display:flex; flex-direction:column; gap:8px;">
                 <button class="btn-brand-outline" style="width:100%; color:var(--text-secondary); border-color:var(--border-subtle); font-size:12px; padding:10px; font-weight:800; display:flex; align-items:center; justify-content:center; gap:6px;" onclick="logoutCustomerSession()">
                     <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
@@ -1226,7 +1315,7 @@
         </div>
     </div>
 
-    <!-- 8. شاشة تتبع طلبي (مدة بقاء الطلب 1 ساعة بعد التاكيد أو الالغاء للزبون) -->
+    <!-- 8. شاشة تتبع طلبي -->
     <div id="screen-order-tracking" class="app-screen">
         <header class="header">
             <button class="header-btn" onclick="navigateRouter('screen-home')" aria-label="عودة">
@@ -1251,10 +1340,10 @@
         </header>
         <div class="scrollable-content">
             <div class="clean-card" style="text-align:center;">
-                <div style="font-size:11px; color:var(--text-secondary);">رصيد نقاطك الحالي</div>
-                <div class="num-font" style="font-size:32px; font-weight:900; color:var(--brand-theme);" id="userRedeemPointsBalance">0</div>
+                <div style="font-size:12px; color:var(--text-secondary);">رصيدك الحالي من نقاط الولاء:</div>
+                <div class="num-font" style="font-size:26px; font-weight:900; color:var(--brand-theme); margin:4px 0;" id="userRedeemPointsBalance">0</div>
             </div>
-            <div class="clean-title">الأصناف المتاحة للاستبدال</div>
+            <div class="clean-title">أصناف المكافآت المجانية</div>
             <div id="clientRedeemItemsList"></div>
         </div>
     </div>
@@ -1269,11 +1358,14 @@
             <div style="width:38px;"></div>
         </header>
         <div class="scrollable-content">
-            <div id="clientOffersContainer"></div>
+            <div class="clean-card">
+                <div class="clean-title">كوبونات الخصم الفعالة</div>
+                <div id="clientCouponsList"></div>
+            </div>
         </div>
     </div>
 
-    <!-- 11. شاشة فروعنا والتواصل -->
+    <!-- 11. شاشة الفروع والتواصل -->
     <div id="screen-branches" class="app-screen">
         <header class="header">
             <button class="header-btn" onclick="navigateRouter('screen-home')" aria-label="عودة">
@@ -1284,54 +1376,82 @@
         </header>
         <div class="scrollable-content">
             <div class="clean-card">
-                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
-                    <span style="font-size:15px; font-weight:900; color:var(--brand-theme);">فرع كفرسوم</span>
-                    <span class="header-hours-badge">مفتوح الآن</span>
-                </div>
-                <div style="font-size:12px; color:var(--text-secondary); line-height:1.7;">
-                    <div><strong>الموقع:</strong> الشارع الرئيسي - مقابل مجمع المحلات</div>
-                    <div><strong>أوقات العمل:</strong> 6:30 صباحاً حتى 3:00 فجراً</div>
-                    <div><strong>واتساب:</strong> <span class="num-font">0790155906</span></div>
-                </div>
-                <a href="https://wa.me/962790155906" target="_blank" class="btn-brand-solid" style="margin-top:10px;">محادثة الفرع عبر واتساب</a>
+                <div class="clean-title">فرع كفرسوم</div>
+                <p style="font-size:12px; color:var(--text-secondary); line-height:1.6;">
+                    الشارع الرئيسي - بجانب مجمع الباصات<br>
+                    أوقات الدوام: من 6:30 صباحاً حتى 3:00 فجراً<br>
+                    هاتف / واتساب: 0796433698
+                </p>
+                <a href="https://wa.me/962796433698" target="_blank" class="btn-brand-solid" style="margin-top:10px;">مراسلة الفرع واتساب</a>
             </div>
 
             <div class="clean-card">
-                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
-                    <span style="font-size:15px; font-weight:900; color:var(--brand-theme);">فرع سما الروسان</span>
-                    <span class="header-hours-badge">مفتوح الآن</span>
-                </div>
-                <div style="font-size:12px; color:var(--text-secondary); line-height:1.7;">
-                    <div><strong>الموقع:</strong> الشارع العام - بجانب البلدية</div>
-                    <div><strong>أوقات العمل:</strong> 4:00 عصراً حتى 3:00 فجراً</div>
-                    <div><strong>واتساب:</strong> <span class="num-font">0790155906</span></div>
-                </div>
-                <a href="https://wa.me/962790155906" target="_blank" class="btn-brand-solid" style="margin-top:10px;">محادثة الفرع عبر واتساب</a>
+                <div class="clean-title">فرع سما الروسان</div>
+                <p style="font-size:12px; color:var(--text-secondary); line-height:1.6;">
+                    الشارع العام - مقابل البلدية<br>
+                    أوقات الدوام: من 4:00 عصراً حتى 3:00 فجراً<br>
+                    هاتف / واتساب: 0796433698
+                </p>
+                <a href="https://wa.me/962796433698" target="_blank" class="btn-brand-solid" style="margin-top:10px;">مراسلة الفرع واتساب</a>
             </div>
         </div>
     </div>
 
     <!-- 12. شاشة المطور Tech Hub -->
-    <div id="screen-developer" class="app-screen">
-        <header class="header" style="background: rgba(8, 13, 22, 0.95); border-bottom: 1px solid #24364A;">
-            <button class="header-btn" onclick="navigateRouter('screen-home')" aria-label="عودة" style="background:#101A29; border-color:#24364A; color:#F4F7FB;">
+    <div id="screen-developer" class="app-screen dev-cyber-screen">
+        <header class="header" style="background: rgba(8, 14, 25, 0.95); border-bottom: 1px solid rgba(85, 221, 243, 0.25);">
+            <button class="header-btn" onclick="navigateRouter('screen-home')" aria-label="عودة" style="background:#101d30; border-color:rgba(85,221,243,0.3); color:#e0e9f5;">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
             </button>
-            <div style="font-weight:900; font-size:14px; color:#55DDF3; letter-spacing:0.5px; direction:ltr;">DEVELOPER HUB</div>
+            <div style="font-weight:900; font-size:14px; color:#55DDF3; letter-spacing:1px; direction:ltr; display:flex; align-items:center; gap:6px;">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>
+                <span>ENGINEER & ARCHITECT HUB</span>
+            </div>
             <div style="width:38px;"></div>
         </header>
 
-        <div class="scrollable-content" style="padding: 12px 12px 100px;">
-            <div style="display:flex; flex-direction:column; align-items:center; text-align:center; padding:20px 14px; background:radial-gradient(circle at top, rgba(85,221,243,0.12) 0%, transparent 70%), #101A29; border:1px solid #24364A; border-radius:16px; margin-bottom:12px;">
-                <img src="./logo.png" id="devHubAvatarImg" style="width:88px; height:88px; border-radius:50%; object-fit:cover; border:2px solid #55DDF3; margin-bottom:10px;" onerror="this.src='https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&q=80';">
-                <div style="font-size:18px; font-weight:900; color:#F4F7FB; margin-bottom:3px;" id="devHubNameDisplay">المهندس عمر عبيدات</div>
-                <div style="background:rgba(85,221,243,0.1); border:1px solid rgba(85,221,243,0.3); color:#55DDF3; font-size:11px; font-weight:800; padding:3px 10px; border-radius:20px; direction:ltr; margin-bottom:8px;">Telecommunications Engineer & Developer</div>
-                <p style="font-size:12px; color:#9BAEC3; line-height:1.6; margin-bottom:12px;" id="devHubBioDisplay">
-                    مهندس اتصالات ومطور برمجيات يجمع بين التفكير الهندسي الدقيق للشبكات وهندسة النظم وتطوير المنظومات الرقمية الموزعة.
+        <div class="scrollable-content" style="padding: 14px 14px 110px;">
+            <div class="dev-glass-card" style="text-align: center;">
+                <div class="dev-avatar-cyber-wrap">
+                    <img src="./logo.png" id="devHubAvatarImg" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&q=80';" alt="Developer Avatar">
+                    <div class="dev-online-pulse-ring" title="نظام الاتصال المباشر متصل"></div>
+                </div>
+
+                <div style="font-size: 20px; font-weight: 900; color: #ffffff; margin-bottom: 4px;" id="devHubNameDisplay">المهندس عمر عبيدات</div>
+                
+                <div class="dev-badge-telecom">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3"><path d="M5 12.55a11 11 0 0 1 14.08 0"></path><path d="M1.42 9a16 16 0 0 1 21.16 0"></path><path d="M8.53 16.11a6 6 0 0 1 6.95 0"></path><line x1="12" y1="20" x2="12.01" y2="20"></line></svg>
+                    <span>Telecommunications & Systems Engineer</span>
+                </div>
+
+                <p style="font-size: 12px; color: #a4b9d4; line-height: 1.7; margin: 6px auto 14px; max-width: 380px; text-align: justify; text-align-last: center;" id="devHubBioDisplay">
+                    مهندس اتصالات ومطور برمجيات يجمع بين التفكير الهندسي الدقيق للشبكات وهندسة النظم وتطوير المنظومات الرقمية الموزعة عالية التوافر وسريعة الاستجابة.
                 </p>
-                <div style="display:flex; gap:8px; width:100%; margin-top:10px;">
-                    <a href="https://wa.me/962796433698" target="_blank" id="devWaLinkBtn" style="background:#55DDF3; color:#080D16; font-weight:900; padding:9px; border-radius:8px; flex:1; text-align:center; text-decoration:none;">تواصل عبر واتساب</a>
-                    <a href="https://www.instagram.com/o_yd" target="_blank" id="devIgLinkBtn" style="border:1px solid #55DDF3; color:#55DDF3; font-weight:800; padding:9px; border-radius:8px; flex:1; text-align:center; text-decoration:none;">Instagram</a>
+
+                <div class="dev-metrics-grid">
+                    <div class="dev-metric-pill">
+                        <span class="dev-metric-val num-font" id="devPingVal">&lt; 35ms</span>
+                        <span class="dev-metric-lbl">زمن الاستجابة</span>
+                    </div>
+                    <div class="dev-metric-pill">
+                        <span class="dev-metric-val num-font" style="color:#10b981;" id="devCloudSyncState">LIVE SYNC</span>
+                        <span class="dev-metric-lbl">السحابة لحظية</span>
+                    </div>
+                    <div class="dev-metric-pill">
+                        <span class="dev-metric-val num-font">v<span id="devAppVerLbl">7.5.0</span></span>
+                        <span class="dev-metric-lbl">إصدار النظام</span>
+                    </div>
+                </div>
+
+                <div style="display: flex; gap: 8px; margin-top: 16px;">
+                    <a href="https://wa.me/962796433698" target="_blank" id="devWaLinkBtn" class="dev-cyber-btn-primary">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg>
+                        <span>محادثة واتساب مباشرة</span>
+                    </a>
+                    <a href="https://www.instagram.com/o_yd" target="_blank" id="devIgLinkBtn" class="dev-cyber-btn-secondary">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
+                        <span>Instagram Profile</span>
+                    </a>
                 </div>
             </div>
         </div>
@@ -1355,7 +1475,7 @@
         </div>
     </div>
 
-    <!-- 14. لوحة تحكم الإدارة الشاملة (Admin Hub الكاملة مع تحديث الإصدار التلقائي بعد 10 تعديلات) -->
+    <!-- 14. لوحة تحكم الإدارة الشاملة -->
     <div id="screen-admin-dashboard" class="app-screen">
         <header class="header">
             <div style="font-weight:900; font-size:14px; color:var(--brand-theme);">COFFEE CORNER — Admin Hub</div>
@@ -1468,7 +1588,6 @@
                 </div>
             </div>
 
-            <!-- أقسام الأدمن الفرعية -->
             <div id="subView-orders" class="admin-sub-view">
                 <button class="btn-brand-outline" style="margin-bottom:10px;" onclick="backToAdminMainHub()">← العودة للوحة الرئيسية</button>
                 <div class="clean-card">
@@ -1481,7 +1600,7 @@
                 <button class="btn-brand-outline" style="margin-bottom:10px;" onclick="backToAdminMainHub()">← العودة للوحة الرئيسية</button>
                 <div class="clean-card">
                     <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
-                        <div class="clean-title" style="margin-bottom:0;">المنتجات والأسعار (بدون أي حد)</div>
+                        <div class="clean-title" style="margin-bottom:0;">المنتجات والأسعار</div>
                         <button class="btn-brand-solid" style="width:auto; padding:5px 12px; font-size:11px;" onclick="openProductEditorModal(null)">+ صنف جديد</button>
                     </div>
                     <div id="adminProductsControlList"></div>
@@ -1608,7 +1727,6 @@
                         <button class="btn-brand-outline" style="font-size:10px; padding:3px 8px;" onclick="copyCustomerNumbersToClipboard()">نسخ أرقام الزبائن</button>
                     </div>
 
-                    <!-- شريط إحصائيات الزبائن الحي -->
                     <div style="display:grid; grid-template-columns:repeat(4, 1fr); gap:6px; margin-bottom:12px;">
                         <div style="background:var(--bg-elevated); padding:8px 4px; border-radius:var(--radius-sm); text-align:center;">
                             <div style="font-size:9.5px; color:var(--text-secondary);">المسجلين</div>
@@ -1628,14 +1746,13 @@
                         </div>
                     </div>
 
-                    <!-- شريط البحث والفلترة الذكي -->
                     <div style="display:flex; flex-direction:column; gap:8px; margin-bottom:12px;">
                         <input type="text" class="ios-input-field" id="adminCustomerSearchPhone" placeholder="ابحث بالاسم أو رقم الهاتف..." oninput="renderAdminCustomersList()">
                         <div style="display:flex; gap:4px; overflow-x:auto; padding-bottom:2px;">
                             <button class="btn-brand-outline active" style="font-size:10.5px; padding:4px 9px;" id="filterCust_all" onclick="setCustomerFilterMode('all')">الكل</button>
                             <button class="btn-brand-outline" style="font-size:10.5px; padding:4px 9px;" id="filterCust_active" onclick="setCustomerFilterMode('active')">النشطون</button>
                             <button class="btn-brand-outline" style="font-size:10.5px; padding:4px 9px;" id="filterCust_banned" onclick="setCustomerFilterMode('banned')">المحظورون</button>
-                            <button class="btn-brand-outline" style="font-size:10.5px; padding:4px 9px;" id="filterCust_vip" onclick="setCustomerFilterMode('vip')">VIP (100+ نقطة)</button>
+                            <button class="btn-brand-outline" style="font-size:10.5px; padding:4px 9px;" id="filterCust_vip" onclick="setCustomerFilterMode('vip')">VIP</button>
                         </div>
                     </div>
 
@@ -1646,7 +1763,7 @@
             <div id="subView-redeemManager" class="admin-sub-view">
                 <button class="btn-brand-outline" style="margin-bottom:10px;" onclick="backToAdminMainHub()">← العودة للوحة الرئيسية</button>
                 <div class="clean-card">
-                    <div class="clean-title">إضافة صنف استبدال نقاط جديد (بالوصف والصورة والسعر الاصلي)</div>
+                    <div class="clean-title">إضافة صنف استبدال نقاط جديد</div>
                     <div style="display:flex; flex-direction:column; gap:8px; margin-bottom:12px;">
                         <input type="text" class="ios-input-field" id="newRedeemItemName" placeholder="اسم صنف المكافأة">
                         <input type="number" step="0.25" class="ios-input-field num-font" id="newRedeemItemOriginalPrice" placeholder="السعر الأصلي للصنف (د.أ)">
@@ -1690,7 +1807,7 @@
             <div id="subView-themes" class="admin-sub-view">
                 <button class="btn-brand-outline" style="margin-bottom:10px;" onclick="backToAdminMainHub()">← العودة للوحة الرئيسية</button>
                 <div class="clean-card">
-                    <div class="clean-title">الثيمات الملكية الفاخرة مع الأسود الحالك (True Pitch Black)</div>
+                    <div class="clean-title">الثيمات الملكية الفاخرة مع الأسود الحالك</div>
                     <div style="display:flex; flex-direction:column; gap:8px;">
                         <button class="btn-brand-outline" style="width:100%; justify-content:flex-start;" onclick="applyThemeEngine('gold')">الثيم الذهبي الملكي (Gold Classic)</button>
                         <button class="btn-brand-outline" style="width:100%; justify-content:flex-start;" onclick="applyThemeEngine('ruby')">أحمر روبي الفاخر (Ruby Luxury)</button>
@@ -1704,7 +1821,7 @@
         </div>
     </div>
 
-    <!-- نافذة استعادة كلمة المرور العالمية الموثوقة (Forgot Password Modal) -->
+    <!-- نافذة استعادة كلمة المرور -->
     <div id="modalForgotPassword" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.75); z-index:9200; align-items:center; justify-content:center; padding:16px;">
         <div class="clean-card" style="width:100%; max-width:390px; position:relative;">
             <div class="clean-title">
@@ -1740,7 +1857,7 @@
         </div>
     </div>
 
-    <!-- نافذة تفاصيل ملف العميل للأدمن المتطورة (Full Dossier Command) -->
+    <!-- نافذة تفاصيل ملف العميل للأدمن -->
     <div id="modalAdminCustomerDossier" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.7); z-index:4500; align-items:center; justify-content:center; padding:14px;">
         <div class="clean-card" style="width:100%; max-width:440px; max-height:92vh; overflow-y:auto;">
             <div class="clean-title">
@@ -1766,7 +1883,6 @@
                 </div>
             </div>
 
-            <!-- إحصائيات العميل -->
             <div style="display:grid; grid-template-columns:repeat(3, 1fr); gap:6px; margin-bottom:10px;">
                 <div style="background:var(--bg-elevated); padding:8px; border-radius:var(--radius-sm); text-align:center;">
                     <div style="font-size:9.5px; color:var(--text-secondary);">رصيد النقاط</div>
@@ -1782,7 +1898,6 @@
                 </div>
             </div>
 
-            <!-- تعديل النقاط مع السبب والتسجيل -->
             <div class="clean-card" style="padding:10px; margin-bottom:8px; background:var(--bg-surface);">
                 <div style="font-size:11.5px; font-weight:800; margin-bottom:6px; color:var(--brand-theme);">التحكم السريع بالنقاط:</div>
                 <div style="display:flex; gap:6px; margin-bottom:6px;">
@@ -1793,7 +1908,6 @@
                 <input type="text" class="ios-input-field" id="inputCustomPointsReason" placeholder="سبب الإضافة/الخصم (اختياري)..." style="font-size:11px; padding:6px 10px;">
             </div>
 
-            <!-- تعديل الرتبة الإدارية -->
             <div class="clean-card" style="padding:10px; margin-bottom:8px; background:var(--bg-surface);">
                 <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
                     <span style="font-size:11.5px; font-weight:800; color:var(--brand-theme);">مستوى العضوية:</span>
@@ -1808,7 +1922,6 @@
                 </select>
             </div>
 
-            <!-- إرسال إشعار فوري مباشر للعميل -->
             <div class="clean-card" style="padding:10px; margin-bottom:8px; background:var(--bg-surface);">
                 <div style="font-size:11.5px; font-weight:800; margin-bottom:6px; color:var(--brand-theme);">إرسال إشعار فوري لهذا العميل:</div>
                 <input type="text" class="ios-input-field" id="dossierDirectNotifTitle" placeholder="عنوان الإشعار..." style="margin-bottom:6px; font-size:11.5px;">
@@ -1816,7 +1929,6 @@
                 <button class="btn-brand-solid" style="padding:6px; font-size:11px;" onclick="sendDirectNotificationFromDossier()">إرسال الإشعار لحسابه فوراً</button>
             </div>
 
-            <!-- ملاحظات الإدارة السرية حول العميل -->
             <div class="clean-card" style="padding:10px; margin-bottom:8px; background:var(--bg-surface);">
                 <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
                     <span style="font-size:11.5px; font-weight:800; color:var(--text-secondary);">ملاحظات الإدارة السرية:</span>
@@ -1825,13 +1937,11 @@
                 <textarea class="ios-textarea-field" id="dossierAdminNotes" placeholder="اكتب ملاحظات خاصة حول تفضيلات العميل، سلوك الطلب، أو تنبيهات للمحل..." style="height:55px;"></textarea>
             </div>
 
-            <!-- آخر طلبات العميل -->
             <div class="clean-card" style="padding:10px; margin-bottom:10px; background:var(--bg-surface);">
                 <div style="font-size:11.5px; font-weight:800; margin-bottom:6px; color:var(--text-secondary);">سجل طلبات العميل الأخيرة:</div>
                 <div id="dossierOrdersHistoryContainer" style="max-height:130px; overflow-y:auto; font-size:11px;"></div>
             </div>
 
-            <!-- إجراءات الحظر وإلغاء الحظر والطعون -->
             <div style="display:flex; gap:6px;">
                 <button class="btn-brand-outline" style="flex:1; color:var(--status-danger); border-color:var(--status-danger);" id="btnToggleCustomerBan" onclick="toggleCustomerBanStatus()">حظر العميل من الطلب</button>
                 <button class="btn-brand-outline" style="flex:1;" onclick="closeCustomerDossierModal()">إغلاق الملف</button>
@@ -1839,7 +1949,7 @@
         </div>
     </div>
 
-    <!-- شاشة تعديل وإضافة الصنف مع التحكم الكامل بالنكهات والأحجام والإضافات -->
+    <!-- شاشة تعديل وإضافة الصنف -->
     <div id="screen-product-editor" class="app-screen">
         <header class="header">
             <button class="header-btn" onclick="navigateRouter('screen-admin-dashboard'); openAdminSubSection('products');" aria-label="عودة">
@@ -1869,32 +1979,29 @@
                         <textarea class="ios-textarea-field" id="editProdDesc"></textarea>
                     </div>
 
-                    <!-- تحكم تفاعلي بالأحجام -->
                     <div style="border:1px solid var(--border-subtle); padding:10px; border-radius:var(--radius-sm);">
                         <div style="display:flex; justify-content:space-between; align-items:center;">
-                            <span style="font-size:12px; font-weight:800;">خيارات الأحجام (للمشروبات):</span>
+                            <span style="font-size:12px; font-weight:800;">خيارات الأحجام:</span>
                             <button type="button" class="btn-brand-outline" style="padding:2px 8px; font-size:10px;" onclick="addInteractiveSizeRow()">+ إضافة حجم</button>
                         </div>
                         <div id="interactiveSizesContainer" style="display:flex; flex-direction:column; gap:6px; margin-top:8px;"></div>
                     </div>
 
-                    <!-- تحكم تفاعلي بالنكهات والصوصات -->
                     <div style="border:1px solid var(--border-subtle); padding:10px; border-radius:var(--radius-sm);">
                         <div style="display:flex; justify-content:space-between; align-items:center;">
-                            <span style="font-size:12px; font-weight:800;">نكهات وصوصات الصنف (وافل، كريب، كنافة):</span>
+                            <span style="font-size:12px; font-weight:800;">نكهات وصوصات الصنف:</span>
                             <button type="button" class="btn-brand-outline" style="padding:2px 8px; font-size:10px;" onclick="addInteractiveSauceRow()">+ إضافة نكهة</button>
                         </div>
                         <div id="interactiveSaucesContainer" style="display:flex; flex-direction:column; gap:6px; margin-top:8px;"></div>
                     </div>
 
-                    <!-- إضافات الصنف الفعالة -->
                     <div style="border:1px solid var(--border-subtle); padding:10px; border-radius:var(--radius-sm);">
                         <span style="font-size:12px; font-weight:800; display:block; margin-bottom:6px;">الإضافات الفعالة لهذا الصنف:</span>
                         <div style="display:grid; grid-template-columns:1fr 1fr; gap:6px; font-size:11px;" id="editorAddonsCheckboxes"></div>
                     </div>
 
                     <div>
-                        <span style="font-size:11.5px; font-weight:700;">صورة الصنف (تتناسق تلقائياً دون قص):</span>
+                        <span style="font-size:11.5px; font-weight:700;">صورة الصنف:</span>
                         <div style="display:flex; align-items:center; gap:10px; margin-top:4px;">
                             <div style="width:65px; height:65px; background:#000; border-radius:var(--radius-sm); overflow:hidden; display:flex; align-items:center; justify-content:center;">
                                 <img src="" id="editProdImagePreview" style="width:100%; height:100%; object-fit:contain;">
@@ -1911,7 +2018,7 @@
 
 </div>
 
-<!-- القائمة الجانبية المحدثة مع زر العودة وزر الشكاوى -->
+<!-- القائمة الجانبية -->
 <div class="sidebar-mask" id="sidebarMask" onclick="closeSidebarDrawer()"></div>
 <div class="sidebar-drawer" id="sidebarDrawer">
     <div class="sidebar-top">
@@ -2019,7 +2126,7 @@
 
 <script>
 /* =========================================================
-   COFFEE CORNER PRO — MASTER CLOUD PRODUCTION ENGINE
+   COFFEE CORNER PRO — ENGINE
    ========================================================= */
 
 const MASTER_PIN = "2001159393";
@@ -2058,94 +2165,121 @@ const DEFAULT_CATALOG = [
             { name: "بستاشيو فاخر", price: 2.75 },
             { name: "كيندر بوينو", price: 2.50 }
         ],
-        allowedAddons: ["ad_nuts", "ad_honey", "ad_fruits", "ad_knife", "ad_fork"]
+        allowedAddons: ["ad_cream", "ad_nuts", "ad_fruits"]
     },
     { 
-        id: "p2", name: "كريب فيتوتشيني", category: "كريب", price: 2.50, desc: "شرائح كريب رقيقة طازجة مع النكهات والصوصات", 
+        id: "p2", name: "كريب رول فاخر", category: "كريب", price: 2.50, desc: "كريب فرنسي رقيق محشو ومغطى بالشوكولاتة البلجيكية", 
         img: "https://images.unsplash.com/photo-1519676867240-f03562e64548?w=400&q=80", isAvailable: true,
         hasSauces: true,
         saucesList: [
             { name: "نوتيلا", price: 2.50 },
-            { name: "مكس شوكولاتة بيضاء ونوتيلا", price: 2.75 },
-            { name: "بستاشيو ملكي", price: 3.00 }
+            { name: "كيندر", price: 2.75 },
+            { name: "لوتس", price: 2.75 }
         ],
-        allowedAddons: ["ad_nuts", "ad_fruits", "ad_fork"]
+        allowedAddons: ["ad_cream", "ad_nuts", "ad_fruits"]
     },
     { 
-        id: "p3", name: "كوكتيل إمبراطور فواكه", category: "كوكتيلات", price: 2.50, desc: "مزيج قطع فواكه طازجة مع القشطة والمكسرات والعسل", 
-        img: "https://images.unsplash.com/photo-1577805947697-89e18249d767?w=400&q=80", isAvailable: true,
-        hasSizes: true,
-        sizesList: [
-            { name: "صغير", extra: 0.00 },
-            { name: "وسط", extra: 0.50 },
-            { name: "كبير", extra: 1.00 }
+        id: "p3", name: "بان كيك ميني (10 قطع)", category: "بان كيك", price: 2.00, desc: "قطع ميني بان كيك هشة وطرية مع الصوصات المفضلة", 
+        img: "https://images.unsplash.com/photo-1528207776546-365bb710ee93?w=400&q=80", isAvailable: true,
+        hasSauces: true,
+        saucesList: [
+            { name: "نوتيلا", price: 2.00 },
+            { name: "بستاشيو", price: 2.50 }
         ],
-        allowedAddons: ["ad_cream", "ad_nuts", "ad_honey", "ad_straw"]
+        allowedAddons: ["ad_fruits", "ad_honey"]
     },
     { 
-        id: "p4", name: "آيس كوفي إسباني مثلج", category: "ستيم بارد", price: 1.50, desc: "إسبريسو مثلج مع حليب مكثف محلى ونكهة غنية", 
-        img: "https://images.unsplash.com/photo-1461023058943-0708e52150fe?w=400&q=80", isAvailable: true,
+        id: "p4", name: "كوكتيل إمبراطور كورنر", category: "كوكتيلات", price: 2.50, desc: "مكس طبقات من المانجو، الفراولة، الأفوكادو، مع القشطة والمكسرات والعسل", 
+        img: "https://images.unsplash.com/photo-1553530666-ba11a7da3888?w=400&q=80", isAvailable: true,
         hasSizes: true,
         sizesList: [
-            { name: "عادي", extra: 0.00 },
-            { name: "دبل شوت كبير", extra: 0.50 }
+            { name: "وسط", extra: 0.00 },
+            { name: "كبير", extra: 0.50 }
         ],
-        allowedAddons: ["ad_whipped", "ad_straw"]
+        allowedAddons: ["ad_cream", "ad_nuts", "ad_honey"]
+    },
+    { 
+        id: "p5", name: "سبانش لاتيه مثلج", category: "بارد", price: 2.25, desc: "إسبريسو غني مع الحليب المكثف المحلى وقطع الثلج", 
+        img: "https://images.unsplash.com/photo-1517701550927-30cf4be1aaf9?w=400&q=80", isAvailable: true,
+        hasSizes: true,
+        sizesList: [
+            { name: "وسط", extra: 0.00 },
+            { name: "كبير", extra: 0.50 }
+        ],
+        allowedAddons: ["ad_whipped"]
+    },
+    { 
+        id: "p6", name: "كابتشينو إيطالي", category: "ساخن", price: 1.50, desc: "إسبريسو غني برغوة الحليب الكثيفة والمخملية", 
+        img: "https://images.unsplash.com/photo-1534778101976-62847782c213?w=400&q=80", isAvailable: true,
+        hasSizes: true,
+        sizesList: [
+            { name: "وسط", extra: 0.00 },
+            { name: "كبير", extra: 0.50 }
+        ],
+        allowedAddons: []
     }
 ];
 
-const DEFAULT_BRANCHES = [
+const branchesData = [
     {
-        name: "كفرسوم",
-        whatsapp: "962790155906",
-        openHour: 6.5,
-        closeHour: 3.0,
-        towns: { "كفرسوم": 1.0, "سمر": 1.25, "سحم": 1.5, "حبراص": 1.25, "يبلا": 1.5, "الرفيد": 1.5, "حرثا": 1.5, "المزيريب": 1.5, "عقربا": 2.0, "حاتم": 1.75, "ملكا": 2.0, "أم قيس": 2.5 }
+        id: 0,
+        name: "فرع كفرسوم",
+        whatsapp: "962796433698",
+        towns: {
+            "كفرسوم": 0.50,
+            "سحم الكفارات": 1.00,
+            "الرفيد": 1.00,
+            "عقربا": 1.50,
+            "يبلا": 1.00,
+            "حرثا": 1.50,
+            "حبراص": 1.00
+        }
     },
     {
-        name: "سما الروسان",
-        whatsapp: "962790155906",
-        openHour: 16.0,
-        closeHour: 3.0,
-        towns: { "سما الروسان": 1.0, "حبراص": 1.25, "حاتم": 1.5, "كفرسوم": 1.5, "إبدر": 1.75, "المخيبة": 2.5 }
+        id: 1,
+        name: "فرع سما الروسان",
+        whatsapp: "962796433698",
+        towns: {
+            "سما الروسان": 0.50,
+            "حاتم": 1.00,
+            "إبدر": 1.00,
+            "الخرابشة": 1.50,
+            "ملكا": 1.50
+        }
     }
 ];
 
-function safeGet(key, defaultVal) {
+function safeGet(key, def) {
     try {
-        const val = localStorage.getItem(key);
-        if (!val) return defaultVal;
-        return JSON.parse(val);
-    } catch(e) { return defaultVal; }
+        const v = localStorage.getItem(key);
+        return v ? JSON.parse(v) : def;
+    } catch(e) {
+        return def;
+    }
 }
-
 function safeSet(key, val) {
-    try { localStorage.setItem(key, JSON.stringify(val)); } catch(e) {}
+    try {
+        localStorage.setItem(key, JSON.stringify(val));
+    } catch(e) {}
 }
-
-let allRegisteredCustomers = safeGet('cc_users_directory', {});
-let currentAuthenticatedUser = safeGet('cc_active_client_user', null);
-let bannedCustomersList = safeGet('cc_banned_users', []);
-let activeSessionUser = safeGet('cc_admin_session', null);
-let activeOrdersList = safeGet('cc_orders', []);
-let isThemeDark = safeGet('cc_theme_dark', false);
-let activeThemeName = safeGet('cc_active_theme_name', 'gold');
 
 let productsCatalog = safeGet('cc_catalog', DEFAULT_CATALOG);
-let branchesData = safeGet('cc_branches', DEFAULT_BRANCHES);
+let currentAuthenticatedUser = safeGet('cc_active_client_user', null);
+let allRegisteredCustomers = safeGet('cc_users_directory', {});
+let bannedCustomersList = safeGet('cc_banned_users', []);
+let activeOrdersList = safeGet('cc_orders', []);
 let customerFeedbacks = safeGet('cc_feedbacks', []);
 let customerNotifications = safeGet('cc_notifications', []);
-let systemCoupons = safeGet('cc_coupons', { "CORNER10": { discount: 10, expiry: "2026-12-31", notes: "خصم خاص لعشاق كافيه كورنر", isActive: true } });
-let systemOffers = safeGet('cc_offers', [{ id: "off1", title: "عرض الويكند الخاص", desc: "خصم 10% على أصناف الوافل باستخدام الكود CORNER10" }]);
 let customPaymentMethods = safeGet('cc_payment_methods', [
-    { id: "pm_c0", branch: "0", name: "دفع نقدي (كاش)", desc: "عند الاستلام", logo: "" },
-    { id: "pm_c1", branch: "1", name: "دفع نقدي (كاش)", desc: "عند الاستلام", logo: "" }
+    { id: "pm_1", branch: "0", name: "دفع نقدي (كاش)", desc: "عند الاستلام", logo: "" },
+    { id: "pm_2", branch: "0", name: "كليك CliQ", desc: "اسم مستعار: CORNER", logo: "" },
+    { id: "pm_3", branch: "1", name: "دفع نقدي (كاش)", desc: "عند الاستلام", logo: "" },
+    { id: "pm_4", branch: "1", name: "كليك CliQ", desc: "اسم مستعار: CORNER2", logo: "" }
 ]);
+let systemCoupons = safeGet('cc_coupons', { "CORNER10": { discount: 10, expiry: "2026-12-31", notes: "خصم ترحيبي 10%" } });
 let redeemCatalog = safeGet('cc_redeem_catalog', [
-    { id: "rd1", name: "آيس كوفي إسباني مجاني", points: 30, price: 1.50, desc: "مشروب بارد منعش", img: "" },
-    { id: "rd2", name: "وافل نوتيلا مجاني", points: 50, price: 2.00, desc: "وافل ساخن بالنوتيلا", img: "" }
+    { id: "rd_1", name: "وافل نوتيلا مجاني", price: 2.00, points: 50, desc: "وافل بلجيكي أصلي مجاناً مقابل 50 نقطة", img: "https://images.unsplash.com/photo-1562376552-0d160a2f238d?w=200&q=80" }
 ]);
-
 let brandAndDevSettings = safeGet('cc_brand_dev_config', {
     storeLogo: "./logo.png",
     brandTitle: "كافيه كورنر",
@@ -2156,85 +2290,143 @@ let brandAndDevSettings = safeGet('cc_brand_dev_config', {
     devWa: "962796433698",
     devIg: "https://www.instagram.com/o_yd"
 });
-
+let activeThemeName = safeGet('cc_active_theme_name', 'gold');
+let isThemeDark = safeGet('cc_theme_dark', false);
+let activeSessionUser = safeGet('cc_admin_session', null);
+let currentAppVersion = safeGet('cc_app_version', "7.5.0");
 let adminEditsCounter = safeGet('cc_admin_edits_count', 0);
-let currentAppVersion = safeGet('cc_app_version', '7.5.0');
-
-let authMode = 'register';
-let selectedAuthGender = 'ذكر';
-let selectedEditProfileGender = 'ذكر';
-let selectedDossierUserPhone = null;
-let activeViewingNotifId = null;
-let bypassStoreLock = false;
-let customerListFilterMode = 'all';
 
 window.appState = {
-    cartBranch: 0,
     currentCategory: "الكل",
-    cart: safeGet('cc_cart', []),
-    deliveryMode: "delivery",
-    selectedPaymentMethod: null,
     selectedProduct: null,
     productModalQty: 1,
-    activeCouponDiscount: 0,
+    cart: safeGet('cc_cart', []),
+    cartBranch: 0,
+    deliveryMode: "delivery",
+    selectedPaymentMethod: "دفع نقدي (كاش)",
     editorSizes: [],
     editorSauces: []
 };
 
-// التحقق الأردني الصارم (07 وبطول 10 أرقام دقيقة)
+let authMode = "register";
+let selectedAuthGender = "ذكر";
+let selectedEditProfileGender = "ذكر";
+let selectedDossierUserPhone = null;
+let activeViewingNotifId = null;
+let customerListFilterMode = "all";
+
 function validateJordanianPhoneNumber(phone) {
-    const clean = (phone || '').replace(/\s+/g, '');
-    const regex = /^07[789]\d{7}$/;
-    return regex.test(clean);
+    return /^07[789]\d{7}$/.test(phone);
 }
 
-// فحص أوقات العمل وإغلاق المتجر
-function checkStoreOpenHours() {
-    const now = new Date();
-    const currentHour = now.getHours() + (now.getMinutes() / 60);
+// السحابة الحية Firestore
+function initCloudFirestoreSafe() {
+    try {
+        if (window.firebase) {
+            if (!firebase.apps.length) firebase.initializeApp(FIREBASE_CONFIG);
+            cloudDb = firebase.firestore();
 
-    const isBranch0Open = (currentHour >= 6.5 || currentHour < 3.0);
-    const isBranch1Open = (currentHour >= 16.0 || currentHour < 3.0);
+            // 1. مزامنة الطلبات
+            cloudDb.collection('orders').orderBy('createdAt', 'desc').limit(50)
+                .onSnapshot(snapshot => {
+                    const cloudOrders = [];
+                    snapshot.forEach(docSnap => cloudOrders.push(docSnap.data()));
+                    if (cloudOrders.length > 0) {
+                        activeOrdersList = cloudOrders;
+                        safeSet('cc_orders', activeOrdersList);
+                        if (activeSessionUser) renderAdminLiveOrdersManager();
+                        renderOrderTrackingView();
+                    }
+                }, e => console.warn("Orders sync error:", e));
 
-    const badge = document.getElementById('mainStoreOpenBadge');
-    if (badge) {
-        if (isBranch0Open || isBranch1Open) {
-            badge.innerText = "مفتوح الآن";
-            badge.className = "header-hours-badge";
-        } else {
-            badge.innerText = "معاينة المنيو";
-            badge.className = "header-hours-badge";
+            // 2. مزامنة الأصناف
+            cloudDb.collection('catalog').doc('products_list')
+                .onSnapshot(docSnap => {
+                    if (docSnap.exists && Array.isArray(docSnap.data().items) && docSnap.data().items.length > 0) {
+                        productsCatalog = docSnap.data().items;
+                        safeSet('cc_catalog', productsCatalog);
+                        renderCategoryChips();
+                        renderMenuProducts();
+                        if (activeSessionUser) renderAdminProductsManager();
+                    }
+                }, e => console.warn("Catalog sync error:", e));
+
+            // 3. مزامنة دليل الزبائن
+            cloudDb.collection('users')
+                .onSnapshot(snapshot => {
+                    snapshot.forEach(docSnap => {
+                        allRegisteredCustomers[docSnap.id] = docSnap.data();
+                    });
+                    safeSet('cc_users_directory', allRegisteredCustomers);
+                    if (currentAuthenticatedUser && allRegisteredCustomers[currentAuthenticatedUser.phone]) {
+                        currentAuthenticatedUser = allRegisteredCustomers[currentAuthenticatedUser.phone];
+                        safeSet('cc_active_client_user', currentAuthenticatedUser);
+                        renderUserProfileDetails();
+                        updateHomeNoticeBanner();
+                    }
+                    if (activeSessionUser) {
+                        renderAdminCustomersList();
+                        populateAdminCustomerDropdowns();
+                    }
+                }, e => console.warn("Users sync error:", e));
+
+            // 4. مزامنة المحظورين
+            cloudDb.collection('settings').doc('banned_users')
+                .onSnapshot(docSnap => {
+                    if (docSnap.exists) {
+                        bannedCustomersList = docSnap.data().list || [];
+                        safeSet('cc_banned_users', bannedCustomersList);
+                        checkUserBannedStateAndLockout();
+                    }
+                }, e => console.warn("Banned sync error:", e));
+
+            // 5. مزامنة الإشعارات السحابية
+            cloudDb.collection('notifications').orderBy('createdAt', 'desc').limit(100)
+                .onSnapshot(snapshot => {
+                    const notifs = [];
+                    snapshot.forEach(docSnap => notifs.push(docSnap.data()));
+                    customerNotifications = notifs;
+                    safeSet('cc_notifications', customerNotifications);
+                    updateUnreadNotificationsCounter();
+                    renderCustomerNotifications();
+                }, e => console.warn("Notifications sync error:", e));
+
+            // 6. مزامنة الشكاوى والطعون
+            cloudDb.collection('feedbacks').orderBy('createdAt', 'desc').limit(60)
+                .onSnapshot(snapshot => {
+                    const fbs = [];
+                    snapshot.forEach(docSnap => fbs.push(docSnap.data()));
+                    customerFeedbacks = fbs;
+                    safeSet('cc_feedbacks', customerFeedbacks);
+                    renderCustomerFeedbacks();
+                    if (activeSessionUser) renderAdminFeedbackControlList();
+                }, e => console.warn("Feedbacks sync error:", e));
+
+            // 7. مزامنة الهوية وبيانات المطور
+            cloudDb.collection('settings').doc('brand_dev')
+                .onSnapshot(docSnap => {
+                    if (docSnap.exists) {
+                        brandAndDevSettings = docSnap.data();
+                        safeSet('cc_brand_dev_config', brandAndDevSettings);
+                        applyBrandAndDevSettingsToDOM();
+                    }
+                }, e => console.warn("Brand sync error:", e));
+
+            const devSyncLbl = document.getElementById('devCloudSyncState');
+            if (devSyncLbl) {
+                devSyncLbl.innerText = "ONLINE (CLOUD)";
+                devSyncLbl.style.color = "#10b981";
+            }
         }
+    } catch(err) {
+        console.warn("Firebase error:", err);
     }
 }
 
-window.bypassStoreClosedForReview = function() {
-    bypassStoreLock = true;
-    const overlay = document.getElementById('storeClosedOverlay');
-    if (overlay) overlay.style.display = 'none';
-    window.showToastMsg("تم تفعيل وضع المعاينة وتصفح المنيو");
-};
-
-function updateStoreCountdown(targetHour) {
-    const timerEl = document.getElementById('storeOpenCountdownTimer');
-    if (!timerEl) return;
-    const now = new Date();
-    const target = new Date();
-    target.setHours(Math.floor(targetHour), (targetHour % 1) * 60, 0, 0);
-    if (now > target) target.setDate(target.getDate() + 1);
-
-    const diff = target - now;
-    const h = Math.floor(diff / 3600000);
-    const m = Math.floor((diff % 3600000) / 60000);
-    const s = Math.floor((diff % 60000) / 1000);
-    timerEl.innerText = `يفتح خلال: ${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
-}
-
-// حظر الحساب والطعن
+// فحص الحظر
 function checkUserBannedStateAndLockout() {
     const overlay = document.getElementById('bannedAccountOverlay');
     if (!overlay) return;
-
     if (currentAuthenticatedUser && bannedCustomersList.includes(currentAuthenticatedUser.phone)) {
         overlay.style.display = 'flex';
     } else {
@@ -2267,14 +2459,7 @@ window.submitBanAppealAction = function() {
     window.showToastMsg("تم إرسال الطعن للإدارة بنجاح");
 };
 
-// تحديد الجنس في شاشة التسجيل
-window.selectAuthGender = function(gender) {
-    selectedAuthGender = gender;
-    document.getElementById('btnAuthGenderMale').classList.toggle('active', gender === 'ذكر');
-    document.getElementById('btnAuthGenderFemale').classList.toggle('active', gender === 'أنثى');
-};
-
-// المصادقة والتسجيل
+// المصادقة
 window.switchAuthMode = function(mode) {
     authMode = mode;
     document.getElementById('tabAuthRegister').classList.toggle('active', mode === 'register');
@@ -2284,6 +2469,12 @@ window.switchAuthMode = function(mode) {
     document.getElementById('btnSubmitAuth').innerText = (mode === 'register') ? 'إنشاء حساب جديد' : 'دخول فوري';
 };
 
+window.selectAuthGender = function(g) {
+    selectedAuthGender = g;
+    document.getElementById('btnAuthGenderMale').classList.toggle('active', g === 'ذكر');
+    document.getElementById('btnAuthGenderFemale').classList.toggle('active', g === 'أنثى');
+};
+
 window.handleCustomerAuthSubmit = function(event) {
     event.preventDefault();
     const phone = (document.getElementById('authPhoneInput').value || '').trim();
@@ -2291,16 +2482,15 @@ window.handleCustomerAuthSubmit = function(event) {
     if (!phone || !pass) return window.showToastMsg("يرجى ملء جميع الحقول");
 
     if (!validateJordanianPhoneNumber(phone)) {
-        return window.showToastMsg("رقم الهاتف غير صالح! يجب أن يتكون من 10 أرقام دقيقة ويبدأ بـ 07 (مثال: 0790123456)");
+        return window.showToastMsg("رقم الهاتف يجب أن يبدأ بـ 07 ويتكون من 10 أرقام دقيقة");
     }
 
     if (authMode === 'register') {
         const name = (document.getElementById('authNameInput').value || '').trim();
         if (!name) return window.showToastMsg("يرجى إدخال اسمك الكريم");
         
-        // التحقق من حجز الرقم ومنع تكرار الحسابات نهائياً حتى وإن كان الحساب محظوراً
         if (allRegisteredCustomers[phone] || bannedCustomersList.includes(phone)) {
-            return window.showToastMsg("رقم الهاتف هذا محجوز بحساب مسجل مسبقاً! كل رقم هاتف له حساب واحد فقط.");
+            return window.showToastMsg("رقم الهاتف هذا مسجل مسبقاً! كل رقم له حساب واحد.");
         }
 
         const newUser = { 
@@ -2334,6 +2524,7 @@ window.handleCustomerAuthSubmit = function(event) {
 
     updateHomeNoticeBanner();
     checkUserBannedStateAndLockout();
+    updateUnreadNotificationsCounter();
 
     if (window._postAuthDestination) {
         const d = window._postAuthDestination;
@@ -2344,143 +2535,12 @@ window.handleCustomerAuthSubmit = function(event) {
     }
 };
 
-/* نظام استعادة كلمة المرور المتقدم (Forgot Password) */
-window.openForgotPasswordModal = function() {
-    document.getElementById('forgotPhoneInput').value = '';
-    document.getElementById('forgotNewPassInput').value = '';
-    document.getElementById('forgotConfirmPassInput').value = '';
-    document.getElementById('modalForgotPassword').style.display = 'flex';
-};
-
-window.closeForgotPasswordModal = function() {
-    document.getElementById('modalForgotPassword').style.display = 'none';
-};
-
-window.handleForgotPasswordSubmit = function(event) {
-    event.preventDefault();
-    const phone = (document.getElementById('forgotPhoneInput').value || '').trim();
-    const newPass = (document.getElementById('forgotNewPassInput').value || '').trim();
-    const confirmPass = (document.getElementById('forgotConfirmPassInput').value || '').trim();
-
-    if (!validateJordanianPhoneNumber(phone)) {
-        return window.showToastMsg("رقم هاتف أردني غير صحيح (يجب أن يبدأ بـ 07 ويتكون من 10 أرقام)");
-    }
-
-    const user = allRegisteredCustomers[phone];
-    if (!user) {
-        return window.showToastMsg("عذراً، هذا الرقم غير مسجل في قاعدة البيانات");
-    }
-
-    if (newPass.length < 4) {
-        return window.showToastMsg("كلمة المرور يجب أن تكون 4 خانات على الأقل");
-    }
-
-    if (newPass !== confirmPass) {
-        return window.showToastMsg("كلمتا المرور غير متطابقتين!");
-    }
-
-    user.password = newPass;
-    allRegisteredCustomers[phone] = user;
-    safeSet('cc_users_directory', allRegisteredCustomers);
-
-    if (cloudDb) {
-        cloudDb.collection('users').doc(phone).update({ password: newPass }).catch(e=>console.warn(e));
-    }
-
-    if (currentAuthenticatedUser && currentAuthenticatedUser.phone === phone) {
-        currentAuthenticatedUser.password = newPass;
-        safeSet('cc_active_client_user', currentAuthenticatedUser);
-    }
-
-    closeForgotPasswordModal();
-    window.showToastMsg("تم إعادة تعيين كلمة المرور بنجاح! يمكنك الآن تسجيل الدخول بها.");
-};
-
 window.logoutCustomerSession = function() {
     currentAuthenticatedUser = null;
     localStorage.removeItem('cc_active_client_user');
     checkUserBannedStateAndLockout();
     updateHomeNoticeBanner();
-    window.showToastMsg("تم تسجيل الخروج بنجاح");
-    window.navigateRouter('screen-home');
-};
-
-/* حذف حساب العميل من قبل الزبون مع إلغاء كافة الطلبات الجارية */
-window.promptDeleteCustomerAccountSelf = function() {
-    if (!currentAuthenticatedUser) return;
-    const confirmAction = window.confirm("هل أنت متأكد من رغبتك بحذف حسابك نهائياً؟ سيتم إلغاء كافة طلباتك الجارية غير المسلمة ومسح نقاطك تماماً.");
-    if (!confirmAction) return;
-
-    const userPhone = currentAuthenticatedUser.phone;
-
-    // إلغاء كافة طلبات العميل غير المستلمة وحذفها
-    activeOrdersList.forEach(o => {
-        if (o.customerPhone === userPhone && o.status !== 'completed' && o.status !== 'cancelled') {
-            o.status = 'cancelled';
-            o.finishedAt = Date.now();
-            if (cloudDb) cloudDb.collection('orders').doc(o.orderId).update({ status: 'cancelled', finishedAt: o.finishedAt }).catch(e=>console.warn(e));
-        }
-    });
-    safeSet('cc_orders', activeOrdersList);
-
-    // حذف الحساب من الذاكرة والسحابة
-    delete allRegisteredCustomers[userPhone];
-    safeSet('cc_users_directory', allRegisteredCustomers);
-    if (cloudDb) cloudDb.collection('users').doc(userPhone).delete().catch(e=>console.warn(e));
-
-    currentAuthenticatedUser = null;
-    localStorage.removeItem('cc_active_client_user');
-    checkUserBannedStateAndLockout();
-    updateHomeNoticeBanner();
-    window.showToastMsg("تم حذف حسابك وإلغاء طلباتك غير المسلمة بنجاح");
-    window.navigateRouter('screen-home');
-};
-
-/* حذف وشطب العميل نهائياً من قبل الإدارة في دوسيه الزبائن */
-window.adminPurgeCustomerAccountFromSystem = function() {
-    if (!selectedDossierUserPhone) return;
-    const phone = selectedDossierUserPhone;
-    const confirmAction = window.confirm(`هل أنت متأكد من شطب وحذف تسجيل الزبون (${phone}) نهائياً من النظام؟`);
-    if (!confirmAction) return;
-
-    // إلغاء أي طلبات نشطة له
-    activeOrdersList.forEach(o => {
-        if (o.customerPhone === phone && o.status !== 'completed' && o.status !== 'cancelled') {
-            o.status = 'cancelled';
-            o.finishedAt = Date.now();
-            if (cloudDb) cloudDb.collection('orders').doc(o.orderId).update({ status: 'cancelled', finishedAt: o.finishedAt }).catch(e=>console.warn(e));
-        }
-    });
-    safeSet('cc_orders', activeOrdersList);
-
-    delete allRegisteredCustomers[phone];
-    safeSet('cc_users_directory', allRegisteredCustomers);
-    bannedCustomersList = bannedCustomersList.filter(p => p !== phone);
-    safeSet('cc_banned_users', bannedCustomersList);
-
-    if (cloudDb) {
-        cloudDb.collection('users').doc(phone).delete().catch(e=>console.warn(e));
-        cloudDb.collection('settings').doc('banned_users').set({ list: bannedCustomersList }).catch(e=>console.warn(e));
-    }
-
-    if (currentAuthenticatedUser && currentAuthenticatedUser.phone === phone) {
-        currentAuthenticatedUser = null;
-        localStorage.removeItem('cc_active_client_user');
-        checkUserBannedStateAndLockout();
-        updateHomeNoticeBanner();
-    }
-
-    closeCustomerDossierModal();
-    renderAdminCustomersList();
-    checkAdminEditsCounter();
-    window.showToastMsg("تم شطب وحذف الحساب نهائياً من المنظومة بنجاح!");
-};
-
-window.logoutCustomerSession = function() {
-    currentAuthenticatedUser = null;
-    localStorage.removeItem('cc_active_client_user');
-    checkUserBannedStateAndLockout();
-    updateHomeNoticeBanner();
+    updateUnreadNotificationsCounter();
     window.showToastMsg("تم تسجيل الخروج بنجاح");
     window.navigateRouter('screen-home');
 };
@@ -2505,498 +2565,7 @@ function updateHomeNoticeBanner() {
     }
 }
 
-// تعديل الحساب والصورة الشخصية
-window.handleUserAvatarUpload = function(event) {
-    const file = event.target.files[0];
-    if (!file || !currentAuthenticatedUser) return;
-    compressImageNative(file, 200, 0.85, base64Url => {
-        document.getElementById('profUserAvatarImg').src = base64Url;
-        currentAuthenticatedUser.avatar = base64Url;
-        allRegisteredCustomers[currentAuthenticatedUser.phone] = currentAuthenticatedUser;
-        safeSet('cc_users_directory', allRegisteredCustomers);
-        safeSet('cc_active_client_user', currentAuthenticatedUser);
-        if (cloudDb) cloudDb.collection('users').doc(currentAuthenticatedUser.phone).set(currentAuthenticatedUser).catch(e=>console.warn(e));
-        window.showToastMsg("تم تحديث صورتك الشخصية بنجاح");
-    });
-};
-
-window.selectEditProfileGender = function(gender) {
-    selectedEditProfileGender = gender;
-    document.getElementById('btnEditGenderMale').classList.toggle('active', gender === 'ذكر');
-    document.getElementById('btnEditGenderFemale').classList.toggle('active', gender === 'أنثى');
-};
-
-window.saveBasicProfileModifications = function() {
-    if (!currentAuthenticatedUser) return;
-    const oldPhone = currentAuthenticatedUser.phone;
-    const name = document.getElementById('editProfNameInput').value.trim();
-    const newPhone = document.getElementById('editProfPhoneInput').value.trim();
-    const bio = document.getElementById('editProfBioInput').value.trim();
-
-    if (!name) return window.showToastMsg("يرجى كتابة الاسم");
-    if (!newPhone) return window.showToastMsg("يرجى إدخال رقم الهاتف");
-
-    if (!validateJordanianPhoneNumber(newPhone)) {
-        return window.showToastMsg("رقم الهاتف غير صالح! يجب أن يبدأ بـ 07 ويتكون من 10 أرقام (مثال: 0790123456)");
-    }
-
-    if (newPhone !== oldPhone && (allRegisteredCustomers[newPhone] || bannedCustomersList.includes(newPhone))) {
-        return window.showToastMsg("رقم الهاتف هذا محجوز لحساب آخر بالفعل! كل رقم هاتف له حساب واحد فقط.");
-    }
-
-    currentAuthenticatedUser.name = name;
-    currentAuthenticatedUser.gender = selectedEditProfileGender || 'ذكر';
-    currentAuthenticatedUser.bio = bio;
-
-    if (newPhone !== oldPhone) {
-        delete allRegisteredCustomers[oldPhone];
-        currentAuthenticatedUser.phone = newPhone;
-        allRegisteredCustomers[newPhone] = currentAuthenticatedUser;
-
-        activeOrdersList.forEach(o => {
-            if (o.customerPhone === oldPhone) o.customerPhone = newPhone;
-        });
-        safeSet('cc_orders', activeOrdersList);
-
-        customerNotifications.forEach(n => {
-            if (n.targetPhone === oldPhone) n.targetPhone = newPhone;
-        });
-        safeSet('cc_notifications', customerNotifications);
-
-        if (cloudDb) {
-            cloudDb.collection('users').doc(oldPhone).delete().catch(e=>console.warn(e));
-            cloudDb.collection('users').doc(newPhone).set(currentAuthenticatedUser).catch(e=>console.warn(e));
-        }
-    } else {
-        allRegisteredCustomers[oldPhone] = currentAuthenticatedUser;
-        if (cloudDb) cloudDb.collection('users').doc(oldPhone).set(currentAuthenticatedUser).catch(e=>console.warn(e));
-    }
-
-    safeSet('cc_users_directory', allRegisteredCustomers);
-    safeSet('cc_active_client_user', currentAuthenticatedUser);
-
-    renderUserProfileDetails();
-    updateHomeNoticeBanner();
-    window.showToastMsg("تم حفظ وتحديث بيانات حسابك بنجاح!");
-};
-
-window.changeCustomerPasswordAction = function() {
-    if (!currentAuthenticatedUser) return;
-    const currentPass = document.getElementById('editProfCurrentPassInput').value.trim();
-    const newPass = document.getElementById('editProfNewPassInput').value.trim();
-    const confirmPass = document.getElementById('editProfConfirmPassInput').value.trim();
-
-    if (!currentPass || !newPass || !confirmPass) {
-        return window.showToastMsg("يرجى تعبئة كافة حقول كلمة المرور");
-    }
-
-    if (currentAuthenticatedUser.password && currentAuthenticatedUser.password !== currentPass) {
-        return window.showToastMsg("كلمة المرور الحالية غير صحيحة!");
-    }
-
-    if (newPass.length < 4) {
-        return window.showToastMsg("كلمة المرور الجديدة يجب أن تكون 4 خانات على الأقل");
-    }
-
-    if (newPass !== confirmPass) {
-        return window.showToastMsg("كلمة المرور الجديدة وتأكيدها غير متطابقين!");
-    }
-
-    currentAuthenticatedUser.password = newPass;
-    allRegisteredCustomers[currentAuthenticatedUser.phone] = currentAuthenticatedUser;
-    safeSet('cc_users_directory', allRegisteredCustomers);
-    safeSet('cc_active_client_user', currentAuthenticatedUser);
-
-    if (cloudDb) {
-        cloudDb.collection('users').doc(currentAuthenticatedUser.phone).update({ password: newPass }).catch(e=>console.warn(e));
-    }
-
-    document.getElementById('editProfCurrentPassInput').value = '';
-    document.getElementById('editProfNewPassInput').value = '';
-    document.getElementById('editProfConfirmPassInput').value = '';
-
-    window.showToastMsg("تم تغيير وتحديث كلمة المرور بنجاح!");
-};
-
-window.handleDevAvatarUpload = function(event) {
-    const file = event.target.files[0];
-    if (!file) return;
-    compressImageNative(file, 200, 0.9, base64Url => {
-        document.getElementById('admDevAvatarPreview').src = base64Url;
-        brandAndDevSettings.devAvatar = base64Url;
-    });
-};
-
-window.saveBrandAndDeveloperSettings = function() {
-    brandAndDevSettings.brandTitle = document.getElementById('admBrandTitleInput').value.trim() || "كافيه كورنر";
-    brandAndDevSettings.brandSub = document.getElementById('admBrandSubInput').value.trim();
-    brandAndDevSettings.devName = document.getElementById('admDevNameInput').value.trim() || "المهندس عمر عبيدات";
-    brandAndDevSettings.devBio = document.getElementById('admDevBioInput').value.trim();
-    brandAndDevSettings.devWa = document.getElementById('admDevWaInput').value.trim() || "962796433698";
-    brandAndDevSettings.devIg = document.getElementById('admDevIgInput').value.trim() || "https://www.instagram.com/o_yd";
-
-    safeSet('cc_brand_dev_config', brandAndDevSettings);
-    if (cloudDb) cloudDb.collection('settings').doc('brand_dev').set(brandAndDevSettings).catch(e=>console.warn(e));
-
-    applyBrandAndDevSettingsToDOM();
-    checkAdminEditsCounter();
-    window.showToastMsg("تم حفظ وتثبيت إعدادات الهوية وبيانات المطور أونلاين!");
-};
-
-function applyBrandAndDevSettingsToDOM() {
-    const s = brandAndDevSettings;
-    const headerLogo = document.getElementById('mainHeaderLogoImg');
-    const headerTitle = document.getElementById('mainHeaderBrandTitle');
-    const headerSub = document.getElementById('mainHeaderBrandSub');
-
-    if (headerLogo) headerLogo.src = s.storeLogo || "./logo.png";
-    if (headerTitle) headerTitle.innerText = s.brandTitle || "كافيه كورنر";
-    if (headerSub) headerSub.innerText = s.brandSub || "";
-
-    const devAvatar = document.getElementById('devHubAvatarImg');
-    const devName = document.getElementById('devHubNameDisplay');
-    const devBio = document.getElementById('devHubBioDisplay');
-    const devWaBtn = document.getElementById('devWaLinkBtn');
-    const devIgBtn = document.getElementById('devIgLinkBtn');
-
-    if (devAvatar) devAvatar.src = s.devAvatar || s.storeLogo || "./logo.png";
-    if (devName) devName.innerText = s.devName || "المهندس عمر عبيدات";
-    if (devBio) devBio.innerText = s.devBio || "مهندس اتصالات ومطور برمجيات يجمع بين التفكير الهندسي الدقيق للشبكات وهندسة النظم وتطوير المنظومات الرقمية الموزعة.";
-    if (devWaBtn) devWaBtn.href = `https://wa.me/${(s.devWa || "962796433698").replace(/\+/g, '')}`;
-    if (devIgBtn) devIgBtn.href = s.devIg || "https://www.instagram.com/o_yd";
-
-    const admLogoPrev = document.getElementById('admLogoPreview');
-    const admBrandT = document.getElementById('admBrandTitleInput');
-    const admBrandS = document.getElementById('admBrandSubInput');
-    const admDevAv = document.getElementById('admDevAvatarPreview');
-    const admDevN = document.getElementById('admDevNameInput');
-    const admDevB = document.getElementById('admDevBioInput');
-    const admDevW = document.getElementById('admDevWaInput');
-    const admDevI = document.getElementById('admDevIgInput');
-
-    if (admLogoPrev) admLogoPrev.src = s.storeLogo || "./logo.png";
-    if (admBrandT) admBrandT.value = s.brandTitle || "كافيه كورنر";
-    if (admBrandS) admBrandS.value = s.brandSub || "";
-    if (admDevAv) admDevAv.src = s.devAvatar || "./logo.png";
-    if (admDevN) admDevN.value = s.devName || "";
-    if (admDevB) admDevB.value = s.devBio || "";
-    if (admDevW) admDevW.value = s.devWa || "";
-    if (admDevI) admDevI.value = s.devIg || "";
-}
-
-function renderUserProfileDetails() {
-    if (!currentAuthenticatedUser) return;
-    const u = currentAuthenticatedUser;
-    const gender = u.gender || 'ذكر';
-    selectedEditProfileGender = gender;
-
-    document.getElementById('profUserAvatarImg').src = u.avatar || (gender === 'أنثى' 
-        ? 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=200&q=80' 
-        : 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200&q=80');
-
-    document.getElementById('profDisplayName').innerText = u.name;
-    document.getElementById('profDisplayPhone').innerText = u.phone;
-    document.getElementById('profDisplayBio').innerText = u.bio || 'محب للقهوة والمذاق الرفيع في كافيه كورنر.';
-    document.getElementById('profDisplayGenderText').innerText = gender;
-    
-    const pts = parseInt(u.points) || 0;
-    const tier = u.tier || (pts >= 200 ? 'عضوية VIP ماسية' : (pts >= 100 ? 'عضوية ذهبية ملكية' : (pts >= 40 ? 'عضوية فضية راقية' : 'عضوية برونزية مميزة')));
-    document.getElementById('profDisplayTierBadge').innerText = tier;
-
-    document.getElementById('profStatPoints').innerText = pts;
-    document.getElementById('profStatOrders').innerText = u.ordersCount || 0;
-
-    // تعبئة حقول التعديل
-    document.getElementById('editProfNameInput').value = u.name || '';
-    document.getElementById('editProfPhoneInput').value = u.phone || '';
-    document.getElementById('editProfBioInput').value = u.bio || '';
-    document.getElementById('btnEditGenderMale').classList.toggle('active', gender === 'ذكر');
-    document.getElementById('btnEditGenderFemale').classList.toggle('active', gender === 'أنثى');
-
-    document.getElementById('editProfCurrentPassInput').value = '';
-    document.getElementById('editProfNewPassInput').value = '';
-    document.getElementById('editProfConfirmPassInput').value = '';
-}
-
-// الإشعارات وعزل الخصوصية التام
-function addNotificationRecord(title, desc, targetPhone = 'all', isFeedbackReply = false) {
-    const newNotif = {
-        id: "nt_" + Date.now(),
-        title,
-        desc,
-        targetPhone,
-        isFeedbackReply,
-        time: new Date().toLocaleTimeString('ar-JO', { hour: '2-digit', minute: '2-digit' }),
-        isRead: false
-    };
-    customerNotifications.unshift(newNotif);
-    safeSet('cc_notifications', customerNotifications);
-    updateNotificationBadge();
-    renderCustomerNotifications();
-}
-
-function updateNotificationBadge() {
-    const badge = document.getElementById('unreadNotifCountBadge');
-    if (!badge) return;
-    if (!currentAuthenticatedUser) {
-        badge.style.display = 'none';
-        return;
-    }
-    const myNotifs = customerNotifications.filter(n => n.targetPhone === 'all' || n.targetPhone === currentAuthenticatedUser.phone);
-    const unread = myNotifs.filter(n => !n.isRead).length;
-
-    if (unread > 0) {
-        badge.innerText = unread;
-        badge.style.display = 'flex';
-    } else {
-        badge.style.display = 'none';
-    }
-}
-
-function renderCustomerNotifications() {
-    const container = document.getElementById('customerNotificationsList');
-    if (!container) return;
-
-    if (!currentAuthenticatedUser) {
-        container.innerHTML = `<div style="text-align:center; padding:20px; color:var(--text-secondary); font-size:12px;">يرجى تسجيل الدخول لعرض إشعاراتك الخاصة</div>`;
-        return;
-    }
-
-    const myNotifs = customerNotifications.filter(n => n.targetPhone === 'all' || n.targetPhone === currentAuthenticatedUser.phone);
-
-    if (!myNotifs.length) {
-        container.innerHTML = `<div style="text-align:center; padding:20px; color:var(--text-secondary); font-size:12px;">لا توجد إشعارات حالياً</div>`;
-        return;
-    }
-
-    container.innerHTML = myNotifs.map(n => `
-        <div class="clean-card" onclick="openFullNotificationModal('${n.id}')" style="margin-bottom:8px; cursor:pointer; ${!n.isRead ? 'border-right:3px solid var(--brand-theme); background:var(--brand-glow);' : ''}">
-            <div style="display:flex; justify-content:space-between; align-items:center;">
-                <div style="font-weight:900; font-size:13px; color:var(--brand-theme);">${n.title}</div>
-                <div style="font-size:10px; color:var(--text-dim);">فتح الإشعار ❯</div>
-            </div>
-            <div style="font-size:11.5px; color:var(--text-secondary); margin-top:3px; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden;">${n.desc}</div>
-            <div class="num-font" style="font-size:9.5px; color:var(--text-dim); margin-top:4px;">${n.time}</div>
-        </div>
-    `).join('');
-}
-
-window.openFullNotificationModal = function(id) {
-    const n = customerNotifications.find(x => x.id === id);
-    if (!n) return;
-
-    activeViewingNotifId = id;
-    n.isRead = true;
-    safeSet('cc_notifications', customerNotifications);
-    updateNotificationBadge();
-    renderCustomerNotifications();
-
-    document.getElementById('notifModalTitle').innerText = n.title;
-    document.getElementById('notifModalTime').innerText = n.time;
-    document.getElementById('notifModalBody').innerText = n.desc;
-
-    const replyArea = document.getElementById('notifReplyActionArea');
-    const noReplyNotice = document.getElementById('notifNoReplyNotice');
-
-    if (n.title.includes("شكوى") || n.title.includes("مقترح") || n.title.includes("طعن") || n.isFeedbackReply) {
-        replyArea.style.display = 'block';
-        noReplyNotice.style.display = 'none';
-        document.getElementById('notifCustomerReplyInput').value = '';
-    } else {
-        replyArea.style.display = 'none';
-        noReplyNotice.style.display = 'block';
-    }
-
-    document.getElementById('modalFullNotificationView').style.display = 'flex';
-};
-
-window.closeFullNotificationModal = function() {
-    document.getElementById('modalFullNotificationView').style.display = 'none';
-    activeViewingNotifId = null;
-};
-
-window.sendReplyFromNotificationModal = function() {
-    if (!currentAuthenticatedUser) return;
-    const text = (document.getElementById('notifCustomerReplyInput').value || '').trim();
-    if (!text) return window.showToastMsg("اكتب نص الرد أولاً");
-
-    const feedbackObj = {
-        id: "fb_rep_" + Date.now(),
-        customerPhone: currentAuthenticatedUser.phone,
-        customerName: currentAuthenticatedUser.name,
-        category: "متابعة رد شكوى / طعن",
-        text: `[رد مستمر من الزبون]: ${text}`,
-        reply: "",
-        repliedAt: null,
-        createdAt: Date.now(),
-        dateStr: new Date().toLocaleDateString('ar-JO')
-    };
-
-    customerFeedbacks.unshift(feedbackObj);
-    safeSet('cc_feedbacks', customerFeedbacks);
-    if (cloudDb) cloudDb.collection('feedbacks').doc(feedbackObj.id).set(feedbackObj).catch(e=>console.warn(e));
-
-    closeFullNotificationModal();
-    window.showToastMsg("تم إرسال ردك للإدارة بنجاح");
-};
-
-window.clearAllNotifications = function() {
-    if (!currentAuthenticatedUser) return;
-    customerNotifications = customerNotifications.filter(n => n.targetPhone !== 'all' && n.targetPhone !== currentAuthenticatedUser.phone);
-    safeSet('cc_notifications', customerNotifications);
-    renderCustomerNotifications();
-    updateNotificationBadge();
-    window.showToastMsg("تم تفريغ إشعاراتك الخاصة");
-};
-
-// الشكاوى والاقتراحات وطعون الحظر (اختفاء بعد 72 ساعة من الرد)
-window.submitCustomerFeedback = function() {
-    if (!currentAuthenticatedUser) {
-        window._postAuthDestination = 'screen-feedback';
-        window.showToastMsg("يرجى تسجيل الدخول أولاً لإرسال ملاحظتك");
-        return window.navigateRouter('screen-auth');
-    }
-
-    const cat = document.getElementById('feedbackCategory').value;
-    const content = (document.getElementById('feedbackContentInput').value || '').trim();
-    if (!content) return window.showToastMsg("يرجى كتابة نص الملاحظة أو الشكوى");
-
-    const feedbackObj = {
-        id: "fb_" + Date.now(),
-        customerPhone: currentAuthenticatedUser.phone,
-        customerName: currentAuthenticatedUser.name,
-        category: cat,
-        text: content,
-        reply: "",
-        repliedAt: null,
-        createdAt: Date.now(),
-        dateStr: new Date().toLocaleDateString('ar-JO')
-    };
-
-    customerFeedbacks.unshift(feedbackObj);
-    safeSet('cc_feedbacks', customerFeedbacks);
-    if (cloudDb) cloudDb.collection('feedbacks').doc(feedbackObj.id).set(feedbackObj).catch(e=>console.warn(e));
-
-    document.getElementById('feedbackContentInput').value = '';
-    renderCustomerFeedbacks();
-    window.showToastMsg("تم إرسال الشكوى أو الطعن مباشرة للإدارة");
-};
-
-function renderCustomerFeedbacks() {
-    const container = document.getElementById('customerFeedbackList');
-    if (!container || !currentAuthenticatedUser) return;
-
-    const now = Date.now();
-    const SEVENTY_TWO_HOURS = 72 * 60 * 60 * 1000;
-
-    const visibleFeedbacks = customerFeedbacks.filter(f => {
-        if (f.customerPhone !== currentAuthenticatedUser.phone) return false;
-        if (f.repliedAt && (now - f.repliedAt > SEVENTY_TWO_HOURS)) return false;
-        return true;
-    });
-
-    if (!visibleFeedbacks.length) {
-        container.innerHTML = `<div style="text-align:center; padding:16px; color:var(--text-secondary); font-size:12px;">لا توجد شكاوى أو طعون حالية</div>`;
-        return;
-    }
-
-    container.innerHTML = visibleFeedbacks.map(f => `
-        <div class="clean-card" style="margin-bottom:8px;">
-            <div style="display:flex; justify-content:space-between; font-size:11px; color:var(--text-dim); margin-bottom:4px;">
-                <span>${f.category}</span>
-                <span>${f.dateStr}</span>
-            </div>
-            <div style="font-size:12.5px; font-weight:700;">${f.text}</div>
-            ${f.reply ? `
-                <div style="background:var(--brand-glow); border:1px dashed var(--brand-theme); border-radius:var(--radius-sm); padding:8px 10px; margin-top:8px; font-size:11.5px;">
-                    <div style="font-weight:900; color:var(--brand-theme); margin-bottom:2px;">رد الإدارة الرسمي:</div>
-                    <div>${f.reply}</div>
-                    <div style="font-size:9.5px; color:var(--text-dim); margin-top:4px;">* تختفي هذه الملاحظة بعد 72 ساعة من الرد.</div>
-                </div>
-            ` : `<div style="font-size:10.5px; color:var(--status-warning); margin-top:6px;">قيد مراجعة الإدارة...</div>`}
-        </div>
-    `).join('');
-}
-
-function renderAdminFeedbacksManager() {
-    const container = document.getElementById('adminFeedbackControlList');
-    if (!container) return;
-
-    const now = Date.now();
-    const SEVENTY_TWO_HOURS = 72 * 60 * 60 * 1000;
-    const activeFeedbacks = customerFeedbacks.filter(f => !(f.repliedAt && (now - f.repliedAt > SEVENTY_TWO_HOURS)));
-
-    if (!activeFeedbacks.length) {
-        container.innerHTML = `<div style="text-align:center; padding:14px; color:var(--text-secondary); font-size:12px;">لا توجد شكاوى أو طعون واردة حالياً</div>`;
-        return;
-    }
-
-    container.innerHTML = activeFeedbacks.map(f => {
-        const isBanned = bannedCustomersList.includes(f.customerPhone);
-        return `
-            <div class="clean-card" style="margin-bottom:8px; ${isBanned ? 'border-color:var(--status-danger);' : ''}">
-                <div style="display:flex; justify-content:space-between; align-items:center;">
-                    <div style="font-weight:900; font-size:13px;">${f.customerName} (<span class="num-font">${f.customerPhone}</span>)</div>
-                    <span class="header-hours-badge">${f.category}</span>
-                </div>
-                <div style="font-size:12px; margin:6px 0;">${f.text}</div>
-                ${f.reply ? `<div style="font-size:11px; color:var(--status-success);"><strong>ردك السابق:</strong> ${f.reply}</div>` : `
-                    <div style="display:flex; gap:6px; margin-top:6px;">
-                        <input type="text" class="ios-input-field" id="replyInput_${f.id}" placeholder="اكتب ردك للزبون...">
-                        <button class="btn-brand-solid" style="width:auto; padding:0 12px; font-size:11px;" onclick="submitAdminFeedbackReply('${f.id}')">إرسال الرد</button>
-                    </div>
-                `}
-                <div style="margin-top:8px; display:flex; gap:6px; align-items:center;">
-                    ${isBanned ? `
-                        <button class="btn-brand-outline" style="padding:4px 10px; font-size:10.5px; color:var(--status-success); border-color:var(--status-success);" onclick="adminDirectUnban('${f.customerPhone}')">فك الحظر عن هذا الزبون فوراً ✓</button>
-                    ` : `
-                        <button class="btn-brand-outline" style="padding:4px 10px; font-size:10.5px; color:var(--status-danger); border-color:var(--status-danger);" onclick="adminDirectBan('${f.customerPhone}')">حظر هذا الزبون ✕</button>
-                    `}
-                </div>
-            </div>
-        `;
-    }).join('');
-}
-
-window.submitAdminFeedbackReply = function(id) {
-    const replyInput = document.getElementById(`replyInput_${id}`);
-    if (!replyInput) return;
-    const text = replyInput.value.trim();
-    if (!text) return window.showToastMsg("اكتب نص الرد أولاً");
-
-    const fb = customerFeedbacks.find(x => x.id === id);
-    if (!fb) return;
-
-    fb.reply = text;
-    fb.repliedAt = Date.now();
-    safeSet('cc_feedbacks', customerFeedbacks);
-    if (cloudDb) cloudDb.collection('feedbacks').doc(id).update({ reply: text, repliedAt: fb.repliedAt }).catch(e=>console.warn(e));
-
-    addNotificationRecord("تم الرد على ملاحظتك أو طعنك", `قامت الإدارة بالرد على شكواك/طعنك:\n"${text}"`, fb.customerPhone, true);
-    renderAdminFeedbacksManager();
-    window.showToastMsg("تم إرسال الرد للزبون بنجاح!");
-};
-
-window.adminDirectUnban = function(phone) {
-    bannedCustomersList = bannedCustomersList.filter(p => p !== phone);
-    safeSet('cc_banned_users', bannedCustomersList);
-    if (cloudDb) cloudDb.collection('settings').doc('banned_users').set({ list: bannedCustomersList }).catch(e=>console.warn(e));
-    addNotificationRecord("تم قبول طعنك ورفع القيد", "قامت إدارة كافيه كورنر بفك الحظر عن حسابك بنجاح. أهلاً بك!", phone);
-    checkUserBannedStateAndLockout();
-    renderAdminFeedbacksManager();
-    window.showToastMsg("تم فك الحظر عن العميل بنجاح فوراً!");
-};
-
-window.adminDirectBan = function(phone) {
-    if (!bannedCustomersList.includes(phone)) bannedCustomersList.push(phone);
-    safeSet('cc_banned_users', bannedCustomersList);
-    if (cloudDb) cloudDb.collection('settings').doc('banned_users').set({ list: bannedCustomersList }).catch(e=>console.warn(e));
-    checkUserBannedStateAndLockout();
-    renderAdminFeedbacksManager();
-    window.showToastMsg("تم حظر العميل");
-};
-
-// إدارة المنيو وتخصيص الأصناف
+// عرض المنيو
 function renderCategoryChips() {
     const container = document.getElementById('categoryScrollChips');
     if (!container) return;
@@ -3006,8 +2575,8 @@ function renderCategoryChips() {
     `).join('');
 }
 
-window.selectMenuCat = function(category) {
-    window.appState.currentCategory = category;
+window.selectMenuCat = function(c) {
+    window.appState.currentCategory = c;
     renderCategoryChips();
     renderMenuProducts();
 };
@@ -3024,6 +2593,11 @@ window.renderMenuProducts = function() {
     }
     if (query) {
         filtered = filtered.filter(p => (p.name || '').toLowerCase().includes(query) || (p.desc || '').toLowerCase().includes(query));
+    }
+
+    if (!filtered.length) {
+        container.innerHTML = `<div style="grid-column: span 2; text-align:center; padding:30px; font-size:12px; color:var(--text-secondary);">لا توجد أصناف مطابقة للبحث</div>`;
+        return;
     }
 
     container.innerHTML = filtered.map(p => {
@@ -3226,7 +2800,7 @@ function refreshCartDockStatus() {
     }
 }
 
-// السلة وطرق الدفع المنفصلة
+// السلة
 function renderCartItemsList() {
     const container = document.getElementById('cartItemsList');
     if (!container) return;
@@ -3260,20 +2834,20 @@ window.removeCartItem = function(index) {
     refreshCartDockStatus();
 };
 
-window.switchCartBranch = function(branchIdx) {
-    window.appState.cartBranch = branchIdx;
-    document.getElementById('btnBranch0').classList.toggle('active', branchIdx === 0);
-    document.getElementById('btnBranch1').classList.toggle('active', branchIdx === 1);
+window.switchCartBranch = function(idx) {
+    window.appState.cartBranch = idx;
+    document.getElementById('btnBranch0').classList.toggle('active', idx === 0);
+    document.getElementById('btnBranch1').classList.toggle('active', idx === 1);
     populateCartTownsSelect();
     renderCartPaymentOptions();
     recalculateCartSummary();
 };
 
-window.switchDeliveryMode = function(mode) {
-    window.appState.deliveryMode = mode;
-    document.getElementById('btnModeDelivery').classList.toggle('active', mode === 'delivery');
-    document.getElementById('btnModePickup').classList.toggle('active', mode === 'pickup');
-    document.getElementById('deliveryFieldsArea').style.display = (mode === 'delivery') ? 'block' : 'none';
+window.switchDeliveryMode = function(m) {
+    window.appState.deliveryMode = m;
+    document.getElementById('btnModeDelivery').classList.toggle('active', m === 'delivery');
+    document.getElementById('btnModePickup').classList.toggle('active', m === 'pickup');
+    document.getElementById('deliveryFieldsArea').style.display = (m === 'delivery') ? 'block' : 'none';
     recalculateCartSummary();
 };
 
@@ -3356,12 +2930,7 @@ window.dispatchOrderAndInitiateTracking = function() {
         deliveryFee: del,
         totalAmount: total,
         status: 'received',
-        prepMinutes: 0,
-        prepStartedAt: null,
-        prepEndsAt: null,
-        createdAt: Date.now(),
-        finishedAt: null,
-        timestamp: new Date().toLocaleTimeString('ar-JO', { hour: '2-digit', minute: '2-digit' })
+        createdAt: Date.now()
     };
 
     activeOrdersList.unshift(newOrderObj);
@@ -3390,7 +2959,6 @@ window.dispatchOrderAndInitiateTracking = function() {
     window.navigateRouter('screen-order-tracking');
 };
 
-// تتبع الطلبات مع بقاء الطلب لمدة ساعة للزبون بعد الاكتمال أو الإلغاء
 function renderOrderTrackingView() {
     const container = document.getElementById('activeOrderTrackingView');
     if (!container) return;
@@ -3400,72 +2968,32 @@ function renderOrderTrackingView() {
         return;
     }
 
-    const now = Date.now();
-    const ONE_HOUR = 60 * 60 * 1000;
-
-    const myOrders = activeOrdersList.filter(o => {
-        if (o.customerPhone !== currentAuthenticatedUser.phone) return false;
-        if (o.status === 'completed' || o.status === 'cancelled') {
-            if (o.finishedAt && (now - o.finishedAt > ONE_HOUR)) return false;
-        }
-        return true;
-    });
+    const myOrders = activeOrdersList.filter(o => o.customerPhone === currentAuthenticatedUser.phone);
 
     if (!myOrders.length) {
         container.innerHTML = `
             <div class="clean-card" style="text-align:center; padding:30px 14px;">
-                <div style="font-weight:900; font-size:14px; margin-bottom:4px;">لا توجد طلبات جارية أو حديثة لك حالياً</div>
-                <div style="font-size:11px; color:var(--text-secondary);">يبقى الطلب ظاهراً في شاشة التتبع لمدة ساعة واحدة بعد إتمام أو إلغاء التأكيد.</div>
+                <div style="font-weight:900; font-size:14px; margin-bottom:4px;">لا توجد طلبات جارية لك حالياً</div>
             </div>
         `;
         return;
     }
 
-    container.innerHTML = myOrders.map(order => {
-        let statusTitle = "تم استلام طلبك وبانتظار الموافقة";
-        let isPickup = order.deliveryMode === 'pickup';
-
-        if (order.status === 'preparing') {
-            statusTitle = isPickup ? "جاري تجهيز طلبك داخل الفرع" : "جاري تحضير طلبك وتجهيزه للتوصيل";
-        } else if (order.status === 'onway') {
-            statusTitle = isPickup ? "طلبك جاهز تماماً للاستلام الآن في الفرع!" : "طلبك مع كابتن التوصيل وفي الطريق إليك!";
-        } else if (order.status === 'completed') {
-            statusTitle = "تم تسليم الطلب بنجاح. شكراً لاختياركم كافيه كورنر!";
-        } else if (order.status === 'cancelled') {
-            statusTitle = "عذراً، تم إلغاء هذا الطلب من قبل الإدارة.";
-        }
-
-        let timerHTML = "";
-        if (order.status === 'preparing' && order.prepEndsAt) {
-            const remaining = Math.max(0, order.prepEndsAt - now);
-            const m = Math.floor(remaining / 60000);
-            const s = Math.floor((remaining % 60000) / 1000);
-            timerHTML = `
-                <div style="background:var(--brand-glow); border:1px solid var(--border-accent); border-radius:var(--radius-md); padding:10px; text-align:center; margin:8px 0;">
-                    <div style="font-size:10.5px; color:var(--text-secondary);">الوقت التقديري المتبقي:</div>
-                    <div class="num-font" style="font-size:22px; font-weight:900; color:var(--brand-theme); margin:2px 0;">${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}</div>
-                </div>
-            `;
-        }
-
-        return `
-            <div class="clean-card" style="margin-bottom:10px; ${order.status === 'completed' ? 'border-color:var(--status-success);' : ''} ${order.status === 'cancelled' ? 'border-color:var(--status-danger);' : ''}">
-                <div style="display:flex; justify-content:space-between; align-items:center;">
-                    <span class="num-font" style="font-weight:900; color:var(--brand-theme);">#${order.orderId}</span>
-                    <span class="header-hours-badge">${isPickup ? 'استلام من المحل' : 'توصيل'}</span>
-                </div>
-                <div style="font-size:13px; font-weight:900; margin-top:6px; color:var(--text-primary);">${statusTitle}</div>
-                ${timerHTML}
-                <div style="font-size:11px; color:var(--text-secondary); margin-top:6px;">
-                    ${order.items.map(it => `• ${it.qty}x ${it.name} (${it.sizeName})`).join(' ، ')}
-                </div>
-                <div style="font-size:12px; font-weight:900; margin-top:8px;">الإجمالي: <span class="num-font" style="color:var(--brand-theme);">${order.totalAmount.toFixed(2)} د.أ</span></div>
+    container.innerHTML = myOrders.map(order => `
+        <div class="clean-card" style="margin-bottom:10px;">
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+                <span class="num-font" style="font-weight:900; color:var(--brand-theme);">#${order.orderId}</span>
+                <span class="header-hours-badge">${order.deliveryMode === 'pickup' ? 'استلام من الفرع' : 'توصيل'}</span>
             </div>
-        `;
-    }).join('');
+            <div style="font-size:13px; font-weight:900; margin-top:6px; color:var(--text-primary);">${order.status}</div>
+            <div style="font-size:11px; color:var(--text-secondary); margin-top:6px;">
+                ${order.items.map(it => `• ${it.qty}x ${it.name} (${it.sizeName})`).join(' ، ')}
+            </div>
+            <div style="font-size:12px; font-weight:900; margin-top:8px;">الإجمالي: <span class="num-font" style="color:var(--brand-theme);">${order.totalAmount.toFixed(2)} د.أ</span></div>
+        </div>
+    `).join('');
 }
 
-// استبدال النقاط مع الصورة والوصف والسعر الأصلي
 function renderRedeemStoreView() {
     const points = currentAuthenticatedUser ? (currentAuthenticatedUser.points || 0) : 0;
     const balanceEl = document.getElementById('userRedeemPointsBalance');
@@ -3474,14 +3002,9 @@ function renderRedeemStoreView() {
     const container = document.getElementById('clientRedeemItemsList');
     if (!container) return;
 
-    if (!redeemCatalog.length) {
-        container.innerHTML = `<div style="text-align:center; padding:20px; color:var(--text-secondary); font-size:12px;">لا توجد أصناف مكافآت حالياً</div>`;
-        return;
-    }
-
     container.innerHTML = redeemCatalog.map(item => `
         <div class="clean-card" style="display:flex; align-items:center; gap:12px; margin-bottom:10px;">
-            <img src="${item.img || 'https://images.unsplash.com/photo-1517701550927-30cf4be1aaf9?w=200&q=80'}" style="width:60px; height:60px; border-radius:var(--radius-sm); object-fit:cover; background:#000;">
+            <img src="${item.img}" style="width:60px; height:60px; border-radius:var(--radius-sm); object-fit:cover; background:#000;">
             <div style="flex:1;">
                 <div style="font-size:13.5px; font-weight:900;">${item.name}</div>
                 <div style="font-size:10.5px; color:var(--text-secondary); margin:2px 0;">${item.desc || ''}</div>
@@ -3533,1056 +3056,364 @@ window.claimRedeemRewardItem = function(id) {
 };
 
 // ==========================================
-// لوحة الإدارة (Admin Hub) الكاملة والمنظمة
+// إدارة الإشعارات وتوزيع النقاط (Fix Real-time)
 // ==========================================
-function renderAdminLiveOrdersManager() {
-    const container = document.getElementById('adminLiveOrdersContainer');
-    if (!container) return;
-
-    const liveOrders = activeOrdersList.filter(o => o.status !== 'completed' && o.status !== 'cancelled');
-
-    if (!liveOrders.length) {
-        container.innerHTML = `<div style="text-align:center; padding:16px; color:var(--text-secondary); font-size:12px;">لا توجد طلبات جارية حالياً</div>`;
+function updateUnreadNotificationsCounter() {
+    const badge = document.getElementById('unreadNotifCountBadge');
+    if (!badge) return;
+    if (!currentAuthenticatedUser) {
+        badge.style.display = 'none';
         return;
     }
-
-    container.innerHTML = liveOrders.map(o => {
-        const isPickup = o.deliveryMode === 'pickup';
-        return `
-            <div class="clean-card" style="margin-bottom:8px;">
-                <div style="display:flex; justify-content:space-between; align-items:center;">
-                    <span class="num-font" style="font-weight:900; color:var(--brand-theme);">#${o.orderId}</span>
-                    <span class="header-hours-badge">${isPickup ? 'استلام من الفرع' : 'توصيل'} • ${o.branchName}</span>
-                </div>
-                <div style="font-size:12.5px; font-weight:900; margin-top:4px;">${o.customerName} (<span class="num-font">${o.customerPhone}</span>)</div>
-                <div style="font-size:11px; color:var(--text-secondary); margin:4px 0;">
-                    ${o.items.map(it => `${it.qty}x ${it.name}${it.sauceInfo ? ` (${it.sauceInfo})` : ''}`).join(' ، ')}
-                </div>
-                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
-                    <span class="num-font" style="font-weight:900; color:var(--brand-theme);">${o.totalAmount.toFixed(2)} د.أ</span>
-                    <span style="font-size:10.5px; font-weight:800; color:var(--text-dim);">${o.status}</span>
-                </div>
-
-                <div style="display:flex; gap:4px; flex-wrap:wrap; border-top:1px dashed var(--border-subtle); padding-top:6px;">
-                    <button class="btn-brand-outline" style="padding:4px 8px; font-size:10px;" onclick="setOrderPrepTimerPrompt('${o.orderId}')">⏱ بدء التحضير بتايمر</button>
-                    ${isPickup ? `
-                        <button class="btn-brand-outline" style="padding:4px 8px; font-size:10px;" onclick="updateOrderStatusAdmin('${o.orderId}', 'onway')">جاهز للاستلام بالمحل ✓</button>
-                    ` : `
-                        <button class="btn-brand-outline" style="padding:4px 8px; font-size:10px;" onclick="updateOrderStatusAdmin('${o.orderId}', 'onway')">مع كابتن التوصيل 🛵</button>
-                    `}
-                    <button class="btn-brand-solid" style="width:auto; padding:4px 10px; font-size:10px; background:var(--status-success);" onclick="completeOrderAdmin('${o.orderId}')">تم التسليم ✓</button>
-                    <button class="btn-brand-outline" style="padding:4px 8px; font-size:10px; color:var(--status-danger); border-color:var(--status-danger);" onclick="cancelOrderAdmin('${o.orderId}')">إلغاء ✕</button>
-                </div>
-            </div>
-        `;
-    }).join('');
+    const myNotifs = customerNotifications.filter(n => 
+        (n.targetPhone === 'all' || n.targetPhone === currentAuthenticatedUser.phone) && !n.isRead
+    );
+    if (myNotifs.length > 0) {
+        badge.innerText = myNotifs.length > 99 ? '99+' : myNotifs.length;
+        badge.style.display = 'inline-flex';
+    } else {
+        badge.style.display = 'none';
+    }
 }
 
-window.setOrderPrepTimerPrompt = function(orderId) {
-    const minsStr = prompt("أدخل وقت التحضير بالدقائق (مثال: 15):", "15");
-    if (!minsStr) return;
-    const mins = parseInt(minsStr);
-    if (isNaN(mins) || mins <= 0) return window.showToastMsg("رقم غير صالح");
+function renderCustomerNotifications() {
+    const container = document.getElementById('customerNotificationsList');
+    if (!container) return;
+    if (!currentAuthenticatedUser) {
+        container.innerHTML = `<div style="text-align:center; padding:30px; font-size:12px; color:var(--text-secondary);">يرجى تسجيل الدخول لمشاهدة إشعاراتك وتنبيهاتك</div>`;
+        return;
+    }
+    const myNotifs = customerNotifications.filter(n => n.targetPhone === 'all' || n.targetPhone === currentAuthenticatedUser.phone);
+    if (!myNotifs.length) {
+        container.innerHTML = `<div style="text-align:center; padding:30px; font-size:12px; color:var(--text-secondary);">لا توجد إشعارات جديدة حالياً</div>`;
+        return;
+    }
+    container.innerHTML = myNotifs.map(n => `
+        <div class="clean-card" style="cursor:pointer; border-right:3px solid var(--brand-theme); margin-bottom:8px; opacity:${n.isRead ? '0.75' : '1'};" onclick="openFullNotificationModal('${n.id}')">
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+                <div style="font-weight:900; font-size:13px; color:var(--text-primary);">${n.title}</div>
+                <div class="num-font" style="font-size:10px; color:var(--text-dim);">${n.dateStr || ''}</div>
+            </div>
+            <div style="font-size:11.5px; color:var(--text-secondary); margin-top:4px; line-height:1.4;">${n.body}</div>
+        </div>
+    `).join('');
+}
 
-    const o = activeOrdersList.find(x => x.orderId === orderId);
-    if (!o) return;
+window.openFullNotificationModal = function(notifId) {
+    const notif = customerNotifications.find(n => n.id === notifId);
+    if (!notif) return;
+    activeViewingNotifId = notifId;
+    notif.isRead = true;
+    safeSet('cc_notifications', customerNotifications);
+    updateUnreadNotificationsCounter();
 
-    o.status = 'preparing';
-    o.prepMinutes = mins;
-    o.prepStartedAt = Date.now();
-    o.prepEndsAt = Date.now() + (mins * 60 * 1000);
+    document.getElementById('notifModalTitle').innerText = notif.title;
+    document.getElementById('notifModalTime').innerText = notif.dateStr || new Date().toLocaleString('ar-JO');
+    document.getElementById('notifModalBody').innerText = notif.body;
 
-    safeSet('cc_orders', activeOrdersList);
-    if (cloudDb) cloudDb.collection('orders').doc(orderId).update({
-        status: 'preparing', prepMinutes: mins, prepStartedAt: o.prepStartedAt, prepEndsAt: o.prepEndsAt
-    }).catch(e=>console.warn(e));
+    const replyArea = document.getElementById('notifReplyActionArea');
+    const noReply = document.getElementById('notifNoReplyNotice');
 
-    renderAdminLiveOrdersManager();
-    window.showToastMsg(`تم بدء تحضير الطلب بتايمر ${mins} دقيقة!`);
-};
-
-window.updateOrderStatusAdmin = function(orderId, st) {
-    const o = activeOrdersList.find(x => x.orderId === orderId);
-    if (!o) return;
-    o.status = st;
-    safeSet('cc_orders', activeOrdersList);
-    if (cloudDb) cloudDb.collection('orders').doc(orderId).update({ status: st }).catch(e=>console.warn(e));
-    renderAdminLiveOrdersManager();
-    window.showToastMsg("تم تحديث حالة الطلب");
-};
-
-window.completeOrderAdmin = function(orderId) {
-    const o = activeOrdersList.find(x => x.orderId === orderId);
-    if (!o) return;
-    o.status = 'completed';
-    o.finishedAt = Date.now();
-    safeSet('cc_orders', activeOrdersList);
-    if (cloudDb) cloudDb.collection('orders').doc(orderId).update({ status: 'completed', finishedAt: o.finishedAt }).catch(e=>console.warn(e));
-    renderAdminLiveOrdersManager();
-    window.showToastMsg("تم تسليم الطلب");
-};
-
-window.cancelOrderAdmin = function(orderId) {
-    const reason = prompt("سبب الإلغاء للزبون:", "الضغط التشغيلي");
-    if (reason === null) return;
-    const o = activeOrdersList.find(x => x.orderId === orderId);
-    if (!o) return;
-    o.status = 'cancelled';
-    o.finishedAt = Date.now();
-    safeSet('cc_orders', activeOrdersList);
-    if (cloudDb) cloudDb.collection('orders').doc(orderId).update({ status: 'cancelled', finishedAt: o.finishedAt }).catch(e=>console.warn(e));
-    renderAdminLiveOrdersManager();
-    window.showToastMsg("تم إلغاء الطلب");
-};
-
-// إدارة المنتجات والصنف
-window.openProductEditorModal = function(productId) {
-    window.appState.editorSizes = [];
-    window.appState.editorSauces = [];
-
-    const addonsContainer = document.getElementById('editorAddonsCheckboxes');
-    if (productId) {
-        const p = productsCatalog.find(x => x.id === productId);
-        document.getElementById('editProdId').value = p.id;
-        document.getElementById('editProdName').value = p.name;
-        document.getElementById('editProdCategory').value = p.category;
-        document.getElementById('editProdPrice').value = p.price;
-        document.getElementById('editProdDesc').value = p.desc || '';
-        document.getElementById('editProdImagePreview').src = p.img;
-
-        window.appState.editorSizes = p.sizesList ? [...p.sizesList] : [];
-        window.appState.editorSauces = p.saucesList ? [...p.saucesList] : [];
-
-        addonsContainer.innerHTML = MASTER_ADDONS_DICT.map(ad => `
-            <label style="display:flex; align-items:center; gap:6px;">
-                <input type="checkbox" class="adm-addon-check" value="${ad.id}" ${(p.allowedAddons || []).includes(ad.id) ? 'checked' : ''}>
-                <span>${ad.name}</span>
-            </label>
-        `).join('');
+    if (notif.allowReply && notif.feedbackId) {
+        replyArea.style.display = 'block';
+        noReply.style.display = 'none';
     } else {
-        document.getElementById('editProdId').value = "";
-        document.getElementById('editProdName').value = "";
-        document.getElementById('editProdCategory').value = "كوكتيلات";
-        document.getElementById('editProdPrice').value = "";
-        document.getElementById('editProdDesc').value = "";
-        document.getElementById('editProdImagePreview').src = "https://images.unsplash.com/photo-1517701550927-30cf4be1aaf9?w=400&q=80";
-
-        addonsContainer.innerHTML = MASTER_ADDONS_DICT.map(ad => `
-            <label style="display:flex; align-items:center; gap:6px;">
-                <input type="checkbox" class="adm-addon-check" value="${ad.id}">
-                <span>${ad.name}</span>
-            </label>
-        `).join('');
+        replyArea.style.display = 'none';
+        noReply.style.display = 'block';
     }
 
-    renderInteractiveSizesUI();
-    renderInteractiveSaucesUI();
-    window.navigateRouter('screen-product-editor');
+    document.getElementById('modalFullNotificationView').style.display = 'flex';
 };
 
-window.addInteractiveSizeRow = function() {
-    window.appState.editorSizes.push({ name: "حجم جديد", extra: 0.50 });
-    renderInteractiveSizesUI();
+window.closeFullNotificationModal = function() {
+    document.getElementById('modalFullNotificationView').style.display = 'none';
+    activeViewingNotifId = null;
+    renderCustomerNotifications();
 };
 
-window.removeInteractiveSizeRow = function(idx) {
-    window.appState.editorSizes.splice(idx, 1);
-    renderInteractiveSizesUI();
+window.sendReplyFromNotificationModal = function() {
+    const text = (document.getElementById('notifCustomerReplyInput').value || '').trim();
+    if (!text) return window.showToastMsg("يرجى كتابة نص الرد");
+    const notif = customerNotifications.find(n => n.id === activeViewingNotifId);
+    if (!notif || !notif.feedbackId) return;
+
+    const fb = customerFeedbacks.find(f => f.id === notif.feedbackId);
+    if (fb) {
+        fb.customerFollowup = text;
+        fb.customerFollowupAt = Date.now();
+        safeSet('cc_feedbacks', customerFeedbacks);
+        if (cloudDb) cloudDb.collection('feedbacks').doc(fb.id).set(fb).catch(e=>console.warn(e));
+    }
+
+    document.getElementById('notifCustomerReplyInput').value = '';
+    closeFullNotificationModal();
+    window.showToastMsg("تم إرسال ردك للإدارة بنجاح");
 };
 
-function renderInteractiveSizesUI() {
-    const container = document.getElementById('interactiveSizesContainer');
-    if (!container) return;
-    container.innerHTML = window.appState.editorSizes.map((sz, i) => `
-        <div style="display:flex; gap:6px; align-items:center;">
-            <input type="text" class="ios-input-field" value="${sz.name}" placeholder="اسم الحجم" oninput="window.appState.editorSizes[${i}].name=this.value">
-            <input type="number" step="0.25" class="ios-input-field num-font" value="${sz.extra}" placeholder="إضافة للسعر" oninput="window.appState.editorSizes[${i}].extra=parseFloat(this.value)||0">
-            <button type="button" class="btn-brand-outline" style="color:var(--status-danger); border-color:var(--status-danger); padding:4px 8px;" onclick="removeInteractiveSizeRow(${i})">✕</button>
-        </div>
-    `).join('');
+window.clearAllNotifications = function() {
+    if (!currentAuthenticatedUser) return;
+    customerNotifications = customerNotifications.filter(n => n.targetPhone !== 'all' && n.targetPhone !== currentAuthenticatedUser.phone);
+    safeSet('cc_notifications', customerNotifications);
+    updateUnreadNotificationsCounter();
+    renderCustomerNotifications();
+    window.showToastMsg("تم مسح إشعاراتك بنجاح");
+};
+
+function populateAdminCustomerDropdowns() {
+    const selNotif = document.getElementById('notifSingleUserSelect');
+    const selPoints = document.getElementById('pointsSingleUserSelect');
+    const usersArr = Object.values(allRegisteredCustomers);
+
+    const opts = usersArr.map(u => `<option value="${u.phone}">${u.name} (${u.phone})</option>`).join('');
+
+    if (selNotif) selNotif.innerHTML = opts || '<option value="">لا يوجد زبائن مسجلين</option>';
+    if (selPoints) selPoints.innerHTML = opts || '<option value="">لا يوجد زبائن مسجلين</option>';
 }
 
-window.addInteractiveSauceRow = function() {
-    window.appState.editorSauces.push({ name: "نكهة جديدة", price: 2.50 });
-    renderInteractiveSaucesUI();
+window.toggleNotifCustomerPicker = function() {
+    const mode = document.getElementById('notifTargetMode').value;
+    document.getElementById('notifSinglePickerWrap').style.display = (mode === 'single') ? 'block' : 'none';
 };
 
-window.removeInteractiveSauceRow = function(idx) {
-    window.appState.editorSauces.splice(idx, 1);
-    renderInteractiveSaucesUI();
+window.togglePointsCustomerPicker = function() {
+    const mode = document.getElementById('pointsTargetMode').value;
+    document.getElementById('pointsSinglePickerWrap').style.display = (mode === 'single') ? 'block' : 'none';
 };
 
-function renderInteractiveSaucesUI() {
-    const container = document.getElementById('interactiveSaucesContainer');
-    if (!container) return;
-    container.innerHTML = window.appState.editorSauces.map((sc, i) => `
-        <div style="display:flex; gap:6px; align-items:center;">
-            <input type="text" class="ios-input-field" value="${sc.name}" placeholder="اسم النكهة" oninput="window.appState.editorSauces[${i}].name=this.value">
-            <input type="number" step="0.25" class="ios-input-field num-font" value="${sc.price}" placeholder="سعر النكهة" oninput="window.appState.editorSauces[${i}].price=parseFloat(this.value)||0">
-            <button type="button" class="btn-brand-outline" style="color:var(--status-danger); border-color:var(--status-danger); padding:4px 8px;" onclick="removeInteractiveSauceRow(${i})">✕</button>
-        </div>
-    `).join('');
-}
+window.dispatchAdminNotification = function() {
+    const mode = document.getElementById('notifTargetMode').value;
+    const title = (document.getElementById('admNotifTitleInput').value || '').trim();
+    const body = (document.getElementById('admNotifBodyInput').value || '').trim();
 
-window.saveProductEditorRecord = function() {
-    const id = document.getElementById('editProdId').value;
-    const name = document.getElementById('editProdName').value.trim();
-    const category = document.getElementById('editProdCategory').value.trim();
-    const price = parseFloat(document.getElementById('editProdPrice').value);
-    const desc = document.getElementById('editProdDesc').value.trim();
-    const finalImg = document.getElementById('editProdImagePreview').src;
+    if (!title || !body) return window.showToastMsg("يرجى ملء عنوان ونص الإشعار");
 
-    if (!name || isNaN(price)) return window.showToastMsg("أدخل اسماً وسعراً صالحين");
+    let target = 'all';
+    if (mode === 'single') {
+        target = document.getElementById('notifSingleUserSelect').value;
+        if (!target) return window.showToastMsg("يرجى اختيار الزبون المستهدف");
+    }
 
-    const checkedAddons = Array.from(document.querySelectorAll('.adm-addon-check:checked')).map(el => el.value);
-
-    const targetId = id || ('p_' + Date.now());
-    const itemData = { 
-        id: targetId, 
-        name, 
-        category, 
-        price, 
-        desc, 
-        img: finalImg, 
-        isAvailable: true,
-        hasSizes: window.appState.editorSizes.length > 0,
-        sizesList: window.appState.editorSizes,
-        hasSauces: window.appState.editorSauces.length > 0,
-        saucesList: window.appState.editorSauces,
-        allowedAddons: checkedAddons
+    const notifObj = {
+        id: "notif_" + Date.now(),
+        title: title,
+        body: body,
+        targetPhone: target,
+        isRead: false,
+        allowReply: false,
+        createdAt: Date.now(),
+        dateStr: new Date().toLocaleDateString('ar-JO') + ' ' + new Date().toLocaleTimeString('ar-JO', {hour:'2-digit', minute:'2-digit'})
     };
 
-    if (id) {
-        const idx = productsCatalog.findIndex(x => x.id === id);
-        if (idx !== -1) productsCatalog[idx] = itemData;
-    } else {
-        productsCatalog.unshift(itemData);
-    }
+    customerNotifications.unshift(notifObj);
+    safeSet('cc_notifications', customerNotifications);
+    if (cloudDb) cloudDb.collection('notifications').doc(notifObj.id).set(notifObj).catch(e=>console.warn(e));
 
-    safeSet('cc_catalog', productsCatalog);
-    renderCategoryChips();
-    renderMenuProducts();
-    renderAdminProductsManager();
-
-    if (cloudDb) cloudDb.collection('catalog').doc('products_list').set({ items: productsCatalog }).catch(e=>console.warn(e));
-
-    checkAdminEditsCounter();
-    window.showToastMsg("تم حفظ الصنف بنجاح وتحديث المتجر فوراً!");
-    window.navigateRouter('screen-admin-dashboard');
-    openAdminSubSection('products');
+    document.getElementById('admNotifTitleInput').value = '';
+    document.getElementById('admNotifBodyInput').value = '';
+    window.showToastMsg(mode === 'all' ? "تم بث الإشعار لكافة الزبائن أونلاين" : `تم إرسال الإشعار للزبون (${target})`);
 };
 
-function renderAdminProductsManager() {
-    const container = document.getElementById('adminProductsControlList');
-    if (!container) return;
-    container.innerHTML = productsCatalog.map(p => `
-        <div style="display:flex; justify-content:space-between; align-items:center; background:var(--bg-surface); padding:8px 10px; border-radius:var(--radius-sm); border:1px solid var(--border-subtle); margin-bottom:6px;">
-            <div style="display:flex; align-items:center; gap:8px;">
-                <img src="${p.img}" style="width:36px; height:36px; border-radius:var(--radius-sm); object-fit:contain; background:#000;">
-                <div>
-                    <div style="font-size:12.5px; font-weight:900;">${p.name}</div>
-                    <div style="font-size:10px; color:var(--text-secondary);">${p.category} • <span class="num-font">${parseFloat(p.price).toFixed(2)} د.أ</span></div>
-                </div>
-            </div>
-            <div style="display:flex; gap:4px;">
-                <button class="btn-brand-outline" style="padding:3px 8px; font-size:10px;" onclick="openProductEditorModal('${p.id}')">تعديل</button>
-                <button class="btn-brand-outline" style="padding:3px 6px; font-size:10px; color:var(--status-danger); border-color:var(--status-danger);" onclick="deleteProductFromCatalog('${p.id}')">حذف</button>
-            </div>
-        </div>
-    `).join('');
-}
+window.grantPointsToCustomers = function() {
+    const mode = document.getElementById('pointsTargetMode').value;
+    const amount = parseInt(document.getElementById('admGrantPointsAmount').value || 0);
+    if (!amount || amount <= 0) return window.showToastMsg("يرجى إدخال عدد نقاط صالح");
 
-window.deleteProductFromCatalog = function(productId) {
-    productsCatalog = productsCatalog.filter(x => x.id !== productId);
-    safeSet('cc_catalog', productsCatalog);
-    renderCategoryChips();
-    renderMenuProducts();
-    renderAdminProductsManager();
-    if (cloudDb) cloudDb.collection('catalog').doc('products_list').set({ items: productsCatalog }).catch(e=>console.warn(e));
-    checkAdminEditsCounter();
-    window.showToastMsg("تم حذف الصنف أونلاين!");
-};
+    if (mode === 'single') {
+        const targetPhone = document.getElementById('pointsSingleUserSelect').value;
+        if (!targetPhone || !allRegisteredCustomers[targetPhone]) return window.showToastMsg("يرجى اختيار الزبون");
+        
+        const u = allRegisteredCustomers[targetPhone];
+        u.points = (u.points || 0) + amount;
+        allRegisteredCustomers[targetPhone] = u;
+        safeSet('cc_users_directory', allRegisteredCustomers);
+        if (cloudDb) cloudDb.collection('users').doc(targetPhone).set(u).catch(e=>console.warn(e));
 
-function checkAdminEditsCounter() {
-    adminEditsCounter++;
-    safeSet('cc_admin_edits_count', adminEditsCounter);
-    if (adminEditsCounter >= 10) {
-        adminEditsCounter = 0;
-        safeSet('cc_admin_edits_count', 0);
-        let parts = currentAppVersion.split('.');
-        parts[2] = parseInt(parts[2] || 0) + 1;
-        currentAppVersion = parts.join('.');
-        safeSet('cc_app_version', currentAppVersion);
-        window.showToastMsg(`تم ترقية رقم الإصدار التلقائي إلى v${currentAppVersion}`);
-    }
-}
-
-// الكوبونات والعروض بالوقت والتاريخ والملاحظة
-window.saveNewCouponAdmin = function() {
-    const code = (document.getElementById('newCouponCode').value || '').trim().toUpperCase();
-    const discount = parseFloat(document.getElementById('newCouponDiscount').value);
-    const expiry = document.getElementById('newCouponExpiry').value;
-    const notes = document.getElementById('newCouponNotes').value.trim();
-
-    if (!code || isNaN(discount)) return window.showToastMsg("أدخل الكود ونسبة الخصم بشكل صحيح");
-
-    systemCoupons[code] = { discount, expiry, notes, isActive: true };
-    safeSet('cc_coupons', systemCoupons);
-    if (cloudDb) cloudDb.collection('settings').doc('coupons').set(systemCoupons).catch(e=>console.warn(e));
-
-    document.getElementById('newCouponCode').value = '';
-    document.getElementById('newCouponDiscount').value = '';
-    document.getElementById('newCouponExpiry').value = '';
-    document.getElementById('newCouponNotes').value = '';
-    renderAdminCouponsManager();
-    checkAdminEditsCounter();
-    window.showToastMsg("تم حفظ وتفعيل كوبون الخصم أونلاين!");
-};
-
-function renderAdminCouponsManager() {
-    const container = document.getElementById('adminCouponsListContainer');
-    if (!container) return;
-    container.innerHTML = Object.entries(systemCoupons).map(([code, c]) => `
-        <div style="display:flex; justify-content:space-between; align-items:center; background:var(--bg-surface); padding:8px 10px; border-radius:var(--radius-sm); border:1px solid var(--border-subtle); margin-bottom:6px;">
-            <div>
-                <div class="num-font" style="font-size:13px; font-weight:900; color:var(--brand-theme);">${code} (خصم ${c.discount}%)</div>
-                <div style="font-size:10px; color:var(--text-secondary);">ينتهي في: ${c.expiry || 'غير محدد'} • ${c.notes || ''}</div>
-            </div>
-            <button class="btn-brand-outline" style="padding:3px 6px; font-size:10px; color:var(--status-danger); border-color:var(--status-danger);" onclick="deleteCouponAdmin('${code}')">حذف</button>
-        </div>
-    `).join('');
-}
-
-window.deleteCouponAdmin = function(code) {
-    delete systemCoupons[code];
-    safeSet('cc_coupons', systemCoupons);
-    if (cloudDb) cloudDb.collection('settings').doc('coupons').set(systemCoupons).catch(e=>console.warn(e));
-    renderAdminCouponsManager();
-    window.showToastMsg("تم حذف الكوبون");
-};
-
-// أصناف الاستبدال بالصورة والوصف والسعر الأصلي
-window.handleRedeemImageUpload = function(event) {
-    const file = event.target.files[0];
-    if (!file) return;
-    compressImageNative(file, 300, 0.85, base64Url => {
-        const preview = document.getElementById('newRedeemImgPreview');
-        preview.src = base64Url;
-        preview.style.display = 'block';
-        window._tempRedeemImg = base64Url;
-    });
-};
-
-window.saveNewRedeemItemAdmin = function() {
-    const name = document.getElementById('newRedeemItemName').value.trim();
-    const originalPrice = parseFloat(document.getElementById('newRedeemItemOriginalPrice').value);
-    const points = parseInt(document.getElementById('newRedeemItemPoints').value);
-    const desc = document.getElementById('newRedeemItemDesc').value.trim();
-    const img = window._tempRedeemImg || "";
-
-    if (!name || isNaN(points) || isNaN(originalPrice)) return window.showToastMsg("أدخل اسم الصنف والسعر والنقاط بشكل صحيح");
-
-    redeemCatalog.unshift({
-        id: "rd_" + Date.now(),
-        name,
-        price: originalPrice,
-        points,
-        desc,
-        img
-    });
-
-    safeSet('cc_redeem_catalog', redeemCatalog);
-    if (cloudDb) cloudDb.collection('settings').doc('redeem_catalog').set({ items: redeemCatalog }).catch(e=>console.warn(e));
-
-    document.getElementById('newRedeemItemName').value = '';
-    document.getElementById('newRedeemItemOriginalPrice').value = '';
-    document.getElementById('newRedeemItemPoints').value = '';
-    document.getElementById('newRedeemItemDesc').value = '';
-    document.getElementById('newRedeemImgPreview').style.display = 'none';
-    window._tempRedeemImg = null;
-
-    renderAdminRedeemManager();
-    checkAdminEditsCounter();
-    window.showToastMsg("تم حفظ صنف الاستبدال في متجر المكافآت أونلاين!");
-};
-
-function renderAdminRedeemManager() {
-    const container = document.getElementById('adminRedeemControlList');
-    if (!container) return;
-    container.innerHTML = redeemCatalog.map(r => `
-        <div style="display:flex; justify-content:space-between; align-items:center; background:var(--bg-surface); padding:8px 10px; border-radius:var(--radius-sm); border:1px solid var(--border-subtle); margin-bottom:6px;">
-            <div style="display:flex; align-items:center; gap:8px;">
-                <img src="${r.img || 'https://images.unsplash.com/photo-1517701550927-30cf4be1aaf9?w=200&q=80'}" style="width:36px; height:36px; border-radius:6px; object-fit:cover;">
-                <div>
-                    <div style="font-size:12.5px; font-weight:900;">${r.name}</div>
-                    <div style="font-size:10px; color:var(--text-secondary);"><span class="num-font" style="color:var(--brand-theme); font-weight:800;">${r.points} نقطة</span> • السعر: ${parseFloat(r.price).toFixed(2)} د.أ</div>
-                </div>
-            </div>
-            <button class="btn-brand-outline" style="padding:3px 6px; font-size:10px; color:var(--status-danger); border-color:var(--status-danger);" onclick="deleteRedeemItemAdmin('${r.id}')">حذف</button>
-        </div>
-    `).join('');
-}
-
-window.deleteRedeemItemAdmin = function(id) {
-    redeemCatalog = redeemCatalog.filter(r => r.id !== id);
-    safeSet('cc_redeem_catalog', redeemCatalog);
-    if (cloudDb) cloudDb.collection('settings').doc('redeem_catalog').set({ items: redeemCatalog }).catch(e=>console.warn(e));
-    renderAdminRedeemManager();
-    window.showToastMsg("تم حذف الصنف");
-};
-
-// إدارة طرق الدفع بالشعارات المنفصلة
-window.handlePaymentLogoUpload = function(event) {
-    const file = event.target.files[0];
-    if (!file) return;
-    compressImageNative(file, 120, 0.85, base64Url => {
-        const preview = document.getElementById('newPayLogoPreview');
-        preview.src = base64Url;
-        preview.style.display = 'block';
-        window._tempPayLogo = base64Url;
-    });
-};
-
-window.saveCustomPaymentMethod = function() {
-    const branch = document.getElementById('newPayBranchSelect').value;
-    const name = document.getElementById('newPayMethodName').value.trim();
-    const desc = document.getElementById('newPayMethodDesc').value.trim();
-    const logo = window._tempPayLogo || "";
-
-    if (!name) return window.showToastMsg("أدخل اسم طريقة الدفع");
-
-    const newMethod = { id: "pm_" + Date.now(), branch, name, desc, logo };
-    customPaymentMethods.push(newMethod);
-    safeSet('cc_payment_methods', customPaymentMethods);
-    if (cloudDb) cloudDb.collection('settings').doc('payment_methods').set({ methods: customPaymentMethods }).catch(e=>console.warn(e));
-
-    document.getElementById('newPayMethodName').value = "";
-    document.getElementById('newPayMethodDesc').value = "";
-    document.getElementById('newPayLogoPreview').style.display = 'none';
-    window._tempPayLogo = null;
-
-    renderAdminPaymentMethodsList();
-    renderCartPaymentOptions();
-    checkAdminEditsCounter();
-    window.showToastMsg("تم حفظ طريقة الدفع للفرع بنجاح!");
-};
-
-function renderAdminPaymentMethodsList() {
-    const container = document.getElementById('adminPaymentMethodsList');
-    if (!container) return;
-    container.innerHTML = customPaymentMethods.map(m => `
-        <div style="display:flex; justify-content:space-between; align-items:center; background:var(--bg-surface); padding:8px 10px; border-radius:var(--radius-sm); border:1px solid var(--border-subtle); margin-bottom:6px;">
-            <div style="display:flex; align-items:center; gap:8px;">
-                ${m.logo ? `<img src="${m.logo}" style="width:28px; height:28px; object-fit:contain; border-radius:4px;">` : ''}
-                <div>
-                    <div style="font-size:12px; font-weight:800;">${m.name}</div>
-                    <div style="font-size:10px; color:var(--text-secondary);">${m.branch === "0" ? "فرع كفرسوم" : "فرع سما الروسان"} • ${m.desc}</div>
-                </div>
-            </div>
-            <button class="btn-brand-outline" style="padding:2px 6px; font-size:10px; color:var(--status-danger); border-color:var(--status-danger);" onclick="deletePaymentMethodAdmin('${m.id}')">حذف</button>
-        </div>
-    `).join('');
-}
-
-window.deletePaymentMethodAdmin = function(id) {
-    customPaymentMethods = customPaymentMethods.filter(m => m.id !== id);
-    safeSet('cc_payment_methods', customPaymentMethods);
-    if (cloudDb) cloudDb.collection('settings').doc('payment_methods').set({ methods: customPaymentMethods }).catch(e=>console.warn(e));
-    renderAdminPaymentMethodsList();
-    renderCartPaymentOptions();
-    window.showToastMsg("تم حذف طريقة الدفع");
-};
-
-// الثيمات
-const THEME_PRESETS = {
-    gold: { brand: '#c59b63', glow: 'rgba(197, 155, 99, 0.16)', hover: '#b3884f' },
-    ruby: { brand: '#e11d48', glow: 'rgba(225, 29, 72, 0.16)', hover: '#be123c' },
-    sapphire: { brand: '#2563eb', glow: 'rgba(37, 99, 235, 0.16)', hover: '#1d4ed8' },
-    emerald: { brand: '#059669', glow: 'rgba(5, 150, 105, 0.16)', hover: '#047857' },
-    violet: { brand: '#7c3aed', glow: 'rgba(124, 58, 237, 0.16)', hover: '#6d28d9' },
-    titanium: { brand: '#94a3b8', glow: 'rgba(148, 163, 184, 0.18)', hover: '#64748b' }
-};
-
-window.applyThemeEngine = function(themeKey) {
-    const t = THEME_PRESETS[themeKey] || THEME_PRESETS.gold;
-    activeThemeName = themeKey;
-    safeSet('cc_active_theme_name', themeKey);
-
-    document.documentElement.style.setProperty('--brand-theme', t.brand);
-    document.documentElement.style.setProperty('--brand-glow', t.glow);
-    document.documentElement.style.setProperty('--brand-hover', t.hover);
-
-    if (activeSessionUser && cloudDb) {
-        cloudDb.collection('settings').doc('theme').set({ themeKey, updatedAt: Date.now() }).catch(e=>console.warn(e));
-        checkAdminEditsCounter();
-        window.showToastMsg("تم تفعيل وتثبيت الثيم للجميع أونلاين!");
-    }
-};
-
-window.toggleThemeMode = function() {
-    isThemeDark = !isThemeDark;
-    safeSet('cc_theme_dark', isThemeDark);
-    applyThemeToDOM();
-};
-
-function applyThemeToDOM() {
-    if (isThemeDark) document.body.classList.add('dark-mode');
-    else document.body.classList.remove('dark-mode');
-}
-
-// ضغط الصور
-function compressImageNative(file, maxWidth, quality, callback) {
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onload = event => {
-        const img = new Image();
-        img.src = event.target.result;
-        img.onload = () => {
-            let width = img.width;
-            let height = img.height;
-            if (width > maxWidth) {
-                height = Math.round((height * maxWidth) / width);
-                width = maxWidth;
-            }
-            const canvas = document.createElement('canvas');
-            canvas.width = width;
-            canvas.height = height;
-            const ctx = canvas.getContext('2d');
-            ctx.drawImage(img, 0, 0, width, height);
-            callback(canvas.toDataURL('image/jpeg', quality));
+        const notifObj = {
+            id: "notif_pts_" + Date.now(),
+            title: "هدية نقاط ولاء من الإدارة",
+            body: `مبروك! تم منحك ${amount} نقطة ولاء مجانية في حسابك. رصيدك الحالي: ${u.points} نقطة.`,
+            targetPhone: targetPhone,
+            isRead: false,
+            allowReply: false,
+            createdAt: Date.now(),
+            dateStr: new Date().toLocaleDateString('ar-JO')
         };
-    };
-}
+        customerNotifications.unshift(notifObj);
+        safeSet('cc_notifications', customerNotifications);
+        if (cloudDb) cloudDb.collection('notifications').doc(notifObj.id).set(notifObj).catch(e=>console.warn(e));
 
-window.handleStoreLogoUpload = function(event) {
-    const file = event.target.files[0];
-    if (!file) return;
-    compressImageNative(file, 200, 0.9, base64Url => {
-        document.getElementById('admLogoPreview').src = base64Url;
-        brandAndDevSettings.storeLogo = base64Url;
-    });
-};
-
-window.saveBrandAndDeveloperSettings = function() {
-    brandAndDevSettings.brandTitle = document.getElementById('admBrandTitleInput').value.trim() || "كافيه كورنر";
-    brandAndDevSettings.brandSub = document.getElementById('admBrandSubInput').value.trim();
-
-    safeSet('cc_brand_dev_config', brandAndDevSettings);
-    if (cloudDb) cloudDb.collection('settings').doc('brand_dev').set(brandAndDevSettings).catch(e=>console.warn(e));
-
-    applyBrandAndDevSettingsToDOM();
-    checkAdminEditsCounter();
-    window.showToastMsg("تم حفظ وتثبيت الهوية أونلاين!");
-};
-
-function applyBrandAndDevSettingsToDOM() {
-    const s = brandAndDevSettings;
-    document.getElementById('mainHeaderLogoImg').src = s.storeLogo || "./logo.png";
-    document.getElementById('mainHeaderBrandTitle').innerText = s.brandTitle || "كافيه كورنر";
-    document.getElementById('mainHeaderBrandSub').innerText = s.brandSub || "";
-}
-
-// المزامنة السحابية الحية
-function initCloudFirestoreSafe() {
-    try {
-        if (window.firebase) {
-            if (!firebase.apps.length) firebase.initializeApp(FIREBASE_CONFIG);
-            cloudDb = firebase.firestore();
-
-            cloudDb.collection('orders').orderBy('createdAt', 'desc').limit(50)
-                .onSnapshot(snapshot => {
-                    const cloudOrders = [];
-                    snapshot.forEach(docSnap => cloudOrders.push(docSnap.data()));
-                    if (cloudOrders.length > 0) {
-                        activeOrdersList = cloudOrders;
-                        safeSet('cc_orders', activeOrdersList);
-                        if (activeSessionUser) renderAdminLiveOrdersManager();
-                        renderOrderTrackingView();
-                    }
-                }, e=>console.warn(e));
-
-            cloudDb.collection('feedbacks').orderBy('createdAt', 'desc')
-                .onSnapshot(snapshot => {
-                    const cloudFbs = [];
-                    snapshot.forEach(docSnap => cloudFbs.push(docSnap.data()));
-                    if (cloudFbs.length > 0) {
-                        customerFeedbacks = cloudFbs;
-                        safeSet('cc_feedbacks', customerFeedbacks);
-                        if (activeSessionUser) renderAdminFeedbacksManager();
-                        renderCustomerFeedbacks();
-                    }
-                }, e=>console.warn(e));
-
-            // الاستماع الحي لقائمة المحظورين
-            cloudDb.collection('settings').doc('banned_users')
-                .onSnapshot(docSnap => {
-                    if (docSnap.exists) {
-                        bannedCustomersList = docSnap.data().list || [];
-                        safeSet('cc_banned_users', bannedCustomersList);
-                        checkUserBannedStateAndLockout();
-                    }
-                }, e=>console.warn(e));
-
-            // الاستماع الحي للأصناف والمخزون
-            cloudDb.collection('catalog').doc('products_list')
-                .onSnapshot(docSnap => {
-                    if (docSnap.exists && Array.isArray(docSnap.data().items)) {
-                        productsCatalog = docSnap.data().items;
-                        safeSet('cc_catalog', productsCatalog);
-                        renderCategoryChips();
-                        renderMenuProducts();
-                        if (activeSessionUser) renderAdminProductsManager();
-                    }
-                }, e=>console.warn(e));
-
-            // الاستماع الحي لطرق الدفع المفصولة
-            cloudDb.collection('settings').doc('payment_methods')
-                .onSnapshot(docSnap => {
-                    if (docSnap.exists && Array.isArray(docSnap.data().methods)) {
-                        customPaymentMethods = docSnap.data().methods;
-                        safeSet('cc_payment_methods', customPaymentMethods);
-                        renderCartPaymentOptions();
-                        if (activeSessionUser) renderAdminPaymentMethodsList();
-                    }
-                }, e=>console.warn(e));
-
-            // الاستماع الحي للكوبونات والعروض
-            cloudDb.collection('settings').doc('coupons')
-                .onSnapshot(docSnap => {
-                    if (docSnap.exists) {
-                        systemCoupons = docSnap.data();
-                        safeSet('cc_coupons', systemCoupons);
-                        if (activeSessionUser) renderAdminCouponsManager();
-                    }
-                }, e=>console.warn(e));
-
-            // الاستماع الحي لأصناف المكافآت
-            cloudDb.collection('settings').doc('redeem_catalog')
-                .onSnapshot(docSnap => {
-                    if (docSnap.exists && Array.isArray(docSnap.data().items)) {
-                        redeemCatalog = docSnap.data().items;
-                        safeSet('cc_redeem_catalog', redeemCatalog);
-                        renderRedeemStoreView();
-                        if (activeSessionUser) renderAdminRedeemManager();
-                    }
-                }, e=>console.warn(e));
-
-            // الاستماع الحي للثيم المعتمد
-            cloudDb.collection('settings').doc('theme')
-                .onSnapshot(docSnap => {
-                    if (docSnap.exists && docSnap.data().themeKey) {
-                        applyThemeEngine(docSnap.data().themeKey);
-                    }
-                }, e=>console.warn(e));
-
-            // الاستماع الحي لبيانات الهوية والمطور
-            cloudDb.collection('settings').doc('brand_dev')
-                .onSnapshot(docSnap => {
-                    if (docSnap.exists) {
-                        brandAndDevSettings = docSnap.data();
-                        safeSet('cc_brand_dev_config', brandAndDevSettings);
-                        applyBrandAndDevSettingsToDOM();
-                    }
-                }, e=>console.warn(e));
-        }
-    } catch(err) {
-        console.warn("Firebase init:", err);
-    }
-}
-
-let secretClickCount = 0;
-let secretTimer = null;
-window.handleSecretAdminTrigger = function() {
-    secretClickCount++;
-    clearTimeout(secretTimer);
-    secretTimer = setTimeout(() => { secretClickCount = 0; }, 1500);
-    if (secretClickCount >= 4) {
-        secretClickCount = 0;
-        window.navigateRouter('screen-admin-login');
-    }
-};
-
-window.attemptAdminAuthentication = function() {
-    const pin = (document.getElementById('adminPassField').value || '').trim();
-    if (pin === MASTER_PIN) {
-        activeSessionUser = 'admin';
-        safeSet('cc_admin_session', 'admin');
-        document.getElementById('adminPassField').value = '';
-        window.navigateRouter('screen-admin-dashboard');
-        backToAdminMainHub();
+        window.showToastMsg(`تم منح ${amount} نقطة للزبون (${u.name})`);
     } else {
-        window.showToastMsg("رمز المرور غير صحيح!");
+        const phones = Object.keys(allRegisteredCustomers);
+        if (!phones.length) return window.showToastMsg("لا يوجد زبائن مسجلين لمنحهم النقاط");
+
+        phones.forEach(p => {
+            allRegisteredCustomers[p].points = (allRegisteredCustomers[p].points || 0) + amount;
+            if (cloudDb) cloudDb.collection('users').doc(p).set(allRegisteredCustomers[p]).catch(e=>console.warn(e));
+        });
+        safeSet('cc_users_directory', allRegisteredCustomers);
+
+        const notifObj = {
+            id: "notif_pts_all_" + Date.now(),
+            title: "مكافأة نقاط ولاء جماعية",
+            body: `بمناسبة مميزة، منحت الإدارة جميع الزبائن الكرام ${amount} نقطة ولاء مجاناً!`,
+            targetPhone: 'all',
+            isRead: false,
+            allowReply: false,
+            createdAt: Date.now(),
+            dateStr: new Date().toLocaleDateString('ar-JO')
+        };
+        customerNotifications.unshift(notifObj);
+        safeSet('cc_notifications', customerNotifications);
+        if (cloudDb) cloudDb.collection('notifications').doc(notifObj.id).set(notifObj).catch(e=>console.warn(e));
+
+        window.showToastMsg(`تم منح ${amount} نقطة لكافة الزبائن المسجلين أونلاين`);
     }
-};
 
-window.exitAdminSession = function() {
-    activeSessionUser = null;
-    localStorage.removeItem('cc_admin_session');
-    window.navigateRouter('screen-home');
-};
-
-window.openAdminSubSection = function(sectionKey) {
-    document.getElementById('adminMainHubView').style.display = 'none';
-    document.querySelectorAll('.admin-sub-view').forEach(v => v.classList.remove('active'));
-    const sub = document.getElementById('subView-' + sectionKey);
-    if (sub) sub.classList.add('active');
-
-    if (sectionKey === 'orders') renderAdminLiveOrdersManager();
-    if (sectionKey === 'products') renderAdminProductsManager();
-    if (sectionKey === 'feedbackAdmin') renderAdminFeedbacksManager();
-    if (sectionKey === 'customers') renderAdminCustomersList();
-    if (sectionKey === 'paymentsAdmin') renderAdminPaymentMethodsList();
-    if (sectionKey === 'redeemManager') renderAdminRedeemManager();
-    if (sectionKey === 'coupons') renderAdminCouponsManager();
-};
-
-window.backToAdminMainHub = function() {
-    document.querySelectorAll('.admin-sub-view').forEach(v => v.classList.remove('active'));
-    document.getElementById('adminMainHubView').style.display = 'block';
-    const badgeFb = document.getElementById('badgeHubFeedbackCount');
-    if (badgeFb) {
-        const now = Date.now();
-        const SEVENTY_TWO_HOURS = 72 * 60 * 60 * 1000;
-        const activeFb = customerFeedbacks.filter(f => !(f.repliedAt && (now - f.repliedAt > SEVENTY_TWO_HOURS)));
-        badgeFb.innerText = activeFb.filter(f => !f.reply).length;
-    }
-};
-
-/* =========================================================
-   محرك إدارة الزبائن المتقدم ولوحة القيادة الشاملة (Customers Hub)
-   ========================================================= */
-window.setCustomerFilterMode = function(mode) {
-    customerListFilterMode = mode;
-    ['all', 'active', 'banned', 'vip'].forEach(m => {
-        const btn = document.getElementById('filterCust_' + m);
-        if (btn) btn.classList.toggle('active', m === mode);
-    });
+    document.getElementById('admGrantPointsAmount').value = '';
     renderAdminCustomersList();
 };
 
-function updateCustomerCommandStats() {
-    const users = Object.values(allRegisteredCustomers);
-    const totalEl = document.getElementById('custStatTotalCount');
-    const bannedEl = document.getElementById('custStatBannedCount');
-    const pointsEl = document.getElementById('custStatTotalPoints');
-    const vipEl = document.getElementById('custStatVipCount');
+// ==========================================
+// إدارة الشكاوى والمقترحات
+// ==========================================
+window.submitCustomerFeedback = function() {
+    if (!currentAuthenticatedUser) {
+        window._postAuthDestination = 'screen-feedback';
+        window.showToastMsg("يرجى تسجيل الدخول أولاً لإرسال الشكوى");
+        return window.navigateRouter('screen-auth');
+    }
+    const cat = document.getElementById('feedbackCategory').value;
+    const content = (document.getElementById('feedbackContentInput').value || '').trim();
+    if (!content) return window.showToastMsg("يرجى كتابة نص الشكوى أو المقترح");
 
-    if (!totalEl) return;
+    const fbObj = {
+        id: "fb_" + Date.now(),
+        customerPhone: currentAuthenticatedUser.phone,
+        customerName: currentAuthenticatedUser.name,
+        category: cat,
+        text: content,
+        reply: "",
+        repliedAt: null,
+        createdAt: Date.now(),
+        dateStr: new Date().toLocaleDateString('ar-JO')
+    };
 
-    const totalUsers = users.length;
-    const bannedCount = users.filter(u => bannedCustomersList.includes(u.phone)).length;
-    const totalPoints = users.reduce((sum, u) => sum + (parseInt(u.points) || 0), 0);
-    const vipCount = users.filter(u => (parseInt(u.points) || 0) >= 100).length;
+    customerFeedbacks.unshift(fbObj);
+    safeSet('cc_feedbacks', customerFeedbacks);
+    if (cloudDb) cloudDb.collection('feedbacks').doc(fbObj.id).set(fbObj).catch(e=>console.warn(e));
 
-    totalEl.innerText = totalUsers;
-    bannedEl.innerText = bannedCount;
-    pointsEl.innerText = totalPoints;
-    vipEl.innerText = vipCount;
+    document.getElementById('feedbackContentInput').value = '';
+    renderCustomerFeedbacks();
+    window.showToastMsg("تم إرسال رسالتك للإدارة مباشرة بخصوصية تامة");
+};
+
+function renderCustomerFeedbacks() {
+    const container = document.getElementById('customerFeedbackList');
+    if (!container) return;
+    if (!currentAuthenticatedUser) {
+        container.innerHTML = `<div style="text-align:center; padding:20px; font-size:11.5px; color:var(--text-secondary);">سجل دخولك لمشاهدة سجل شكاويك والردود</div>`;
+        return;
+    }
+    const myFbs = customerFeedbacks.filter(f => f.customerPhone === currentAuthenticatedUser.phone);
+    if (!myFbs.length) {
+        container.innerHTML = `<div style="text-align:center; padding:20px; font-size:11.5px; color:var(--text-secondary);">لا توجد شكاوى أو مقترحات سابقة</div>`;
+        return;
+    }
+    container.innerHTML = myFbs.map(f => `
+        <div class="clean-card" style="margin-bottom:8px;">
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+                <span style="font-weight:900; font-size:12px; color:var(--brand-theme);">${f.category}</span>
+                <span class="num-font" style="font-size:10px; color:var(--text-dim);">${f.dateStr || ''}</span>
+            </div>
+            <div style="font-size:12px; margin-top:4px;">${f.text}</div>
+            ${f.reply ? `
+                <div style="background:var(--bg-elevated); padding:8px; border-radius:var(--radius-sm); margin-top:8px; border-right:2px solid var(--brand-theme);">
+                    <div style="font-size:10.5px; font-weight:800; color:var(--brand-theme);">رد الإدارة:</div>
+                    <div style="font-size:11.5px; color:var(--text-primary); margin-top:2px;">${f.reply}</div>
+                </div>
+            ` : `<div style="font-size:10px; color:var(--text-dim); margin-top:6px;">قيد المراجعة لدى الإدارة...</div>`}
+        </div>
+    `).join('');
 }
 
-window.renderAdminCustomersList = function() {
-    const container = document.getElementById('adminCustomersListContainer');
+function renderAdminFeedbackControlList() {
+    const container = document.getElementById('adminFeedbackControlList');
     if (!container) return;
+    const badge = document.getElementById('badgeHubFeedbackCount');
+    const unreplied = customerFeedbacks.filter(f => !f.reply);
+    if (badge) badge.innerText = unreplied.length;
 
-    updateCustomerCommandStats();
-
-    const searchInput = document.getElementById('adminCustomerSearchPhone');
-    const query = searchInput ? (searchInput.value || '').trim().toLowerCase() : '';
-
-    let users = Object.values(allRegisteredCustomers);
-
-    // تطبيق فلتر الحالة
-    if (customerListFilterMode === 'banned') {
-        users = users.filter(u => bannedCustomersList.includes(u.phone));
-    } else if (customerListFilterMode === 'active') {
-        users = users.filter(u => !bannedCustomersList.includes(u.phone));
-    } else if (customerListFilterMode === 'vip') {
-        users = users.filter(u => (parseInt(u.points) || 0) >= 100);
-    }
-
-    // تطبيق البحث النصي
-    if (query) {
-        users = users.filter(u => (u.name || '').toLowerCase().includes(query) || (u.phone || '').includes(query));
-    }
-
-    if (!users.length) {
-        container.innerHTML = `<div style="text-align:center; padding:18px; color:var(--text-secondary); font-size:12px;">لا يوجد زبائن يطابقون خيارات البحث الحالية</div>`;
+    if (!customerFeedbacks.length) {
+        container.innerHTML = `<div style="text-align:center; padding:20px; font-size:12px; color:var(--text-secondary);">صندوق الشكاوى فارغ</div>`;
         return;
     }
 
-    container.innerHTML = users.map(u => {
-        const isBanned = bannedCustomersList.includes(u.phone);
-        const pts = parseInt(u.points) || 0;
-        const tier = u.tier || (pts >= 200 ? 'عضوية VIP ماسية' : (pts >= 100 ? 'عضوية ذهبية ملكية' : (pts >= 40 ? 'عضوية فضية راقية' : 'عضوية برونزية مميزة')));
-        const gender = u.gender || 'ذكر';
-
-        return `
-            <div class="clean-card" style="margin-bottom:8px; ${isBanned ? 'border-color:var(--status-danger); background:rgba(239,68,68,0.03);' : ''}">
-                <div style="display:flex; justify-content:space-between; align-items:center;">
-                    <div style="display:flex; align-items:center; gap:10px;">
-                        <img src="${u.avatar || (gender === 'أنثى' ? 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=200&q=80' : 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200&q=80')}" style="width:42px; height:42px; border-radius:50%; object-fit:cover; border:1.5px solid var(--brand-theme); flex-shrink:0;">
-                        <div>
-                            <div style="font-weight:900; font-size:13.5px; display:flex; align-items:center; gap:6px;">
-                                <span>${u.name}</span>
-                                <span class="profile-gender-pill" style="font-size:9px; padding:1px 6px;">${gender}</span>
-                                ${isBanned ? '<span style="color:var(--status-danger); font-size:10px;">[محظور]</span>' : ''}
-                            </div>
-                            <div style="font-size:10.5px; color:var(--text-secondary);" class="num-font">${u.phone} • <span style="color:var(--brand-theme); font-weight:800;">${tier}</span></div>
-                        </div>
-                    </div>
-                    <div style="text-align:left;">
-                        <div class="num-font" style="font-size:14px; font-weight:900; color:var(--brand-theme);">${pts} نقطة</div>
-                        <div style="font-size:9.5px; color:var(--text-dim);">${u.ordersCount || 0} طلبات</div>
-                    </div>
-                </div>
-
-                <div style="display:flex; gap:6px; margin-top:10px; border-top:1px dashed var(--border-subtle); padding-top:8px;">
-                    <button class="btn-brand-solid" style="flex:1; padding:6px; font-size:11px;" onclick="openCustomerFullDossier('${u.phone}')">فتح الملف والتحكم الكامل</button>
-                    ${isBanned ? `
-                        <button class="btn-brand-outline" style="padding:6px 10px; font-size:11px; color:var(--status-success); border-color:var(--status-success);" onclick="adminDirectUnban('${u.phone}')">فك الحظر</button>
-                    ` : `
-                        <button class="btn-brand-outline" style="padding:6px 10px; font-size:11px; color:var(--status-danger); border-color:var(--status-danger);" onclick="adminDirectBan('${u.phone}')">حظر</button>
-                    `}
-                </div>
+    container.innerHTML = customerFeedbacks.map(f => `
+        <div class="clean-card" style="margin-bottom:8px;">
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+                <span style="font-weight:900; font-size:12px; color:var(--brand-theme);">${f.category} — ${f.customerName} (<span class="num-font">${f.customerPhone}</span>)</span>
+                <span class="num-font" style="font-size:10px; color:var(--text-dim);">${f.dateStr || ''}</span>
             </div>
-        `;
-    }).join('');
-};
+            <div style="font-size:12px; margin-top:6px; line-height:1.4;">${f.text}</div>
+            
+            ${f.customerFollowup ? `
+                <div style="background:rgba(59, 130, 246, 0.08); padding:6px 10px; border-radius:6px; margin-top:6px; border-right:2px solid var(--status-info); font-size:11px;">
+                    <strong>رد الزبون المباشر:</strong> ${f.customerFollowup}
+                </div>
+            ` : ''}
 
-window.openCustomerFullDossier = function(phone) {
-    selectedDossierUserPhone = phone;
-    const user = allRegisteredCustomers[phone];
-    if (!user) return;
-
-    const isBanned = bannedCustomersList.includes(phone);
-    const pts = parseInt(user.points) || 0;
-    const ordersCount = parseInt(user.ordersCount) || 0;
-    const tier = user.tier || (pts >= 200 ? 'عضوية VIP ماسية' : (pts >= 100 ? 'عضوية ذهبية ملكية' : (pts >= 40 ? 'عضوية فضية راقية' : 'عضوية برونزية مميزة')));
-    const gender = user.gender || 'ذكر';
-
-    document.getElementById('dosCustomerNameTitle').innerText = `ملف الزبون: ${user.name}`;
-    document.getElementById('dosFullName').innerText = user.name;
-    document.getElementById('dosGenderBadge').innerText = gender;
-    document.getElementById('dosPhone').innerText = user.phone;
-    document.getElementById('dosAvatarImg').src = user.avatar || (gender === 'أنثى' 
-        ? 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=200&q=80' 
-        : 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200&q=80');
-
-    document.getElementById('dosPointsVal').innerText = pts;
-    document.getElementById('dosOrdersVal').innerText = ordersCount;
-    document.getElementById('dosTierBadge').innerText = tier;
-    document.getElementById('selectCustomerTierLevel').value = tier;
-    document.getElementById('dosStatusText').innerText = isBanned ? 'محظور ومقيد ✕' : 'نشط ومعتمد ✓';
-    document.getElementById('dosStatusText').style.color = isBanned ? 'var(--status-danger)' : 'var(--status-success)';
-    document.getElementById('dosWaDirectLink').href = `https://wa.me/962${user.phone.replace(/^0+/, '')}`;
-
-    document.getElementById('dossierAdminNotes').value = user.adminNotes || '';
-    document.getElementById('inputCustomPointsAmount').value = '';
-    document.getElementById('inputCustomPointsReason').value = '';
-    document.getElementById('dossierDirectNotifTitle').value = '';
-    document.getElementById('dossierDirectNotifBody').value = '';
-
-    // تعيين زر الحظر / فك الحظر
-    const banBtn = document.getElementById('btnToggleCustomerBan');
-    if (isBanned) {
-        banBtn.innerText = "فك الحظر عن هذا العميل فوراً ✓";
-        banBtn.style.color = "var(--status-success)";
-        banBtn.style.borderColor = "var(--status-success)";
-    } else {
-        banBtn.innerText = "حظر وتقييد هذا العميل ✕";
-        banBtn.style.color = "var(--status-danger)";
-        banBtn.style.borderColor = "var(--status-danger)";
-    }
-
-    // عرض سجل طلبات الزبون
-    renderCustomerOrdersInDossier(phone);
-
-    document.getElementById('modalAdminCustomerDossier').style.display = 'flex';
-};
-
-function renderCustomerOrdersInDossier(phone) {
-    const container = document.getElementById('dossierOrdersHistoryContainer');
-    if (!container) return;
-
-    const userOrders = activeOrdersList.filter(o => o.customerPhone === phone);
-
-    if (!userOrders.length) {
-        container.innerHTML = `<div style="color:var(--text-dim); text-align:center; padding:8px;">لا توجد طلبات مسجلة لهذا الزبون حتى الآن</div>`;
-        return;
-    }
-
-    container.innerHTML = userOrders.map(o => `
-        <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px dashed var(--border-subtle); padding:5px 0;">
-            <div>
-                <span class="num-font" style="font-weight:900; color:var(--brand-theme);">#${o.orderId}</span>
-                <span style="color:var(--text-secondary); margin-right:4px;">${o.branchName || ''} (${o.deliveryMode === 'pickup' ? 'استلام' : 'توصيل'})</span>
-            </div>
-            <div style="text-align:left;">
-                <span class="num-font" style="font-weight:800;">${parseFloat(o.totalAmount || 0).toFixed(2)} د.أ</span>
-                <span style="font-size:9.5px; margin-right:4px; color:${o.status === 'completed' ? 'var(--status-success)' : (o.status === 'cancelled' ? 'var(--status-danger)' : 'var(--status-warning)')};">[${o.status}]</span>
+            <div style="margin-top:8px; border-top:1px dashed var(--border-subtle); padding-top:8px;">
+                ${f.reply ? `
+                    <div style="font-size:11px; color:var(--status-success); margin-bottom:4px;"><strong>تم الرد:</strong> ${f.reply}</div>
+                ` : `
+                    <div style="display:flex; gap:6px;">
+                        <input type="text" class="ios-input-field" id="adminReplyInput_${f.id}" placeholder="اكتب رد الإدارة هنا...">
+                        <button class="btn-brand-solid" style="width:auto; padding:0 12px; font-size:11px;" onclick="sendAdminReplyToFeedback('${f.id}')">إرسال</button>
+                    </div>
+                `}
             </div>
         </div>
     `).join('');
 }
 
-window.closeCustomerDossierModal = function() {
-    document.getElementById('modalAdminCustomerDossier').style.display = 'none';
-    selectedDossierUserPhone = null;
+window.sendAdminReplyToFeedback = function(fbId) {
+    const input = document.getElementById('adminReplyInput_' + fbId);
+    if (!input) return;
+    const replyText = input.value.trim();
+    if (!replyText) return window.showToastMsg("يرجى كتابة نص الرد");
+
+    const fb = customerFeedbacks.find(f => f.id === fbId);
+    if (!fb) return;
+
+    fb.reply = replyText;
+    fb.repliedAt = Date.now();
+    safeSet('cc_feedbacks', customerFeedbacks);
+    if (cloudDb) cloudDb.collection('feedbacks').doc(fb.id).set(fb).catch(e=>console.warn(e));
+
+    // إشعار موجه للزبون مع إمكانية الرد
+    const notifObj = {
+        id: "notif_rep_" + Date.now(),
+        title: "رد الإدارة بخصوص: " + fb.category,
+        body: `عزيزنا ${fb.customerName}، رداً على رسالتك:\n"${replyText}"`,
+        targetPhone: fb.customerPhone,
+        feedbackId: fb.id,
+        isRead: false,
+        allowReply: true,
+        createdAt: Date.now(),
+        dateStr: new Date().toLocaleDateString('ar-JO') + ' ' + new Date().toLocaleTimeString('ar-JO', {hour:'2-digit', minute:'2-digit'})
+    };
+    customerNotifications.unshift(notifObj);
+    safeSet('cc_notifications', customerNotifications);
+    if (cloudDb) cloudDb.collection('notifications').doc(notifObj.id).set(notifObj).catch(e=>console.warn(e));
+
+    renderAdminFeedbackControlList();
+    window.showToastMsg("تم إرسال الرد للعميل وإشعاره فوراً");
 };
 
-window.copySelectedUserPhone = function() {
-    if (!selectedDossierUserPhone) return;
-    const input = document.createElement('input');
-    input.value = selectedDossierUserPhone;
-    document.body.appendChild(input);
-    input.select();
-    document.execCommand('copy');
-    document.body.removeChild(input);
-    window.showToastMsg("تم نسخ رقم الهاتف للحافظة: " + selectedDossierUserPhone);
-};
-
-window.copyCustomerNumbersToClipboard = function() {
-    const phones = Object.values(allRegisteredCustomers).map(u => u.phone).filter(Boolean);
-    if (!phones.length) return window.showToastMsg("لا توجد أرقام مسجلة حالياً");
-    const text = phones.join('\n');
-    const input = document.createElement('textarea');
-    input.value = text;
-    document.body.appendChild(input);
-    input.select();
-    document.execCommand('copy');
-    document.body.removeChild(input);
-    window.showToastMsg(`تم نسخ ${phones.length} رقم زبون بنجاح`);
-};
-
-window.applyCustomPointsDelta = function(isAdd) {
-    if (!selectedDossierUserPhone) return;
-    const amountVal = parseInt(document.getElementById('inputCustomPointsAmount').value);
-    if (isNaN(amountVal) || amountVal <= 0) return window.showToastMsg("أدخل عدد نقاط صالح أكبر من الصفر");
-
-    const reason = document.getElementById('inputCustomPointsReason').value.trim() || (isAdd ? "مكافأة ولاء إدارية" : "تعديل رصيد إداري");
-    const user = allRegisteredCustomers[selectedDossierUserPhone];
-    if (!user) return;
-
-    const currentPts = parseInt(user.points) || 0;
-    const newPts = isAdd ? (currentPts + amountVal) : Math.max(0, currentPts - amountVal);
-
-    user.points = newPts;
-    allRegisteredCustomers[selectedDossierUserPhone] = user;
-    safeSet('cc_users_directory', allRegisteredCustomers);
-
-    if (cloudDb) {
-        cloudDb.collection('users').doc(selectedDossierUserPhone).update({ points: newPts }).catch(e => console.warn(e));
-    }
-
-    // إشعار الزبون بالحركة
-    addNotificationRecord(
-        isAdd ? "إضافة نقاط لرصيدك ⭐" : "تعديل رصيد النقاط",
-        isAdd ? `أهدتك إدارة كافيه كورنر ${amountVal} نقطة! السبب: ${reason}` : `تم خصم ${amountVal} نقطة من حسابك. السبب: ${reason}`,
-        selectedDossierUserPhone
-    );
-
-    document.getElementById('dosPointsVal').innerText = newPts;
-    document.getElementById('inputCustomPointsAmount').value = '';
-    document.getElementById('inputCustomPointsReason').value = '';
-
-    renderAdminCustomersList();
-    checkAdminEditsCounter();
-    window.showToastMsg(`تم ${isAdd ? 'إضافة' : 'خصم'} ${amountVal} نقطة بنجاح أونلاين!`);
-};
-
-window.updateCustomerTierLevel = function() {
-    if (!selectedDossierUserPhone) return;
-    const selectedTier = document.getElementById('selectCustomerTierLevel').value;
-    const user = allRegisteredCustomers[selectedDossierUserPhone];
-    if (!user) return;
-
-    user.tier = selectedTier;
-    allRegisteredCustomers[selectedDossierUserPhone] = user;
-    safeSet('cc_users_directory', allRegisteredCustomers);
-
-    if (cloudDb) {
-        cloudDb.collection('users').doc(selectedDossierUserPhone).update({ tier: selectedTier }).catch(e => console.warn(e));
-    }
-
-    addNotificationRecord(
-        "ترقية مستوى العضوية في كافيه كورنر 👑",
-        `تهانينا! قامت الإدارة بترقية عضويتك إلى "${selectedTier}". استمتع بالمزايا والخصومات الحصرية!`,
-        selectedDossierUserPhone
-    );
-
-    document.getElementById('dosTierBadge').innerText = selectedTier;
-    renderAdminCustomersList();
-    checkAdminEditsCounter();
-    window.showToastMsg("تم تثبيت رتبة العميل بنجاح أونلاين!");
-};
-
-window.saveCustomerAdminNotes = function() {
-    if (!selectedDossierUserPhone) return;
-    const notes = document.getElementById('dossierAdminNotes').value.trim();
-    const user = allRegisteredCustomers[selectedDossierUserPhone];
-    if (!user) return;
-
-    user.adminNotes = notes;
-    allRegisteredCustomers[selectedDossierUserPhone] = user;
-    safeSet('cc_users_directory', allRegisteredCustomers);
-
-    if (cloudDb) {
-        cloudDb.collection('users').doc(selectedDossierUserPhone).update({ adminNotes: notes }).catch(e => console.warn(e));
-    }
-
-    checkAdminEditsCounter();
-    window.showToastMsg("تم حفظ الملاحظة الإدارية السرية حول العميل");
-};
-
-window.sendDirectNotificationFromDossier = function() {
-    if (!selectedDossierUserPhone) return;
-    const title = document.getElementById('dossierDirectNotifTitle').value.trim();
-    const body = document.getElementById('dossierDirectNotifBody').value.trim();
-
-    if (!title || !body) return window.showToastMsg("يرجى كتابة عنوان ونص الإشعار أولاً");
-
-    addNotificationRecord(title, body, selectedDossierUserPhone);
-
-    document.getElementById('dossierDirectNotifTitle').value = '';
-    document.getElementById('dossierDirectNotifBody').value = '';
-
-    window.showToastMsg("تم إرسال الإشعار لحساب الزبون مباشرة أونلاين!");
-};
-
-window.toggleCustomerBanStatus = function() {
-    if (!selectedDossierUserPhone) return;
-    const phone = selectedDossierUserPhone;
-    if (bannedCustomersList.includes(phone)) {
-        adminDirectUnban(phone);
-        document.getElementById('dosStatusText').innerText = 'نشط ومعتمد ✓';
-        document.getElementById('dosStatusText').style.color = 'var(--status-success)';
-        document.getElementById('btnToggleCustomerBan').innerText = "حظر وتقييد هذا العميل ✕";
-        document.getElementById('btnToggleCustomerBan').style.color = "var(--status-danger)";
-        document.getElementById('btnToggleCustomerBan').style.borderColor = "var(--status-danger)";
-    } else {
-        adminDirectBan(phone);
-        document.getElementById('dosStatusText').innerText = 'محظور ومقيد ✕';
-        document.getElementById('dosStatusText').style.color = 'var(--status-danger)';
-        document.getElementById('btnToggleCustomerBan').innerText = "فك الحظر عن هذا العميل فوراً ✓";
-        document.getElementById('btnToggleCustomerBan').style.color = "var(--status-success)";
-        document.getElementById('btnToggleCustomerBan').style.borderColor = "var(--status-success)";
-    }
-    renderAdminCustomersList();
-};
-
-window.searchAndOpenCustomerDossier = function() {
-    const input = document.getElementById('adminCustomerSearchPhone');
-    const val = input ? input.value.trim() : '';
-    if (!val) return renderAdminCustomersList();
-
-    const user = allRegisteredCustomers[val];
-    if (user) {
-        openCustomerFullDossier(val);
-    } else {
-        renderAdminCustomersList();
-    }
-};
-
+// ==========================================
+// التنقل والراوتر
+// ==========================================
 window.navigateRouter = function(screenId) {
     document.getElementById('sidebarMask')?.classList.remove('active');
     document.getElementById('sidebarDrawer')?.classList.remove('active');
@@ -4617,7 +3448,6 @@ window.navigateRouter = function(screenId) {
     }
 
     checkUserBannedStateAndLockout();
-    checkStoreOpenHours();
 };
 
 window.openSidebarDrawer = function() {
@@ -4659,24 +3489,317 @@ window.showToastMsg = function(msg) {
     window._toastTimer = setTimeout(() => toast.classList.remove('active'), 2500);
 };
 
-// تنظيف الطلبات المكتملة للأدمن بعد يوم كامل (24 ساعة)
-function cleanupAdminOrdersDaily() {
-    const now = Date.now();
-    const TWENTY_FOUR_HOURS = 24 * 60 * 60 * 1000;
-    activeOrdersList = activeOrdersList.filter(o => {
-        if ((o.status === 'completed' || o.status === 'cancelled') && o.finishedAt) {
-            if (now - o.finishedAt > TWENTY_FOUR_HOURS) return false;
-        }
-        return true;
-    });
-    safeSet('cc_orders', activeOrdersList);
+// ==========================================
+// الإدارة الشاملة (Admin Hub)
+// ==========================================
+let secretClickCount = 0;
+let secretTimer = null;
+window.handleSecretAdminTrigger = function() {
+    secretClickCount++;
+    clearTimeout(secretTimer);
+    secretTimer = setTimeout(() => { secretClickCount = 0; }, 1500);
+    if (secretClickCount >= 4) {
+        secretClickCount = 0;
+        window.navigateRouter('screen-admin-login');
+    }
+};
+
+window.attemptAdminAuthentication = function() {
+    const pin = (document.getElementById('adminPassField').value || '').trim();
+    if (pin === MASTER_PIN) {
+        activeSessionUser = 'admin';
+        safeSet('cc_admin_session', 'admin');
+        document.getElementById('adminPassField').value = '';
+        window.navigateRouter('screen-admin-dashboard');
+        backToAdminMainHub();
+    } else {
+        window.showToastMsg("رمز المرور غير صحيح!");
+    }
+};
+
+window.exitAdminSession = function() {
+    activeSessionUser = null;
+    localStorage.removeItem('cc_admin_session');
+    window.navigateRouter('screen-home');
+};
+
+window.openAdminSubSection = function(sectionKey) {
+    document.getElementById('adminMainHubView').style.display = 'none';
+    document.querySelectorAll('.admin-sub-view').forEach(v => v.classList.remove('active'));
+    const sub = document.getElementById('subView-' + sectionKey);
+    if (sub) sub.classList.add('active');
+
+    if (sectionKey === 'orders') renderAdminLiveOrdersManager();
+    if (sectionKey === 'products') renderAdminProductsManager();
+    if (sectionKey === 'customers') renderAdminCustomersList();
+    if (sectionKey === 'feedbackAdmin') renderAdminFeedbackControlList();
+    if (sectionKey === 'notificationsAdmin') populateAdminCustomerDropdowns();
+};
+
+window.backToAdminMainHub = function() {
+    document.querySelectorAll('.admin-sub-view').forEach(v => v.classList.remove('active'));
+    document.getElementById('adminMainHubView').style.display = 'block';
+};
+
+function renderAdminLiveOrdersManager() {
+    const container = document.getElementById('adminLiveOrdersContainer');
+    if (!container) return;
+    if (!activeOrdersList.length) {
+        container.innerHTML = `<div style="text-align:center; padding:16px; color:var(--text-secondary); font-size:12px;">لا توجد طلبات جارية حالياً</div>`;
+        return;
+    }
+    container.innerHTML = activeOrdersList.map(o => `
+        <div class="clean-card" style="margin-bottom:8px;">
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+                <span class="num-font" style="font-weight:900; color:var(--brand-theme);">#${o.orderId}</span>
+                <span class="header-hours-badge">${o.deliveryMode === 'pickup' ? 'استلام من الفرع' : 'توصيل'}</span>
+            </div>
+            <div style="font-size:12.5px; font-weight:900; margin-top:4px;">${o.customerName} (<span class="num-font">${o.customerPhone}</span>)</div>
+            <div style="font-size:12px; font-weight:900; margin-top:6px;">${parseFloat(o.totalAmount).toFixed(2)} د.أ</div>
+        </div>
+    `).join('');
 }
 
-// فحص دوري كل ثانية
-setInterval(() => {
-    checkStoreOpenHours();
-    cleanupAdminOrdersDaily();
-}, 1000);
+function renderAdminProductsManager() {
+    const container = document.getElementById('adminProductsControlList');
+    if (!container) return;
+    container.innerHTML = productsCatalog.map(p => `
+        <div style="display:flex; justify-content:space-between; align-items:center; background:var(--bg-surface); padding:8px 10px; border-radius:var(--radius-sm); border:1px solid var(--border-subtle); margin-bottom:6px;">
+            <div style="display:flex; align-items:center; gap:8px;">
+                <img src="${p.img}" style="width:36px; height:36px; border-radius:var(--radius-sm); object-fit:contain; background:#000;">
+                <div>
+                    <div style="font-size:12.5px; font-weight:900;">${p.name}</div>
+                    <div style="font-size:10px; color:var(--text-secondary);">${p.category} • <span class="num-font">${parseFloat(p.price).toFixed(2)} د.أ</span></div>
+                </div>
+            </div>
+            <button class="btn-brand-outline" style="padding:3px 6px; font-size:10px; color:var(--status-danger); border-color:var(--status-danger);" onclick="deleteProductFromCatalog('${p.id}')">حذف</button>
+        </div>
+    `).join('');
+}
+
+window.deleteProductFromCatalog = function(productId) {
+    productsCatalog = productsCatalog.filter(x => x.id !== productId);
+    safeSet('cc_catalog', productsCatalog);
+    renderCategoryChips();
+    renderMenuProducts();
+    renderAdminProductsManager();
+    if (cloudDb) cloudDb.collection('catalog').doc('products_list').set({ items: productsCatalog }).catch(e=>console.warn(e));
+    window.showToastMsg("تم حذف الصنف أونلاين!");
+};
+
+// دليل الزبائن
+function renderAdminCustomersList() {
+    const container = document.getElementById('adminCustomersListContainer');
+    if (!container) return;
+
+    const users = Object.values(allRegisteredCustomers);
+    const searchVal = (document.getElementById('adminCustomerSearchPhone')?.value || '').trim().toLowerCase();
+
+    // إحصائيات
+    document.getElementById('custStatTotalCount').innerText = users.length;
+    document.getElementById('custStatBannedCount').innerText = bannedCustomersList.length;
+    document.getElementById('custStatTotalPoints').innerText = users.reduce((s, u) => s + (u.points || 0), 0);
+    document.getElementById('custStatVipCount').innerText = users.filter(u => (u.points || 0) >= 100).length;
+
+    let filtered = users;
+    if (customerListFilterMode === 'active') filtered = filtered.filter(u => !bannedCustomersList.includes(u.phone));
+    if (customerListFilterMode === 'banned') filtered = filtered.filter(u => bannedCustomersList.includes(u.phone));
+    if (customerListFilterMode === 'vip') filtered = filtered.filter(u => (u.points || 0) >= 100);
+
+    if (searchVal) {
+        filtered = filtered.filter(u => (u.name || '').toLowerCase().includes(searchVal) || (u.phone || '').includes(searchVal));
+    }
+
+    if (!filtered.length) {
+        container.innerHTML = `<div style="text-align:center; padding:20px; font-size:11.5px; color:var(--text-secondary);">لا يوجد زبائن مطابقين</div>`;
+        return;
+    }
+
+    container.innerHTML = filtered.map(u => {
+        const isBanned = bannedCustomersList.includes(u.phone);
+        return `
+            <div style="display:flex; justify-content:space-between; align-items:center; background:var(--bg-surface); padding:8px 10px; border-radius:var(--radius-sm); border:1px solid var(--border-subtle); margin-bottom:6px;">
+                <div>
+                    <div style="font-weight:900; font-size:12.5px;">${u.name} <span class="num-font" style="color:var(--text-dim); font-size:11px;">(${u.phone})</span></div>
+                    <div style="font-size:10.5px; color:var(--brand-theme); font-weight:800;">${u.points || 0} نقطة • ${isBanned ? '<span style="color:var(--status-danger);">محظور</span>' : '<span style="color:var(--status-success);">نشط</span>'}</div>
+                </div>
+                <button class="btn-brand-outline" style="padding:4px 8px; font-size:10.5px;" onclick="openAdminCustomerDossier('${u.phone}')">ملف العميل</button>
+            </div>
+        `;
+    }).join('');
+}
+
+window.setCustomerFilterMode = function(m) {
+    customerListFilterMode = m;
+    ['all', 'active', 'banned', 'vip'].forEach(k => {
+        document.getElementById('filterCust_' + k)?.classList.toggle('active', k === m);
+    });
+    renderAdminCustomersList();
+};
+
+window.openAdminCustomerDossier = function(phone) {
+    const user = allRegisteredCustomers[phone];
+    if (!user) return;
+    selectedDossierUserPhone = phone;
+
+    document.getElementById('dosFullName').innerText = user.name;
+    document.getElementById('dosPhone').innerText = user.phone;
+    document.getElementById('dosAvatarImg').src = user.avatar || "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200&q=80";
+    document.getElementById('dosGenderBadge').innerText = user.gender || 'ذكر';
+    document.getElementById('dosPointsVal').innerText = user.points || 0;
+    document.getElementById('dosOrdersVal').innerText = user.ordersCount || 0;
+    
+    const isBanned = bannedCustomersList.includes(phone);
+    document.getElementById('dosStatusText').innerText = isBanned ? 'محظور ✕' : 'نشط ✓';
+    document.getElementById('dosStatusText').style.color = isBanned ? 'var(--status-danger)' : 'var(--status-success)';
+    document.getElementById('btnToggleCustomerBan').innerText = isBanned ? 'فك قيد الحظر عن العميل' : 'حظر العميل من الطلب';
+
+    document.getElementById('dosWaDirectLink').href = `https://wa.me/962${phone.substring(1)}`;
+    document.getElementById('modalAdminCustomerDossier').style.display = 'flex';
+};
+
+window.closeCustomerDossierModal = function() {
+    document.getElementById('modalAdminCustomerDossier').style.display = 'none';
+    selectedDossierUserPhone = null;
+};
+
+window.copySelectedUserPhone = function() {
+    if (selectedDossierUserPhone) {
+        navigator.clipboard.writeText(selectedDossierUserPhone);
+        window.showToastMsg("تم نسخ رقم الهاتف");
+    }
+};
+
+window.applyCustomPointsDelta = function(isAdd) {
+    if (!selectedDossierUserPhone) return;
+    const amount = parseInt(document.getElementById('inputCustomPointsAmount').value || 0);
+    if (!amount || amount <= 0) return window.showToastMsg("أدخل عدد نقاط صحيح");
+
+    const u = allRegisteredCustomers[selectedDossierUserPhone];
+    if (!u) return;
+
+    if (isAdd) u.points = (u.points || 0) + amount;
+    else u.points = Math.max(0, (u.points || 0) - amount);
+
+    allRegisteredCustomers[selectedDossierUserPhone] = u;
+    safeSet('cc_users_directory', allRegisteredCustomers);
+    if (cloudDb) cloudDb.collection('users').doc(selectedDossierUserPhone).set(u).catch(e=>console.warn(e));
+
+    document.getElementById('dosPointsVal').innerText = u.points;
+    document.getElementById('inputCustomPointsAmount').value = '';
+    renderAdminCustomersList();
+    window.showToastMsg("تم تحديث النقاط بنجاح أونلاين");
+};
+
+window.toggleCustomerBanStatus = function() {
+    if (!selectedDossierUserPhone) return;
+    const phone = selectedDossierUserPhone;
+    const idx = bannedCustomersList.indexOf(phone);
+
+    if (idx > -1) {
+        bannedCustomersList.splice(idx, 1);
+        window.showToastMsg("تم فك الحظر عن العميل بنجاح");
+    } else {
+        bannedCustomersList.push(phone);
+        window.showToastMsg("تم حظر العميل بنجاح");
+    }
+
+    safeSet('cc_banned_users', bannedCustomersList);
+    if (cloudDb) cloudDb.collection('settings').doc('banned_users').set({ list: bannedCustomersList }).catch(e=>console.warn(e));
+
+    openAdminCustomerDossier(phone);
+    renderAdminCustomersList();
+};
+
+window.sendDirectNotificationFromDossier = function() {
+    if (!selectedDossierUserPhone) return;
+    const title = (document.getElementById('dossierDirectNotifTitle').value || '').trim();
+    const body = (document.getElementById('dossierDirectNotifBody').value || '').trim();
+    if (!title || !body) return window.showToastMsg("يرجى إدخال عنوان ونص الإشعار");
+
+    const notifObj = {
+        id: "notif_doss_" + Date.now(),
+        title: title,
+        body: body,
+        targetPhone: selectedDossierUserPhone,
+        isRead: false,
+        allowReply: false,
+        createdAt: Date.now(),
+        dateStr: new Date().toLocaleDateString('ar-JO') + ' ' + new Date().toLocaleTimeString('ar-JO', {hour:'2-digit', minute:'2-digit'})
+    };
+
+    customerNotifications.unshift(notifObj);
+    safeSet('cc_notifications', customerNotifications);
+    if (cloudDb) cloudDb.collection('notifications').doc(notifObj.id).set(notifObj).catch(e=>console.warn(e));
+
+    document.getElementById('dossierDirectNotifTitle').value = '';
+    document.getElementById('dossierDirectNotifBody').value = '';
+    window.showToastMsg("تم إرسال الإشعار لحساب العميل فوراً");
+};
+
+// الثيمات
+const THEME_PRESETS = {
+    gold: { brand: '#c59b63', glow: 'rgba(197, 155, 99, 0.16)', hover: '#b3884f' },
+    ruby: { brand: '#e11d48', glow: 'rgba(225, 29, 72, 0.16)', hover: '#be123c' },
+    sapphire: { brand: '#2563eb', glow: 'rgba(37, 99, 235, 0.16)', hover: '#1d4ed8' },
+    emerald: { brand: '#059669', glow: 'rgba(5, 150, 105, 0.16)', hover: '#047857' },
+    violet: { brand: '#7c3aed', glow: 'rgba(124, 58, 237, 0.16)', hover: '#6d28d9' },
+    titanium: { brand: '#94a3b8', glow: 'rgba(148, 163, 184, 0.18)', hover: '#64748b' }
+};
+
+window.applyThemeEngine = function(themeKey) {
+    const t = THEME_PRESETS[themeKey] || THEME_PRESETS.gold;
+    activeThemeName = themeKey;
+    safeSet('cc_active_theme_name', themeKey);
+
+    document.documentElement.style.setProperty('--brand-theme', t.brand);
+    document.documentElement.style.setProperty('--brand-glow', t.glow);
+    document.documentElement.style.setProperty('--brand-hover', t.hover);
+};
+
+window.toggleThemeMode = function() {
+    isThemeDark = !isThemeDark;
+    safeSet('cc_theme_dark', isThemeDark);
+    applyThemeToDOM();
+};
+
+function applyThemeToDOM() {
+    if (isThemeDark) document.body.classList.add('dark-mode');
+    else document.body.classList.remove('dark-mode');
+}
+
+function applyBrandAndDevSettingsToDOM() {
+    const s = brandAndDevSettings;
+    const headerLogo = document.getElementById('mainHeaderLogoImg');
+    const headerTitle = document.getElementById('mainHeaderBrandTitle');
+    const headerSub = document.getElementById('mainHeaderBrandSub');
+
+    if (headerLogo) headerLogo.src = s.storeLogo || "./logo.png";
+    if (headerTitle) headerTitle.innerText = s.brandTitle || "كافيه كورنر";
+    if (headerSub) headerSub.innerText = s.brandSub || "";
+
+    const devAvatar = document.getElementById('devHubAvatarImg');
+    const devName = document.getElementById('devHubNameDisplay');
+    const devBio = document.getElementById('devHubBioDisplay');
+    const devWaBtn = document.getElementById('devWaLinkBtn');
+    const devIgBtn = document.getElementById('devIgLinkBtn');
+
+    if (devAvatar) devAvatar.src = s.devAvatar || s.storeLogo || "./logo.png";
+    if (devName) devName.innerText = s.devName || "المهندس عمر عبيدات";
+    if (devBio) devBio.innerText = s.devBio || "";
+    if (devWaBtn) devWaBtn.href = `https://wa.me/${(s.devWa || "962796433698").replace(/\+/g, '')}`;
+    if (devIgBtn) devIgBtn.href = s.devIg || "https://www.instagram.com/o_yd";
+}
+
+function renderUserProfileDetails() {
+    if (!currentAuthenticatedUser) return;
+    const u = currentAuthenticatedUser;
+    document.getElementById('profDisplayName').innerText = u.name;
+    document.getElementById('profDisplayPhone').innerText = u.phone;
+    document.getElementById('profDisplayBio').innerText = u.bio || '';
+    document.getElementById('profStatPoints').innerText = u.points || 0;
+    document.getElementById('profStatOrders').innerText = u.ordersCount || 0;
+}
 
 function bootstrapApp() {
     try {
@@ -4686,11 +3809,11 @@ function bootstrapApp() {
         renderCategoryChips();
         renderMenuProducts();
         updateHomeNoticeBanner();
-        updateNotificationBadge();
+        refreshCartDockStatus();
         checkUserBannedStateAndLockout();
-        checkStoreOpenHours();
-        setTimeout(initCloudFirestoreSafe, 400);
-    } catch (err) {
+        updateUnreadNotificationsCounter();
+        setTimeout(initCloudFirestoreSafe, 300);
+    } catch(err) {
         console.error("Bootstrap error:", err);
     }
 }
