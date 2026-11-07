@@ -8,7 +8,8 @@
     <meta name="theme-color" content="#8b1528">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;700;800;900&family=Tajawal:wght@400;500;700;800;900&display=swap" rel="stylesheet">
+    <!-- خط مطابق تماماً لخط تطبيق بن العميد -->
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800;900&display=swap" rel="stylesheet">
 
     <!-- Firebase SDK Compat -->
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
@@ -18,11 +19,12 @@
     <style>
         :root {
             --brand-primary: #8b1528;
-            --brand-primary-dark: #670d1c;
-            --brand-primary-light: #fbebee;
-            --brand-secondary: #c59b63;
+            --brand-primary-dark: #650c1b;
+            --brand-primary-light: #fcedf0;
+            --brand-gold: #c59b63;
+            --brand-gold-glow: rgba(197, 155, 99, 0.18);
             --brand-green: #1a4d2e;
-            --brand-green-light: #e8f0eb;
+            --brand-green-light: #eaf1ed;
             
             --bg-main: #f8f6f2;
             --bg-surface: #ffffff;
@@ -31,35 +33,36 @@
             
             --text-primary: #1e1e1e;
             --text-secondary: #656565;
-            --text-muted: #9c9c9c;
+            --text-muted: #959595;
             
             --border-subtle: #eeebe5;
-            --border-focus: #8b1528;
+            --border-accent: rgba(139, 21, 40, 0.25);
             
             --status-success: #10b981;
             --status-danger: #ef4444;
             --status-warning: #f59e0b;
+            --status-info: #3b82f6;
             
             --radius-sm: 10px;
             --radius-md: 16px;
             --radius-lg: 24px;
             --radius-full: 9999px;
             
-            --font-main: 'Tajawal', sans-serif;
+            --font-main: 'IBM Plex Sans Arabic', -apple-system, BlinkMacSystemFont, sans-serif;
             --font-num: 'Plus Jakarta Sans', sans-serif;
             --shadow-card: 0 4px 18px rgba(0,0,0,0.04);
             --shadow-float: 0 8px 30px rgba(139, 21, 40, 0.22);
         }
 
         body.dark-mode {
-            --bg-main: #0c0a09;
-            --bg-surface: #171412;
-            --bg-card: #1f1b18;
-            --bg-elevated: #292420;
-            --text-primary: #fbf8f5;
-            --text-secondary: #b8b1a9;
-            --text-muted: #7d756d;
-            --border-subtle: #2d2621;
+            --bg-main: #0c0a09 !important;
+            --bg-surface: #171412 !important;
+            --bg-card: #1f1b18 !important;
+            --bg-elevated: #292420 !important;
+            --text-primary: #fbf8f5 !important;
+            --text-secondary: #b8b1a9 !important;
+            --text-muted: #7d756d !important;
+            --border-subtle: #2d2621 !important;
         }
 
         *, *::before, *::after {
@@ -72,7 +75,7 @@
         html, body {
             width: 100%;
             max-width: 100%;
-            background-color: #222;
+            background-color: #121212;
             color: var(--text-primary);
             font-family: var(--font-main);
             direction: rtl;
@@ -88,13 +91,13 @@
 
         .app-container {
             width: 100%;
-            max-width: 440px;
+            max-width: 450px;
             margin: 0 auto;
             min-height: 100vh;
             background-color: var(--bg-main);
             position: relative;
             overflow-x: hidden;
-            box-shadow: 0 0 45px rgba(0,0,0,0.3);
+            box-shadow: 0 0 50px rgba(0,0,0,0.4);
             display: flex;
             flex-direction: column;
         }
@@ -112,22 +115,28 @@
             display: block;
         }
 
-        /* شريط التنقل السفلي الاحترافي مثل تطبيق بن العميد */
+        .scrollable-content {
+            width: 100%;
+            padding: 14px 14px 105px;
+            overflow-x: hidden;
+        }
+
+        /* شريط التنقل السفلي الاحترافي */
         .bottom-nav-bar {
             position: fixed;
             bottom: 0;
             left: 50%;
             transform: translateX(-50%);
             width: 100%;
-            max-width: 440px;
+            max-width: 450px;
             background: var(--bg-surface);
             border-top: 1px solid var(--border-subtle);
             display: flex;
             align-items: center;
             justify-content: space-around;
-            padding: 6px 10px calc(8px + env(safe-area-inset-bottom, 0px));
+            padding: 6px 8px calc(8px + env(safe-area-inset-bottom, 0px));
             z-index: 1000;
-            box-shadow: 0 -4px 20px rgba(0,0,0,0.05);
+            box-shadow: 0 -4px 20px rgba(0,0,0,0.06);
         }
 
         .nav-tab-btn {
@@ -140,25 +149,24 @@
             color: var(--text-muted);
             font-family: inherit;
             font-size: 11px;
-            font-weight: 700;
+            font-weight: 600;
             cursor: pointer;
             flex: 1;
             transition: 0.15s ease;
         }
         .nav-tab-btn.active {
             color: var(--brand-primary);
-            font-weight: 900;
+            font-weight: 700;
         }
         .nav-tab-btn svg {
-            width: 21px;
-            height: 21px;
+            width: 22px;
+            height: 22px;
             stroke-width: 2.1;
         }
 
-        /* زر المسح الدائري البارز في منتصف الشريط السفلي */
         .nav-center-scan-btn {
-            width: 50px;
-            height: 50px;
+            width: 52px;
+            height: 52px;
             border-radius: 50%;
             background: var(--brand-primary);
             color: #ffffff;
@@ -166,16 +174,14 @@
             align-items: center;
             justify-content: center;
             border: 3.5px solid var(--bg-surface);
-            box-shadow: 0 4px 14px rgba(139, 21, 40, 0.4);
+            box-shadow: 0 4px 15px rgba(139, 21, 40, 0.4);
             cursor: pointer;
-            margin-top: -24px;
+            margin-top: -26px;
             transition: 0.15s ease;
         }
-        .nav-center-scan-btn:active {
-            transform: scale(0.92);
-        }
+        .nav-center-scan-btn:active { transform: scale(0.92); }
 
-        /* الترويسة العلوية */
+        /* الترويسة الرئيسية الحمراء المقوسة */
         .app-header-home {
             background: linear-gradient(180deg, var(--brand-primary) 0%, var(--brand-primary-dark) 100%);
             color: #ffffff;
@@ -207,10 +213,11 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            font-weight: 900;
+            font-weight: 700;
             font-size: 16px;
             color: #fff;
             position: relative;
+            overflow: hidden;
         }
         .user-status-dot {
             width: 9px;
@@ -219,24 +226,23 @@
             border: 2px solid var(--brand-primary);
             border-radius: 50%;
             position: absolute;
-            bottom: 0;
-            left: 0;
+            bottom: 1px;
+            left: 1px;
         }
 
         .header-icon-pill {
             display: flex;
             align-items: center;
             gap: 6px;
-            background: rgba(0,0,0,0.22);
-            padding: 5px 12px;
+            background: rgba(0,0,0,0.24);
+            padding: 6px 12px;
             border-radius: var(--radius-full);
             cursor: pointer;
-            border: 1px solid rgba(255,255,255,0.15);
-            font-size: 11px;
-            font-weight: 800;
+            border: 1px solid rgba(255,255,255,0.18);
+            font-size: 11.5px;
+            font-weight: 600;
         }
 
-        /* بطاقات النقاط والفئات العلوية المطابقة لتطبيق بن العميد */
         .points-dashboard-cards {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -251,38 +257,11 @@
             border-radius: var(--radius-md);
             padding: 12px 14px;
             cursor: pointer;
-            position: relative;
             transition: 0.15s ease;
         }
-        .points-metric-card:active {
-            transform: scale(0.97);
-        }
-        .metric-title {
-            font-size: 10.5px;
-            color: rgba(255, 255, 255, 0.8);
-            font-weight: 700;
-            margin-bottom: 2px;
-        }
-        .metric-value-row {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-        .metric-main-val {
-            font-size: 19px;
-            font-weight: 900;
-            color: #ffffff;
-        }
-        .metric-sub-badge {
-            font-size: 9.5px;
-            color: rgba(255, 255, 255, 0.7);
-            margin-top: 4px;
-            display: flex;
-            align-items: center;
-            gap: 4px;
-        }
+        .points-metric-card:active { transform: scale(0.97); }
 
-        /* مفتاح اختيار نوع الخدمة: التوصيل / الاستلام / الاستلام من السيارة */
+        /* شريط التوصيل أو الاستلام فقط */
         .fulfillment-service-bar {
             background: #ffffff;
             border-radius: var(--radius-full);
@@ -295,13 +274,13 @@
         }
         .service-btn-pill {
             flex: 1;
-            padding: 8px 6px;
+            padding: 9px 8px;
             border-radius: var(--radius-full);
             border: none;
             background: transparent;
             font-family: inherit;
-            font-size: 11px;
-            font-weight: 800;
+            font-size: 12px;
+            font-weight: 700;
             color: var(--text-secondary);
             cursor: pointer;
             text-align: center;
@@ -313,411 +292,239 @@
             box-shadow: 0 2px 8px rgba(139, 21, 40, 0.3);
         }
 
-        /* شريط العنوان / الفرع النشط */
         .location-active-strip {
             background: #ffffff;
             border: 1px solid var(--border-subtle);
             border-radius: var(--radius-md);
-            padding: 9px 12px;
+            padding: 10px 14px;
             margin: 0 14px 12px;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            font-size: 11.5px;
+            font-size: 12px;
             cursor: pointer;
         }
         .loc-title {
-            font-weight: 800;
+            font-weight: 700;
             color: var(--text-primary);
             display: flex;
             align-items: center;
             gap: 6px;
         }
 
-        /* شبكة الخدمات والتصنيفات الدائرية (بن العميد Style) */
-        .quick-categories-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 10px;
-            padding: 4px 14px 14px;
-        }
-        .quick-cat-item {
-            background: #ffffff;
-            border-radius: var(--radius-md);
-            padding: 10px 6px;
-            text-align: center;
-            cursor: pointer;
-            border: 1px solid var(--border-subtle);
+        /* شريط تصنيفات الأصناف الدوار */
+        .categories-scroll {
             display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 6px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.02);
-            transition: 0.15s ease;
+            gap: 8px;
+            padding: 4px 14px 12px;
+            overflow-x: auto;
+            scrollbar-width: none;
         }
-        .quick-cat-item:active {
-            transform: scale(0.95);
+        .categories-scroll::-webkit-scrollbar { display: none; }
+        .cat-chip {
+            padding: 7px 16px;
+            border-radius: var(--radius-full);
+            background: #ffffff;
+            border: 1px solid var(--border-subtle);
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--text-secondary);
+            white-space: nowrap;
+            cursor: pointer;
+            transition: 0.15s ease;
+            flex-shrink: 0;
+        }
+        .cat-chip.active {
+            background: var(--brand-primary);
+            color: #ffffff;
             border-color: var(--brand-primary);
         }
-        .quick-cat-icon-wrap {
-            width: 44px;
-            height: 44px;
-            border-radius: 50%;
-            background: var(--bg-main);
+
+        /* شبكة المنتجات الأنيقة مع بطاقات التخصيص */
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            padding: 0 14px 12px;
+        }
+        .product-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            cursor: pointer;
+            box-shadow: var(--shadow-card);
+            transition: transform 0.15s ease, border-color 0.15s ease;
+        }
+        .product-card:active { transform: scale(0.97); border-color: var(--brand-primary); }
+
+        .product-img-box {
+            width: 100%;
+            height: 125px;
+            background: #111;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 20px;
             overflow: hidden;
         }
-        .quick-cat-icon-wrap img {
+        .product-img {
             width: 100%;
             height: 100%;
             object-fit: cover;
         }
-        .quick-cat-name {
-            font-size: 11px;
-            font-weight: 800;
-            color: var(--text-primary);
-        }
-
-        /* البانر الترويجي التفاعلي */
-        .promo-slider-wrap {
-            padding: 0 14px 14px;
-        }
-        .promo-banner-card {
-            background: linear-gradient(135deg, #fcebe9 0%, #fae2e0 100%);
-            border: 1px dashed var(--brand-primary);
-            border-radius: var(--radius-lg);
-            padding: 14px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            position: relative;
-            overflow: hidden;
-        }
-        .promo-badge-tag {
-            background: var(--brand-primary);
-            color: #ffffff;
-            font-size: 9.5px;
-            font-weight: 900;
-            padding: 3px 8px;
-            border-radius: var(--radius-full);
-            display: inline-block;
-            margin-bottom: 4px;
-        }
-
-        /* كروت قائمة الأصناف المطابقة للصورة رقم 1 */
-        .catalog-section-card {
-            background: #fdfaf3;
-            border: 1px solid #ebdcc5;
-            border-radius: var(--radius-lg);
-            margin: 0 14px 16px;
-            padding: 14px;
-        }
-        .catalog-header-bar {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding-bottom: 10px;
-            border-bottom: 1.5px solid #dfcfb7;
-            margin-bottom: 10px;
-        }
-        .catalog-header-title {
-            font-size: 14.5px;
-            font-weight: 900;
-            color: var(--brand-green);
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .capsule-product-row {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 10px 0;
-            border-bottom: 1px solid rgba(223, 207, 183, 0.45);
-        }
-        .capsule-product-row:last-child {
-            border-bottom: none;
-        }
-        .capsule-info-col {
-            flex: 1;
-            padding-left: 10px;
-        }
-        .capsule-badge-limited {
-            background: #be185d;
-            color: #ffffff;
-            font-size: 9px;
-            font-weight: 800;
-            padding: 1px 7px;
-            border-radius: var(--radius-full);
-            display: inline-flex;
-            align-items: center;
-            gap: 3px;
-            margin-bottom: 3px;
-        }
-        .capsule-title {
-            font-size: 13.5px;
-            font-weight: 900;
-            color: var(--text-primary);
-            margin-bottom: 3px;
-        }
-        .capsule-desc {
-            font-size: 10.5px;
-            color: var(--text-secondary);
-            line-height: 1.35;
-            margin-bottom: 6px;
-        }
-        .capsule-price-tag {
-            font-size: 13.5px;
-            font-weight: 900;
-            color: var(--text-primary);
-        }
-        .capsule-img-col {
-            width: 70px;
-            height: 70px;
-            border-radius: 50%;
-            background: #ffffff;
-            border: 1px solid #ebdcc5;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            overflow: hidden;
-            margin-right: 8px;
-            flex-shrink: 0;
-        }
-        .capsule-img-col img {
-            width: 80%;
-            height: 80%;
-            object-fit: contain;
-        }
-        .btn-round-add-green {
-            width: 34px;
-            height: 34px;
-            border-radius: 50%;
-            background: var(--brand-green);
-            color: #ffffff;
-            border: none;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 18px;
-            cursor: pointer;
-            flex-shrink: 0;
-            transition: 0.15s ease;
-        }
-        .btn-round-add-green:active {
-            transform: scale(0.9);
-        }
-
-        /* نافذة متجر استبدال النقاط (مطابق للصورة رقم 4) */
-        .redeem-balance-hero {
-            background: #ffffff;
-            border-radius: var(--radius-lg);
-            border: 1px solid var(--border-subtle);
-            padding: 16px;
-            margin-bottom: 14px;
-            text-align: center;
-            box-shadow: var(--shadow-card);
-        }
-        .redeem-balance-num {
-            font-size: 32px;
-            font-weight: 900;
-            color: var(--brand-primary);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-        }
-        .redeem-filter-scroll {
-            display: flex;
-            gap: 8px;
-            overflow-x: auto;
-            padding-bottom: 10px;
-            scrollbar-width: none;
-        }
-        .redeem-filter-scroll::-webkit-scrollbar { display: none; }
-        .redeem-pill-btn {
-            background: #ffffff;
-            border: 1px solid var(--border-subtle);
-            padding: 6px 14px;
-            border-radius: var(--radius-full);
-            font-size: 11.5px;
-            font-weight: 800;
-            color: var(--text-secondary);
-            cursor: pointer;
-            white-space: nowrap;
-        }
-        .redeem-pill-btn.active {
-            background: var(--brand-primary);
-            color: #ffffff;
-            border-color: var(--brand-primary);
-        }
-        .redeem-cards-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 12px;
-        }
-        .redeem-store-card {
-            background: #ffffff;
-            border: 1px solid var(--border-subtle);
-            border-radius: var(--radius-lg);
-            padding: 12px;
+        .product-meta {
+            padding: 10px;
             display: flex;
             flex-direction: column;
+            flex: 1;
             justify-content: space-between;
-            box-shadow: var(--shadow-card);
         }
-        .redeem-item-img-box {
-            width: 100%;
-            height: 130px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: var(--bg-main);
-            border-radius: var(--radius-md);
-            margin-bottom: 8px;
-            overflow: hidden;
-        }
-        .redeem-item-img-box img {
-            width: 85%;
-            height: 85%;
-            object-fit: contain;
-        }
-
-        /* نافذة فئات الولاء (مطابق للصورة رقم 3) */
-        .tier-loyalty-hero {
-            background: #ffffff;
-            border-radius: var(--radius-lg);
-            padding: 24px 16px;
-            text-align: center;
-            border: 1px solid var(--border-subtle);
-            margin-bottom: 16px;
-        }
-        .tier-gauge-wrap {
-            position: relative;
-            width: 180px;
-            height: 180px;
-            margin: 0 auto 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        .tier-coin-3d {
-            width: 110px;
-            height: 110px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, #c59b63 0%, #875c27 100%);
-            box-shadow: 0 10px 25px rgba(197, 155, 99, 0.4), inset 0 2px 6px #fff;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #ffffff;
-            font-size: 28px;
-            font-weight: 900;
-            border: 4px solid #f6d8ae;
-        }
-
-        /* قائمة إعدادات حسابي (مطابقة للصورة رقم 2 و 8) */
-        .profile-menu-group {
-            background: #ffffff;
-            border-radius: var(--radius-lg);
-            border: 1px solid var(--border-subtle);
-            margin-bottom: 14px;
-            overflow: hidden;
-        }
-        .profile-menu-row {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 13px 16px;
-            border-bottom: 1px solid var(--border-subtle);
-            cursor: pointer;
-            transition: 0.15s ease;
-        }
-        .profile-menu-row:last-child {
-            border-bottom: none;
-        }
-        .profile-menu-row:active {
-            background: var(--bg-main);
-        }
-        .profile-menu-right {
-            display: flex;
-            align-items: center;
-            gap: 12px;
+        .product-name {
             font-size: 13px;
-            font-weight: 800;
+            font-weight: 700;
             color: var(--text-primary);
+            margin-bottom: 3px;
+            line-height: 1.3;
         }
-        .profile-menu-icon {
+        .product-desc {
+            font-size: 10px;
             color: var(--text-secondary);
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            line-height: 1.35;
+            margin-bottom: 8px;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
         }
-
-        /* سلة الشراء والدفع المطابقة للصورة 5 و 7 */
-        .cart-delivery-instructions {
-            background: #f8f8f8;
-            border: 1px dashed var(--border-subtle);
-            border-radius: var(--radius-md);
-            padding: 10px 14px;
+        .product-row-bottom {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            font-size: 12px;
+            margin-top: auto;
+        }
+        .product-price {
+            font-size: 13.5px;
             font-weight: 800;
-            margin-bottom: 12px;
-            cursor: pointer;
+            color: var(--brand-primary);
+        }
+        .btn-add-mini {
+            background: var(--brand-primary-light);
+            color: var(--brand-primary);
+            border: 1px solid var(--border-accent);
+            padding: 4px 10px;
+            border-radius: var(--radius-full);
+            font-size: 11px;
+            font-weight: 700;
         }
 
-        .cart-order-item-card {
-            background: #ffffff;
+        /* البطاقات العامة */
+        .clean-card {
+            background: var(--bg-card);
             border: 1px solid var(--border-subtle);
             border-radius: var(--radius-md);
-            padding: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
+            padding: 14px;
             margin-bottom: 10px;
         }
-        .cart-item-stepper {
-            display: flex;
-            align-items: center;
-            background: var(--bg-main);
-            border-radius: var(--radius-full);
-            padding: 3px 8px;
-            gap: 10px;
-            font-weight: 900;
-        }
-
-        .cart-financial-summary {
-            background: #ffffff;
-            border: 1px solid var(--border-subtle);
-            border-radius: var(--radius-lg);
-            padding: 14px;
-            margin-top: 12px;
-            font-size: 12.5px;
-        }
-        .summary-line-row {
+        .clean-title {
+            font-size: 13.5px;
+            font-weight: 700;
+            color: var(--brand-primary);
+            margin-bottom: 10px;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 6px 0;
-            color: var(--text-secondary);
         }
-        .summary-line-row.total-row {
-            border-top: 1.5px solid var(--border-subtle);
-            margin-top: 6px;
-            padding-top: 10px;
-            font-size: 15px;
-            font-weight: 900;
-            color: var(--text-primary);
+        .btn-brand-solid {
+            background: var(--brand-primary);
+            color: #ffffff;
+            font-weight: 700;
+            font-size: 13px;
+            border: none;
+            border-radius: var(--radius-sm);
+            padding: 11px 16px;
+            cursor: pointer;
+            text-align: center;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: 0.15s ease;
+            text-decoration: none;
+            width: 100%;
+        }
+        .btn-brand-solid:active { transform: scale(0.97); }
+        .btn-brand-outline {
+            background: transparent;
+            color: var(--brand-primary);
+            border: 1px solid var(--brand-primary);
+            font-weight: 700;
+            font-size: 12px;
+            border-radius: var(--radius-sm);
+            padding: 8px 12px;
+            cursor: pointer;
+            text-align: center;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            transition: 0.15s ease;
+            text-decoration: none;
+        }
+        .btn-brand-outline.active {
+            background: var(--brand-primary-light);
+            border-color: var(--brand-primary);
         }
 
-        /* نافذة اختيار التجربة (الصورة رقم 9) */
+        .ios-input-field, .ios-textarea-field {
+            width: 100%;
+            background: var(--bg-surface);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-sm);
+            padding: 10px 12px;
+            color: var(--text-primary);
+            font-family: inherit;
+            font-size: 12.5px;
+            outline: none;
+            transition: border-color 0.15s ease;
+        }
+        .ios-input-field:focus, .ios-textarea-field:focus {
+            border-color: var(--brand-primary);
+        }
+        .ios-textarea-field {
+            resize: none;
+            height: 70px;
+        }
+
+        /* طرق الدفع المصورة */
+        .payment-provider-card {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 11px 14px;
+            background: #ffffff;
+            border: 1.5px solid var(--border-subtle);
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            margin-bottom: 8px;
+            transition: 0.15s ease;
+        }
+        .payment-provider-card.selected {
+            border-color: var(--brand-primary);
+            background: var(--brand-primary-light);
+        }
+        .pay-brand-logo-img {
+            width: 38px;
+            height: 38px;
+            border-radius: 8px;
+            object-fit: contain;
+            border: 1px solid var(--border-subtle);
+            padding: 2px;
+            background: #ffffff;
+        }
+
+        /* Bottom Sheet */
         .modal-bottom-sheet {
             display: none;
             position: fixed;
@@ -730,7 +537,7 @@
         }
         .bottom-sheet-content {
             width: 100%;
-            max-width: 440px;
+            max-width: 450px;
             background: #ffffff;
             border-top-left-radius: 28px;
             border-top-right-radius: 28px;
@@ -751,23 +558,36 @@
             border-radius: var(--radius-full);
             margin: 0 auto 14px;
         }
-        .experience-card-btn {
+
+        .header {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: var(--bg-surface);
+            border-bottom: 1px solid var(--border-subtle);
+            padding: 12px 14px;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 14px 16px;
-            border: 1.5px solid var(--border-subtle);
-            border-radius: var(--radius-md);
-            margin-bottom: 10px;
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+        }
+        .header-btn {
+            width: 38px;
+            height: 38px;
+            border-radius: var(--radius-sm);
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
             cursor: pointer;
             transition: 0.15s ease;
+            flex-shrink: 0;
         }
-        .experience-card-btn.active {
-            border-color: var(--brand-primary);
-            background: var(--brand-primary-light);
-        }
+        .header-btn:active { transform: scale(0.94); }
 
-        /* نافذة إشعار التوست */
         .toast-popup {
             position: fixed;
             top: 20px;
@@ -778,7 +598,7 @@
             padding: 10px 22px;
             border-radius: var(--radius-full);
             font-size: 12.5px;
-            font-weight: 900;
+            font-weight: 700;
             z-index: 9999;
             box-shadow: var(--shadow-float);
             transition: 0.25s ease;
@@ -790,31 +610,10 @@
             opacity: 1;
         }
 
-        /* طرق الدفع المصورة المعتمدة لكل فرع */
-        .payment-provider-card {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 11px 14px;
-            background: #ffffff;
-            border: 1.5px solid var(--border-subtle);
-            border-radius: var(--radius-md);
-            cursor: pointer;
-            margin-bottom: 8px;
-            transition: 0.15s ease;
-        }
-        .payment-provider-card.selected {
-            border-color: var(--brand-primary);
-            background: var(--brand-primary-light);
-        }
-        .pay-brand-logo-img {
-            width: 40px;
-            height: 40px;
-            border-radius: 8px;
-            object-fit: contain;
-            border: 1px solid var(--border-subtle);
-            padding: 2px;
-            background: #ffffff;
+        @media print {
+            body * { visibility: hidden; }
+            #printableShiftInvoice, #printableShiftInvoice * { visibility: visible; }
+            #printableShiftInvoice { position: absolute; left: 0; top: 0; width: 100%; border: none; }
         }
     </style>
 </head>
@@ -822,37 +621,35 @@
 
 <div class="toast-popup" id="systemToast">تم بنجاح</div>
 
-<!-- نافذة اختيار تجربتك (مطابقة تماماً للصورة رقم 9) -->
-<div class="modal-bottom-sheet" id="modalChooseExperience">
+<!-- نافذة اختيار الفرع الذكية (كفرسوم أو سما الروسان) -->
+<div class="modal-bottom-sheet" id="modalChooseBranch">
     <div class="bottom-sheet-content">
         <div class="sheet-handle-bar"></div>
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px;">
             <div style="width:28px;"></div>
-            <div style="font-size:15px; font-weight:900;">اختر تجربتك</div>
-            <button style="background:#f2f2f2; border:none; width:30px; height:30px; border-radius:50%; font-size:14px; cursor:pointer;" onclick="closeExperienceModal()">✕</button>
+            <div style="font-size:15px; font-weight:700;">اختر فرع كافيه كورنر</div>
+            <button style="background:#f2f2f2; border:none; width:30px; height:30px; border-radius:50%; font-size:14px; cursor:pointer;" onclick="closeBranchSelectModal()">✕</button>
         </div>
 
-        <div class="experience-card-btn active" onclick="selectExperienceMode('classic')">
-            <span style="font-size:11px; padding:2px 10px; background:#e6e6e6; border-radius:var(--radius-full); font-weight:800;">الحالي</span>
-            <div style="display:flex; align-items:center; gap:10px;">
-                <span style="font-size:13.5px; font-weight:900;">كافيه كورنر — المنيو الكامل</span>
-                <img src="./logo.png" onerror="this.src='https://cdn-icons-png.flaticon.com/512/924/924514.png'" style="width:34px; height:34px; border-radius:50%;">
+        <div class="clean-card" style="cursor:pointer; border:1.5px solid var(--border-subtle); margin-bottom:10px;" id="branchOptionCard0" onclick="selectAppBranch(0)">
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+                <div>
+                    <div style="font-size:14px; font-weight:700; color:var(--brand-primary);">فرع كفرسوم — الرئيسي</div>
+                    <div style="font-size:11px; color:var(--text-secondary); margin-top:2px;">الشارع الرئيسي - بجانب مجمع الباصات</div>
+                    <div style="font-size:10px; color:var(--status-success); font-weight:600; margin-top:4px;">مفتوح الآن • دوام 6:30 ص – 3:00 فجراً</div>
+                </div>
+                <span id="badgeActiveBranch0" style="font-size:11px; padding:2px 10px; background:var(--brand-primary); color:#fff; border-radius:var(--radius-full); display:none;">النشط</span>
             </div>
         </div>
 
-        <div class="experience-card-btn" onclick="selectExperienceMode('specialty')">
-            <div></div>
-            <div style="display:flex; align-items:center; gap:10px;">
-                <span style="font-size:13.5px; font-weight:900;">ركن الإسبريسو والمختصة (Specialty)</span>
-                <span style="font-size:20px; font-weight:900; color:var(--brand-green); font-family:var(--font-num);">CC</span>
-            </div>
-        </div>
-
-        <div class="experience-card-btn" onclick="selectExperienceMode('sweets')">
-            <div></div>
-            <div style="display:flex; align-items:center; gap:10px;">
-                <span style="font-size:13.5px; font-weight:900;">وافل وكريب ومخبوزات طازجة</span>
-                <span style="font-size:18px;">🧇</span>
+        <div class="clean-card" style="cursor:pointer; border:1.5px solid var(--border-subtle);" id="branchOptionCard1" onclick="selectAppBranch(1)">
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+                <div>
+                    <div style="font-size:14px; font-weight:700; color:var(--brand-primary);">فرع سما الروسان</div>
+                    <div style="font-size:11px; color:var(--text-secondary); margin-top:2px;">الشارع العام - مقابل البلدية</div>
+                    <div style="font-size:10px; color:var(--status-success); font-weight:600; margin-top:4px;">مفتوح الآن • دوام 4:00 م – 3:00 فجراً</div>
+                </div>
+                <span id="badgeActiveBranch1" style="font-size:11px; padding:2px 10px; background:var(--brand-primary); color:#fff; border-radius:var(--radius-full); display:none;">النشط</span>
             </div>
         </div>
     </div>
@@ -860,9 +657,8 @@
 
 <div class="app-container" id="appContainer">
 
-    <!-- 1. الشاشة الرئيسية: المنيو المتكامل بتصميم بن العميد -->
+    <!-- 1. الشاشة الرئيسية -->
     <div id="screen-home" class="app-screen active">
-        <!-- ترويسة تطبيق بن العميد -->
         <header class="app-header-home">
             <div class="header-top-row">
                 <div class="user-greeting-box" onclick="checkAuthAndNavigate('screen-user-profile')">
@@ -871,14 +667,15 @@
                     </div>
                     <div>
                         <div style="font-size:10.5px; color:rgba(255,255,255,0.7);">مرحباً،</div>
-                        <div style="font-size:14px; font-weight:900;" id="homeUserNameGreeting">عمر عبيدات</div>
+                        <div style="font-size:14px; font-weight:700;" id="homeUserNameGreeting">عمر عبيدات</div>
                     </div>
                 </div>
 
                 <div style="display:flex; gap:6px;">
-                    <div class="header-icon-pill" onclick="openExperienceModal()">
+                    <!-- زر الفرع والنقر 5 مرات يفتح الدخول المخفي للادمن -->
+                    <div class="header-icon-pill" onclick="handleSecretAdminTrigger()" title="اختر الفرع">
                         <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"></polyline></svg>
-                        <span>كافيه كورنر</span>
+                        <span id="headerBranchNameBtn">فرع كفرسوم</span>
                     </div>
                     <button style="background:rgba(255,255,255,0.18); border:none; width:36px; height:36px; border-radius:50%; color:#fff; display:flex; align-items:center; justify-content:center; cursor:pointer;" onclick="checkAuthAndProceedToCart()">
                         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path><line x1="3" y1="6" x2="21" y2="6"></line><path d="M16 10a4 4 0 0 1-8 0"></path></svg>
@@ -886,510 +683,484 @@
                 </div>
             </div>
 
-            <!-- بطاقات النقاط السريعة بالترويسة المطابقة للصور -->
+            <!-- بطاقات النقاط والفئات -->
             <div class="points-dashboard-cards">
                 <div class="points-metric-card" onclick="checkAuthAndNavigate('screen-rewards')">
-                    <div class="metric-title">النقاط المكتسبة</div>
-                    <div class="metric-value-row">
-                        <span class="metric-main-val num-font" id="homeHeaderPointsVal">19,818</span>
+                    <div style="font-size:10.5px; color:rgba(255,255,255,0.8); font-weight:600;">النقاط المكتسبة</div>
+                    <div style="display:flex; align-items:center; justify-content:space-between; margin-top:2px;">
+                        <span class="num-font" style="font-size:20px; font-weight:800;" id="homeHeaderPointsVal">19,818</span>
                         <span style="font-size:11px;">نقطة</span>
                     </div>
-                    <div class="metric-sub-badge">
-                        <span>↗ +195 نقطة هذا الأسبوع</span>
-                    </div>
+                    <div style="font-size:9.5px; color:rgba(255,255,255,0.7); margin-top:4px;">↗ +195 نقطة هذا الأسبوع</div>
                 </div>
 
                 <div class="points-metric-card" onclick="navigateRouter('screen-loyalty-tiers')">
-                    <div class="metric-title">الفئة الحالية</div>
-                    <div class="metric-value-row">
-                        <span class="metric-main-val" style="font-size:15px; color:#f6d8ae;" id="homeHeaderTierTitle">الفئة البرونزية</span>
+                    <div style="font-size:10.5px; color:rgba(255,255,255,0.8); font-weight:600;">الفئة الحالية</div>
+                    <div style="display:flex; align-items:center; justify-content:space-between; margin-top:2px;">
+                        <span style="font-size:15px; font-weight:700; color:#f6d8ae;" id="homeHeaderTierTitle">الفئة البرونزية</span>
                         <span style="font-size:18px;">🥉</span>
                     </div>
-                    <div class="metric-sub-badge">
-                        <span id="homeHeaderRemainingTasks">4 مهام للمستوى التالي ↗</span>
-                    </div>
+                    <div style="font-size:9.5px; color:rgba(255,255,255,0.7); margin-top:4px;">4 مهام للمستوى التالي ↗</div>
                 </div>
             </div>
         </header>
 
-        <!-- اختيار طريقة الاستلام (التوصيل / الاستلام / الاستلام من السيارة) -->
+        <!-- اختيار الخدمة: التوصيل vs الاستلام من الفرع -->
         <div class="fulfillment-service-bar">
             <button class="service-btn-pill active" id="pillServiceDelivery" onclick="setFulfillmentService('delivery')">التوصيل</button>
-            <button class="service-btn-pill" id="pillServicePickup" onclick="setFulfillmentService('pickup')">الاستلام</button>
-            <button class="service-btn-pill" id="pillServiceDriveThru" onclick="setFulfillmentService('drive_thru')">الاستلام من السيارة</button>
+            <button class="service-btn-pill" id="pillServicePickup" onclick="setFulfillmentService('pickup')">الاستلام من الفرع</button>
         </div>
 
-        <!-- شريط الموقع النشط والفرع -->
-        <div class="location-active-strip" onclick="promptSwitchBranchOrTown()">
+        <!-- شريط الموقع النشط -->
+        <div class="location-active-strip" onclick="openBranchSelectModal()">
             <div class="loc-title">
                 <span style="font-size:14px; color:var(--brand-primary);">📍</span>
-                <span id="activeFulfillmentDisplay">موقع التوصيل: كفرسوم — الحي الشرقي</span>
+                <span id="activeFulfillmentDisplay">التوصيل إلى: كفرسوم (عبر فرع كفرسوم)</span>
             </div>
-            <span style="color:var(--brand-primary); font-weight:900;">تغيير</span>
+            <span style="color:var(--brand-primary); font-weight:700;">تغيير الفرع</span>
         </div>
 
-        <!-- شبكة الأقسام السريعة (مطابقة للصورة رقم 6) -->
-        <div class="quick-categories-grid">
-            <div class="quick-cat-item" onclick="filterCatalogByCategory('المأكولات')">
-                <div class="quick-cat-icon-wrap">🥪</div>
-                <div class="quick-cat-name">المأكولات</div>
-            </div>
-            <div class="quick-cat-item" onclick="filterCatalogByCategory('المشروبات')">
-                <div class="quick-cat-icon-wrap">☕</div>
-                <div class="quick-cat-name">المشروبات</div>
-            </div>
-            <div class="quick-cat-item" onclick="filterCatalogByCategory('مطحونة')">
-                <div class="quick-cat-icon-wrap">🫘</div>
-                <div class="quick-cat-name">حب ومطحون</div>
-            </div>
-            <div class="quick-cat-item" onclick="filterCatalogByCategory('وافل وكريب')">
-                <div class="quick-cat-icon-wrap">🧇</div>
-                <div class="quick-cat-name">وافل وكريب</div>
-            </div>
-            <div class="quick-cat-item" onclick="filterCatalogByCategory('الموسميات')">
-                <div class="quick-cat-icon-wrap">🥤</div>
-                <div class="quick-cat-name">الموسميات</div>
-            </div>
-            <div class="quick-cat-item" onclick="filterCatalogByCategory('معلبة')">
-                <div class="quick-cat-icon-wrap">🥫</div>
-                <div class="quick-cat-name">معلبات كورنر</div>
-            </div>
-            <div class="quick-cat-item" onclick="filterCatalogByCategory('كبسولات')">
-                <div class="quick-cat-icon-wrap">⚡</div>
-                <div class="quick-cat-name">كبسولات إسبريسو</div>
-            </div>
-            <div class="quick-cat-item" onclick="navigateRouter('screen-rewards')">
-                <div class="quick-cat-icon-wrap">🎁</div>
-                <div class="quick-cat-name">متجر النقاط</div>
-            </div>
-        </div>
+        <!-- شريط التصنيفات الدوار -->
+        <div class="categories-scroll" id="catalogCategoryChips"></div>
 
-        <!-- البانر الترويجي "رجعت نكهات الشتاء" -->
-        <div class="promo-slider-wrap">
-            <div class="promo-banner-card">
-                <div>
-                    <span class="promo-badge-tag">لفترة محدودة ✨</span>
-                    <div style="font-size:15px; font-weight:900; color:var(--brand-primary); margin-bottom:2px;">رجعت نكهات الشتاء الدافئة!</div>
-                    <div style="font-size:11px; color:var(--text-secondary);">جينجربريد، سبانش حار، ولوتس شتوي فاخر.</div>
-                </div>
-                <div style="font-size:36px;">☕</div>
-            </div>
-        </div>
-
-        <!-- قسم كبسولات الإسبريسو / الأصناف مطابق للصورة رقم 1 -->
-        <div class="catalog-section-card">
-            <div class="catalog-header-bar">
-                <div class="catalog-header-title">
-                    <span style="font-size:18px;">🫘</span>
-                    <span>كبسولات الإسبريسو والمشروبات</span>
-                </div>
-                <span style="font-size:11px; font-weight:800; color:var(--text-secondary);">عرض الكل</span>
-            </div>
-
-            <div id="homeMainCatalogRows">
-                <!-- الصفوف المولدة ديناميكياً -->
-            </div>
-        </div>
+        <!-- شبكة المنتجات -->
+        <div class="product-grid" id="mainProductsGrid"></div>
     </div>
 
-    <!-- 2. شاشة فئات الولاء (Loyalty Tiers - مطابقة تماماً للصورة رقم 3) -->
-    <div id="screen-loyalty-tiers" class="app-screen">
-        <header class="header" style="background:#fff;">
+    <!-- 2. شاشة تخصيص الصنف الفاخرة (الأحجام + الصوصات + الإضافات) -->
+    <div id="screen-product-customizer" class="app-screen">
+        <header class="header">
             <button class="header-btn" onclick="navigateRouter('screen-home')" aria-label="عودة">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
             </button>
-            <div style="font-weight:900; font-size:15px;">فئات الولاء</div>
+            <div style="font-weight:700; font-size:15px; color:var(--brand-primary);">تخصيص طلبك</div>
             <div style="width:38px;"></div>
         </header>
 
-        <div class="scrollable-content" style="padding-top:10px;">
-            <div class="tier-loyalty-hero">
-                <div class="tier-gauge-wrap">
-                    <div class="tier-coin-3d">CC</div>
-                </div>
-
-                <div style="display:inline-block; background:var(--brand-primary-light); color:var(--brand-primary); padding:3px 12px; border-radius:var(--radius-full); font-size:11px; font-weight:900; margin-bottom:6px;">* الحالية</div>
-                <div style="font-size:22px; font-weight:900; margin-bottom:6px;">عضو الفئة البرونزية</div>
-                <p style="font-size:12px; color:var(--text-secondary); line-height:1.5; max-width:300px; margin:0 auto 16px;">
-                    اكتملت النقاط ✓ — أكمل <strong>4 مهام</strong> خلال 70 يوماً للوصول إلى <strong>الفئة الفضية</strong> ومضاعفة الهدايا.
-                </p>
-
-                <!-- 3 أيقونات سفلية: مكافآتي، مزاياي، كيف تكسب -->
-                <div style="display:grid; grid-template-columns:repeat(3, 1fr); gap:10px; border-top:1px solid var(--border-subtle); padding-top:16px;">
-                    <div style="text-align:center; cursor:pointer;" onclick="navigateRouter('screen-rewards')">
-                        <div style="width:42px; height:42px; border-radius:50%; background:var(--bg-main); margin:0 auto 6px; display:flex; align-items:center; justify-content:center; font-size:18px;">🎁</div>
-                        <div style="font-size:11px; font-weight:800;">مكافآتي</div>
-                    </div>
-                    <div style="text-align:center; cursor:pointer;" onclick="window.showToastMsg('خصم 10% دائم وترقية مجانية للحجم الكبير')">
-                        <div style="width:42px; height:42px; border-radius:50%; background:var(--bg-main); margin:0 auto 6px; display:flex; align-items:center; justify-content:center; font-size:18px;">🏷️</div>
-                        <div style="font-size:11px; font-weight:800;">مزاياي</div>
-                    </div>
-                    <div style="text-align:center; cursor:pointer;" onclick="window.showToastMsg('احصل على 10 نقاط مع كل دينار مشتريات')">
-                        <div style="width:42px; height:42px; border-radius:50%; background:var(--bg-main); margin:0 auto 6px; display:flex; align-items:center; justify-content:center; font-size:18px;">❓</div>
-                        <div style="font-size:11px; font-weight:800;">كيف تكسب</div>
-                    </div>
-                </div>
+        <div class="scrollable-content" style="padding:0 0 100px;">
+            <div style="width:100%; height:200px; background:#111; overflow:hidden;">
+                <img src="" id="psHeroImg" style="width:100%; height:100%; object-fit:cover;">
             </div>
 
-            <!-- قائمة المهام التفاعلية -->
-            <div class="clean-card">
-                <div class="clean-title">مهام الفئة البرونزية</div>
-                <div style="display:flex; flex-direction:column; gap:8px;">
-                    <div style="display:flex; justify-content:space-between; align-items:center; padding:8px; background:var(--bg-main); border-radius:var(--radius-sm); font-size:12px;">
-                        <span>اطلب مرتين من فرع كفرسوم</span>
-                        <strong style="color:var(--status-success);">مكتمل ✓</strong>
-                    </div>
-                    <div style="display:flex; justify-content:space-between; align-items:center; padding:8px; background:var(--bg-main); border-radius:var(--radius-sm); font-size:12px;">
-                        <span>تجربة خدمة الاستلام من السيارة</span>
-                        <strong style="color:var(--brand-primary);">0/1</strong>
-                    </div>
-                    <div style="display:flex; justify-content:space-between; align-items:center; padding:8px; background:var(--bg-main); border-radius:var(--radius-sm); font-size:12px;">
-                        <span>استبدال مكافأة من متجر النقاط</span>
-                        <strong style="color:var(--brand-primary);">0/1</strong>
-                    </div>
-                </div>
+            <div style="padding:14px;">
+                <h1 style="font-size:17px; font-weight:700; margin-bottom:4px;" id="psTitle">اسم الصنف</h1>
+                <p style="font-size:11.5px; color:var(--text-secondary); line-height:1.4;" id="psDesc">الوصف</p>
+                <div class="num-font" style="font-size:17px; font-weight:800; color:var(--brand-primary); margin-top:4px;" id="psBasePrice">0.00 د.أ</div>
             </div>
+
+            <div class="clean-card" id="psSizeCardWrapper" style="margin:0 14px 10px; display:none;">
+                <div class="clean-title">الحجم المطلوب</div>
+                <div id="psSizeOptionsContainer" style="display:flex; flex-direction:column; gap:6px;"></div>
+            </div>
+
+            <div class="clean-card" id="psSaucesCardWrapper" style="margin:0 14px 10px; display:none;">
+                <div class="clean-title">
+                    <span>اختر النكهات أو مكس الصوصات</span>
+                    <span style="font-size:10px; color:var(--text-secondary);">(حتى 3 صوصات)</span>
+                </div>
+                <div id="psSaucesContainer" style="display:flex; flex-direction:column; gap:6px;"></div>
+            </div>
+
+            <div class="clean-card" id="psAddonsCardWrapper" style="margin:0 14px 10px; display:none;">
+                <div class="clean-title">الإضافات والمستلزمات المتاحة</div>
+                <div id="psAddonsContainer" style="display:flex; flex-direction:column; gap:6px;"></div>
+            </div>
+
+            <div class="clean-card" style="margin:0 14px 14px;">
+                <div class="clean-title">ملاحظات التحضير الخاصة</div>
+                <textarea class="ios-textarea-field" id="psNotes" placeholder="مثال: سكر خفيف، زيادة صوص، بدون قرفة..."></textarea>
+            </div>
+        </div>
+
+        <div style="position:sticky; bottom:0; padding:10px 14px calc(10px + env(safe-area-inset-bottom, 10px)); background:var(--bg-surface); border-top:1px solid var(--border-subtle); display:flex; gap:10px; z-index:100;">
+            <div style="display:flex; align-items:center; background:var(--bg-main); border-radius:var(--radius-sm); border:1px solid var(--border-subtle);">
+                <button class="header-btn" style="width:34px; height:34px;" onclick="adjustProductQty(-1)">−</button>
+                <div class="num-font" style="font-size:14px; font-weight:800; min-width:32px; text-align:center;" id="psQtyDisplay">1</div>
+                <button class="header-btn" style="width:34px; height:34px;" onclick="adjustProductQty(1)">+</button>
+            </div>
+            <button class="btn-brand-solid" style="flex:1;" onclick="confirmAddItemToCart()">
+                إضافة <span class="num-font" id="psCalculatedPrice">0.00</span> د.أ للسلة
+            </button>
         </div>
     </div>
 
-    <!-- 3. شاشة متجر النقاط (مطابقة تماماً للصورة رقم 4) -->
-    <div id="screen-rewards" class="app-screen">
-        <header class="header" style="background:#fff;">
+    <!-- 3. شاشة سلة الشراء وإتمام الطلب المكتملة -->
+    <div id="screen-cart" class="app-screen">
+        <header class="header">
             <button class="header-btn" onclick="navigateRouter('screen-home')" aria-label="عودة">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
             </button>
-            <div style="font-weight:900; font-size:15px;">متجر النقاط</div>
-            <div class="header-icon-pill" style="background:var(--bg-main); color:var(--text-primary); border:1px solid var(--border-subtle);" onclick="promptSwitchBranchOrTown()">
-                <span id="rewardsBranchPill">فرع كفرسوم</span>
-                <span style="font-size:9px;">▼</span>
-            </div>
+            <div style="font-weight:700; font-size:15px;">سلة المشتريات</div>
+            <div style="width:38px;"></div>
         </header>
 
         <div class="scrollable-content">
-            <!-- رصيد النقاط المتاحة مع زر عرض المهام والسجل -->
-            <div class="redeem-balance-hero">
-                <div style="font-size:11.5px; color:var(--text-secondary); margin-bottom:4px;">النقاط المتاحة</div>
-                <div class="redeem-balance-num">
-                    <span class="num-font" id="storeAvailablePointsNum">19,743</span>
-                    <span style="font-size:15px; font-weight:800; color:var(--text-primary);">نقطة</span>
-                    <span style="font-size:24px;">🪙</span>
+            <div class="clean-card">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+                    <span style="font-size:12px; font-weight:700;">الفرع المحضر للطلب:</span>
+                    <button class="btn-brand-outline" style="padding:2px 8px; font-size:10px;" onclick="openBranchSelectModal()">تغيير الفرع</button>
                 </div>
+                <div style="font-size:13.5px; font-weight:700; color:var(--brand-primary);" id="cartPrepBranchTitle">فرع كفرسوم</div>
 
-                <div style="display:flex; gap:8px; margin-top:12px;">
-                    <button class="btn-brand-outline" style="flex:1; padding:6px; font-size:11px;" onclick="navigateRouter('screen-loyalty-tiers')">عرض المهام</button>
-                    <button class="btn-brand-outline" style="flex:1; padding:6px; font-size:11px;" onclick="openPointsHistoryModal()">السجل</button>
+                <div style="border-top:1px dashed var(--border-subtle); margin-top:8px; padding-top:8px;" id="cartDeliveryTownSection">
+                    <span style="font-size:11.5px; font-weight:600; display:block; margin-bottom:4px;">منطقة التوصيل المحددة:</span>
+                    <select class="ios-input-field" id="cartTownSelect" onchange="recalculateCartTotals()"></select>
                 </div>
             </div>
 
-            <!-- تصنيفات متجر النقاط (شنط، أدوات المائدة، أكواب وفناجين، هدايا متنوعة، ملبوسات) -->
-            <div class="redeem-filter-scroll">
-                <button class="redeem-pill-btn active" onclick="filterRedeemStoreCategory('all')">الكل</button>
-                <button class="redeem-pill-btn" onclick="filterRedeemStoreCategory('شنط')">شنط</button>
-                <button class="redeem-pill-btn" onclick="filterRedeemStoreCategory('أدوات المائدة')">أدوات المائدة</button>
-                <button class="redeem-pill-btn" onclick="filterRedeemStoreCategory('أكواب وفناجين')">أكواب وفناجين</button>
-                <button class="redeem-pill-btn" onclick="filterRedeemStoreCategory('هدايا متنوعة')">هدايا متنوعة</button>
-                <button class="redeem-pill-btn" onclick="filterRedeemStoreCategory('ملبوسات')">ملبوسات</button>
+            <div class="clean-card">
+                <div class="clean-title">الأصناف المختارة</div>
+                <div id="cartOrderItemsList"></div>
             </div>
 
-            <!-- بطاقات المنتجات المتاحة للاستبدال -->
-            <div class="redeem-cards-grid" id="redeemStoreItemsGrid"></div>
+            <div class="clean-card">
+                <div class="clean-title">ملاحظات خاصة للفرع أو التوصيل</div>
+                <input type="text" class="ios-input-field" id="cartOrderNotesInput" placeholder="مثال: سكر خفيف، بدون ثلج، بالقرب من المسجد الكبير...">
+            </div>
+
+            <!-- طرق الدفع المفصولة بالشعارات المعتمدة للفرع -->
+            <div class="clean-card">
+                <div class="clean-title">طريقة الدفع المعتمدة</div>
+                <div id="cartBranchPaymentProvidersList"></div>
+            </div>
+
+            <!-- ملخص الفاتورة المالية -->
+            <div class="clean-card" style="background:#fff;">
+                <div class="clean-title">ملخص الحساب والفاتورة</div>
+                <div style="display:flex; flex-direction:column; gap:6px; font-size:12.5px;">
+                    <div style="display:flex; justify-content:space-between; color:var(--text-secondary);">
+                        <span>المجموع الفرعي:</span>
+                        <span class="num-font" id="cartSubtotalVal">JOD 0.00</span>
+                    </div>
+                    <div style="display:flex; justify-content:space-between; color:var(--text-secondary);">
+                        <span>الضريبة (16%):</span>
+                        <span class="num-font" id="cartTaxVal">JOD 0.00</span>
+                    </div>
+                    <div style="display:flex; justify-content:space-between; color:var(--text-secondary);">
+                        <span>رسوم التوصيل:</span>
+                        <span class="num-font" id="cartDeliveryFeeVal">JOD 0.00</span>
+                    </div>
+                    <div style="display:flex; justify-content:space-between; font-size:15px; font-weight:700; border-top:1.5px solid var(--border-subtle); padding-top:8px; margin-top:4px;">
+                        <span>المجموع النهائي:</span>
+                        <span class="num-font" style="color:var(--brand-primary);" id="cartGrandTotalVal">JOD 0.00</span>
+                    </div>
+                </div>
+            </div>
+
+            <button class="btn-brand-solid" style="padding:14px; font-size:14px;" onclick="confirmAndDispatchFinalOrder()">
+                تأكيد وإرسال الطلب للفرع مباشرة
+            </button>
         </div>
     </div>
 
-    <!-- 4. شاشة حسابي الشخصي (مطابقة تماماً للصورة 2 و 8) -->
-    <div id="screen-user-profile" class="app-screen">
-        <!-- ترويسة الحساب الحمراء الداكنة المقوسة مثل الصورة 8 -->
-        <div style="background:linear-gradient(180deg, var(--brand-primary) 0%, var(--brand-primary-dark) 100%); color:#fff; padding:16px 16px 24px; border-bottom-left-radius:28px; border-bottom-right-radius:28px; position:relative;">
-            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px;">
-                <button style="background:rgba(255,255,255,0.15); border:none; width:34px; height:34px; border-radius:50%; color:#fff; display:flex; align-items:center; justify-content:center; cursor:pointer;" onclick="navigateRouter('screen-home')">
-                    ✕
-                </button>
-                <div style="background:rgba(0,0,0,0.25); padding:4px 12px; border-radius:var(--radius-full); font-size:11px; font-weight:800; display:flex; align-items:center; gap:4px;">
-                    <span>⚠️</span>
-                    <span>غير مكتمل (أضف بريدك)</span>
+    <!-- 4. شاشة تتبع الطلبات الحية -->
+    <div id="screen-order-tracking" class="app-screen">
+        <header class="header">
+            <button class="header-btn" onclick="navigateRouter('screen-home')" aria-label="عودة">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+            </button>
+            <div style="font-weight:700; font-size:15px;">تتبع طلباتي الحالية</div>
+            <div style="width:38px;"></div>
+        </header>
+
+        <div class="scrollable-content">
+            <div id="orderTrackingListContainer"></div>
+        </div>
+    </div>
+
+    <!-- 5. شاشة متجر استبدال النقاط -->
+    <div id="screen-rewards" class="app-screen">
+        <header class="header">
+            <button class="header-btn" onclick="navigateRouter('screen-home')" aria-label="عودة">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+            </button>
+            <div style="font-weight:700; font-size:15px;">متجر النقاط والمكافآت</div>
+            <div style="width:38px;"></div>
+        </header>
+
+        <div class="scrollable-content">
+            <div class="clean-card" style="text-align:center;">
+                <div style="font-size:12px; color:var(--text-secondary);">رصيد نقاطك المتاحة</div>
+                <div class="num-font" style="font-size:32px; font-weight:800; color:var(--brand-primary); margin:4px 0;" id="storeAvailablePointsNum">19,818</div>
+                <div style="font-size:11px; color:var(--text-muted);">استبدل نقاطك بقطع وافل وهدايا مجانية فورية</div>
+            </div>
+
+            <!-- أزرار حبات الدواء لأقسام متجر النقاط كما في صورة بن العميد -->
+            <div style="display:flex; gap:6px; overflow-x:auto; padding-bottom:8px; margin-bottom:10px;">
+                <button class="cat-chip active" id="chipRedeemAll" onclick="filterRedeemStore('all')">الكل</button>
+                <button class="cat-chip" id="chipRedeemCups" onclick="filterRedeemStore('أكواب وفناجين')">أكواب وفناجين</button>
+                <button class="cat-chip" id="chipRedeemBags" onclick="filterRedeemStore('شنط')">شنط</button>
+                <button class="cat-chip" id="chipRedeemTreats" onclick="filterRedeemStore('وافل ومشروبات')">وافل ومشروبات</button>
+            </div>
+
+            <div class="clean-title">المكافآت المتاحة حالياً</div>
+            <div id="redeemStoreItemsGrid" style="display:grid; grid-template-columns:1fr 1fr; gap:10px;"></div>
+        </div>
+    </div>
+
+    <!-- 6. شاشة فئات الولاء -->
+    <div id="screen-loyalty-tiers" class="app-screen">
+        <header class="header">
+            <button class="header-btn" onclick="navigateRouter('screen-home')" aria-label="عودة">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+            </button>
+            <div style="font-weight:700; font-size:15px;">فئات الولاء والمهام</div>
+            <div style="width:38px;"></div>
+        </header>
+
+        <div class="scrollable-content">
+            <div class="clean-card" style="text-align:center; padding:24px 16px;">
+                <div style="width:110px; height:110px; border-radius:50%; background:linear-gradient(135deg, #c59b63 0%, #875c27 100%); margin:0 auto 12px; display:flex; align-items:center; justify-content:center; color:#fff; font-size:26px; font-weight:800; border:4px solid #f6d8ae; box-shadow:0 8px 20px rgba(197, 155, 99, 0.4);">CC</div>
+                <div style="display:inline-block; background:var(--brand-primary-light); color:var(--brand-primary); padding:3px 12px; border-radius:var(--radius-full); font-size:11px; font-weight:700; margin-bottom:6px;">* الفئة الحالية</div>
+                <div style="font-size:20px; font-weight:700; margin-bottom:6px;">عضو الفئة البرونزية</div>
+                <p style="font-size:12px; color:var(--text-secondary); line-height:1.6; margin:0 auto 16px; max-width:300px;">
+                    اكتملت النقاط الأساسية ✓ — أكمل <strong>4 مهام</strong> للترقية إلى <strong>الفئة الفضية</strong> ومضاعفة الهدايا الشهرية.
+                </p>
+                <div style="display:grid; grid-template-columns:repeat(3, 1fr); gap:8px; border-top:1px solid var(--border-subtle); padding-top:14px;">
+                    <div style="cursor:pointer;" onclick="navigateRouter('screen-rewards')">
+                        <div style="font-size:18px;">🎁</div>
+                        <div style="font-size:11px; font-weight:600; margin-top:2px;">مكافآتي</div>
+                    </div>
+                    <div style="cursor:pointer;" onclick="window.showToastMsg('خصم 10% دائم وترقية مجانية للحجم الكبير')">
+                        <div style="font-size:18px;">🏷️</div>
+                        <div style="font-size:11px; font-weight:600; margin-top:2px;">المزايا</div>
+                    </div>
+                    <div style="cursor:pointer;" onclick="window.showToastMsg('اكسب 10 نقاط مع كل دينار تطلبه')">
+                        <div style="font-size:18px;">❓</div>
+                        <div style="font-size:11px; font-weight:600; margin-top:2px;">كيف تكسب</div>
+                    </div>
                 </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 7. شاشة حسابي الشخصي -->
+    <div id="screen-user-profile" class="app-screen">
+        <div style="background:linear-gradient(180deg, var(--brand-primary) 0%, var(--brand-primary-dark) 100%); color:#fff; padding:16px 16px 24px; border-bottom-left-radius:28px; border-bottom-right-radius:28px;">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px;">
+                <button style="background:rgba(255,255,255,0.18); border:none; width:34px; height:34px; border-radius:50%; color:#fff; cursor:pointer;" onclick="navigateRouter('screen-home')">✕</button>
+                <div style="font-weight:700; font-size:14px;">ملفي الشخصي</div>
+                <div style="width:34px;"></div>
             </div>
 
             <div style="display:flex; align-items:center; gap:12px; margin-bottom:16px;">
-                <div style="width:54px; height:54px; border-radius:50%; background:#fff; overflow:hidden; border:2px solid rgba(255,255,255,0.4); display:flex; align-items:center; justify-content:center;">
+                <div style="width:56px; height:56px; border-radius:50%; background:#fff; overflow:hidden; border:2px solid rgba(255,255,255,0.4);">
                     <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&q=80" style="width:100%; height:100%; object-fit:cover;">
                 </div>
                 <div>
-                    <div style="font-size:18px; font-weight:900;" id="profileScreenUserName">عمر عبيدات</div>
+                    <div style="font-size:17px; font-weight:700;" id="profileScreenUserName">عمر عبيدات</div>
                     <div class="num-font" style="font-size:12px; color:rgba(255,255,255,0.7);" id="profileScreenUserPhone">0796433698</div>
                 </div>
             </div>
 
-            <!-- بطاقتا الإحصائيات (إجمالي النقاط المستخدمة + إجمالي التوفير) -->
-            <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
-                <div style="background:rgba(255,255,255,0.12); padding:10px; border-radius:var(--radius-md); text-align:right;">
-                    <div style="font-size:10px; color:rgba(255,255,255,0.7);">إجمالي النقاط المستخدمة</div>
-                    <div style="font-size:16px; font-weight:900; margin-top:2px;"><span class="num-font" id="statUsedPoints">0</span> نقطة</div>
-                    <div style="font-size:9.5px; color:rgba(255,255,255,0.6); margin-top:2px;">+0 نقطة • هذا الأسبوع</div>
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px;">
+                <div style="background:rgba(255,255,255,0.12); padding:10px; border-radius:var(--radius-md);">
+                    <div style="font-size:10px; color:rgba(255,255,255,0.7);">إجمالي النقاط</div>
+                    <div style="font-size:16px; font-weight:800; margin-top:2px;"><span class="num-font" id="statTotalUserPoints">19,818</span></div>
                 </div>
-                <div style="background:rgba(255,255,255,0.12); padding:10px; border-radius:var(--radius-md); text-align:right;">
-                    <div style="font-size:10px; color:rgba(255,255,255,0.7);">إجمالي التوفير</div>
-                    <div style="font-size:16px; font-weight:900; margin-top:2px;"><span class="num-font" id="statSavedAmount">JOD 0.00</span></div>
-                    <div style="font-size:9.5px; color:rgba(255,255,255,0.6); margin-top:2px;">+0 JOD هذا الشهر</div>
+                <div style="background:rgba(255,255,255,0.12); padding:10px; border-radius:var(--radius-md);">
+                    <div style="font-size:10px; color:rgba(255,255,255,0.7);">الطلبات المكتملة</div>
+                    <div style="font-size:16px; font-weight:800; margin-top:2px;"><span class="num-font" id="statCompletedOrdersCount">14</span> طلب</div>
                 </div>
             </div>
         </div>
 
         <div class="scrollable-content" style="padding-top:14px;">
-            <div style="font-size:11px; font-weight:800; color:var(--text-muted); margin-bottom:6px; padding:0 4px;">عام</div>
-            <div class="profile-menu-group">
-                <div class="profile-menu-row" onclick="navigateRouter('screen-notifications')">
-                    <div class="profile-menu-right">
-                        <span class="profile-menu-icon">🔔</span>
-                        <span>الإشعارات</span>
-                    </div>
-                    <div style="display:flex; align-items:center; gap:6px;">
-                        <span style="background:#84cc16; color:#fff; font-size:10px; font-weight:900; width:18px; height:18px; border-radius:50%; display:flex; align-items:center; justify-content:center;">2</span>
-                        <span style="color:#bbb;">❮</span>
-                    </div>
-                </div>
-
-                <div class="profile-menu-row" onclick="window.showToastMsg('تم حفظ مفضلاتك بنجاح')">
-                    <div class="profile-menu-right">
-                        <span class="profile-menu-icon">🤍</span>
-                        <span>المفضلة</span>
+            <div style="font-size:11px; font-weight:600; color:var(--text-muted); margin-bottom:6px;">الخدمات والطلبات</div>
+            <div class="clean-card" style="padding:0; overflow:hidden; margin-bottom:12px;">
+                <div style="display:flex; align-items:center; justify-content:space-between; padding:12px 14px; border-bottom:1px solid var(--border-subtle); cursor:pointer;" onclick="navigateRouter('screen-order-tracking')">
+                    <div style="display:flex; align-items:center; gap:10px; font-size:12.5px; font-weight:600;">
+                        <span>🕒</span>
+                        <span>تتبع طلباتي الحالية والسابقة</span>
                     </div>
                     <span style="color:#bbb;">❮</span>
                 </div>
-
-                <div class="profile-menu-row" onclick="shareCornerReferralLink()">
-                    <div class="profile-menu-right">
-                        <span class="profile-menu-icon">👥</span>
-                        <span>دعوة صديق وكسب نقاط</span>
+                <div style="display:flex; align-items:center; justify-content:space-between; padding:12px 14px; border-bottom:1px solid var(--border-subtle); cursor:pointer;" onclick="navigateRouter('screen-referral')">
+                    <div style="display:flex; align-items:center; gap:10px; font-size:12.5px; font-weight:600;">
+                        <span>👥</span>
+                        <span>دعوة صديق وكسب 50 نقطة</span>
                     </div>
                     <span style="color:#bbb;">❮</span>
                 </div>
-
-                <div class="profile-menu-row" onclick="navigateRouter('screen-order-tracking')">
-                    <div class="profile-menu-right">
-                        <span class="profile-menu-icon">🕒</span>
-                        <span>الطلبات السابقة</span>
-                    </div>
-                    <span style="color:#bbb;">❮</span>
-                </div>
-
-                <div class="profile-menu-row">
-                    <div class="profile-menu-right">
-                        <span class="profile-menu-icon">🌙</span>
-                        <span>الوضع الليلي</span>
-                    </div>
-                    <input type="checkbox" id="profileDarkToggle" onchange="toggleThemeMode()" style="accent-color:var(--brand-primary); cursor:pointer;">
-                </div>
-
-                <div class="profile-menu-row">
-                    <div class="profile-menu-right">
-                        <span class="profile-menu-icon">🔊</span>
-                        <span>أصوات التطبيق</span>
-                    </div>
-                    <input type="checkbox" checked style="accent-color:var(--brand-primary); cursor:pointer;">
-                </div>
-            </div>
-
-            <div style="font-size:11px; font-weight:800; color:var(--text-muted); margin-bottom:6px; padding:0 4px;">مخصص والخدمات</div>
-            <div class="profile-menu-group">
-                <div class="profile-menu-row" onclick="window.showToastMsg('قريباً: تخصيص خلطات الإسبريسو الخاصة بك')">
-                    <div class="profile-menu-right">
-                        <span class="profile-menu-icon">🔖</span>
-                        <span>الخلطات والمشروبات المخصصة</span>
-                    </div>
-                    <span style="color:#bbb;">❮</span>
-                </div>
-
-                <div class="profile-menu-row" onclick="openDriveThruVehicleModal()">
-                    <div class="profile-menu-right">
-                        <span class="profile-menu-icon">🚗</span>
-                        <span>إدارة المركبات (للاستلام من السيارة)</span>
-                    </div>
-                    <span style="color:#bbb;">❮</span>
-                </div>
-
-                <div class="profile-menu-row" onclick="promptSwitchBranchOrTown()">
-                    <div class="profile-menu-right">
-                        <span class="profile-menu-icon">📍</span>
-                        <span>عنوان التوصيل</span>
+                <div style="display:flex; align-items:center; justify-content:space-between; padding:12px 14px; cursor:pointer;" onclick="navigateRouter('screen-feedback')">
+                    <div style="display:flex; align-items:center; gap:10px; font-size:12.5px; font-weight:600;">
+                        <span>💬</span>
+                        <span>الشكاوى والاقتراحات والردود المباشرة</span>
                     </div>
                     <span style="color:#bbb;">❮</span>
                 </div>
             </div>
 
-            <div style="font-size:11px; font-weight:800; color:var(--text-muted); margin-bottom:6px; padding:0 4px;">المدفوعات والدعم</div>
-            <div class="profile-menu-group">
-                <div class="profile-menu-row" onclick="navigateRouter('screen-cart')">
-                    <div class="profile-menu-right">
-                        <span class="profile-menu-icon">💳</span>
-                        <span>طريقة الدفع</span>
+            <div style="font-size:11px; font-weight:600; color:var(--text-muted); margin-bottom:6px;">إعدادات الحساب</div>
+            <div class="clean-card" style="padding:0; overflow:hidden; margin-bottom:12px;">
+                <div style="display:flex; align-items:center; justify-content:space-between; padding:12px 14px; border-bottom:1px solid var(--border-subtle); cursor:pointer;" onclick="openBranchSelectModal()">
+                    <div style="display:flex; align-items:center; gap:10px; font-size:12.5px; font-weight:600;">
+                        <span>🏪</span>
+                        <span>تغيير الفرع الأساسي</span>
                     </div>
                     <span style="color:#bbb;">❮</span>
                 </div>
-
-                <div class="profile-menu-row" onclick="navigateRouter('screen-feedback')">
-                    <div class="profile-menu-right">
-                        <span class="profile-menu-icon">💬</span>
-                        <span>الشكاوى والطعون المباشرة</span>
+                <div style="display:flex; align-items:center; justify-content:space-between; padding:12px 14px;">
+                    <div style="display:flex; align-items:center; gap:10px; font-size:12.5px; font-weight:600;">
+                        <span>🌙</span>
+                        <span>الوضع الليلي الداكن</span>
                     </div>
-                    <span style="color:#bbb;">❮</span>
-                </div>
-
-                <div class="profile-menu-row" onclick="openBranchDayClosureModal()">
-                    <div class="profile-menu-right">
-                        <span class="profile-menu-icon">🧾</span>
-                        <span>بوابة إغلاق الصندوق والفواتير</span>
-                    </div>
-                    <span style="color:#bbb;">❮</span>
+                    <input type="checkbox" onchange="toggleThemeMode()" style="accent-color:var(--brand-primary); cursor:pointer;">
                 </div>
             </div>
 
-            <!-- زر تسجيل الخروج المطابق للصورة 2 -->
-            <button class="profile-menu-group" style="width:100%; border:none; display:flex; align-items:center; justify-content:space-between; padding:14px 16px; background:#ffffff; cursor:pointer;" onclick="logoutCustomerSession()">
-                <div style="display:flex; align-items:center; gap:10px; font-weight:900; color:var(--text-primary);">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
-                    <span>تسجيل الخروج</span>
+            <button class="clean-card" style="width:100%; border:none; display:flex; align-items:center; justify-content:space-between; padding:12px 14px; background:#fff; cursor:pointer;" onclick="logoutCustomerSession()">
+                <div style="display:flex; align-items:center; gap:10px; font-weight:700; color:var(--status-danger);">
+                    <span>🚪</span>
+                    <span>تسجيل الخروج من الحساب</span>
                 </div>
                 <span style="color:#bbb;">❮</span>
             </button>
-
-            <div style="text-align:center; font-size:10.5px; color:var(--text-muted); margin-top:14px;">
-                نسخة التطبيق 7.5.0 (Coffee Corner Pro)
-            </div>
         </div>
     </div>
 
-    <!-- 5. شاشة سلة المشتريات والدفع (مطابقة للصورة 5 و 7) -->
-    <div id="screen-cart" class="app-screen">
-        <header class="header" style="background:#fff;">
-            <button class="header-btn" onclick="navigateRouter('screen-home')" aria-label="عودة">
+    <!-- 8. شاشة دعوة صديق -->
+    <div id="screen-referral" class="app-screen">
+        <header class="header">
+            <button class="header-btn" onclick="navigateRouter('screen-user-profile')" aria-label="عودة">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
             </button>
-            <div style="font-weight:900; font-size:15px;">سلة المشتريات</div>
+            <div style="font-weight:700; font-size:15px;">دعوة صديق</div>
             <div style="width:38px;"></div>
         </header>
 
         <div class="scrollable-content">
-            <!-- شريط تعليمات الطلب -->
-            <div class="cart-delivery-instructions" onclick="promptAddOrderNotes()">
-                <span>+ إضافة تعليمات خاصة بالطلب أو التوصيل</span>
-                <span style="font-size:14px;">✍️</span>
-            </div>
+            <div class="clean-card" style="text-align:center; padding:24px 16px;">
+                <div style="width:70px; height:70px; border-radius:50%; background:var(--brand-primary-light); color:var(--brand-primary); display:flex; align-items:center; justify-content:center; font-size:32px; margin:0 auto 12px;">🎁</div>
+                <div style="font-size:18px; font-weight:700; color:var(--brand-primary); margin-bottom:6px;">شارك أصحابك حب القهوة!</div>
+                <p style="font-size:12px; color:var(--text-secondary); line-height:1.6; margin-bottom:16px;">
+                    شارك كود الدعوة الخاص بك مع أصدقائك، وعند تسجيلهم في كافيه كورنر وإتمام أول طلب، ستحصل أنت على <strong>50 نقطة ولاء مجانية</strong> وهم يحصلون على <strong>15 نقطة ترحيبية</strong>.
+                </p>
 
-            <!-- الفرع المحضر للطلب -->
-            <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:10px; font-size:12px;">
-                <span style="font-weight:900; color:var(--text-primary);">طلبك</span>
-                <span style="background:var(--bg-main); padding:3px 10px; border-radius:var(--radius-full); font-weight:800; color:var(--brand-primary);" id="cartPrepBranchBadge">🏪 يتم التحضير في فرع كفرسوم</span>
-            </div>
-
-            <!-- قائمة الأصناف في السلة -->
-            <div id="cartOrderItemsList"></div>
-
-            <!-- قسم "أضف مكافآت مع طلبك" المطابق للصورة رقم 7 -->
-            <div style="margin:16px 0 10px;">
-                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
-                    <span style="font-size:13.5px; font-weight:900;">أضف مكافآت مع طلبك</span>
-                    <span style="font-size:11px; font-weight:800; color:var(--brand-primary); cursor:pointer;" onclick="navigateRouter('screen-rewards')">عرض الكل</span>
+                <div style="background:var(--bg-main); border:1.5px dashed var(--brand-primary); padding:12px; border-radius:var(--radius-md); margin-bottom:16px;">
+                    <div style="font-size:11px; color:var(--text-muted); margin-bottom:4px;">كود الدعوة الخاص بك</div>
+                    <div class="num-font" style="font-size:22px; font-weight:800; letter-spacing:2px; color:var(--brand-primary);" id="referralCodeDisplay">CORNER-7964</div>
                 </div>
-                <div style="display:flex; gap:10px; overflow-x:auto; padding-bottom:8px; scrollbar-width:none;" id="cartRewardsCrossSellStrip">
-                    <!-- مكافآت مقترحة -->
+
+                <div style="display:flex; gap:8px;">
+                    <button class="btn-brand-solid" onclick="copyReferralCodeAction()">نسخ الكود</button>
+                    <button class="btn-brand-outline" onclick="shareReferralViaWhatsApp()">مشاركة عبر واتساب</button>
                 </div>
             </div>
-
-            <!-- طرق الدفع المعتمدة مع الشعارات لكل فرع -->
-            <div class="clean-card" style="margin-top:10px;">
-                <div class="clean-title">طريقة الدفع المعتمدة بالفرع</div>
-                <div id="cartBranchPaymentProvidersList"></div>
-            </div>
-
-            <!-- الملخص المالي النهائي المطابق للصورة رقم 5 -->
-            <div class="cart-financial-summary">
-                <div class="summary-line-row">
-                    <span>المجموع الفرعي:</span>
-                    <span class="num-font" id="cartSubtotalVal">JOD 0.00</span>
-                </div>
-                <div class="summary-line-row">
-                    <span>الضريبة:</span>
-                    <span class="num-font" id="cartTaxVal">JOD 0.00</span>
-                </div>
-                <div class="summary-line-row">
-                    <span>رسوم التوصيل:</span>
-                    <span class="num-font" id="cartDeliveryFeeVal">JOD 0.00</span>
-                </div>
-                <div class="summary-line-row total-row">
-                    <span>المجموع الكلي:</span>
-                    <span class="num-font" style="color:var(--brand-primary);" id="cartGrandTotalVal">JOD 0.00</span>
-                </div>
-            </div>
-
-            <!-- زر تأكيد الطلب العريض مثل الصورة 5 -->
-            <button class="btn-brand-solid" style="padding:14px; margin-top:14px; font-size:14.5px;" onclick="confirmAndDispatchFinalOrder()">
-                تأكيد الطلب
-            </button>
         </div>
     </div>
 
-    <!-- 6. شاشة بوابة الدخول المحمية (الإدارة + الأفرع) -->
+    <!-- 9. شاشة الشكاوى والاقتراحات والردود المباشرة -->
+    <div id="screen-feedback" class="app-screen">
+        <header class="header">
+            <button class="header-btn" onclick="navigateRouter('screen-user-profile')" aria-label="عودة">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+            </button>
+            <div style="font-weight:700; font-size:15px;">الشكاوى والاقتراحات</div>
+            <div style="width:38px;"></div>
+        </header>
+
+        <div class="scrollable-content">
+            <div class="clean-card">
+                <div class="clean-title">إرسال شكوى أو ملاحظة سرية للإدارة</div>
+                <div style="display:flex; flex-direction:column; gap:8px;">
+                    <select class="ios-input-field" id="feedbackCategoryInput">
+                        <option value="ملاحظة على جودة الطلب">ملاحظة على جودة الطلب والمشروبات</option>
+                        <option value="ملاحظة على سرعة التوصيل">ملاحظة على سرعة كابتن التوصيل</option>
+                        <option value="اقتراح تطويري">اقتراح تطويري للفرع</option>
+                        <option value="طعن لفك الحظر">طعن ومراجعة تقييد الحساب</option>
+                    </select>
+                    <textarea class="ios-textarea-field" id="feedbackTextInput" placeholder="اكتب تفاصيل الشكوى أو الملاحظة هنا بدقة..."></textarea>
+                    <button class="btn-brand-solid" onclick="submitCustomerFeedbackAction()">إرسال للإدارة فوراً</button>
+                </div>
+            </div>
+
+            <div class="clean-title">سجل الشكاوى والردود من الإدارة</div>
+            <div id="clientFeedbackHistoryContainer"></div>
+        </div>
+    </div>
+
+    <!-- 10. بوابة الدخول المخفية للنظام (أدمن + أفرع) -->
     <div id="screen-admin-login" class="app-screen">
-        <header class="header" style="background:#fff;">
+        <header class="header">
             <button class="header-btn" onclick="navigateRouter('screen-home')" aria-label="عودة">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
             </button>
-            <div style="font-weight:900; font-size:15px; color:var(--brand-primary);">بوابة الدخول المحمية</div>
+            <div style="font-weight:700; font-size:15px; color:var(--brand-primary);">بوابة النظام المحمية</div>
             <div style="width:38px;"></div>
         </header>
+
         <div class="scrollable-content">
             <div class="clean-card" style="max-width:360px; margin:40px auto 0; text-align:center;">
-                <div style="font-size:16px; font-weight:900; color:var(--brand-primary); margin-bottom:6px;">تسجيل الدخول للنظام المشفر</div>
-                <div style="font-size:11.5px; color:var(--text-secondary); margin-bottom:16px;">أدخل كود PIN الخاص بالإدارة العامة أو الفرع المستقل</div>
+                <div style="font-size:16px; font-weight:700; color:var(--brand-primary); margin-bottom:6px;">تسجيل الدخول للنظام الإداري</div>
+                <div style="font-size:11.5px; color:var(--text-secondary); margin-bottom:16px;">أدخل كود PIN السري المخصص للفرع أو الإدارة العامة</div>
                 <input type="password" class="ios-input-field num-font" id="adminPassField" placeholder="••••" style="text-align:center; font-size:24px; letter-spacing:6px; margin-bottom:12px;" maxlength="10">
-                <button class="btn-brand-solid" onclick="attemptSecureAccessAuthentication()">دخول آمن للنظام</button>
-                <div style="font-size:10.5px; color:var(--text-muted); margin-top:14px; line-height:1.5;">
-                    • كود الأدمن العام: للتحكم الكامل بالمنتجات والأسعار والتعديلات.<br>
-                    • كود الفرع: لمتابعة المطبخ، قبول/رفض الطلبات، وإصدار فواتير نهاية اليوم.
-                </div>
+                <button class="btn-brand-solid" onclick="attemptSecureAccessAuthentication()">دخول آمن</button>
             </div>
         </div>
     </div>
 
-    <!-- 7. لوحة تحكم الفرع المستقلة (إدارة طلبات الفرع + Z-Report) -->
-    <div id="screen-branch-dashboard" class="app-screen">
-        <header class="header" style="background:#fff;">
+    <!-- 11. لوحة الإدارة العامة المركزية (Master Admin) -->
+    <div id="screen-master-admin" class="app-screen">
+        <header class="header">
             <div>
-                <div style="font-size:13.5px; font-weight:900; color:var(--brand-primary);" id="branchDashboardTitle">لوحة فرع كفرسوم</div>
-                <div style="font-size:10px; color:var(--text-secondary);">نظام استلام المطبخ وإغلاق اليوم</div>
+                <div style="font-size:14px; font-weight:700; color:var(--brand-primary);">الإدارة المركزية — كافيه كورنر</div>
+                <div style="font-size:10px; color:var(--text-muted);">تحكم الفروع والشكاوى والطلبات</div>
+            </div>
+            <button class="btn-brand-outline" style="padding:4px 8px; font-size:11px; color:var(--status-danger); border-color:var(--status-danger);" onclick="exitRoleSession()">خروج</button>
+        </header>
+
+        <div class="scrollable-content">
+            <div class="clean-card">
+                <div class="clean-title">صندوق الشكاوى والاقتراحات والطعون</div>
+                <div id="adminFeedbackControlList"></div>
+            </div>
+
+            <div class="clean-card">
+                <div class="clean-title">مراقبة كافة طلبات الفروع الحية</div>
+                <div id="adminMasterAllOrdersList"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 12. لوحة تحكم الفرع المستقلة (إدارة المطبخ + Z-Report) -->
+    <div id="screen-branch-dashboard" class="app-screen">
+        <header class="header">
+            <div>
+                <div style="font-size:13.5px; font-weight:700; color:var(--brand-primary);" id="branchDashboardTitle">لوحة فرع كفرسوم</div>
+                <div style="font-size:10px; color:var(--text-secondary);">استلام المطبخ وإغلاق الصندوق اليومي</div>
             </div>
             <div style="display:flex; gap:6px;">
-                <button class="btn-brand-solid" style="width:auto; padding:5px 10px; font-size:11px;" onclick="openBranchDayClosureModal()">إغلاق الصندوق</button>
+                <button class="btn-brand-solid" style="width:auto; padding:5px 10px; font-size:11px;" onclick="openBranchDayClosureModal()">فاتورة اليوم (Z-Report)</button>
                 <button class="btn-brand-outline" style="width:auto; padding:5px 10px; font-size:11px; color:var(--status-danger); border-color:var(--status-danger);" onclick="exitRoleSession()">خروج</button>
             </div>
         </header>
 
         <div class="scrollable-content">
             <div class="clean-card" style="background:var(--bg-main); margin-bottom:12px;">
-                <div class="clean-title">مبيعات وردية اليوم للفرع</div>
+                <div class="clean-title">مبيعات وردية اليوم للفرع المختار</div>
                 <div style="display:grid; grid-template-columns:repeat(3, 1fr); gap:6px; text-align:center;">
                     <div style="background:#fff; padding:8px 4px; border-radius:var(--radius-sm); border:1px solid var(--border-subtle);">
-                        <div style="font-size:10px; color:var(--text-muted);">الطلبات</div>
-                        <div class="num-font" style="font-size:16px; font-weight:900; color:var(--brand-primary);" id="branchTodayOrdersCount">0</div>
+                        <div style="font-size:10px; color:var(--text-muted);">إجمالي الطلبات</div>
+                        <div class="num-font" style="font-size:16px; font-weight:800; color:var(--brand-primary);" id="branchTodayOrdersCount">0</div>
                     </div>
                     <div style="background:#fff; padding:8px 4px; border-radius:var(--radius-sm); border:1px solid var(--border-subtle);">
                         <div style="font-size:10px; color:var(--text-muted);">كاش Cash</div>
-                        <div class="num-font" style="font-size:14px; font-weight:900;" id="branchTodayCashTotal">0.00</div>
+                        <div class="num-font" style="font-size:14px; font-weight:800;" id="branchTodayCashTotal">0.00</div>
                     </div>
                     <div style="background:#fff; padding:8px 4px; border-radius:var(--radius-sm); border:1px solid var(--border-subtle);">
                         <div style="font-size:10px; color:var(--text-muted);">كليك وبطاقات</div>
-                        <div class="num-font" style="font-size:14px; font-weight:900; color:var(--brand-green);" id="branchTodayDigitalTotal">0.00</div>
+                        <div class="num-font" style="font-size:14px; font-weight:800; color:var(--brand-green);" id="branchTodayDigitalTotal">0.00</div>
                     </div>
                 </div>
             </div>
 
-            <div class="clean-title">الطلبات الواردة لفرعك فقط</div>
+            <div class="clean-title">طلبات الفرع الحية</div>
             <div id="branchSpecificOrdersList"></div>
         </div>
     </div>
 
-    <!-- نافذة فاتورة نهاية اليوم Z-Report للفرع -->
+    <!-- نافذة فاتورة إغلاق الصندوق نهاية اليوم (Z-Report) للفرع -->
     <div id="modalBranchDayClosure" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.75); z-index:9600; align-items:center; justify-content:center; padding:16px;">
         <div class="clean-card" style="width:100%; max-width:400px; max-height:90vh; overflow-y:auto;" id="printableShiftInvoice">
             <div class="clean-title">
@@ -1398,18 +1169,18 @@
             </div>
 
             <div style="text-align:center; border-bottom:1px dashed var(--border-subtle); padding-bottom:10px; margin-bottom:10px;">
-                <div style="font-size:16px; font-weight:900;" id="invBranchName">كافيه كورنر — فرع كفرسوم</div>
-                <div style="font-size:10.5px; color:var(--text-secondary);">فاتورة إغلاق الصندوق ومطابقة الكاشير</div>
+                <div style="font-size:16px; font-weight:700;" id="invBranchName">كافيه كورنر — فرع كفرسوم</div>
+                <div style="font-size:11px; color:var(--text-secondary);">فاتورة إغلاق الصندوق ومطابقة الوردية</div>
                 <div class="num-font" style="font-size:10.5px; color:var(--text-muted); margin-top:2px;" id="invDateTime">--/--/---- --:--</div>
             </div>
 
             <div style="display:flex; flex-direction:column; gap:6px; font-size:12px; margin-bottom:12px;">
                 <div style="display:flex; justify-content:space-between;">
-                    <span>إجمالي الطلبات:</span>
+                    <span>إجمالي عدد الطلبات:</span>
                     <strong class="num-font" id="invTotalOrders">0</strong>
                 </div>
                 <div style="display:flex; justify-content:space-between;">
-                    <span>مبيعات نقدي (كاش):</span>
+                    <span>مبيعات نقدي (كاش Cash):</span>
                     <strong class="num-font" id="invCashSum">0.00 د.أ</strong>
                 </div>
                 <div style="display:flex; justify-content:space-between;">
@@ -1424,8 +1195,8 @@
                     <span>رسوم التوصيل المحصلة:</span>
                     <strong class="num-font" id="invDeliverySum">0.00 د.أ</strong>
                 </div>
-                <div style="display:flex; justify-content:space-between; font-size:14px; font-weight:900; border-top:2px solid var(--text-primary); padding-top:6px; margin-top:4px;">
-                    <span>صافي المبيعات الكلي:</span>
+                <div style="display:flex; justify-content:space-between; font-size:14px; font-weight:700; border-top:2px solid var(--text-primary); padding-top:6px; margin-top:4px;">
+                    <span>صافي المبيعات الإجمالي:</span>
                     <span class="num-font" style="color:var(--brand-primary);" id="invGrandTotal">0.00 د.أ</span>
                 </div>
             </div>
@@ -1437,7 +1208,7 @@
         </div>
     </div>
 
-    <!-- الشريط السفلي المطور المطابق لتطبيق بن العميد في الصور -->
+    <!-- شريط التنقل السفلي -->
     <nav class="bottom-nav-bar" id="appBottomNavBar">
         <button class="nav-tab-btn active" onclick="navigateRouter('screen-home')" id="tabBtnHome">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path></svg>
@@ -1449,8 +1220,7 @@
             <span>الطلب</span>
         </button>
 
-        <!-- زر المسح بالمنتصف -->
-        <button class="nav-center-scan-btn" onclick="handleCenterScanButtonClick()" title="مسح رمز QR">
+        <button class="nav-center-scan-btn" onclick="window.showToastMsg('قارئ الباركود جاهز لمسح كود الطاولة أو كود الزبون')" title="مسح">
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 7V5a2 2 0 0 1 2-2h2"></path><path d="M17 3h2a2 2 0 0 1 2 2v2"></path><path d="M21 17v2a2 2 0 0 1-2 2h-2"></path><path d="M7 21H5a2 2 0 0 1-2-2v-2"></path></svg>
         </button>
 
@@ -1469,104 +1239,168 @@
 
 <script>
 /* =========================================================
-   COFFEE CORNER ENGINE (AL-AMEED DESIGN & FULL RBAC)
+   COFFEE CORNER ENGINE (FULL REBUILD & RBAC)
    ========================================================= */
 
 const SECURITY_ACCESS_KEYS = {
-    MASTER_ADMIN: "2001159393",
-    BRANCH_KAFARSUM: "1101",
-    BRANCH_SAMA: "1102"
+    MASTER_ADMIN: "2001159393",    // رمز الأدمن الشامل
+    BRANCH_KAFARSUM: "1101",        // رمز فرع كفرسوم
+    BRANCH_SAMA: "1102"             // رمز فرع سما الروسان
 };
 
-const DEFAULT_CATALOG_DATA = [
+const MASTER_ADDONS_DICT = [
+    { id: "ad_cream", name: "قشطة بلدية", price: 0.50 },
+    { id: "ad_nuts", name: "مكسرات مشكلة فاخرة", price: 0.50 },
+    { id: "ad_honey", name: "عسل طبيعي", price: 0.50 },
+    { id: "ad_fruits", name: "قطع فواكه إضافية", price: 0.50 },
+    { id: "ad_whipped", name: "كريمة مخفوقة", price: 0.50 },
+    { id: "ad_flavor", name: "شوت نكهة فانيلا / كراميل", price: 0.50 }
+];
+
+const DEFAULT_FULL_CATALOG = [
     {
-        id: "c1",
-        name: "١٠ كبسولات جينجربريد",
-        category: "كبسولات",
-        desc: "إسبرسو بنكهة غنية ومميزة، يمزج بين الكراميل والقرفة مع لمسات الزنجبيل",
-        price: 6.00,
-        isLimited: true,
-        img: "https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?w=200&q=80"
+        id: "p1",
+        name: "وافل بلجيكي مقرمش",
+        category: "وافل",
+        price: 2.00,
+        desc: "وافل ساخن مقرمش غني بألذ النكهات والصوصات البلجيكية الفاخرة",
+        img: "https://images.unsplash.com/photo-1562376552-0d160a2f238d?w=400&q=80",
+        hasSauces: true,
+        saucesList: [
+            { name: "نوتيلا أصلية", price: 2.00 },
+            { name: "لوتس بلجيكي", price: 2.50 },
+            { name: "بستاشيو فاخر", price: 2.75 },
+            { name: "كيندر بوينو", price: 2.50 }
+        ],
+        allowedAddons: ["ad_cream", "ad_nuts", "ad_fruits"]
     },
     {
-        id: "c2",
-        name: "١٠ كبسولات كلاسيك إسبريسو",
-        category: "كبسولات",
-        desc: "كبسولات إسبرسو كلاسيك - قهوة أرابيكا ١٠٠٪ متوافقة مع مكائن نيسبريسو",
-        price: 5.00,
-        isLimited: false,
-        img: "https://images.unsplash.com/photo-1517701550927-30cf4be1aaf9?w=200&q=80"
-    },
-    {
-        id: "c3",
-        name: "١٠ كبسولات ديكاف (بدون كافيين)",
-        category: "كبسولات",
-        desc: "استمتع بالمذاق الرائع والغني مع كبسولات إسبرسو منزوعة الكافيين تماماً",
-        price: 5.50,
-        isLimited: false,
-        img: "https://images.unsplash.com/photo-1534778101976-62847782c213?w=200&q=80"
-    },
-    {
-        id: "c4",
-        name: "١٠ كبسولات بنكهة البندق",
-        category: "كبسولات",
-        desc: "انغمس في تجربة فريدة مع كبسولات إسبرسو بنكهة البندق المحمص الفاخر",
-        price: 5.50,
-        isLimited: false,
-        img: "https://images.unsplash.com/photo-1553530666-ba11a7da3888?w=200&q=80"
-    },
-    {
-        id: "c5",
-        name: "وافل بلجيكي مقرمش بالنوتيلا",
-        category: "وافل وكريب",
-        desc: "وافل ساخن مقرمش مغطى بصوص النوتيلا الأصلية وقطع الموز",
+        id: "p2",
+        name: "كريب رول فاخر",
+        category: "كريب",
         price: 2.50,
-        isLimited: false,
-        img: "https://images.unsplash.com/photo-1562376552-0d160a2f238d?w=200&q=80"
+        desc: "كريب فرنسي رقيق محشو ومغطى بالشوكولاتة البلجيكية وزبدة اللوتس",
+        img: "https://images.unsplash.com/photo-1519676867240-f03562e64548?w=400&q=80",
+        hasSauces: true,
+        saucesList: [
+            { name: "نوتيلا أصلية", price: 2.50 },
+            { name: "كيندر", price: 2.75 },
+            { name: "لوتس", price: 2.75 }
+        ],
+        allowedAddons: ["ad_cream", "ad_nuts", "ad_fruits"]
     },
     {
-        id: "c6",
-        name: "سبانش لاتيه بارد ومثلج",
-        category: "المشروبات",
-        desc: "إسبريسو غني مع الحليب المكثف المحلى ورغوة الحليب الباردة",
+        id: "p3",
+        name: "بان كيك ميني (١٠ قطع)",
+        category: "بان كيك",
+        price: 2.00,
+        desc: "قطع ميني بان كيك هشة وطرية تقدم مع الصوصات المفضلة والعسل",
+        img: "https://images.unsplash.com/photo-1528207776546-365bb710ee93?w=400&q=80",
+        hasSauces: true,
+        saucesList: [
+            { name: "نوتيلا", price: 2.00 },
+            { name: "بستاشيو فاخر", price: 2.50 }
+        ],
+        allowedAddons: ["ad_fruits", "ad_honey"]
+    },
+    {
+        id: "p4",
+        name: "كوكتيل إمبراطور كورنر",
+        category: "كوكتيلات",
+        price: 2.50,
+        desc: "مكس طبقات فاخر من المانجو، الفراولة، الأفوكادو، مع القشطة والمكسرات والعسل",
+        img: "https://images.unsplash.com/photo-1553530666-ba11a7da3888?w=400&q=80",
+        hasSizes: true,
+        sizesList: [
+            { name: "وسط (Medium)", extra: 0.00 },
+            { name: "كبير (Large)", extra: 0.50 }
+        ],
+        allowedAddons: ["ad_cream", "ad_nuts", "ad_honey"]
+    },
+    {
+        id: "p5",
+        name: "سبانش لاتيه مثلج",
+        category: "بارد",
         price: 2.25,
-        isLimited: false,
-        img: "https://images.unsplash.com/photo-1517701550927-30cf4be1aaf9?w=200&q=80"
+        desc: "إسبريسو غني مع الحليب المكثف المحلى وقطع الثلج ورغوة مخملية",
+        img: "https://images.unsplash.com/photo-1517701550927-30cf4be1aaf9?w=400&q=80",
+        hasSizes: true,
+        sizesList: [
+            { name: "وسط (Medium)", extra: 0.00 },
+            { name: "كبير (Large)", extra: 0.50 }
+        ],
+        allowedAddons: ["ad_whipped", "ad_flavor"]
+    },
+    {
+        id: "p6",
+        name: "كابتشينو إيطالي كلاسيك",
+        category: "ساخن",
+        price: 1.50,
+        desc: "إسبريسو إيطالي كلاسيكي مع حليب مبخر ورغوة حليب ناعمة وغنية",
+        img: "https://images.unsplash.com/photo-1534778101976-62847782c213?w=400&q=80",
+        hasSizes: true,
+        sizesList: [
+            { name: "وسط (Medium)", extra: 0.00 },
+            { name: "كبير (Large)", extra: 0.50 }
+        ],
+        allowedAddons: ["ad_flavor"]
+    },
+    {
+        id: "p7",
+        name: "١٠ كبسولات جينجربريد",
+        category: "كبسولات إسبريسو",
+        price: 6.00,
+        desc: "إسبرسو بنكهة غنية ومميزة، يمزج بين الكراميل والقرفة مع لمسات الزنجبيل",
+        img: "https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?w=400&q=80",
+        allowedAddons: []
+    },
+    {
+        id: "p8",
+        name: "١٠ كبسولات كلاسيك إسبريسو",
+        category: "كبسولات إسبريسو",
+        price: 5.00,
+        desc: "كبسولات إسبرسو كلاسيك - قهوة أرابيكا ١٠٠٪ متوافقة مع أجهزة نيسبريسو",
+        img: "https://images.unsplash.com/photo-1517701550927-30cf4be1aaf9?w=400&q=80",
+        allowedAddons: []
     }
 ];
 
-const DEFAULT_REDEEM_ITEMS = [
+const DEFAULT_FULL_REDEEM_CATALOG = [
     {
-        id: "rd_bag_1",
-        category: "شنط",
-        name: "حقيبة ظهر رياضية كافيه كورنر",
-        desc: "حقيبة ظهر خفيفة برباط علوي أحمر وتصميم كافيه كورنر الأنيق",
-        points: 3103,
-        img: "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=300&q=80"
+        id: "rd_1",
+        category: "وافل ومشروبات",
+        name: "وافل نوتيلا مجاني بالكامل",
+        price: 2.00,
+        points: 850,
+        desc: "وافل بلجيكي مقرمش وصوص نوتيلا غني مجاناً مقابل نقاط ولائك",
+        img: "https://images.unsplash.com/photo-1562376552-0d160a2f238d?w=300&q=80"
     },
     {
-        id: "rd_bag_2",
-        category: "شنط",
-        name: "حقيبة سفر عناية (٥ كغم)",
-        desc: "حقيبة كافيه كورنر المفضلة لديكم، سعة 5 كغ بتصميم متين للمشاوير",
-        points: 3649,
-        img: "https://images.unsplash.com/photo-1544816155-12df9643f363?w=300&q=80"
+        id: "rd_2",
+        category: "وافل ومشروبات",
+        name: "كوب سبانش لاتيه مثلج",
+        price: 2.25,
+        points: 650,
+        desc: "كوب قهوة مختصة بارد ومنعش مجاناً",
+        img: "https://images.unsplash.com/photo-1517701550927-30cf4be1aaf9?w=300&q=80"
     },
     {
-        id: "rd_cup_1",
+        id: "rd_3",
         category: "أكواب وفناجين",
-        name: "كوب سيراميك فاخر كورنر أحمر",
-        desc: "كوب حافظ للحرارة أنيق مصمم للإسبريسو والقهوة المقطرة",
+        name: "كوب سيراميك كورنر الفاخر",
+        price: 4.50,
         points: 2200,
+        desc: "كوب سيراميك أصلي حافظ للحرارة بتصميم خاص من كافيه كورنر",
         img: "https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?w=300&q=80"
     },
     {
-        id: "rd_waffle_1",
-        category: "هدايا متنوعة",
-        name: "وافل نوتيلا مجاني بالكامل",
-        desc: "استبدل نقاطك بقطعة وافل طازجة مباشرة من الفرع",
-        points: 850,
-        img: "https://images.unsplash.com/photo-1562376552-0d160a2f238d?w=300&q=80"
+        id: "rd_4",
+        category: "شنط",
+        name: "حقيبة ظهر رياضية خفيفة",
+        price: 5.00,
+        points: 3103,
+        desc: "حقيبة رياضية أنيقة بخيوط متينة وعلامة كافيه كورنر",
+        img: "https://images.unsplash.com/photo-1546938576-6e6a64f317cc?w=300&q=80"
     }
 ];
 
@@ -1575,11 +1409,11 @@ const branchesConfig = [
         id: 0,
         name: "فرع كفرسوم",
         phone: "0796433698",
-        towns: { "كفرسوم": 0.50, "سحم الكفارات": 1.00, "الرفيد": 1.00, "يبلا": 1.00, "عقربا": 1.50, "حرثا": 1.50 },
+        towns: { "كفرسوم": 0.50, "سحم الكفارات": 1.00, "الرفيد": 1.00, "يبلا": 1.00, "عقربا": 1.50, "حرثا": 1.50, "حبراص": 1.00 },
         paymentMethods: [
-            { id: "cash", name: "دفع نقدي (كاش Cash)", desc: "الدفع عند الاستلام", logo: "https://cdn-icons-png.flaticon.com/512/2488/2488749.png" },
-            { id: "cliq", name: "كليك CliQ (فوري)", desc: "الاسم المستعار: CORNER", logo: "https://cdn-icons-png.flaticon.com/512/825/825454.png" },
-            { id: "visa", name: "بطاقة فيزا / ماستركارد", desc: "الدفع ببطاقة البنك أو المحفظة", logo: "https://cdn-icons-png.flaticon.com/512/349/349221.png" }
+            { id: "cash", name: "دفع نقدي (كاش Cash)", desc: "الدفع عند الاستلام كاش", logo: "https://cdn-icons-png.flaticon.com/512/2488/2488749.png" },
+            { id: "cliq", name: "كليك CliQ (فوري مجاني)", desc: "الاسم المستعار: CORNER", logo: "https://cdn-icons-png.flaticon.com/512/825/825454.png" },
+            { id: "visa", name: "بطاقة فيزا / ماستركارد ومحافظ", desc: "أورانج موني / زين كاش / بطاقات", logo: "https://cdn-icons-png.flaticon.com/512/349/349221.png" }
         ]
     },
     {
@@ -1588,8 +1422,8 @@ const branchesConfig = [
         phone: "0796433698",
         towns: { "سما الروسان": 0.50, "حاتم": 1.00, "إبدر": 1.00, "الخرابشة": 1.50, "ملكا": 1.50 },
         paymentMethods: [
-            { id: "cash", name: "دفع نقدي (كاش Cash)", desc: "الدفع عند الاستلام", logo: "https://cdn-icons-png.flaticon.com/512/2488/2488749.png" },
-            { id: "cliq", name: "كليك CliQ (فوري)", desc: "الاسم المستعار: CORNERSAMA", logo: "https://cdn-icons-png.flaticon.com/512/825/825454.png" }
+            { id: "cash", name: "دفع نقدي (كاش Cash)", desc: "الدفع عند الاستلام كاش", logo: "https://cdn-icons-png.flaticon.com/512/2488/2488749.png" },
+            { id: "cliq", name: "كليك CliQ (فوري مجاني)", desc: "الاسم المستعار: CORNERSAMA", logo: "https://cdn-icons-png.flaticon.com/512/825/825454.png" }
         ]
     }
 ];
@@ -1602,23 +1436,39 @@ function safeSet(key, val) {
 }
 
 let activeRoleSession = safeGet('cc_role_session', null);
+let productsCatalog = safeGet('cc_catalog', DEFAULT_FULL_CATALOG);
+let redeemCatalog = safeGet('cc_redeem_catalog', DEFAULT_FULL_REDEEM_CATALOG);
 let currentAuthenticatedUser = safeGet('cc_active_client_user', {
     name: "عمر عبيدات",
     phone: "0796433698",
     points: 19818,
-    tier: "الفئة البرونزية",
-    ordersCount: 14,
-    vehicleDetails: "تويوتا بريوس بيضاء - رقم 24-8899"
+    ordersCount: 14
 });
 let activeOrdersList = safeGet('cc_orders', []);
+let customerFeedbacksList = safeGet('cc_feedbacks', [
+    {
+        id: "fb_1",
+        customerPhone: "0796433698",
+        customerName: "عمر عبيدات",
+        category: "اقتراح تطويري",
+        text: "يرجى إضافة خيار الوافل المزدوج بصوص الفستق الحلبي",
+        reply: "أهلاً بك عمر! تم إضافة صنف الوافل الجديد إلى القائمة بناءً على طلبك.",
+        dateStr: "2026/11/05"
+    }
+]);
 
 window.appState = {
+    currentCategory: "الكل",
+    selectedProduct: null,
+    productModalQty: 1,
+    selectedSizeIndex: -1,
+    selectedSauces: [],
+    selectedAddons: [],
     cart: safeGet('cc_cart', []),
     activeBranchId: 0,
     activeTown: "كفرسوم",
-    fulfillmentService: "delivery", // delivery | pickup | drive_thru
-    selectedPaymentMethod: "دفع نقدي (كاش Cash)",
-    orderNotes: ""
+    fulfillmentService: "delivery", // delivery | pickup
+    selectedPaymentMethod: "دفع نقدي (كاش Cash)"
 };
 
 /* التبديل بين شاشات التطبيق */
@@ -1641,11 +1491,10 @@ function updateBottomNavState(screenId) {
 }
 
 window.checkAuthAndNavigate = function(screenId) {
-    if (!currentAuthenticatedUser) {
-        window.showToastMsg("يرجى تسجيل الدخول أولاً");
-        return;
-    }
     navigateRouter(screenId);
+    if (screenId === 'screen-feedback') renderCustomerFeedbacksList();
+    if (screenId === 'screen-order-tracking') renderOrderTrackingView();
+    if (screenId === 'screen-rewards') renderRedeemStoreGrid();
 };
 
 window.checkAuthAndProceedToCart = function() {
@@ -1653,176 +1502,302 @@ window.checkAuthAndProceedToCart = function() {
     navigateRouter('screen-cart');
 };
 
-/* نظام اختيار نوع الخدمة: التوصيل / الاستلام / الاستلام من السيارة */
+/* نافذة اختيار الفرع الذكية */
+window.openBranchSelectModal = function() {
+    document.getElementById('badgeActiveBranch0').style.display = window.appState.activeBranchId === 0 ? 'inline-block' : 'none';
+    document.getElementById('badgeActiveBranch1').style.display = window.appState.activeBranchId === 1 ? 'inline-block' : 'none';
+    document.getElementById('modalChooseBranch').style.display = 'flex';
+};
+window.closeBranchSelectModal = function() {
+    document.getElementById('modalChooseBranch').style.display = 'none';
+};
+
+window.selectAppBranch = function(branchId) {
+    window.appState.activeBranchId = branchId;
+    window.appState.activeTown = Object.keys(branchesConfig[branchId].towns)[0];
+    closeBranchSelectModal();
+    updateBranchDOMDisplay();
+    renderCartBranchPayments();
+    window.showToastMsg(`تم التحويل إلى ${branchesConfig[branchId].name}`);
+};
+
+function updateBranchDOMDisplay() {
+    const branch = branchesConfig[window.appState.activeBranchId];
+    document.getElementById('headerBranchNameBtn').innerText = branch.name;
+    document.getElementById('cartPrepBranchTitle').innerText = branch.name;
+
+    const disp = document.getElementById('activeFulfillmentDisplay');
+    if (window.appState.fulfillmentService === 'delivery') {
+        disp.innerText = `التوصيل إلى: ${window.appState.activeTown} (عبر ${branch.name})`;
+    } else {
+        disp.innerText = `الاستلام من الفرع مباشرة: ${branch.name}`;
+    }
+}
+
+/* اختيار نوع الخدمة: التوصيل vs الاستلام من الفرع فقط */
 window.setFulfillmentService = function(mode) {
     window.appState.fulfillmentService = mode;
     document.getElementById('pillServiceDelivery')?.classList.toggle('active', mode === 'delivery');
     document.getElementById('pillServicePickup')?.classList.toggle('active', mode === 'pickup');
-    document.getElementById('pillServiceDriveThru')?.classList.toggle('active', mode === 'drive_thru');
 
-    const disp = document.getElementById('activeFulfillmentDisplay');
-    const branchName = branchesConfig[window.appState.activeBranchId].name;
+    const townSection = document.getElementById('cartDeliveryTownSection');
+    if (townSection) townSection.style.display = mode === 'delivery' ? 'block' : 'none';
 
-    if (mode === 'delivery') {
-        disp.innerText = `موقع التوصيل: ${window.appState.activeTown} (عبر ${branchName})`;
-    } else if (mode === 'pickup') {
-        disp.innerText = `استلام من المحل: ${branchName}`;
-    } else if (mode === 'drive_thru') {
-        disp.innerText = `استلام من السيارة Drive-Thru: ${branchName} (${currentAuthenticatedUser?.vehicleDetails || 'سيارتك'})`;
-    }
-    renderCartView();
+    updateBranchDOMDisplay();
+    recalculateCartTotals();
 };
 
-window.promptSwitchBranchOrTown = function() {
-    const branchNames = branchesConfig.map((b, i) => `${i + 1}. ${b.name}`).join('\n');
-    const choice = prompt(`اختر الفرع المطلوب:\n${branchNames}`, String(window.appState.activeBranchId + 1));
-    if (choice) {
-        const idx = parseInt(choice, 10) - 1;
-        if (branchesConfig[idx]) {
-            window.appState.activeBranchId = idx;
-            window.appState.activeTown = Object.keys(branchesConfig[idx].towns)[0];
-            setFulfillmentService(window.appState.fulfillmentService);
-            renderCartBranchPayments();
-            window.showToastMsg(`تم التحويل إلى ${branchesConfig[idx].name}`);
-        }
-    }
-};
-
-/* نافذة تجربة كافيه كورنر المنبثقة */
-window.openExperienceModal = function() {
-    document.getElementById('modalChooseExperience').style.display = 'flex';
-};
-window.closeExperienceModal = function() {
-    document.getElementById('modalChooseExperience').style.display = 'none';
-};
-window.selectExperienceMode = function(mode) {
-    closeExperienceModal();
-    if (mode === 'specialty') filterCatalogByCategory('كبسولات');
-    else if (mode === 'sweets') filterCatalogByCategory('وافل وكريب');
-    else renderMainCatalogRows();
-    window.showToastMsg("تم تحديث التجربة والمنيو");
-};
-
-/* زر المسح في المنتصف */
-window.handleCenterScanButtonClick = function() {
-    window.showToastMsg("جاري تشغيل قارئ الباركود لمسح كود الطاولة أو كود استبدال النقاط...");
-};
-
-/* رندر أصناف الصفحة الرئيسية بتصميم بن العميد */
-function renderMainCatalogRows(filteredItems = null) {
-    const container = document.getElementById('homeMainCatalogRows');
+/* المنيو وقائمة الأصناف والتصنيفات الدوارة */
+function renderCategoryChips() {
+    const container = document.getElementById('catalogCategoryChips');
     if (!container) return;
-
-    const items = filteredItems || DEFAULT_CATALOG_DATA;
-    container.innerHTML = items.map(it => `
-        <div class="capsule-product-row">
-            <button class="btn-round-add-green" onclick="quickAddItemToCart('${it.id}')">+</button>
-            <div class="capsule-info-col">
-                ${it.isLimited ? `<span class="capsule-badge-limited">✨ لفترة محدودة</span>` : ''}
-                <div class="capsule-title">${it.name}</div>
-                <div class="capsule-desc">${it.desc}</div>
-                <div class="capsule-price-tag num-font">${parseFloat(it.price).toFixed(2)} د.أ</div>
-            </div>
-            <div class="capsule-img-col">
-                <img src="${it.img}" alt="${it.name}">
-            </div>
-        </div>
+    const cats = ["الكل", ...new Set(productsCatalog.map(p => p.category))];
+    container.innerHTML = cats.map(cat => `
+        <button class="cat-chip ${window.appState.currentCategory === cat ? 'active' : ''}" onclick="selectMenuCategory('${cat}')">
+            ${cat}
+        </button>
     `).join('');
 }
 
-window.filterCatalogByCategory = function(cat) {
-    const filtered = DEFAULT_CATALOG_DATA.filter(it => it.category === cat);
-    renderMainCatalogRows(filtered.length ? filtered : null);
-    window.showToastMsg(`تم تصفية الأصناف: ${cat}`);
+window.selectMenuCategory = function(cat) {
+    window.appState.currentCategory = cat;
+    renderCategoryChips();
+    renderProductsGrid();
 };
 
-window.quickAddItemToCart = function(prodId) {
-    const p = DEFAULT_CATALOG_DATA.find(x => x.id === prodId);
-    if (!p) return;
-
-    const existing = window.appState.cart.find(ci => ci.id === p.id);
-    if (existing) {
-        existing.qty += 1;
-    } else {
-        window.appState.cart.push({
-            id: p.id,
-            name: p.name,
-            price: p.price,
-            img: p.img,
-            qty: 1
-        });
-    }
-
-    safeSet('cc_cart', window.appState.cart);
-    window.showToastMsg(`تمت إضافة ${p.name} إلى الطلب ✓`);
-};
-
-/* متجر النقاط */
-function renderRedeemStore(category = 'all') {
-    const container = document.getElementById('redeemStoreItemsGrid');
+function renderProductsGrid() {
+    const container = document.getElementById('mainProductsGrid');
     if (!container) return;
 
-    const items = category === 'all' 
-        ? DEFAULT_REDEEM_ITEMS 
-        : DEFAULT_REDEEM_ITEMS.filter(r => r.category === category);
+    const filtered = productsCatalog.filter(p => {
+        return window.appState.currentCategory === "الكل" || p.category === window.appState.currentCategory;
+    });
 
-    container.innerHTML = items.map(it => `
-        <div class="redeem-store-card">
-            <div class="redeem-item-img-box">
-                <img src="${it.img}" alt="${it.name}">
+    if (filtered.length === 0) {
+        container.innerHTML = `<div style="grid-column:1/-1; text-align:center; padding:30px; font-size:12px; color:var(--text-muted);">لا توجد أصناف في هذا القسم حالياً.</div>`;
+        return;
+    }
+
+    container.innerHTML = filtered.map(item => `
+        <div class="product-card" onclick="openProductCustomizer('${item.id}')">
+            <div class="product-img-box">
+                <img src="${item.img}" class="product-img" alt="${item.name}">
             </div>
-            <div style="font-size:12.5px; font-weight:900; margin-bottom:2px;">${it.name}</div>
-            <div style="font-size:10px; color:var(--text-secondary); margin-bottom:8px; line-height:1.3;">${it.desc}</div>
-            <div style="display:flex; align-items:center; justify-content:space-between; margin-top:auto;">
-                <button class="btn-round-add-green" style="width:30px; height:30px; background:var(--brand-primary);" onclick="claimRedeemRewardItem('${it.id}')">+</button>
-                <div style="font-size:12px; font-weight:900; color:var(--brand-primary);">
-                    <span class="num-font">${it.points}</span> نقطة
+            <div class="product-meta">
+                <div>
+                    <div class="product-name">${item.name}</div>
+                    <div class="product-desc">${item.desc}</div>
+                </div>
+                <div class="product-row-bottom">
+                    <div class="product-price num-font">${parseFloat(item.price).toFixed(2)} د.أ</div>
+                    <button class="btn-add-mini" type="button">طلب</button>
                 </div>
             </div>
         </div>
     `).join('');
 }
 
-window.filterRedeemStoreCategory = function(cat) {
-    document.querySelectorAll('.redeem-pill-btn').forEach(btn => {
-        btn.classList.toggle('active', btn.innerText === (cat === 'all' ? 'الكل' : cat));
-    });
-    renderRedeemStore(cat);
-};
+/* تخصيص الصنف الفاخر بالكامل */
+window.openProductCustomizer = function(prodId) {
+    const prod = productsCatalog.find(p => p.id === prodId);
+    if (!prod) return;
 
-window.claimRedeemRewardItem = function(rewardId) {
-    const r = DEFAULT_REDEEM_ITEMS.find(x => x.id === rewardId);
-    if (!r) return;
+    window.appState.selectedProduct = JSON.parse(JSON.stringify(prod));
+    window.appState.productModalQty = 1;
 
-    if (currentAuthenticatedUser.points < r.points) {
-        return window.showToastMsg("رصيد نقاطك الحالي غير كافٍ لاستبدال هذه المكافأة");
+    document.getElementById('psTitle').innerText = prod.name;
+    document.getElementById('psDesc').innerText = prod.desc;
+    document.getElementById('psBasePrice').innerText = parseFloat(prod.price).toFixed(2) + " د.أ";
+    document.getElementById('psHeroImg').src = prod.img;
+    document.getElementById('psNotes').value = '';
+    document.getElementById('psQtyDisplay').innerText = '1';
+
+    // الأحجام
+    const sizeWrapper = document.getElementById('psSizeCardWrapper');
+    const sizeContainer = document.getElementById('psSizeOptionsContainer');
+    if (prod.hasSizes && prod.sizesList && prod.sizesList.length > 0) {
+        sizeWrapper.style.display = 'block';
+        window.appState.selectedSizeIndex = 0;
+        sizeContainer.innerHTML = prod.sizesList.map((sz, idx) => `
+            <label style="display:flex; align-items:center; justify-content:space-between; padding:8px 10px; background:var(--bg-surface); border:1px solid var(--border-subtle); border-radius:var(--radius-sm); cursor:pointer;">
+                <div style="display:flex; align-items:center; gap:8px;">
+                    <input type="radio" name="prodSizeChoice" value="${idx}" ${idx === 0 ? 'checked' : ''} onchange="window.appState.selectedSizeIndex = ${idx}; updateCustomizerPrice();">
+                    <span style="font-size:12px; font-weight:700;">${sz.name}</span>
+                </div>
+                <span class="num-font" style="font-size:11.5px; color:var(--brand-primary);">${parseFloat(sz.extra) > 0 ? '+ ' + parseFloat(sz.extra).toFixed(2) + ' د.أ' : 'الأساسي'}</span>
+            </label>
+        `).join('');
+    } else {
+        sizeWrapper.style.display = 'none';
+        window.appState.selectedSizeIndex = -1;
     }
 
-    currentAuthenticatedUser.points -= r.points;
-    safeSet('cc_active_client_user', currentAuthenticatedUser);
-    updateUserDOMStats();
-    window.showToastMsg(`مبروك! تم استبدال ${r.name} وخصم النقاط بنجاح 🎉`);
+    // الصوصات والنكهات
+    const sauceWrapper = document.getElementById('psSaucesCardWrapper');
+    const sauceContainer = document.getElementById('psSaucesContainer');
+    if (prod.hasSauces && prod.saucesList && prod.saucesList.length > 0) {
+        sauceWrapper.style.display = 'block';
+        window.appState.selectedSauces = [];
+        sauceContainer.innerHTML = prod.saucesList.map(sc => `
+            <label style="display:flex; align-items:center; justify-content:space-between; padding:8px 10px; background:var(--bg-surface); border:1px solid var(--border-subtle); border-radius:var(--radius-sm); cursor:pointer;">
+                <div style="display:flex; align-items:center; gap:8px;">
+                    <input type="checkbox" value="${sc.name}" data-price="${sc.price}" onchange="handleSauceCheck(this)">
+                    <span style="font-size:12px; font-weight:700;">${sc.name}</span>
+                </div>
+                <span class="num-font" style="font-size:11.5px; color:var(--brand-primary);">${parseFloat(sc.price).toFixed(2)} د.أ</span>
+            </label>
+        `).join('');
+    } else {
+        sauceWrapper.style.display = 'none';
+        window.appState.selectedSauces = [];
+    }
+
+    // الإضافات
+    const addonsWrapper = document.getElementById('psAddonsCardWrapper');
+    const addonsContainer = document.getElementById('psAddonsContainer');
+    const allowed = prod.allowedAddons || [];
+    const availableAddons = MASTER_ADDONS_DICT.filter(ad => allowed.includes(ad.id));
+    if (availableAddons.length > 0) {
+        addonsWrapper.style.display = 'block';
+        window.appState.selectedAddons = [];
+        addonsContainer.innerHTML = availableAddons.map(ad => `
+            <label style="display:flex; align-items:center; justify-content:space-between; padding:8px 10px; background:var(--bg-surface); border:1px solid var(--border-subtle); border-radius:var(--radius-sm); cursor:pointer;">
+                <div style="display:flex; align-items:center; gap:8px;">
+                    <input type="checkbox" value="${ad.name}" data-price="${ad.price}" onchange="handleAddonCheck(this)">
+                    <span style="font-size:12px; font-weight:700;">${ad.name}</span>
+                </div>
+                <span class="num-font" style="font-size:11.5px; color:var(--brand-primary);">${parseFloat(ad.price) > 0 ? '+ ' + parseFloat(ad.price).toFixed(2) + ' د.أ' : 'مجاني'}</span>
+            </label>
+        `).join('');
+    } else {
+        addonsWrapper.style.display = 'none';
+        window.appState.selectedAddons = [];
+    }
+
+    updateCustomizerPrice();
+    navigateRouter('screen-product-customizer');
 };
 
-/* سلة الشراء والدفع */
+window.handleSauceCheck = function(el) {
+    if (el.checked) {
+        if (window.appState.selectedSauces.length >= 3) {
+            el.checked = false;
+            return window.showToastMsg("يمكنك اختيار 3 نكهات أو صوصات كحد أقصى");
+        }
+        window.appState.selectedSauces.push({ name: el.value, price: parseFloat(el.dataset.price) || 0 });
+    } else {
+        window.appState.selectedSauces = window.appState.selectedSauces.filter(s => s.name !== el.value);
+    }
+    updateCustomizerPrice();
+};
+
+window.handleAddonCheck = function(el) {
+    if (el.checked) {
+        window.appState.selectedAddons.push({ name: el.value, price: parseFloat(el.dataset.price) || 0 });
+    } else {
+        window.appState.selectedAddons = window.appState.selectedAddons.filter(a => a.name !== el.value);
+    }
+    updateCustomizerPrice();
+};
+
+window.adjustProductQty = function(delta) {
+    let q = (window.appState.productModalQty || 1) + delta;
+    if (q < 1) q = 1;
+    window.appState.productModalQty = q;
+    document.getElementById('psQtyDisplay').innerText = q;
+    updateCustomizerPrice();
+};
+
+window.updateCustomizerPrice = function() {
+    const prod = window.appState.selectedProduct;
+    if (!prod) return;
+    let unitPrice = parseFloat(prod.price) || 0;
+
+    if (prod.hasSizes && window.appState.selectedSizeIndex >= 0 && prod.sizesList[window.appState.selectedSizeIndex]) {
+        unitPrice += parseFloat(prod.sizesList[window.appState.selectedSizeIndex].extra) || 0;
+    }
+
+    if (prod.hasSauces && window.appState.selectedSauces && window.appState.selectedSauces.length > 0) {
+        const saucePrices = window.appState.selectedSauces.map(s => s.price);
+        unitPrice = Math.max(...saucePrices);
+    }
+
+    if (window.appState.selectedAddons) {
+        window.appState.selectedAddons.forEach(ad => { unitPrice += (parseFloat(ad.price) || 0); });
+    }
+
+    const total = unitPrice * (window.appState.productModalQty || 1);
+    const calculatedEl = document.getElementById('psCalculatedPrice');
+    if (calculatedEl) calculatedEl.innerText = total.toFixed(2);
+};
+
+window.confirmAddItemToCart = function() {
+    const prod = window.appState.selectedProduct;
+    if (!prod) return;
+
+    let finalUnitPrice = parseFloat(prod.price) || 0;
+    let sizeName = "";
+    if (prod.hasSizes && window.appState.selectedSizeIndex >= 0 && prod.sizesList[window.appState.selectedSizeIndex]) {
+        sizeName = prod.sizesList[window.appState.selectedSizeIndex].name;
+        finalUnitPrice += parseFloat(prod.sizesList[window.appState.selectedSizeIndex].extra) || 0;
+    }
+
+    let sauceNames = [];
+    if (prod.hasSauces && window.appState.selectedSauces && window.appState.selectedSauces.length > 0) {
+        sauceNames = window.appState.selectedSauces.map(s => s.name);
+        finalUnitPrice = Math.max(...window.appState.selectedSauces.map(s => s.price));
+    }
+
+    let addonNames = [];
+    if (window.appState.selectedAddons) {
+        addonNames = window.appState.selectedAddons.map(a => a.name);
+        window.appState.selectedAddons.forEach(ad => { finalUnitPrice += (parseFloat(ad.price) || 0); });
+    }
+
+    const notes = document.getElementById('psNotes')?.value || '';
+
+    window.appState.cart.push({
+        cartId: "ci_" + Date.now(),
+        id: prod.id,
+        name: prod.name,
+        price: finalUnitPrice,
+        qty: window.appState.productModalQty || 1,
+        size: sizeName,
+        sauces: sauceNames,
+        addons: addonNames,
+        notes: notes,
+        img: prod.img
+    });
+
+    safeSet('cc_cart', window.appState.cart);
+    window.showToastMsg(`تمت إضافة ${prod.name} للسلة بنجاح`);
+    navigateRouter('screen-home');
+};
+
+/* سلة الشراء وإتمام الطلب المنظم */
 function renderCartView() {
     const listContainer = document.getElementById('cartOrderItemsList');
     if (!listContainer) return;
 
     const cart = window.appState.cart;
     if (cart.length === 0) {
-        listContainer.innerHTML = `<div style="text-align:center; padding:30px; font-size:12px; color:var(--text-muted);">طلبك فارغ حالياً. تفضل بإضافة مشروباتك وحلوياتك المفضلة!</div>`;
+        listContainer.innerHTML = `<div style="text-align:center; padding:24px; font-size:12px; color:var(--text-muted);">السلة فارغة حالياً. تفضل باختيار طلباتك من المنيو!</div>`;
     } else {
         listContainer.innerHTML = cart.map((item, idx) => `
-            <div class="cart-order-item-card">
+            <div style="display:flex; align-items:center; justify-content:space-between; padding:10px 0; border-bottom:1px solid var(--border-subtle);">
                 <div style="display:flex; align-items:center; gap:10px;">
                     <img src="${item.img}" style="width:44px; height:44px; border-radius:8px; object-fit:contain; border:1px solid var(--border-subtle);">
                     <div>
-                        <div style="font-size:12.5px; font-weight:900;">${item.name}</div>
-                        <div class="num-font" style="font-size:12px; font-weight:800; color:var(--brand-primary);">${(item.price * item.qty).toFixed(2)} د.أ</div>
+                        <div style="font-size:12.5px; font-weight:700;">${item.name}</div>
+                        <div style="font-size:10px; color:var(--text-secondary);">
+                            ${item.size ? 'الحجم: ' + item.size + ' | ' : ''}
+                            ${item.sauces && item.sauces.length > 0 ? item.sauces.join(', ') + ' | ' : ''}
+                            ${item.addons && item.addons.length > 0 ? item.addons.join('+ ') : ''}
+                        </div>
+                        <div class="num-font" style="font-size:12px; font-weight:700; color:var(--brand-primary);">${(item.price * item.qty).toFixed(2)} د.أ</div>
                     </div>
                 </div>
-                <div class="cart-item-stepper">
+                <div style="display:flex; align-items:center; background:var(--bg-main); border-radius:var(--radius-full); padding:2px 8px; gap:10px; font-weight:700;">
                     <span style="cursor:pointer;" onclick="adjustCartQty(${idx}, -1)">−</span>
                     <span class="num-font">${item.qty}</span>
                     <span style="cursor:pointer;" onclick="adjustCartQty(${idx}, 1)">+</span>
@@ -1831,9 +1806,18 @@ function renderCartView() {
         `).join('');
     }
 
-    renderCartRewardsCrossSell();
+    populateCartTowns();
     renderCartBranchPayments();
     recalculateCartTotals();
+}
+
+function populateCartTowns() {
+    const select = document.getElementById('cartTownSelect');
+    if (!select) return;
+    const branch = branchesConfig[window.appState.activeBranchId];
+    select.innerHTML = Object.entries(branch.towns).map(([town, fee]) => `
+        <option value="${town}" ${town === window.appState.activeTown ? 'selected' : ''}>${town} (+ ${parseFloat(fee).toFixed(2)} د.أ توصيل)</option>
+    `).join('');
 }
 
 window.adjustCartQty = function(idx, delta) {
@@ -1845,19 +1829,6 @@ window.adjustCartQty = function(idx, delta) {
     renderCartView();
 };
 
-function renderCartRewardsCrossSell() {
-    const strip = document.getElementById('cartRewardsCrossSellStrip');
-    if (!strip) return;
-    strip.innerHTML = DEFAULT_REDEEM_ITEMS.slice(0, 3).map(rd => `
-        <div style="background:#fff; border:1px solid var(--border-subtle); border-radius:var(--radius-md); padding:8px 10px; width:150px; flex-shrink:0; text-align:center;">
-            <img src="${rd.img}" style="width:50px; height:50px; object-fit:contain; margin:0 auto 4px;">
-            <div style="font-size:10.5px; font-weight:800; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${rd.name}</div>
-            <div class="num-font" style="font-size:11px; font-weight:900; color:var(--brand-primary);">${rd.points} نقطة</div>
-            <button class="btn-brand-outline" style="padding:2px 8px; font-size:9.5px; margin-top:4px; width:100%;" onclick="claimRedeemRewardItem('${rd.id}')">+ استبدل</button>
-        </div>
-    `).join('');
-}
-
 function renderCartBranchPayments() {
     const container = document.getElementById('cartBranchPaymentProvidersList');
     if (!container) return;
@@ -1868,11 +1839,11 @@ function renderCartBranchPayments() {
             <div style="display:flex; align-items:center; gap:10px;">
                 <img src="${pm.logo}" class="pay-brand-logo-img">
                 <div>
-                    <div style="font-size:12.5px; font-weight:900;">${pm.name}</div>
+                    <div style="font-size:12.5px; font-weight:700;">${pm.name}</div>
                     <div style="font-size:10px; color:var(--text-secondary);">${pm.desc}</div>
                 </div>
             </div>
-            <input type="radio" name="payMethodRadio" ${window.appState.selectedPaymentMethod === pm.name ? 'checked' : ''}>
+            <input type="radio" name="payRadioMethod" ${window.appState.selectedPaymentMethod === pm.name ? 'checked' : ''}>
         </div>
     `).join('');
 }
@@ -1884,12 +1855,14 @@ window.selectPaymentMethod = function(name) {
 
 function recalculateCartTotals() {
     const subtotal = window.appState.cart.reduce((sum, it) => sum + (it.price * it.qty), 0);
-    const tax = subtotal * 0.16; // ضريبة مبيعات
+    const tax = subtotal * 0.16;
     let deliveryFee = 0;
 
     if (window.appState.fulfillmentService === 'delivery' && window.appState.cart.length > 0) {
         const branch = branchesConfig[window.appState.activeBranchId];
-        deliveryFee = branch.towns[window.appState.activeTown] || 1.00;
+        const townSelect = document.getElementById('cartTownSelect');
+        const selectedTown = townSelect ? townSelect.value : window.appState.activeTown;
+        deliveryFee = branch.towns[selectedTown] || 1.00;
     }
 
     const grandTotal = subtotal + tax + deliveryFee;
@@ -1900,23 +1873,17 @@ function recalculateCartTotals() {
     document.getElementById('cartGrandTotalVal').innerText = `JOD ${grandTotal.toFixed(2)}`;
 }
 
-window.promptAddOrderNotes = function() {
-    const n = prompt("اكتب تعليمات خاصة للتحضير أو موقع التوصيل أو بيانات سيارتك:", window.appState.orderNotes);
-    if (n !== null) {
-        window.appState.orderNotes = n.trim();
-        window.showToastMsg("تم حفظ تعليمات الطلب");
-    }
-};
-
 window.confirmAndDispatchFinalOrder = function() {
-    if (!currentAuthenticatedUser) return window.showToastMsg("يرجى تسجيل الدخول أولاً");
     if (window.appState.cart.length === 0) return window.showToastMsg("سلتك فارغة حالياً!");
 
     const branch = branchesConfig[window.appState.activeBranchId];
     const subtotal = window.appState.cart.reduce((sum, it) => sum + (it.price * it.qty), 0);
     const tax = subtotal * 0.16;
-    const deliveryFee = window.appState.fulfillmentService === 'delivery' ? (branch.towns[window.appState.activeTown] || 1.00) : 0.00;
+    const townSelect = document.getElementById('cartTownSelect');
+    const selectedTown = townSelect ? townSelect.value : window.appState.activeTown;
+    const deliveryFee = window.appState.fulfillmentService === 'delivery' ? (branch.towns[selectedTown] || 1.00) : 0.00;
     const total = subtotal + tax + deliveryFee;
+    const notes = document.getElementById('cartOrderNotesInput')?.value || "";
 
     const newOrder = {
         orderId: "CC-" + Math.floor(100000 + Math.random() * 900000),
@@ -1924,17 +1891,16 @@ window.confirmAndDispatchFinalOrder = function() {
         branchName: branch.name,
         customerName: currentAuthenticatedUser.name,
         customerPhone: currentAuthenticatedUser.phone,
-        serviceMode: window.appState.fulfillmentService,
-        town: window.appState.activeTown,
-        notes: window.appState.orderNotes,
-        vehicleDetails: currentAuthenticatedUser.vehicleDetails,
+        serviceMode: window.appState.fulfillmentService === 'delivery' ? 'توصيل' : 'استلام من الفرع',
+        town: selectedTown,
+        notes: notes,
         paymentMethod: window.appState.selectedPaymentMethod,
         items: [...window.appState.cart],
         subtotal: subtotal,
         tax: tax,
         deliveryFee: deliveryFee,
         total: total,
-        status: "قيد المراجعة",
+        status: "قيد المراجعة بالفرع",
         createdAt: Date.now(),
         dateStr: new Date().toLocaleDateString('ar-JO'),
         timeStr: new Date().toLocaleTimeString('ar-JO', { hour: '2-digit', minute: '2-digit' })
@@ -1943,23 +1909,181 @@ window.confirmAndDispatchFinalOrder = function() {
     activeOrdersList.unshift(newOrder);
     safeSet('cc_orders', activeOrdersList);
 
-    // إضافة نقاط مع الطلب
     currentAuthenticatedUser.points += Math.floor(total * 10);
+    currentAuthenticatedUser.ordersCount = (currentAuthenticatedUser.ordersCount || 0) + 1;
     safeSet('cc_active_client_user', currentAuthenticatedUser);
     updateUserDOMStats();
 
     window.appState.cart = [];
     safeSet('cc_cart', []);
-    window.showToastMsg(`تم إرسال طلبك رقم #${newOrder.orderId} بنجاح إلى ${branch.name}`);
-    navigateRouter('screen-home');
+    window.showToastMsg(`تم إرسال طلبك #${newOrder.orderId} بنجاح إلى ${branch.name}`);
+    renderOrderTrackingView();
+    navigateRouter('screen-order-tracking');
 };
 
-/* نظام تسجيل الدخول والصلاحيات المشفرة */
+/* تتبع الطلبات الحية */
+function renderOrderTrackingView() {
+    const container = document.getElementById('orderTrackingListContainer');
+    if (!container) return;
+
+    const myOrders = activeOrdersList.filter(o => o.customerPhone === currentAuthenticatedUser.phone);
+    if (myOrders.length === 0) {
+        container.innerHTML = `<div style="text-align:center; padding:30px; font-size:12px; color:var(--text-muted);">لا توجد طلبات جارية حالياً.</div>`;
+        return;
+    }
+
+    container.innerHTML = myOrders.map(o => `
+        <div class="clean-card" style="margin-bottom:10px;">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+                <span class="num-font" style="font-weight:700; color:var(--brand-primary);">${o.orderId}</span>
+                <span style="font-size:10px; font-weight:700; padding:2px 8px; border-radius:var(--radius-full); background:var(--brand-primary-light); color:var(--brand-primary);">${o.status}</span>
+            </div>
+            <div style="font-size:12px; font-weight:600; margin-bottom:4px;">${o.branchName} • ${o.serviceMode} (${o.town})</div>
+            <div style="font-size:11px; color:var(--text-secondary); margin-bottom:6px;">
+                الأصناف: ${o.items.map(it => it.name + ' (' + it.qty + '×)').join(', ')}
+            </div>
+            <div style="display:flex; justify-content:space-between; font-size:12px; font-weight:700; border-top:1px dashed var(--border-subtle); padding-top:6px;">
+                <span>المجموع:</span>
+                <span class="num-font">${parseFloat(o.total).toFixed(2)} د.أ (${o.paymentMethod})</span>
+            </div>
+        </div>
+    `).join('');
+}
+
+/* متجر استبدال النقاط المكتمل */
+let activeRedeemFilter = 'all';
+window.filterRedeemStore = function(cat) {
+    activeRedeemFilter = cat;
+    ['all', 'cups', 'bags', 'treats'].forEach(c => {
+        const btn = document.getElementById('chipRedeem' + c.charAt(0).toUpperCase() + c.slice(1));
+        if (btn) btn.classList.remove('active');
+    });
+    if (cat === 'all') document.getElementById('chipRedeemAll')?.classList.add('active');
+    if (cat === 'أكواب وفناجين') document.getElementById('chipRedeemCups')?.classList.add('active');
+    if (cat === 'شنط') document.getElementById('chipRedeemBags')?.classList.add('active');
+    if (cat === 'وافل ومشروبات') document.getElementById('chipRedeemTreats')?.classList.add('active');
+    renderRedeemStoreGrid();
+};
+
+function renderRedeemStoreGrid() {
+    const container = document.getElementById('redeemStoreItemsGrid');
+    if (!container) return;
+
+    const filtered = redeemCatalog.filter(r => activeRedeemFilter === 'all' || r.category === activeRedeemFilter);
+
+    if (filtered.length === 0) {
+        container.innerHTML = `<div style="grid-column:1/-1; text-align:center; padding:20px; font-size:11px; color:var(--text-muted);">لا توجد أصناف في هذا القسم حالياً.</div>`;
+        return;
+    }
+
+    container.innerHTML = filtered.map(it => `
+        <div class="clean-card" style="padding:10px; text-align:center; display:flex; flex-direction:column; justify-content:space-between;">
+            <div style="width:100%; height:110px; background:#fff; border-radius:8px; overflow:hidden; margin-bottom:8px;">
+                <img src="${it.img}" style="width:100%; height:100%; object-fit:contain;">
+            </div>
+            <div style="font-size:12px; font-weight:700; margin-bottom:2px;">${it.name}</div>
+            <div style="font-size:9.5px; color:var(--text-secondary); margin-bottom:6px;">${it.desc}</div>
+            <div class="num-font" style="font-size:13px; font-weight:800; color:var(--brand-primary); margin-bottom:8px;">${it.points} نقطة</div>
+            <button class="btn-brand-solid" style="padding:6px; font-size:11px;" onclick="claimRedeemItemAction('${it.id}')">استبدال الآن</button>
+        </div>
+    `).join('');
+}
+
+window.claimRedeemItemAction = function(itemId) {
+    const item = redeemCatalog.find(r => r.id === itemId);
+    if (!item) return;
+
+    if (currentAuthenticatedUser.points < item.points) {
+        return window.showToastMsg(`نقاطك لا تكفي (${currentAuthenticatedUser.points} من ${item.points})`);
+    }
+
+    currentAuthenticatedUser.points -= item.points;
+    safeSet('cc_active_client_user', currentAuthenticatedUser);
+    updateUserDOMStats();
+    renderRedeemStoreGrid();
+    window.showToastMsg(`مبروك! تم استبدال ${item.name} بنجاح`);
+};
+
+/* نظام الشكاوى والردود المباشرة من لوحة الأدمن */
+window.submitCustomerFeedbackAction = function() {
+    const category = document.getElementById('feedbackCategoryInput').value;
+    const text = document.getElementById('feedbackTextInput').value.trim();
+
+    if (!text) return window.showToastMsg("يرجى كتابة نص الملاحظة أو الشكوى");
+
+    const newFb = {
+        id: "fb_" + Date.now(),
+        customerPhone: currentAuthenticatedUser.phone,
+        customerName: currentAuthenticatedUser.name,
+        category: category,
+        text: text,
+        reply: "",
+        dateStr: new Date().toLocaleDateString('ar-JO')
+    };
+
+    customerFeedbacksList.unshift(newFb);
+    safeSet('cc_feedbacks', customerFeedbacksList);
+    document.getElementById('feedbackTextInput').value = '';
+    renderCustomerFeedbacksList();
+    window.showToastMsg("تم إرسال الشكوى للإدارة بنجاح وسنرد عليك قريباً");
+};
+
+function renderCustomerFeedbacksList() {
+    const container = document.getElementById('clientFeedbackHistoryContainer');
+    if (!container) return;
+
+    const myFbs = customerFeedbacksList.filter(f => f.customerPhone === currentAuthenticatedUser.phone);
+    if (myFbs.length === 0) {
+        container.innerHTML = `<div style="text-align:center; padding:20px; font-size:11px; color:var(--text-muted);">لم تسجل أي شكاوى سابقة.</div>`;
+        return;
+    }
+
+    container.innerHTML = myFbs.map(fb => `
+        <div class="clean-card" style="margin-bottom:8px;">
+            <div style="display:flex; justify-content:space-between; font-size:11.5px; font-weight:700; margin-bottom:4px;">
+                <span style="color:var(--brand-primary);">${fb.category}</span>
+                <span class="num-font" style="color:var(--text-muted); font-size:10px;">${fb.dateStr}</span>
+            </div>
+            <div style="font-size:12px; color:var(--text-primary); margin-bottom:6px; line-height:1.4;">${fb.text}</div>
+            ${fb.reply ? `
+                <div style="background:var(--brand-green-light); padding:8px 10px; border-radius:var(--radius-sm); font-size:11px; color:var(--brand-green); font-weight:600; line-height:1.4;">
+                    رد الإدارة: ${fb.reply}
+                </div>
+            ` : `
+                <div style="font-size:10.5px; color:var(--status-warning);">بانتظار مراجعة الإدارة والرد...</div>
+            `}
+        </div>
+    `).join('');
+}
+
+/* نظام دعوة صديق */
+window.copyReferralCodeAction = function() {
+    navigator.clipboard?.writeText("CORNER-7964");
+    window.showToastMsg("تم نسخ كود الدعوة (CORNER-7964)");
+};
+
+window.shareReferralViaWhatsApp = function() {
+    const text = encodeURIComponent("جرّب قهوة وحلويات كافيه كورنر الفاخرة! استخدم كود الدعوة الخاص بي (CORNER-7964) واحصل على 15 نقطة مجانية: https://coffeecorner.jo");
+    window.open(`https://wa.me/?text=${text}`, '_blank');
+};
+
+/* نظام الدخول المخفي للادمن (5 نقرات على زر الفرع) */
+let secretClickCounter = 0;
+let secretTimer = null;
 window.handleSecretAdminTrigger = function() {
-    if (activeRoleSession) {
-        routeToRoleDashboard();
+    secretClickCounter++;
+    clearTimeout(secretTimer);
+    secretTimer = setTimeout(() => { secretClickCounter = 0; }, 2000);
+
+    if (secretClickCounter >= 5) {
+        secretClickCounter = 0;
+        if (activeRoleSession) {
+            routeToActiveRoleScreen();
+        } else {
+            navigateRouter('screen-admin-login');
+        }
     } else {
-        navigateRouter('screen-admin-login');
+        openBranchSelectModal();
     }
 };
 
@@ -1969,30 +2093,30 @@ window.attemptSecureAccessAuthentication = function() {
         activeRoleSession = { role: "admin", name: "الإدارة العامة" };
         safeSet('cc_role_session', activeRoleSession);
         window.showToastMsg("مرحباً بك في لوحة الإدارة المركزية");
-        routeToRoleDashboard();
+        routeToActiveRoleScreen();
     } else if (pin === SECURITY_ACCESS_KEYS.BRANCH_KAFARSUM) {
         activeRoleSession = { role: "branch", branchId: 0, name: "فرع كفرسوم" };
         safeSet('cc_role_session', activeRoleSession);
         window.showToastMsg("تم تسجيل الدخول لفرع كفرسوم");
-        routeToRoleDashboard();
+        routeToActiveRoleScreen();
     } else if (pin === SECURITY_ACCESS_KEYS.BRANCH_SAMA) {
         activeRoleSession = { role: "branch", branchId: 1, name: "فرع سما الروسان" };
         safeSet('cc_role_session', activeRoleSession);
         window.showToastMsg("تم تسجيل الدخول لفرع سما الروسان");
-        routeToRoleDashboard();
+        routeToActiveRoleScreen();
     } else {
         window.showToastMsg("رمز PIN غير مصرح به!");
     }
 };
 
-function routeToRoleDashboard() {
+function routeToActiveRoleScreen() {
     if (!activeRoleSession) return;
-    if (activeRoleSession.role === 'branch') {
+    if (activeRoleSession.role === 'admin') {
+        renderMasterAdminDashboard();
+        navigateRouter('screen-master-admin');
+    } else if (activeRoleSession.role === 'branch') {
         renderBranchSpecificDashboard();
         navigateRouter('screen-branch-dashboard');
-    } else {
-        window.showToastMsg("لوحة الأدمن العام جاهزة بالكامل");
-        navigateRouter('screen-home');
     }
 }
 
@@ -2003,7 +2127,61 @@ window.exitRoleSession = function() {
     navigateRouter('screen-home');
 };
 
-/* لوحة تحكم الفرع المستقلة والطلبات */
+/* لوحة تحكم الإدارة المركزية */
+function renderMasterAdminDashboard() {
+    const fbContainer = document.getElementById('adminFeedbackControlList');
+    if (fbContainer) {
+        fbContainer.innerHTML = customerFeedbacksList.map(fb => `
+            <div class="clean-card" style="margin-bottom:8px;">
+                <div style="display:flex; justify-content:space-between; font-size:11.5px; font-weight:700;">
+                    <span>${fb.customerName} (${fb.customerPhone})</span>
+                    <span class="num-font" style="color:var(--text-muted);">${fb.dateStr}</span>
+                </div>
+                <div style="font-size:11px; color:var(--brand-primary); margin:2px 0;">${fb.category}</div>
+                <div style="font-size:12px; margin-bottom:8px;">${fb.text}</div>
+                ${fb.reply ? `
+                    <div style="background:var(--bg-main); padding:6px 8px; border-radius:var(--radius-sm); font-size:11px;">
+                        <strong>ردك:</strong> ${fb.reply}
+                    </div>
+                ` : `
+                    <div style="display:flex; gap:6px;">
+                        <input type="text" class="ios-input-field" id="replyInput_${fb.id}" placeholder="اكتب ردك المباشر للزبون...">
+                        <button class="btn-brand-solid" style="width:auto; padding:0 12px; font-size:11px;" onclick="sendAdminReplyToFeedback('${fb.id}')">إرسال الرد</button>
+                    </div>
+                `}
+            </div>
+        `).join('');
+    }
+
+    const ordContainer = document.getElementById('adminMasterAllOrdersList');
+    if (ordContainer) {
+        ordContainer.innerHTML = activeOrdersList.map(o => `
+            <div style="display:flex; justify-content:space-between; align-items:center; padding:8px 0; border-bottom:1px solid var(--border-subtle); font-size:11.5px;">
+                <div>
+                    <strong>#${o.orderId}</strong> — ${o.branchName} (${o.customerName})
+                    <div style="font-size:10px; color:var(--text-muted);">${o.serviceMode} • ${parseFloat(o.total).toFixed(2)} د.أ (${o.paymentMethod})</div>
+                </div>
+                <span style="font-weight:700; color:var(--brand-primary);">${o.status}</span>
+            </div>
+        `).join('');
+    }
+}
+
+window.sendAdminReplyToFeedback = function(fbId) {
+    const input = document.getElementById('replyInput_' + fbId);
+    const reply = input ? input.value.trim() : "";
+    if (!reply) return window.showToastMsg("اكتب نص الرد أولاً");
+
+    const fb = customerFeedbacksList.find(x => x.id === fbId);
+    if (fb) {
+        fb.reply = reply;
+        safeSet('cc_feedbacks', customerFeedbacksList);
+        renderMasterAdminDashboard();
+        window.showToastMsg("تم إرسال الرد للزبون بنجاح");
+    }
+};
+
+/* لوحة تحكم الفرع المستقلة */
 function renderBranchSpecificDashboard() {
     if (!activeRoleSession || activeRoleSession.role !== 'branch') return;
     const bId = activeRoleSession.branchId;
@@ -2011,18 +2189,16 @@ function renderBranchSpecificDashboard() {
     document.getElementById('branchDashboardTitle').innerText = "لوحة " + bName;
 
     const branchOrders = activeOrdersList.filter(o => o.branchId === bId);
-    let cashSum = 0;
-    let digitalSum = 0;
-
+    let cash = 0, digital = 0;
     branchOrders.forEach(o => {
         const val = parseFloat(o.total) || 0;
-        if (o.paymentMethod.includes('كاش') || o.paymentMethod.includes('نقدي')) cashSum += val;
-        else digitalSum += val;
+        if (o.paymentMethod.includes('كاش')) cash += val;
+        else digital += val;
     });
 
     document.getElementById('branchTodayOrdersCount').innerText = branchOrders.length;
-    document.getElementById('branchTodayCashTotal').innerText = cashSum.toFixed(2);
-    document.getElementById('branchTodayDigitalTotal').innerText = digitalSum.toFixed(2);
+    document.getElementById('branchTodayCashTotal').innerText = cash.toFixed(2);
+    document.getElementById('branchTodayDigitalTotal').innerText = digital.toFixed(2);
 
     const list = document.getElementById('branchSpecificOrdersList');
     if (branchOrders.length === 0) {
@@ -2033,14 +2209,14 @@ function renderBranchSpecificDashboard() {
     list.innerHTML = branchOrders.map(o => `
         <div class="clean-card" style="margin-bottom:8px;">
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
-                <span class="num-font" style="font-weight:900; color:var(--brand-primary);">${o.orderId}</span>
-                <span style="font-size:10px; font-weight:800; padding:2px 8px; border-radius:var(--radius-full); background:var(--brand-primary-light); color:var(--brand-primary);">${o.status}</span>
+                <span class="num-font" style="font-weight:700; color:var(--brand-primary);">${o.orderId}</span>
+                <span style="font-size:10px; font-weight:700; padding:2px 8px; border-radius:var(--radius-full); background:var(--brand-primary-light); color:var(--brand-primary);">${o.status}</span>
             </div>
-            <div style="font-size:12px; font-weight:900;">${o.customerName} (${o.customerPhone})</div>
-            <div style="font-size:10.5px; color:var(--text-secondary); margin-bottom:6px;">
-                الخدمة: <strong>${o.serviceMode}</strong> • الدفع: <strong>${o.paymentMethod}</strong> • الإجمالي: <strong class="num-font">${parseFloat(o.total).toFixed(2)} د.أ</strong>
+            <div style="font-size:12px; font-weight:700;">${o.customerName} (${o.customerPhone})</div>
+            <div style="font-size:11px; color:var(--text-secondary); margin-bottom:6px;">
+                ${o.serviceMode} (${o.town}) • الدفع: <strong>${o.paymentMethod}</strong> • الإجمالي: <strong class="num-font">${parseFloat(o.total).toFixed(2)} د.أ</strong>
             </div>
-            ${o.notes ? `<div style="font-size:10px; background:#fff3cd; padding:4px 8px; border-radius:4px; margin-bottom:6px;">ملاحظات: ${o.notes}</div>` : ''}
+            ${o.notes ? `<div style="font-size:10.5px; background:#fff3cd; padding:4px 8px; border-radius:4px; margin-bottom:6px;">ملاحظات الزبون: ${o.notes}</div>` : ''}
             <div style="display:flex; gap:4px;">
                 <button class="btn-brand-solid" style="padding:5px 8px; font-size:10.5px; flex:1;" onclick="updateBranchOrderState('${o.orderId}', 'جاري التحضير بالمطبخ')">قبول وتحضير</button>
                 <button class="btn-brand-solid" style="padding:5px 8px; font-size:10.5px; flex:1; background:var(--status-success);" onclick="updateBranchOrderState('${o.orderId}', 'تم التسليم بنجاح')">تم التسليم</button>
@@ -2056,7 +2232,7 @@ window.updateBranchOrderState = function(orderId, state) {
     o.status = state;
     safeSet('cc_orders', activeOrdersList);
     renderBranchSpecificDashboard();
-    window.showToastMsg(`تم تحديث حالة الطلب إلى: ${state}`);
+    window.showToastMsg(`تم تحديث الطلب: ${state}`);
 };
 
 /* فاتورة نهاية اليوم Z-Report */
@@ -2072,7 +2248,7 @@ window.openBranchDayClosureModal = function() {
     orders.forEach(o => {
         const t = parseFloat(o.total) || 0;
         del += parseFloat(o.deliveryFee) || 0;
-        if (o.paymentMethod.includes('كاش') || o.paymentMethod.includes('نقدي')) cash += t;
+        if (o.paymentMethod.includes('كاش')) cash += t;
         else if (o.paymentMethod.includes('CliQ') || o.paymentMethod.includes('كليك')) cliq += t;
         else cards += t;
     });
@@ -2092,7 +2268,7 @@ window.closeBranchDayClosureModal = function() {
     document.getElementById('modalBranchDayClosure').style.display = 'none';
 };
 
-/* تحديث واجهة المستخدم */
+/* تحديث واجهة المستخدم والبيانات */
 function updateUserDOMStats() {
     if (!currentAuthenticatedUser) return;
     const u = currentAuthenticatedUser;
@@ -2103,27 +2279,11 @@ function updateUserDOMStats() {
     document.getElementById('homeUserNameGreeting').innerText = u.name;
     document.getElementById('profileScreenUserName').innerText = u.name;
     document.getElementById('profileScreenUserPhone').innerText = u.phone;
+    document.getElementById('statTotalUserPoints').innerText = ptsFormatted;
+    document.getElementById('statCompletedOrdersCount').innerText = u.ordersCount || 0;
 }
 
-window.openDriveThruVehicleModal = function() {
-    const v = prompt("أدخل تفاصيل مركبتك للاستلام من السيارة (النوع، اللون، رقم اللوحة):", currentAuthenticatedUser?.vehicleDetails || "");
-    if (v !== null) {
-        currentAuthenticatedUser.vehicleDetails = v.trim();
-        safeSet('cc_active_client_user', currentAuthenticatedUser);
-        window.showToastMsg("تم حفظ بيانات مركبتك بنجاح");
-        setFulfillmentService('drive_thru');
-    }
-};
-
-window.shareCornerReferralLink = function() {
-    const link = "https://coffeecorner.jo/ref?u=" + currentAuthenticatedUser.phone;
-    navigator.clipboard?.writeText(link);
-    window.showToastMsg("تم نسخ رابط الدعوة الخاص بك! شاركه واكسب 50 نقطة.");
-};
-
 window.logoutCustomerSession = function() {
-    currentAuthenticatedUser = null;
-    safeSet('cc_active_client_user', null);
     window.showToastMsg("تم تسجيل الخروج");
     navigateRouter('screen-home');
 };
@@ -2137,14 +2297,16 @@ window.showToastMsg = function(msg) {
     if (!t) return;
     t.innerText = msg;
     t.classList.add('active');
-    setTimeout(() => t.classList.remove('active'), 2600);
+    setTimeout(() => t.classList.remove('active'), 2500);
 };
 
-/* تشغيل التطبيق */
+/* تهيئة وتشغيل التطبيق عند التحميل */
 document.addEventListener('DOMContentLoaded', () => {
     updateUserDOMStats();
-    renderMainCatalogRows();
-    renderRedeemStore('all');
+    renderCategoryChips();
+    renderProductsGrid();
+    renderRedeemStoreGrid();
+    updateBranchDOMDisplay();
     setFulfillmentService('delivery');
 });
 </script>
