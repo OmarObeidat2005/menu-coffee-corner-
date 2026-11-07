@@ -8,10 +8,10 @@
     <meta name="theme-color" content="#8b1528">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <!-- خط مطابق تماماً لخط تطبيق بن العميد -->
+    <!-- خط IBM Plex Sans Arabic المطابق تماماً لتطبيق بن العميد -->
     <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800;900&display=swap" rel="stylesheet">
 
-    <!-- Firebase SDK Compat -->
+    <!-- مكتبات Firebase SDK المتوافقة للربط السحابي الحي -->
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
@@ -25,6 +25,7 @@
             --brand-gold-glow: rgba(197, 155, 99, 0.18);
             --brand-green: #1a4d2e;
             --brand-green-light: #eaf1ed;
+            --brand-lime: #84cc16;
             
             --bg-main: #f8f6f2;
             --bg-surface: #ffffff;
@@ -121,7 +122,7 @@
             overflow-x: hidden;
         }
 
-        /* شريط التنقل السفلي الاحترافي */
+        /* شريط التنقل السفلي */
         .bottom-nav-bar {
             position: fixed;
             bottom: 0;
@@ -181,7 +182,7 @@
         }
         .nav-center-scan-btn:active { transform: scale(0.92); }
 
-        /* الترويسة الرئيسية الحمراء المقوسة */
+        /* الترويسة الرئيسية الحمراء */
         .app-header-home {
             background: linear-gradient(180deg, var(--brand-primary) 0%, var(--brand-primary-dark) 100%);
             color: #ffffff;
@@ -261,7 +262,7 @@
         }
         .points-metric-card:active { transform: scale(0.97); }
 
-        /* شريط التوصيل أو الاستلام فقط */
+        /* شريط التوصيل أو الاستلام */
         .fulfillment-service-bar {
             background: #ffffff;
             border-radius: var(--radius-full);
@@ -312,7 +313,6 @@
             gap: 6px;
         }
 
-        /* شريط تصنيفات الأصناف الدوار */
         .categories-scroll {
             display: flex;
             gap: 8px;
@@ -340,7 +340,6 @@
             border-color: var(--brand-primary);
         }
 
-        /* شبكة المنتجات الأنيقة مع بطاقات التخصيص */
         .product-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
@@ -419,7 +418,6 @@
             font-weight: 700;
         }
 
-        /* البطاقات العامة */
         .clean-card {
             background: var(--bg-card);
             border: 1px solid var(--border-subtle);
@@ -495,6 +493,69 @@
         .ios-textarea-field {
             resize: none;
             height: 70px;
+        }
+
+        /* تنسيقات عناصر القائمة مثل صور بن العميد بالتمام */
+        .profile-section-heading {
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--text-muted);
+            margin: 14px 4px 6px;
+        }
+        .profile-menu-container {
+            background: #ffffff;
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border-subtle);
+            overflow: hidden;
+            margin-bottom: 10px;
+        }
+        .profile-menu-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 13px 14px;
+            border-bottom: 1px solid var(--border-subtle);
+            cursor: pointer;
+            transition: background 0.15s ease;
+        }
+        .profile-menu-item:last-child {
+            border-bottom: none;
+        }
+        .profile-menu-item:active {
+            background: var(--bg-main);
+        }
+        .profile-item-right {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+        .profile-item-right svg {
+            color: var(--text-primary);
+            width: 19px;
+            height: 19px;
+            stroke-width: 1.9;
+        }
+        .profile-item-left {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            color: #b5b5b5;
+            font-size: 12px;
+        }
+        .badge-pill-green {
+            background: #84cc16;
+            color: #ffffff;
+            font-size: 10px;
+            font-weight: 800;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         /* طرق الدفع المصورة */
@@ -610,6 +671,45 @@
             opacity: 1;
         }
 
+        /* Toggle switch */
+        .ios-toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 44px;
+            height: 24px;
+        }
+        .ios-toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        .ios-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-color: #e5e5e5;
+            transition: .25s;
+            border-radius: 24px;
+        }
+        .ios-slider:before {
+            position: absolute;
+            content: "";
+            height: 18px;
+            width: 18px;
+            left: 3px;
+            bottom: 3px;
+            background-color: white;
+            transition: .25s;
+            border-radius: 50%;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+        }
+        input:checked + .ios-slider {
+            background-color: var(--brand-primary);
+        }
+        input:checked + .ios-slider:before {
+            transform: translateX(20px);
+        }
+
         @media print {
             body * { visibility: hidden; }
             #printableShiftInvoice, #printableShiftInvoice * { visibility: visible; }
@@ -621,7 +721,7 @@
 
 <div class="toast-popup" id="systemToast">تم بنجاح</div>
 
-<!-- نافذة اختيار الفرع الذكية (كفرسوم أو سما الروسان) -->
+<!-- نافذة اختيار الفرع الذكية -->
 <div class="modal-bottom-sheet" id="modalChooseBranch">
     <div class="bottom-sheet-content">
         <div class="sheet-handle-bar"></div>
@@ -885,7 +985,6 @@
                 <div style="font-size:11px; color:var(--text-muted);">استبدل نقاطك بقطع وافل وهدايا مجانية فورية</div>
             </div>
 
-            <!-- أزرار حبات الدواء لأقسام متجر النقاط كما في صورة بن العميد -->
             <div style="display:flex; gap:6px; overflow-x:auto; padding-bottom:8px; margin-bottom:10px;">
                 <button class="cat-chip active" id="chipRedeemAll" onclick="filterRedeemStore('all')">الكل</button>
                 <button class="cat-chip" id="chipRedeemCups" onclick="filterRedeemStore('أكواب وفناجين')">أكواب وفناجين</button>
@@ -934,92 +1033,413 @@
         </div>
     </div>
 
-    <!-- 7. شاشة حسابي الشخصي -->
+    <!-- 7. شاشة حسابي الشخصي الشاملة لجميع الخدمات كما في الصور بدقة -->
     <div id="screen-user-profile" class="app-screen">
-        <div style="background:linear-gradient(180deg, var(--brand-primary) 0%, var(--brand-primary-dark) 100%); color:#fff; padding:16px 16px 24px; border-bottom-left-radius:28px; border-bottom-right-radius:28px;">
+        <!-- ترويسة الحساب الحمراء المائلة بنفس تصميم لقطة الشاشة تماماً -->
+        <div style="background:linear-gradient(180deg, var(--brand-primary) 0%, var(--brand-primary-dark) 100%); color:#fff; padding:18px 16px 26px; border-bottom-left-radius:32px; border-bottom-right-radius:32px;">
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px;">
-                <button style="background:rgba(255,255,255,0.18); border:none; width:34px; height:34px; border-radius:50%; color:#fff; cursor:pointer;" onclick="navigateRouter('screen-home')">✕</button>
-                <div style="font-weight:700; font-size:14px;">ملفي الشخصي</div>
-                <div style="width:34px;"></div>
+                <div style="display:flex; align-items:center; gap:8px;">
+                    <div style="width:48px; height:48px; border-radius:50%; background:#fff; overflow:hidden; border:2px solid rgba(255,255,255,0.4);">
+                        <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&q=80" style="width:100%; height:100%; object-fit:cover;">
+                    </div>
+                    <div style="width:32px; height:32px; border-radius:50%; background:rgba(0,0,0,0.25); display:flex; align-items:center; justify-content:center; cursor:pointer;" onclick="window.showToastMsg('معرف الحساب موثق ✓')">
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="8.5" cy="7" r="4"></circle><line x1="20" y1="8" x2="20" y2="14"></line><line x1="23" y1="11" x2="17" y2="11"></line></svg>
+                    </div>
+                </div>
+
+                <div style="display:flex; align-items:center; gap:8px;">
+                    <div style="background:rgba(0,0,0,0.3); border:1px solid rgba(255,255,255,0.25); border-radius:var(--radius-full); padding:4px 10px; font-size:11px; display:flex; align-items:center; gap:4px;">
+                        <span>⚠️</span>
+                        <span>غير مكتمل</span>
+                    </div>
+                    <button style="background:none; border:none; color:#fff; font-size:18px; cursor:pointer;" onclick="navigateRouter('screen-home')">✕</button>
+                </div>
             </div>
 
-            <div style="display:flex; align-items:center; gap:12px; margin-bottom:16px;">
-                <div style="width:56px; height:56px; border-radius:50%; background:#fff; overflow:hidden; border:2px solid rgba(255,255,255,0.4);">
-                    <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&q=80" style="width:100%; height:100%; object-fit:cover;">
-                </div>
-                <div>
-                    <div style="font-size:17px; font-weight:700;" id="profileScreenUserName">عمر عبيدات</div>
-                    <div class="num-font" style="font-size:12px; color:rgba(255,255,255,0.7);" id="profileScreenUserPhone">0796433698</div>
-                </div>
-            </div>
+            <div style="font-size:22px; font-weight:800; margin-bottom:16px;" id="profileScreenUserName">عمر عبيدات</div>
 
-            <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px;">
-                <div style="background:rgba(255,255,255,0.12); padding:10px; border-radius:var(--radius-md);">
-                    <div style="font-size:10px; color:rgba(255,255,255,0.7);">إجمالي النقاط</div>
-                    <div style="font-size:16px; font-weight:800; margin-top:2px;"><span class="num-font" id="statTotalUserPoints">19,818</span></div>
+            <!-- بطاقتا الإحصائيات: إجمالي التوفير + إجمالي النقاط المستخدمة -->
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+                <div style="background:rgba(0, 0, 0, 0.28); border:1px solid rgba(255,255,255,0.14); border-radius:var(--radius-md); padding:12px 14px;">
+                    <div style="font-size:11px; color:rgba(255,255,255,0.75);">إجمالي التوفير</div>
+                    <div class="num-font" style="font-size:18px; font-weight:800; margin-top:2px;">JOD 0.00</div>
+                    <div style="font-size:9.5px; color:rgba(255,255,255,0.6); margin-top:3px;">0 JOD + هذا الشهر</div>
                 </div>
-                <div style="background:rgba(255,255,255,0.12); padding:10px; border-radius:var(--radius-md);">
-                    <div style="font-size:10px; color:rgba(255,255,255,0.7);">الطلبات المكتملة</div>
-                    <div style="font-size:16px; font-weight:800; margin-top:2px;"><span class="num-font" id="statCompletedOrdersCount">14</span> طلب</div>
+
+                <div style="background:rgba(0, 0, 0, 0.28); border:1px solid rgba(255,255,255,0.14); border-radius:var(--radius-md); padding:12px 14px;">
+                    <div style="font-size:11px; color:rgba(255,255,255,0.75);">إجمالي النقاط المستخدمة</div>
+                    <div style="font-size:18px; font-weight:800; margin-top:2px;"><span class="num-font">0</span> نقطة</div>
+                    <div style="font-size:9.5px; color:rgba(255,255,255,0.6); margin-top:3px;">0+ نقطة • هذا الأسبوع</div>
                 </div>
             </div>
         </div>
 
-        <div class="scrollable-content" style="padding-top:14px;">
-            <div style="font-size:11px; font-weight:600; color:var(--text-muted); margin-bottom:6px;">الخدمات والطلبات</div>
-            <div class="clean-card" style="padding:0; overflow:hidden; margin-bottom:12px;">
-                <div style="display:flex; align-items:center; justify-content:space-between; padding:12px 14px; border-bottom:1px solid var(--border-subtle); cursor:pointer;" onclick="navigateRouter('screen-order-tracking')">
-                    <div style="display:flex; align-items:center; gap:10px; font-size:12.5px; font-weight:600;">
-                        <span>🕒</span>
-                        <span>تتبع طلباتي الحالية والسابقة</span>
+        <div class="scrollable-content" style="padding-top:10px;">
+            <!-- قسم: عام -->
+            <div class="profile-section-heading">عام</div>
+            <div class="profile-menu-container">
+                <div class="profile-menu-item" onclick="navigateRouter('screen-notifications')">
+                    <div class="profile-item-right">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
+                        <span>الإشعارات</span>
                     </div>
-                    <span style="color:#bbb;">❮</span>
+                    <div class="profile-item-left">
+                        <span class="badge-pill-green num-font" id="notifBadgeCounterProfile">2</span>
+                        <span>❮</span>
+                    </div>
                 </div>
-                <div style="display:flex; align-items:center; justify-content:space-between; padding:12px 14px; border-bottom:1px solid var(--border-subtle); cursor:pointer;" onclick="navigateRouter('screen-referral')">
-                    <div style="display:flex; align-items:center; gap:10px; font-size:12.5px; font-weight:600;">
-                        <span>👥</span>
-                        <span>دعوة صديق وكسب 50 نقطة</span>
+
+                <div class="profile-menu-item" onclick="navigateRouter('screen-favorites')">
+                    <div class="profile-item-right">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
+                        <span>المفضلة</span>
                     </div>
-                    <span style="color:#bbb;">❮</span>
+                    <div class="profile-item-left">
+                        <span>❮</span>
+                    </div>
                 </div>
-                <div style="display:flex; align-items:center; justify-content:space-between; padding:12px 14px; cursor:pointer;" onclick="navigateRouter('screen-feedback')">
-                    <div style="display:flex; align-items:center; gap:10px; font-size:12.5px; font-weight:600;">
-                        <span>💬</span>
-                        <span>الشكاوى والاقتراحات والردود المباشرة</span>
+
+                <div class="profile-menu-item" onclick="navigateRouter('screen-referral')">
+                    <div class="profile-item-right">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="8.5" cy="7" r="4"></circle><line x1="20" y1="8" x2="20" y2="14"></line><line x1="23" y1="11" x2="17" y2="11"></line></svg>
+                        <span>دعوة صديق</span>
                     </div>
-                    <span style="color:#bbb;">❮</span>
+                    <div class="profile-item-left">
+                        <span>❮</span>
+                    </div>
+                </div>
+
+                <div class="profile-menu-item" onclick="navigateRouter('screen-order-tracking')">
+                    <div class="profile-item-right">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 14 14"></polyline><path d="M3.05 11a9 9 0 0 1 .5-3m17.4 0a9 9 0 0 1 .5 3"></path></svg>
+                        <span>الطلبات السابقة</span>
+                    </div>
+                    <div class="profile-item-left">
+                        <span>❮</span>
+                    </div>
+                </div>
+
+                <div class="profile-menu-item">
+                    <div class="profile-item-right">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+                        <span>الوضع الليلي</span>
+                    </div>
+                    <div class="profile-item-left">
+                        <label class="ios-toggle-switch">
+                            <input type="checkbox" id="toggleDarkModeInput" onchange="toggleThemeMode()">
+                            <span class="ios-slider"></span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="profile-menu-item">
+                    <div class="profile-item-right">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg>
+                        <span>أصوات التطبيق</span>
+                    </div>
+                    <div class="profile-item-left">
+                        <label class="ios-toggle-switch">
+                            <input type="checkbox" id="toggleAppSoundsInput" checked onchange="toggleAppAudioFX()">
+                            <span class="ios-slider"></span>
+                        </label>
+                    </div>
                 </div>
             </div>
 
-            <div style="font-size:11px; font-weight:600; color:var(--text-muted); margin-bottom:6px;">إعدادات الحساب</div>
-            <div class="clean-card" style="padding:0; overflow:hidden; margin-bottom:12px;">
-                <div style="display:flex; align-items:center; justify-content:space-between; padding:12px 14px; border-bottom:1px solid var(--border-subtle); cursor:pointer;" onclick="openBranchSelectModal()">
-                    <div style="display:flex; align-items:center; gap:10px; font-size:12.5px; font-weight:600;">
-                        <span>🏪</span>
-                        <span>تغيير الفرع الأساسي</span>
+            <!-- قسم: مخصص -->
+            <div class="profile-section-heading">مخصص</div>
+            <div class="profile-menu-container">
+                <div class="profile-menu-item" onclick="navigateRouter('screen-custom-mixes')">
+                    <div class="profile-item-right">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path></svg>
+                        <span>الخلطات والمشروبات المخصصة</span>
                     </div>
-                    <span style="color:#bbb;">❮</span>
+                    <div class="profile-item-left">
+                        <span>❮</span>
+                    </div>
                 </div>
-                <div style="display:flex; align-items:center; justify-content:space-between; padding:12px 14px;">
-                    <div style="display:flex; align-items:center; gap:10px; font-size:12.5px; font-weight:600;">
-                        <span>🌙</span>
-                        <span>الوضع الليلي الداكن</span>
+
+                <div class="profile-menu-item" onclick="navigateRouter('screen-saved-addresses')">
+                    <div class="profile-item-right">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+                        <span>عنوان التوصيل</span>
                     </div>
-                    <input type="checkbox" onchange="toggleThemeMode()" style="accent-color:var(--brand-primary); cursor:pointer;">
+                    <div class="profile-item-left">
+                        <span>❮</span>
+                    </div>
                 </div>
             </div>
 
-            <button class="clean-card" style="width:100%; border:none; display:flex; align-items:center; justify-content:space-between; padding:12px 14px; background:#fff; cursor:pointer;" onclick="logoutCustomerSession()">
-                <div style="display:flex; align-items:center; gap:10px; font-weight:700; color:var(--status-danger);">
-                    <span>🚪</span>
-                    <span>تسجيل الخروج من الحساب</span>
+            <!-- قسم: المدفوعات والدعم -->
+            <div class="profile-section-heading">المدفوعات والدعم</div>
+            <div class="profile-menu-container">
+                <div class="profile-menu-item" onclick="navigateRouter('screen-payment-cards')">
+                    <div class="profile-item-right">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect><line x1="1" y1="10" x2="23" y2="10"></line></svg>
+                        <span>طريقة الدفع</span>
+                    </div>
+                    <div class="profile-item-left">
+                        <img src="https://cdn-icons-png.flaticon.com/512/349/349221.png" style="width:24px; height:18px; object-fit:contain;">
+                        <span>❮</span>
+                    </div>
                 </div>
-                <span style="color:#bbb;">❮</span>
+
+                <div class="profile-menu-item" onclick="window.showToastMsg('اللغة الحالية: العربية (الافتراضية)')">
+                    <div class="profile-item-right">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+                        <div>
+                            <div>اللغة</div>
+                            <div style="font-size:10px; color:var(--text-muted);">العربية</div>
+                        </div>
+                    </div>
+                    <div class="profile-item-left">
+                        <span>❮</span>
+                    </div>
+                </div>
+
+                <div class="profile-menu-item" onclick="navigateRouter('screen-app-tour')">
+                    <div class="profile-item-right">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="2" y="4" width="20" height="16" rx="2.18" ry="2.18"></rect><polygon points="10 8 16 12 10 16 10 8"></polygon></svg>
+                        <span>جولة التعريف</span>
+                    </div>
+                    <div class="profile-item-left">
+                        <span>❮</span>
+                    </div>
+                </div>
+
+                <div class="profile-menu-item" onclick="navigateRouter('screen-terms')">
+                    <div class="profile-item-right">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+                        <span>الشروط والأحكام</span>
+                    </div>
+                    <div class="profile-item-left">
+                        <span>❮</span>
+                    </div>
+                </div>
+
+                <div class="profile-menu-item" onclick="navigateRouter('screen-feedback')">
+                    <div class="profile-item-right">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="10"></circle><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+                        <span>المساعدة والدعم</span>
+                    </div>
+                    <div class="profile-item-left">
+                        <span>❮</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- زر تسجيل الخروج كما في لقطة الشاشة -->
+            <button class="clean-card" style="width:100%; border:none; display:flex; align-items:center; justify-content:space-between; padding:14px; background:#ffffff; cursor:pointer; margin-bottom:12px;" onclick="logoutCustomerSession()">
+                <div style="display:flex; align-items:center; gap:10px; font-size:13.5px; font-weight:700; color:var(--text-primary);">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+                    <span>تسجيل الخروج</span>
+                </div>
+                <span style="color:#b5b5b5;">❮</span>
             </button>
+
+            <!-- نص نسخة التطبيق الرسمي -->
+            <div style="text-align:center; font-size:11px; color:var(--text-muted); padding-bottom:20px;" class="num-font">
+                نسخة التطبيق 1.5.11 (78)
+            </div>
         </div>
     </div>
 
-    <!-- 8. شاشة دعوة صديق -->
+    <!-- 8. شاشة مركز الإشعارات -->
+    <div id="screen-notifications" class="app-screen">
+        <header class="header">
+            <button class="header-btn" onclick="navigateRouter('screen-user-profile')" aria-label="عودة">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+            </button>
+            <div style="font-weight:700; font-size:15px;">مركز الإشعارات</div>
+            <button class="btn-brand-outline" style="padding:2px 8px; font-size:10.5px;" onclick="window.showToastMsg('تم تحديد كل الإشعارات كمقروءة')">تحديد كمقروء</button>
+        </header>
+
+        <div class="scrollable-content">
+            <div class="clean-card">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
+                    <strong style="color:var(--brand-primary); font-size:13px;">مرحباً بك في كافيه كورنر!</strong>
+                    <span class="num-font" style="font-size:10px; color:var(--text-muted);">اليوم 12:30 م</span>
+                </div>
+                <div style="font-size:11.5px; color:var(--text-secondary); line-height:1.4;">
+                    حصلت على 15 نقطة ولاء مجانية بمناسبة فتح حسابك وتوثيق هاتفك. استمتع بأشهى المشروبات والحلويات!
+                </div>
+            </div>
+            <div class="clean-card">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
+                    <strong style="color:var(--brand-green); font-size:13px;">عرض الويكند الحصري</strong>
+                    <span class="num-font" style="font-size:10px; color:var(--text-muted);">أمس 08:15 م</span>
+                </div>
+                <div style="font-size:11.5px; color:var(--text-secondary); line-height:1.4;">
+                    اطلب أي قطعتين وافل واحصل على كابتشينو إيطالي مجاناً عند الطلب عبر الفرع أو التوصيل.
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 9. شاشة المفضلة -->
+    <div id="screen-favorites" class="app-screen">
+        <header class="header">
+            <button class="header-btn" onclick="navigateRouter('screen-user-profile')" aria-label="عودة">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+            </button>
+            <div style="font-weight:700; font-size:15px;">قائمة المفضلة</div>
+            <div style="width:38px;"></div>
+        </header>
+
+        <div class="scrollable-content">
+            <div class="clean-card" style="display:flex; align-items:center; justify-content:space-between;">
+                <div style="display:flex; align-items:center; gap:10px;">
+                    <img src="https://images.unsplash.com/photo-1562376552-0d160a2f238d?w=120&q=80" style="width:48px; height:48px; border-radius:8px; object-fit:cover;">
+                    <div>
+                        <div style="font-size:13px; font-weight:700;">وافل بلجيكي مقرمش</div>
+                        <div class="num-font" style="font-size:12px; color:var(--brand-primary); font-weight:800;">2.00 د.أ</div>
+                    </div>
+                </div>
+                <button class="btn-brand-solid" style="width:auto; padding:5px 12px; font-size:11px;" onclick="openProductCustomizer('p1')">طلب</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 10. شاشة الخلطات والمشروبات المخصصة -->
+    <div id="screen-custom-mixes" class="app-screen">
+        <header class="header">
+            <button class="header-btn" onclick="navigateRouter('screen-user-profile')" aria-label="عودة">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+            </button>
+            <div style="font-weight:700; font-size:15px;">الخلطات والمشروبات المخصصة</div>
+            <div style="width:38px;"></div>
+        </header>
+
+        <div class="scrollable-content">
+            <div class="clean-card" style="margin-bottom:12px;">
+                <div class="clean-title">خلطتي الخاصة #1: سبانش لاتيه دبل شوت</div>
+                <div style="font-size:11.5px; color:var(--text-secondary); line-height:1.5; margin-bottom:8px;">
+                    حجم كبير • حليب مكثف قليل • شوت إسبريسو إضافي مع رشة قرفة طبيعية.
+                </div>
+                <button class="btn-brand-solid" onclick="window.showToastMsg('تم نسخ خلطتك المخصصة وتوجيهها للمطبخ')">طلب الخلطة فوراً</button>
+            </div>
+
+            <div class="clean-card">
+                <div class="clean-title">خلطة وافل مكس الفستق والنوتيلا</div>
+                <div style="font-size:11.5px; color:var(--text-secondary); line-height:1.5; margin-bottom:8px;">
+                    نصف نوتيلا بلجيكية + نصف صوص فستق حلبي فاخر مع مكسرات مشكلة محمصة.
+                </div>
+                <button class="btn-brand-solid" onclick="window.showToastMsg('تم إضافة خلطة الوافل المخصصة للسلة')">طلب الخلطة فوراً</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 11. شاشة عناوين التوصيل -->
+    <div id="screen-saved-addresses" class="app-screen">
+        <header class="header">
+            <button class="header-btn" onclick="navigateRouter('screen-user-profile')" aria-label="عودة">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+            </button>
+            <div style="font-weight:700; font-size:15px;">عناوين التوصيل المحفوظة</div>
+            <div style="width:38px;"></div>
+        </header>
+
+        <div class="scrollable-content">
+            <div class="clean-card">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
+                    <div style="font-size:13px; font-weight:700; color:var(--brand-primary);">المنزل الرئيسي (كفرسوم)</div>
+                    <span style="font-size:10px; background:var(--brand-primary-light); color:var(--brand-primary); padding:2px 8px; border-radius:var(--radius-full); font-weight:700;">الافتراضي</span>
+                </div>
+                <div style="font-size:11.5px; color:var(--text-secondary); line-height:1.4;">
+                    الشارع الرئيسي، بالقرب من دوار البلدة، منزل رقم 14.
+                </div>
+            </div>
+
+            <div class="clean-card">
+                <div class="clean-title">إضافة عنوان توصيل جديد</div>
+                <div style="display:flex; flex-direction:column; gap:8px;">
+                    <input type="text" class="ios-input-field" placeholder="اسم العنوان (مثال: العمل، بيت العائلة)...">
+                    <input type="text" class="ios-input-field" placeholder="تفاصيل المنطقة والشارع ومعلم قريب...">
+                    <button class="btn-brand-solid" onclick="window.showToastMsg('تم حفظ العنوان بنجاح')">حفظ العنوان الجديد</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 12. شاشة طرق الدفع والبطاقات -->
+    <div id="screen-payment-cards" class="app-screen">
+        <header class="header">
+            <button class="header-btn" onclick="navigateRouter('screen-user-profile')" aria-label="عودة">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+            </button>
+            <div style="font-weight:700; font-size:15px;">طرق الدفع المعتمدة</div>
+            <div style="width:38px;"></div>
+        </header>
+
+        <div class="scrollable-content">
+            <div class="clean-card" style="display:flex; align-items:center; justify-content:space-between;">
+                <div style="display:flex; align-items:center; gap:10px;">
+                    <img src="https://cdn-icons-png.flaticon.com/512/349/349221.png" style="width:36px; height:24px; object-fit:contain;">
+                    <div>
+                        <div style="font-size:12.5px; font-weight:700;">بطاقة فيزا •••• 4242</div>
+                        <div style="font-size:10px; color:var(--text-muted);">تنتهي 08/28</div>
+                    </div>
+                </div>
+                <span style="font-size:11px; color:var(--status-success); font-weight:700;">مفعلة ✓</span>
+            </div>
+
+            <div class="clean-card" style="display:flex; align-items:center; justify-content:space-between;">
+                <div style="display:flex; align-items:center; gap:10px;">
+                    <img src="https://cdn-icons-png.flaticon.com/512/825/825454.png" style="width:32px; height:32px; object-fit:contain;">
+                    <div>
+                        <div style="font-size:12.5px; font-weight:700;">دفع عبر كليك CliQ المباشر</div>
+                        <div style="font-size:10px; color:var(--text-secondary);">الاسم المستعار: CORNER</div>
+                    </div>
+                </div>
+                <span style="font-size:11px; color:var(--brand-primary); font-weight:700;">معتمد ✓</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- 13. شاشة جولة التعريف -->
+    <div id="screen-app-tour" class="app-screen">
+        <header class="header">
+            <button class="header-btn" onclick="navigateRouter('screen-user-profile')" aria-label="عودة">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+            </button>
+            <div style="font-weight:700; font-size:15px;">جولة التعريف بالتطبيق</div>
+            <div style="width:38px;"></div>
+        </header>
+
+        <div class="scrollable-content">
+            <div class="clean-card" style="text-align:center; padding:20px;">
+                <div style="font-size:36px; margin-bottom:10px;">☕</div>
+                <div style="font-size:16px; font-weight:800; color:var(--brand-primary); margin-bottom:6px;">مرحباً بك في كافيه كورنر</div>
+                <p style="font-size:12px; color:var(--text-secondary); line-height:1.6; margin-bottom:14px;">
+                    تطبيقك الأول للاستمتاع بأشهى وأجود أنواع القهوة المختصة، الوافل البلجيكي، الكريب الفرنسي، والعصائر الطازجة، مع خدمة توصيل سريعة لكافة مناطق لواء بني كنانة وإربد.
+                </p>
+                <button class="btn-brand-solid" onclick="navigateRouter('screen-home')">ابدأ التصفح والطلب الآن</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 14. شاشة الشروط والأحكام -->
+    <div id="screen-terms" class="app-screen">
+        <header class="header">
+            <button class="header-btn" onclick="navigateRouter('screen-user-profile')" aria-label="عودة">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+            </button>
+            <div style="font-weight:700; font-size:15px;">الشروط والأحكام</div>
+            <div style="width:38px;"></div>
+        </header>
+
+        <div class="scrollable-content">
+            <div class="clean-card" style="font-size:12px; line-height:1.7; color:var(--text-secondary);">
+                <div style="font-size:13px; font-weight:700; color:var(--text-primary); margin-bottom:6px;">سياسة الخصوصية والطلب:</div>
+                ١. تلتزم إدارة كافيه كورنر بالحفاظ على سرية بيانات العملاء وأرقام هواتفهم.<br>
+                ٢. يتم احتساب رسوم التوصيل وفق المسافة والمنطقة الجغرافية المعتمدة لكل فرع.<br>
+                ٣. لا يمكن استبدال نقاط الولاء بأموال نقدية، بل تستبدل بمنتجات ومكافآت مجانية فقط.<br>
+                ٤. يحق للمحل إلغاء أو حظر أي حساب يخالف سياسات الاستخدام أو يسيء استخدام نظام الطلب.
+            </div>
+        </div>
+    </div>
+
+    <!-- 15. شاشة دعوة صديق -->
     <div id="screen-referral" class="app-screen">
         <header class="header">
             <button class="header-btn" onclick="navigateRouter('screen-user-profile')" aria-label="عودة">
@@ -1050,13 +1470,13 @@
         </div>
     </div>
 
-    <!-- 9. شاشة الشكاوى والاقتراحات والردود المباشرة -->
+    <!-- 16. شاشة الشكاوى والاقتراحات والردود المباشرة -->
     <div id="screen-feedback" class="app-screen">
         <header class="header">
             <button class="header-btn" onclick="navigateRouter('screen-user-profile')" aria-label="عودة">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
             </button>
-            <div style="font-weight:700; font-size:15px;">الشكاوى والاقتراحات</div>
+            <div style="font-weight:700; font-size:15px;">المساعدة والدعم والشكاوى</div>
             <div style="width:38px;"></div>
         </header>
 
@@ -1071,16 +1491,16 @@
                         <option value="طعن لفك الحظر">طعن ومراجعة تقييد الحساب</option>
                     </select>
                     <textarea class="ios-textarea-field" id="feedbackTextInput" placeholder="اكتب تفاصيل الشكوى أو الملاحظة هنا بدقة..."></textarea>
-                    <button class="btn-brand-solid" onclick="submitCustomerFeedbackAction()">إرسال للإدارة فوراً</button>
+                    <button class="btn-brand-solid" onclick="submitCustomerFeedbackAction()">إرسال للإدارة فوراً (سحابياً)</button>
                 </div>
             </div>
 
-            <div class="clean-title">سجل الشكاوى والردود من الإدارة</div>
+            <div class="clean-title">سجل الشكاوى والردود السحابية من الإدارة</div>
             <div id="clientFeedbackHistoryContainer"></div>
         </div>
     </div>
 
-    <!-- 10. بوابة الدخول المخفية للنظام (أدمن + أفرع) -->
+    <!-- 17. بوابة الدخول المحمية للنظام (أدمن + أفرع) -->
     <div id="screen-admin-login" class="app-screen">
         <header class="header">
             <button class="header-btn" onclick="navigateRouter('screen-home')" aria-label="عودة">
@@ -1096,16 +1516,20 @@
                 <div style="font-size:11.5px; color:var(--text-secondary); margin-bottom:16px;">أدخل كود PIN السري المخصص للفرع أو الإدارة العامة</div>
                 <input type="password" class="ios-input-field num-font" id="adminPassField" placeholder="••••" style="text-align:center; font-size:24px; letter-spacing:6px; margin-bottom:12px;" maxlength="10">
                 <button class="btn-brand-solid" onclick="attemptSecureAccessAuthentication()">دخول آمن</button>
+                <div style="font-size:10px; color:var(--text-muted); margin-top:14px; line-height:1.4;">
+                    * روابط الدخول المباشرة الخارجية:<br>
+                    <code>#admin</code> للإدارة العامة | <code>#branch-kafarsum</code> لفرع كفرسوم | <code>#branch-sama</code> لفرع سما الروسان
+                </div>
             </div>
         </div>
     </div>
 
-    <!-- 11. لوحة الإدارة العامة المركزية (Master Admin) -->
+    <!-- 18. لوحة الإدارة العامة المركزية (Master Admin) -->
     <div id="screen-master-admin" class="app-screen">
         <header class="header">
             <div>
                 <div style="font-size:14px; font-weight:700; color:var(--brand-primary);">الإدارة المركزية — كافيه كورنر</div>
-                <div style="font-size:10px; color:var(--text-muted);">تحكم الفروع والشكاوى والطلبات</div>
+                <div style="font-size:10px; color:var(--text-muted);">تحكم الفروع والشكاوى والطلبات (سحابياً)</div>
             </div>
             <button class="btn-brand-outline" style="padding:4px 8px; font-size:11px; color:var(--status-danger); border-color:var(--status-danger);" onclick="exitRoleSession()">خروج</button>
         </header>
@@ -1123,7 +1547,7 @@
         </div>
     </div>
 
-    <!-- 12. لوحة تحكم الفرع المستقلة (إدارة المطبخ + Z-Report) -->
+    <!-- 19. لوحة تحكم الفرع المستقلة (إدارة المطبخ + Z-Report) -->
     <div id="screen-branch-dashboard" class="app-screen">
         <header class="header">
             <div>
@@ -1239,13 +1663,24 @@
 
 <script>
 /* =========================================================
-   COFFEE CORNER ENGINE (FULL REBUILD & RBAC)
+   COFFEE CORNER PRO — FULL FIREBASE CLOUD & RBAC ENGINE
    ========================================================= */
 
+const FIREBASE_CONFIG = {
+    apiKey: "AIzaSyCPGI8XX2v5naRLK2QSQJcw6fB0Nsmbl8M",
+    authDomain: "coffee-corner-121.firebaseapp.com",
+    projectId: "coffee-corner-121",
+    storageBucket: "coffee-corner-121.firebasestorage.app",
+    messagingSenderId: "550349405177",
+    appId: "1:550349405177:web:468a9248c6c6be9f46db28"
+};
+
+let cloudDb = null;
+
 const SECURITY_ACCESS_KEYS = {
-    MASTER_ADMIN: "2001159393",    // رمز الأدمن الشامل
-    BRANCH_KAFARSUM: "1101",        // رمز فرع كفرسوم
-    BRANCH_SAMA: "1102"             // رمز فرع سما الروسان
+    MASTER_ADMIN: "2001159393",    // كود PIN الإدارة العامة
+    BRANCH_KAFARSUM: "1101",        // كود PIN فرع كفرسوم
+    BRANCH_SAMA: "1102"             // كود PIN فرع سما الروسان
 };
 
 const MASTER_ADDONS_DICT = [
@@ -1457,6 +1892,8 @@ let customerFeedbacksList = safeGet('cc_feedbacks', [
     }
 ]);
 
+let appAudioEnabled = safeGet('cc_audio_enabled', true);
+
 window.appState = {
     currentCategory: "الكل",
     selectedProduct: null,
@@ -1467,12 +1904,120 @@ window.appState = {
     cart: safeGet('cc_cart', []),
     activeBranchId: 0,
     activeTown: "كفرسوم",
-    fulfillmentService: "delivery", // delivery | pickup
+    fulfillmentService: "delivery",
     selectedPaymentMethod: "دفع نقدي (كاش Cash)"
 };
 
-/* التبديل بين شاشات التطبيق */
+/* تفعيل السحابة الحية Firebase Cloud Firestore */
+function initCloudFirestoreSafe() {
+    try {
+        if (window.firebase) {
+            if (!firebase.apps.length) firebase.initializeApp(FIREBASE_CONFIG);
+            firebase.auth().signInAnonymously().catch(e => console.warn("Firebase Auth Notice:", e));
+            cloudDb = firebase.firestore();
+
+            // 1. مزامنة الطلبات السحابية
+            cloudDb.collection('orders').orderBy('createdAt', 'desc').limit(60)
+                .onSnapshot(snapshot => {
+                    const cloudOrders = [];
+                    snapshot.forEach(docSnap => cloudOrders.push(docSnap.data()));
+                    if (cloudOrders.length > 0) {
+                        activeOrdersList = cloudOrders;
+                        safeSet('cc_orders', activeOrdersList);
+                        if (activeRoleSession?.role === 'branch') renderBranchSpecificDashboard();
+                        if (activeRoleSession?.role === 'admin') renderMasterAdminDashboard();
+                        renderOrderTrackingView();
+                    }
+                }, e => console.warn("Orders cloud sync note:", e));
+
+            // 2. مزامنة الشكاوى والردود
+            cloudDb.collection('feedbacks').orderBy('createdAt', 'desc').limit(50)
+                .onSnapshot(snapshot => {
+                    const fbs = [];
+                    snapshot.forEach(doc => fbs.push(doc.data()));
+                    if (fbs.length > 0) {
+                        customerFeedbacksList = fbs;
+                        safeSet('cc_feedbacks', customerFeedbacksList);
+                        renderCustomerFeedbacksList();
+                        if (activeRoleSession?.role === 'admin') renderMasterAdminDashboard();
+                    }
+                }, e => console.warn("Feedback cloud sync note:", e));
+
+            // 3. مزامنة الأصناف
+            cloudDb.collection('catalog').doc('products_list')
+                .onSnapshot(doc => {
+                    if (doc.exists && doc.data().items?.length > 0) {
+                        productsCatalog = doc.data().items;
+                        safeSet('cc_catalog', productsCatalog);
+                        renderCategoryChips();
+                        renderProductsGrid();
+                    }
+                }, e => console.warn("Catalog sync note:", e));
+        }
+    } catch(err) {
+        console.warn("Cloud connection status:", err);
+    }
+}
+
+/* محرك الصوتيات التفاعلي */
+function playSystemAudioBeep(type = 'success') {
+    if (!appAudioEnabled) return;
+    try {
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        const osc = audioCtx.createOscillator();
+        const gainNode = audioCtx.createGain();
+        osc.connect(gainNode);
+        gainNode.connect(audioCtx.destination);
+
+        if (type === 'success') {
+            osc.frequency.setValueAtTime(587.33, audioCtx.currentTime); // D5
+            osc.frequency.setValueAtTime(880, audioCtx.currentTime + 0.1); // A5
+            gainNode.gain.setValueAtTime(0.15, audioCtx.currentTime);
+            gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.3);
+            osc.start();
+            osc.stop(audioCtx.currentTime + 0.3);
+        } else if (type === 'click') {
+            osc.frequency.setValueAtTime(440, audioCtx.currentTime);
+            gainNode.gain.setValueAtTime(0.08, audioCtx.currentTime);
+            gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.08);
+            osc.start();
+            osc.stop(audioCtx.currentTime + 0.08);
+        }
+    } catch(e) {}
+}
+
+window.toggleAppAudioFX = function() {
+    appAudioEnabled = document.getElementById('toggleAppSoundsInput').checked;
+    safeSet('cc_audio_enabled', appAudioEnabled);
+    if (appAudioEnabled) playSystemAudioBeep('click');
+    window.showToastMsg(appAudioEnabled ? "تم تفعيل أصوات التطبيق" : "تم كتم أصوات التطبيق");
+};
+
+/* فحص المسار الخارجي (Hash Routing) لفتح لوحات الإدارة برابط مباشر */
+function handleExternalUrlRouting() {
+    const hash = window.location.hash.toLowerCase();
+    if (hash === '#admin') {
+        if (activeRoleSession?.role === 'admin') {
+            routeToActiveRoleScreen();
+        } else {
+            navigateRouter('screen-admin-login');
+        }
+    } else if (hash === '#branch-kafarsum') {
+        activeRoleSession = { role: "branch", branchId: 0, name: "فرع كفرسوم" };
+        safeSet('cc_role_session', activeRoleSession);
+        routeToActiveRoleScreen();
+    } else if (hash === '#branch-sama') {
+        activeRoleSession = { role: "branch", branchId: 1, name: "فرع سما الروسان" };
+        safeSet('cc_role_session', activeRoleSession);
+        routeToActiveRoleScreen();
+    }
+}
+
+window.addEventListener('hashchange', handleExternalUrlRouting);
+
+/* التنقل بين الشاشات */
 window.navigateRouter = function(screenId) {
+    playSystemAudioBeep('click');
     document.querySelectorAll('.app-screen').forEach(s => s.classList.remove('active'));
     const target = document.getElementById(screenId);
     if (target) {
@@ -1770,6 +2315,7 @@ window.confirmAddItemToCart = function() {
     });
 
     safeSet('cc_cart', window.appState.cart);
+    playSystemAudioBeep('success');
     window.showToastMsg(`تمت إضافة ${prod.name} للسلة بنجاح`);
     navigateRouter('screen-home');
 };
@@ -1909,6 +2455,11 @@ window.confirmAndDispatchFinalOrder = function() {
     activeOrdersList.unshift(newOrder);
     safeSet('cc_orders', activeOrdersList);
 
+    // رفع الطلب إلى سحابة Firestore الحية
+    if (cloudDb) {
+        cloudDb.collection('orders').doc(newOrder.orderId).set(newOrder).catch(e => console.warn(e));
+    }
+
     currentAuthenticatedUser.points += Math.floor(total * 10);
     currentAuthenticatedUser.ordersCount = (currentAuthenticatedUser.ordersCount || 0) + 1;
     safeSet('cc_active_client_user', currentAuthenticatedUser);
@@ -1916,6 +2467,7 @@ window.confirmAndDispatchFinalOrder = function() {
 
     window.appState.cart = [];
     safeSet('cc_cart', []);
+    playSystemAudioBeep('success');
     window.showToastMsg(`تم إرسال طلبك #${newOrder.orderId} بنجاح إلى ${branch.name}`);
     renderOrderTrackingView();
     navigateRouter('screen-order-tracking');
@@ -2001,10 +2553,11 @@ window.claimRedeemItemAction = function(itemId) {
     safeSet('cc_active_client_user', currentAuthenticatedUser);
     updateUserDOMStats();
     renderRedeemStoreGrid();
+    playSystemAudioBeep('success');
     window.showToastMsg(`مبروك! تم استبدال ${item.name} بنجاح`);
 };
 
-/* نظام الشكاوى والردود المباشرة من لوحة الأدمن */
+/* نظام الشكاوى والمساعدة مع الردود المباشرة من لوحة الأدمن */
 window.submitCustomerFeedbackAction = function() {
     const category = document.getElementById('feedbackCategoryInput').value;
     const text = document.getElementById('feedbackTextInput').value.trim();
@@ -2018,13 +2571,21 @@ window.submitCustomerFeedbackAction = function() {
         category: category,
         text: text,
         reply: "",
+        createdAt: Date.now(),
         dateStr: new Date().toLocaleDateString('ar-JO')
     };
 
     customerFeedbacksList.unshift(newFb);
     safeSet('cc_feedbacks', customerFeedbacksList);
+
+    // رفع الشكوى للسحابة لحظياً
+    if (cloudDb) {
+        cloudDb.collection('feedbacks').doc(newFb.id).set(newFb).catch(e => console.warn(e));
+    }
+
     document.getElementById('feedbackTextInput').value = '';
     renderCustomerFeedbacksList();
+    playSystemAudioBeep('success');
     window.showToastMsg("تم إرسال الشكوى للإدارة بنجاح وسنرد عليك قريباً");
 };
 
@@ -2059,6 +2620,7 @@ function renderCustomerFeedbacksList() {
 /* نظام دعوة صديق */
 window.copyReferralCodeAction = function() {
     navigator.clipboard?.writeText("CORNER-7964");
+    playSystemAudioBeep('success');
     window.showToastMsg("تم نسخ كود الدعوة (CORNER-7964)");
 };
 
@@ -2092,16 +2654,22 @@ window.attemptSecureAccessAuthentication = function() {
     if (pin === SECURITY_ACCESS_KEYS.MASTER_ADMIN) {
         activeRoleSession = { role: "admin", name: "الإدارة العامة" };
         safeSet('cc_role_session', activeRoleSession);
+        window.location.hash = "#admin";
+        playSystemAudioBeep('success');
         window.showToastMsg("مرحباً بك في لوحة الإدارة المركزية");
         routeToActiveRoleScreen();
     } else if (pin === SECURITY_ACCESS_KEYS.BRANCH_KAFARSUM) {
         activeRoleSession = { role: "branch", branchId: 0, name: "فرع كفرسوم" };
         safeSet('cc_role_session', activeRoleSession);
+        window.location.hash = "#branch-kafarsum";
+        playSystemAudioBeep('success');
         window.showToastMsg("تم تسجيل الدخول لفرع كفرسوم");
         routeToActiveRoleScreen();
     } else if (pin === SECURITY_ACCESS_KEYS.BRANCH_SAMA) {
         activeRoleSession = { role: "branch", branchId: 1, name: "فرع سما الروسان" };
         safeSet('cc_role_session', activeRoleSession);
+        window.location.hash = "#branch-sama";
+        playSystemAudioBeep('success');
         window.showToastMsg("تم تسجيل الدخول لفرع سما الروسان");
         routeToActiveRoleScreen();
     } else {
@@ -2123,6 +2691,7 @@ function routeToActiveRoleScreen() {
 window.exitRoleSession = function() {
     activeRoleSession = null;
     safeSet('cc_role_session', null);
+    window.location.hash = "";
     window.showToastMsg("تم الخروج بنجاح");
     navigateRouter('screen-home');
 };
@@ -2176,8 +2745,15 @@ window.sendAdminReplyToFeedback = function(fbId) {
     if (fb) {
         fb.reply = reply;
         safeSet('cc_feedbacks', customerFeedbacksList);
+
+        // تحديث الرد سحابياً
+        if (cloudDb) {
+            cloudDb.collection('feedbacks').doc(fbId).update({ reply: reply }).catch(e => console.warn(e));
+        }
+
         renderMasterAdminDashboard();
-        window.showToastMsg("تم إرسال الرد للزبون بنجاح");
+        playSystemAudioBeep('success');
+        window.showToastMsg("تم إرسال الرد للزبون سحابياً بنجاح");
     }
 };
 
@@ -2231,7 +2807,14 @@ window.updateBranchOrderState = function(orderId, state) {
     if (!o) return;
     o.status = state;
     safeSet('cc_orders', activeOrdersList);
+
+    // تحديث حالة الطلب في Firestore سحابياً
+    if (cloudDb) {
+        cloudDb.collection('orders').doc(orderId).update({ status: state }).catch(e => console.warn(e));
+    }
+
     renderBranchSpecificDashboard();
+    playSystemAudioBeep('click');
     window.showToastMsg(`تم تحديث الطلب: ${state}`);
 };
 
@@ -2278,7 +2861,6 @@ function updateUserDOMStats() {
     document.getElementById('storeAvailablePointsNum').innerText = ptsFormatted;
     document.getElementById('homeUserNameGreeting').innerText = u.name;
     document.getElementById('profileScreenUserName').innerText = u.name;
-    document.getElementById('profileScreenUserPhone').innerText = u.phone;
     document.getElementById('statTotalUserPoints').innerText = ptsFormatted;
     document.getElementById('statCompletedOrdersCount').innerText = u.ordersCount || 0;
 }
@@ -2290,6 +2872,8 @@ window.logoutCustomerSession = function() {
 
 window.toggleThemeMode = function() {
     document.body.classList.toggle('dark-mode');
+    const isDark = document.body.classList.contains('dark-mode');
+    document.getElementById('toggleDarkModeInput').checked = isDark;
 };
 
 window.showToastMsg = function(msg) {
@@ -2308,6 +2892,8 @@ document.addEventListener('DOMContentLoaded', () => {
     renderRedeemStoreGrid();
     updateBranchDOMDisplay();
     setFulfillmentService('delivery');
+    handleExternalUrlRouting();
+    setTimeout(initCloudFirestoreSafe, 400);
 });
 </script>
 </body>
