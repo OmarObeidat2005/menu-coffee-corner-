@@ -8,7 +8,7 @@
     <meta name="theme-color" content="#991b1b">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <!-- خط IBM Plex Sans Arabic -->
+    <!-- خط IBM Plex Sans Arabic الرسمي لتطبيقات القهوة -->
     <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800;900&display=swap" rel="stylesheet">
 
     <!-- Firebase SDK Compat -->
@@ -124,7 +124,7 @@
             overflow-x: hidden;
         }
 
-        /* ترويسة رئيسية احترافية بدون إيموجي */
+        /* رأس الصفحة الرئيسي */
         .home-hero-red {
             background: linear-gradient(180deg, var(--brand-primary) 0%, var(--brand-primary-dark) 100%);
             color: #ffffff;
@@ -157,6 +157,12 @@
             font-weight: 700;
             color: #ffffff;
             overflow: hidden;
+            position: relative;
+        }
+        .avatar-circle img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
         }
 
         .branch-pill-trigger {
@@ -190,7 +196,6 @@
         }
         .stat-card-glass:active { transform: scale(0.97); }
 
-        /* شريط التوصيل / الاستلام من الفرع */
         .fulfillment-bar {
             background: var(--bg-surface);
             border-radius: var(--radius-full);
@@ -234,7 +239,6 @@
             cursor: pointer;
         }
 
-        /* تصنيفات المنيو */
         .categories-scroll {
             display: flex;
             gap: 8px;
@@ -262,7 +266,6 @@
             border-color: var(--brand-primary);
         }
 
-        /* شبكة المنتجات */
         .product-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
@@ -343,7 +346,7 @@
             font-weight: 700;
         }
 
-        /* كروت وعناصر شاشة حسابي */
+        /* شاشة حسابي */
         .profile-red-hero {
             background: var(--brand-primary);
             color: #ffffff;
@@ -594,26 +597,37 @@
         .ios-input-field:focus, .ios-textarea-field:focus { border-color: var(--brand-primary); }
         .ios-textarea-field { resize: none; height: 70px; }
 
+        /* نظام التنبيهات المطور (Modern Floating Action Toast) */
         .toast-popup {
             position: fixed;
-            top: 20px;
+            top: 24px;
             left: 50%;
-            transform: translate(-50%, -150%);
-            background: var(--brand-primary);
+            transform: translate(-50%, -160%);
+            background: rgba(24, 24, 27, 0.94);
             color: #ffffff;
-            padding: 10px 22px;
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            padding: 10px 18px;
             border-radius: var(--radius-full);
             font-size: 12.5px;
-            font-weight: 700;
+            font-weight: 600;
             z-index: 99999;
-            box-shadow: var(--shadow-float);
-            transition: 0.25s ease;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            transition: all 0.32s cubic-bezier(0.16, 1, 0.3, 1);
             pointer-events: none;
             opacity: 0;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
         .toast-popup.active { transform: translate(-50%, 0); opacity: 1; }
+        .toast-popup.toast-success { border-color: rgba(16, 185, 129, 0.4); }
+        .toast-popup.toast-danger { border-color: rgba(239, 68, 68, 0.5); }
+        .toast-popup.toast-success .toast-icon { color: var(--status-success); }
+        .toast-popup.toast-danger .toast-icon { color: var(--status-danger); }
 
-        /* ستايل شاشة تعديل الحساب المطابقة للصورة */
+        /* شاشة تعديل الحساب */
         .account-edit-header {
             padding: 14px 16px;
             display: flex;
@@ -686,7 +700,7 @@
             cursor: pointer;
         }
 
-        /* نافذة اختيار اللغة المنبثقة المطابقة للصورة */
+        /* نافذة اختيار اللغة */
         .lang-modal-sheet {
             width: 100%;
             max-width: 480px;
@@ -730,7 +744,7 @@
             border-radius: 50%;
         }
 
-        /* ستايل سلة الشراء المطابق بنسبة 100% للصور */
+        /* سلة الشراء */
         .cart-store-tag {
             background: #f4f4f5;
             padding: 6px 12px;
@@ -847,7 +861,7 @@
             padding-top: 8px;
         }
 
-        /* ستايل لوحة الأدمن الاحترافية */
+        /* لوحة تحكم الأدمن الشاملة */
         .admin-dashboard-container {
             background: #09090b;
             color: #f4f4f5;
@@ -896,6 +910,16 @@
             border-radius: var(--radius-full);
             font-weight: 800;
         }
+        .crm-customer-card {
+            background: #18181b;
+            border: 1px solid #27272a;
+            border-radius: var(--radius-md);
+            padding: 12px;
+            margin-bottom: 8px;
+            cursor: pointer;
+            transition: 0.15s ease;
+        }
+        .crm-customer-card:hover { border-color: #ef4444; }
 
         @media print {
             body * { visibility: hidden; }
@@ -906,7 +930,13 @@
 </head>
 <body>
 
-<div class="toast-popup" id="systemToast">تم بنجاح</div>
+<!-- عنصر التنبيهات المطور -->
+<div class="toast-popup" id="systemToast">
+    <span class="toast-icon" id="toastIcon">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+    </span>
+    <span id="toastMsgText">تم بنجاح</span>
+</div>
 
 <div class="app-container" id="appContainer">
 
@@ -915,7 +945,9 @@
         <header class="home-hero-red">
             <div class="home-hero-top">
                 <div class="home-user-badge" onclick="navigateRouter('screen-user-profile')">
-                    <div class="avatar-circle" id="homeUserAvatarChar">ع</div>
+                    <div class="avatar-circle" id="homeUserAvatarChar">
+                        <span id="homeUserInitials">ع</span>
+                    </div>
                     <div>
                         <div style="font-size:10.5px; color:rgba(255,255,255,0.7);" data-i18n="hello">مرحباً،</div>
                         <div style="font-size:14px; font-weight:700;" id="homeUserNameDisplay">عمر عبيدات</div>
@@ -927,7 +959,7 @@
                         <span id="currentHeaderBranchLabel">فرع كفرسوم</span>
                         <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"></polyline></svg>
                     </div>
-                    <button style="background:rgba(255,255,255,0.2); border:none; width:36px; height:36px; border-radius:50%; color:#fff; display:flex; align-items:center; justify-content:center; cursor:pointer;" onclick="navigateRouter('screen-cart')">
+                    <button style="background:rgba(255,255,255,0.2); border:none; width:36px; height:36px; border-radius:50%; color:#fff; display:flex; align-items:center; justify-content:center; cursor:pointer;" onclick="navigateRouter('screen-cart')" aria-label="السلة">
                         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path><line x1="3" y1="6" x2="21" y2="6"></line><path d="M16 10a4 4 0 0 1-8 0"></path></svg>
                     </button>
                 </div>
@@ -972,7 +1004,7 @@
         <div class="product-grid" id="mainProductsGridDisplay"></div>
     </div>
 
-    <!-- 2. شاشة حسابي الشخصي المطورة -->
+    <!-- 2. شاشة حسابي الشخصي -->
     <div id="screen-user-profile" class="app-screen">
         <div class="profile-red-hero">
             <div class="profile-hero-top">
@@ -986,28 +1018,33 @@
             </div>
 
             <div class="profile-user-info">
-                <div class="avatar-circle" style="width:58px; height:58px; font-size:22px; background:rgba(255,255,255,0.25);" onclick="openEditAccountModal()">ع</div>
+                <div class="avatar-circle" id="profAvatarCenterWrap" style="width:58px; height:58px; font-size:22px; background:rgba(255,255,255,0.25); cursor:pointer;" onclick="document.getElementById('avatarFileUploadInput').click()">
+                    <span id="profUserInitials">ع</span>
+                </div>
+                <!-- رفع الصورة مباشرة من استوديو الهاتف -->
+                <input type="file" id="avatarFileUploadInput" accept="image/*" style="display:none;" onchange="handlePhoneAvatarUpload(event)">
+                
                 <div style="flex:1;">
                     <div style="display:flex; justify-content:space-between; align-items:center;">
                         <h1 style="font-size:20px; font-weight:800;" id="profUserNameHeader">عمر عبيدات</h1>
-                        <button style="background:rgba(255,255,255,0.2); border:none; border-radius:50%; width:32px; height:32px; color:#fff; display:flex; align-items:center; justify-content:center; cursor:pointer;" onclick="openEditAccountModal()">
+                        <button style="background:rgba(255,255,255,0.2); border:none; border-radius:50%; width:32px; height:32px; color:#fff; display:flex; align-items:center; justify-content:center; cursor:pointer;" onclick="openEditAccountModal()" title="تعديل الحساب">
                             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
                         </button>
                     </div>
-                    <div class="num-font" style="font-size:12px; color:rgba(255,255,255,0.8);">0796433698</div>
+                    <div class="num-font" style="font-size:12px; color:rgba(255,255,255,0.8);" id="profUserPhoneLabel">0796433698</div>
                 </div>
             </div>
 
             <div class="profile-stats-grid">
                 <div class="profile-stat-box">
                     <div style="font-size:11px; color:rgba(255,255,255,0.8);" data-i18n="used_points">إجمالي النقاط المستخدمة</div>
-                    <div class="num-font" style="font-size:18px; font-weight:800; margin:3px 0;">0 نقطة</div>
+                    <div class="num-font" style="font-size:18px; font-weight:800; margin:3px 0;" id="profUsedPointsCounter">0 نقطة</div>
                     <div style="font-size:9.5px; color:rgba(255,255,255,0.7);" data-i18n="points_this_week">0+ نقطة • هذا الأسبوع</div>
                 </div>
 
                 <div class="profile-stat-box">
                     <div style="font-size:11px; color:rgba(255,255,255,0.8);" data-i18n="total_savings">إجمالي التوفير</div>
-                    <div class="num-font" style="font-size:18px; font-weight:800; margin:3px 0;">JOD 0.00</div>
+                    <div class="num-font" style="font-size:18px; font-weight:800; margin:3px 0;" id="profSavingsCounter">JOD 0.00</div>
                     <div style="font-size:9.5px; color:rgba(255,255,255,0.7);" data-i18n="savings_month">0 JOD + هذا الشهر</div>
                 </div>
             </div>
@@ -1025,7 +1062,7 @@
                         <span class="service-row-title" data-i18n="notifications">الإشعارات</span>
                     </div>
                     <div style="display:flex; align-items:center; gap:8px;">
-                        <span class="green-counter-badge" id="unreadNotifCountPill">2</span>
+                        <span class="green-counter-badge" id="unreadNotifCountPill">0</span>
                         <span style="color:var(--text-muted);">‹</span>
                     </div>
                 </div>
@@ -1153,7 +1190,7 @@
                 </div>
             </div>
 
-            <div class="btn-logout-row" onclick="window.showToastMsg('تم تسجيل الخروج بنجاح')">
+            <div class="btn-logout-row" onclick="triggerAccountSignOut()">
                 <div style="display:flex; align-items:center; gap:10px;">
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
                     <span data-i18n="logout">تسجيل الخروج</span>
@@ -1167,7 +1204,7 @@
         </div>
     </div>
 
-    <!-- نافذة تعديل الحساب المطابقة تماماً للصورة المعطاة -->
+    <!-- نافذة تعديل الحساب ورفع الصورة -->
     <div id="modalEditAccount" style="display:none; position:fixed; inset:0; background:var(--bg-surface); z-index:9999; overflow-y:auto;">
         <div class="account-edit-header">
             <button onclick="closeEditAccountModal()" style="background:none; border:none; cursor:pointer; display:flex; align-items:center;">
@@ -1185,9 +1222,11 @@
             <div class="avatar-edit-box">
                 <span style="font-size:13px; font-weight:700;">الصورة الشخصية</span>
                 <div style="display:flex; align-items:center; gap:10px;">
-                    <div class="avatar-circle" style="width:46px; height:46px; background:var(--brand-primary); color:#fff;">ع</div>
-                    <button style="background:none; border:none; color:var(--text-secondary); cursor:pointer;" onclick="window.showToastMsg('اختر صورة من الهاتف')">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+                    <div class="avatar-circle" id="editModalAvatarPreview" style="width:46px; height:46px; background:var(--brand-primary); color:#fff;">
+                        <span id="editModalAvatarInitials">ع</span>
+                    </div>
+                    <button style="background:#f4f4f5; border:1px solid var(--border-subtle); border-radius:6px; padding:6px 12px; font-size:11.5px; font-weight:700; color:var(--text-primary); cursor:pointer;" onclick="document.getElementById('avatarFileUploadInput').click()">
+                        تغيير الصورة
                     </button>
                 </div>
             </div>
@@ -1222,10 +1261,10 @@
             <div class="social-login-choice">
                 <span>أو المتابعة باستخدام Apple أو Google</span>
                 <div class="social-btns-wrap">
-                    <div class="social-round-btn" onclick="window.showToastMsg('تم الربط مع Apple')">
+                    <div class="social-round-btn" onclick="showModernToast('تم الربط بحساب Apple بنجاح', 'success')">
                         <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M15.97 6.84c.66-.82 1.11-1.96.99-3.1-.96.04-2.12.64-2.8 1.44-.59.69-1.11 1.84-.97 2.96 1.07.08 2.16-.54 2.78-1.3"></path></svg>
                     </div>
-                    <div class="social-round-btn" onclick="window.showToastMsg('تم الربط مع Google')">
+                    <div class="social-round-btn" onclick="showModernToast('تم الربط بحساب Google بنجاح', 'success')">
                         <svg width="18" height="18" viewBox="0 0 24 24"><path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.665-5.17 3.665-9.17z"/><path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.12 0-5.77-2.1-6.72-4.93H1.25v3.15C3.27 21.44 7.35 24 12 24z"/><path fill="#FBBC05" d="M5.28 14.27c-.25-.72-.38-1.49-.38-2.27s.13-1.55.38-2.27V6.58H1.25C.45 8.18 0 10.04 0 12s.45 3.82 1.25 5.42l4.03-3.15z"/><path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.35 0 3.27 2.56 1.25 6.58l4.03 3.15c.95-2.83 3.6-4.98 6.72-4.98z"/></svg>
                     </div>
                 </div>
@@ -1259,11 +1298,11 @@
                 <input type="text" class="ios-input-field" id="accEditJob" placeholder="اختر المهنة" value="مهندس اتصالات ونظم">
             </div>
 
-            <button class="btn-brand-solid" style="margin-top:10px; background:#fca5a5; color:#7f1d1d;" onclick="saveAccountModifications()">تحديث الحساب</button>
+            <button class="btn-brand-solid" style="margin-top:10px; background:#fca5a5; color:#7f1d1d;" onclick="saveAccountModifications()">تحديث الحساب أونلاين</button>
         </div>
     </div>
 
-    <!-- نافذة اختيار اللغة المنبثقة المطابقة تماماً للصورة -->
+    <!-- نافذة اختيار اللغة -->
     <div id="modalLanguagePicker" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.6); z-index:9999; align-items:flex-end; justify-content:center;">
         <div class="lang-modal-sheet">
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
@@ -1291,7 +1330,7 @@
         </div>
     </div>
 
-    <!-- 3. سلة الشراء المطابقة تماماً للصور المعطاة -->
+    <!-- 3. سلة الشراء -->
     <div id="screen-cart" class="app-screen">
         <header class="header">
             <button class="header-btn" onclick="navigateRouter('screen-home')" aria-label="عودة">
@@ -1304,7 +1343,6 @@
         </header>
 
         <div class="scrollable-content">
-            <!-- شريط العنوان والفرع -->
             <div style="background:var(--bg-surface); border:1px solid var(--border-subtle); border-radius:var(--radius-md); padding:10px 14px; margin-bottom:12px; display:flex; justify-content:space-between; align-items:center;">
                 <div style="font-size:12px; font-weight:600;">
                     <span style="color:var(--brand-primary); font-weight:700;">موقع التوصيل:</span>
@@ -1318,39 +1356,14 @@
                 <span>يتم التحضير في فرع كفرسوم</span>
             </div>
 
-            <!-- قائمة عناصر السلة -->
             <div id="cartItemsListContainer"></div>
 
-            <!-- أضف مكافآت مع طلبك -->
-            <div style="margin:16px 0 10px;">
-                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
-                    <strong style="font-size:13px;">أضف مكافآت مع طلبك</strong>
-                    <span style="color:var(--brand-primary); font-size:11.5px; font-weight:700; cursor:pointer;" onclick="navigateRouter('screen-rewards')">عرض الكل</span>
-                </div>
-                <div style="display:flex; gap:10px; overflow-x:auto; padding-bottom:6px;">
-                    <div style="min-width:140px; background:var(--bg-surface); border:1px solid var(--border-subtle); border-radius:var(--radius-md); padding:10px; text-align:center;">
-                        <img src="https://images.unsplash.com/photo-1562376552-0d160a2f238d?w=200&q=80" style="width:60px; height:60px; border-radius:8px; object-fit:cover; margin:0 auto 6px;">
-                        <div style="font-size:11px; font-weight:700;">وافل نوتيلا خفيف</div>
-                        <div class="num-font" style="font-size:10.5px; color:var(--brand-primary); font-weight:800;">3,103 نقطة</div>
-                        <button class="btn-brand-solid" style="padding:4px; font-size:10px; margin-top:4px;" onclick="addRewardToCart('وافل نوتيلا خفيف', 3103)">+ إضافة</button>
-                    </div>
-                    <div style="min-width:140px; background:var(--bg-surface); border:1px solid var(--border-subtle); border-radius:var(--radius-md); padding:10px; text-align:center;">
-                        <img src="https://images.unsplash.com/photo-1517701550927-30cf4be1aaf9?w=200&q=80" style="width:60px; height:60px; border-radius:8px; object-fit:cover; margin:0 auto 6px;">
-                        <div style="font-size:11px; font-weight:700;">حقيبة كورنر القماشية</div>
-                        <div class="num-font" style="font-size:10.5px; color:var(--brand-primary); font-weight:800;">3,649 نقطة</div>
-                        <button class="btn-brand-solid" style="padding:4px; font-size:10px; margin-top:4px;" onclick="addRewardToCart('حقيبة كورنر', 3649)">+ إضافة</button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- حقل كود الخصم -->
             <div style="font-size:12px; font-weight:700; margin-bottom:4px;">كود الخصم</div>
             <div class="coupon-code-row">
                 <input type="text" class="ios-input-field num-font" id="cartCouponInput" placeholder="مثال: CORNER15" style="text-transform:uppercase;">
                 <button class="coupon-apply-btn" onclick="applyCartCouponCode()">تطبيق</button>
             </div>
 
-            <!-- طريقة الدفع -->
             <div style="font-size:12px; font-weight:700; margin-bottom:4px;">طريقة الدفع</div>
             <div class="payment-method-box" onclick="navigateRouter('screen-payment-methods-mgmt')">
                 <span style="color:var(--text-muted);">‹</span>
@@ -1360,7 +1373,6 @@
                 </div>
             </div>
 
-            <!-- نقاط كورنر -->
             <div class="points-slider-card">
                 <div style="display:flex; justify-content:space-between; align-items:center;">
                     <div>
@@ -1377,7 +1389,6 @@
                 </div>
             </div>
 
-            <!-- جدول الفاتورة -->
             <div class="summary-invoice-table">
                 <div class="invoice-table-row">
                     <span>المجموع الفرعي:</span>
@@ -1401,7 +1412,6 @@
                 </div>
             </div>
 
-            <!-- زر Apple Pay وزر تأكيد الطلب -->
             <button class="btn-brand-solid" style="background:#52525b; margin-bottom:8px;" onclick="confirmOrderSubmit('Apple Pay')">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M15.97 6.84c.66-.82 1.11-1.96.99-3.1-.96.04-2.12.64-2.8 1.44-.59.69-1.11 1.84-.97 2.96 1.07.08 2.16-.54 2.78-1.3"></path></svg>
                 <span>طلب باستخدام Apple Pay</span>
@@ -1410,7 +1420,7 @@
         </div>
     </div>
 
-    <!-- 4. بوابة الدخول المحمية (Security PIN Vault) -->
+    <!-- 4. بوابة الدخول المحمية -->
     <div id="screen-admin-vault" class="app-screen" style="background:#09090b; color:#fff;">
         <header class="header" style="background:#121215; border-color:#27272a;">
             <button class="header-btn" style="background:#27272a; border-color:#3f3f46; color:#fff;" onclick="navigateRouter('screen-home')">✕</button>
@@ -1428,13 +1438,12 @@
         </div>
     </div>
 
-    <!-- 5. لوحة الأدمن المركزية الشاملة المقسمة إلى 10 أقسام رئيسية مع قسم أكواد الخصم -->
+    <!-- 5. لوحة الأدمن المركزية الشاملة -->
     <div id="screen-master-admin" class="app-screen admin-dashboard-container">
-        <!-- شريط علوي -->
         <div class="admin-nav-header">
             <div>
-                <div style="font-size:14px; font-weight:800; color:#ef4444;">لوحة التحكم الرئيسية</div>
-                <div style="font-size:10px; color:#a1a1aa;">ملخص شامل لحالة المقهى اليوم</div>
+                <div style="font-size:14px; font-weight:800; color:#ef4444;">لوحة التحكم المركزية</div>
+                <div style="font-size:10px; color:#a1a1aa;">إدارة المقهى، العملاء، والعمليات أونلاين</div>
             </div>
             <button class="btn-brand-outline" style="border-color:#3f3f46; color:#ef4444; font-size:10.5px; padding:3px 8px;" onclick="exitRoleAccessSession()">خروج</button>
         </div>
@@ -1468,7 +1477,7 @@
                 </div>
             </div>
 
-            <!-- أزرار الأقسام العشرة الرئيسية للوحة -->
+            <!-- أزرار الأقسام الرئيسية للوحة -->
             <div style="font-size:12px; font-weight:700; color:#a1a1aa; margin-bottom:8px;">أقسام الإدارة والتحكم</div>
             <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-bottom:16px;">
                 <div class="admin-section-grid-btn active" id="btnAdminTab_prods" onclick="switchAdminSubHub('prods')">
@@ -1487,14 +1496,6 @@
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
                     <strong style="font-size:12px;">حسابات العملاء (CRM)</strong>
                 </div>
-                <div class="admin-section-grid-btn" id="btnAdminTab_warnings" onclick="switchAdminSubHub('warnings')">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
-                    <strong style="font-size:12px;">التحذيرات والحظر</strong>
-                </div>
-                <div class="admin-section-grid-btn" id="btnAdminTab_points" onclick="switchAdminSubHub('points')">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="8" width="18" height="4" rx="1"></rect><path d="M12 8v13"></path><path d="M19 12v7a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-7"></path></svg>
-                    <strong style="font-size:12px;">النقاط والمكافآت</strong>
-                </div>
                 <div class="admin-section-grid-btn" id="btnAdminTab_coupons" onclick="switchAdminSubHub('coupons')">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7.01" y2="7"></line></svg>
                     <strong style="font-size:12px;">أكواد الخصم والكوبونات</strong>
@@ -1505,7 +1506,7 @@
                 </div>
             </div>
 
-            <!-- 1. الأصناف والتصنيفات (تشمل ميزة النسخ المكرر Duplicate) -->
+            <!-- 1. الأصناف والتصنيفات -->
             <div id="subHub_prods" class="admin-sub-content">
                 <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
                     <div style="font-size:13px; font-weight:800; color:#ef4444;">التحكم بالأصناف والتصنيفات</div>
@@ -1514,7 +1515,7 @@
                 <div id="admProductsListDisplay"></div>
             </div>
 
-            <!-- 2. نظام الإضافات الديناميكي لكل صنف -->
+            <!-- 2. نظام الإضافات الديناميكي -->
             <div id="subHub_addons" class="admin-sub-content" style="display:none;">
                 <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
                     <div style="font-size:13px; font-weight:800; color:#ef4444;">لوحة التحكم بالإضافات والخيارات</div>
@@ -1523,40 +1524,24 @@
                 <div id="admAddonsListDisplay"></div>
             </div>
 
-            <!-- 3. إدارة الطلبات والبحث والفلترة -->
+            <!-- 3. إدارة الطلبات والبحث -->
             <div id="subHub_orders" class="admin-sub-content" style="display:none;">
                 <div style="font-size:13px; font-weight:800; color:#ef4444; margin-bottom:8px;">مركز إدارة ومتابعة الطلبات</div>
                 <input type="text" class="ios-input-field" id="admOrderSearchInp" placeholder="ابحث برقم الطلب، اسم العميل، أو الهاتف..." oninput="renderAdmOrdersList()" style="background:#18181b; border-color:#27272a; color:#fff; margin-bottom:8px;">
                 <div id="admOrdersListDisplay"></div>
             </div>
 
-            <!-- 4. حسابات العملاء CRM المصغر -->
+            <!-- 4. حسابات العملاء CRM المصغر والمتكامل مع التحكم التفصيلي -->
             <div id="subHub_customers" class="admin-sub-content" style="display:none;">
-                <div style="font-size:13px; font-weight:800; color:#ef4444; margin-bottom:8px;">دليل حسابات العملاء (CRM)</div>
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+                    <div style="font-size:13px; font-weight:800; color:#ef4444;">دليل حسابات العملاء (CRM المباشر)</div>
+                    <button class="btn-brand-outline" style="border-color:#3f3f46; color:#a1a1aa; font-size:10.5px; padding:3px 8px;" onclick="syncCustomersFromCloud()">تحديث السحابة</button>
+                </div>
+                <input type="text" class="ios-input-field" id="admCustomerSearchInput" placeholder="بحث بالاسم أو رقم الهاتف..." oninput="filterAdminCustomersList()" style="background:#18181b; border-color:#27272a; color:#fff; margin-bottom:8px;">
                 <div id="admCustomersCrmList"></div>
             </div>
 
-            <!-- 5. نظام التحذيرات والحظر المنهجي (3-Strike System) -->
-            <div id="subHub_warnings" class="admin-sub-content" style="display:none;">
-                <div style="font-size:13px; font-weight:800; color:#ef4444; margin-bottom:8px;">نظام التحذيرات والحظر</div>
-                <div id="admCustomerWarningsControls"></div>
-            </div>
-
-            <!-- 6. نظام النقاط والمكافآت السحابي -->
-            <div id="subHub_points" class="admin-sub-content" style="display:none;">
-                <div style="font-size:13px; font-weight:800; color:#ef4444; margin-bottom:8px;">إدارة نظام النقاط والمكافآت</div>
-                <div style="background:#18181b; padding:10px; border-radius:8px; border:1px solid #27272a; margin-bottom:10px;">
-                    <div style="font-size:12px; font-weight:700; margin-bottom:4px;">منح أو خصم نقاط مع تسجيل السبب:</div>
-                    <input type="number" class="ios-input-field num-font" id="admPointsDeltaInp" placeholder="عدد النقاط (مثال: 50)" style="background:#27272a; border-color:#3f3f46; color:#fff; margin-bottom:6px;">
-                    <input type="text" class="ios-input-field" id="admPointsReasonInp" placeholder="سبب العملية (للسجل المالي)" style="background:#27272a; border-color:#3f3f46; color:#fff; margin-bottom:8px;">
-                    <div style="display:flex; gap:6px;">
-                        <button class="btn-brand-solid" style="padding:6px; font-size:11px;" onclick="applyCustomerPointsDelta(true)">+ إضافة نقاط</button>
-                        <button class="btn-brand-outline" style="padding:6px; font-size:11px; color:#ef4444; border-color:#ef4444;" onclick="applyCustomerPointsDelta(false)">- خصم نقاط</button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- 7. قسم أكواد الخصم والكوبونات المكتمل في لوحة الأدمن -->
+            <!-- 5. قسم أكواد الخصم والكوبونات -->
             <div id="subHub_coupons" class="admin-sub-content" style="display:none;">
                 <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
                     <div style="font-size:13px; font-weight:800; color:#ef4444;">إدارة أكواد الخصم والكوبونات</div>
@@ -1565,7 +1550,7 @@
                 <div id="admCouponsListDisplay"></div>
             </div>
 
-            <!-- 8. الشكاوى والاقتراحات وتذاكر الدعم -->
+            <!-- 6. الشكاوى والاقتراحات -->
             <div id="subHub_feedbacks" class="admin-sub-content" style="display:none;">
                 <div style="font-size:13px; font-weight:800; color:#ef4444; margin-bottom:8px;">صندوق الشكاوى والاقتراحات</div>
                 <div id="admFeedbackTicketsDisplay"></div>
@@ -1573,7 +1558,77 @@
         </div>
     </div>
 
-    <!-- نافذة إضافة كود خصم جديد في لوحة الأدمن -->
+    <!-- نافذة فحص والتحكم الشامل بملف العميل (CRM Customer Dossier) -->
+    <div id="modalCrmCustomerDossier" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.85); z-index:99999; align-items:center; justify-content:center; padding:14px;">
+        <div class="clean-card" style="width:100%; max-width:440px; background:#18181b; border-color:#27272a; color:#fff; max-height:92vh; overflow-y:auto;">
+            <div class="clean-title">
+                <span style="color:#ef4444;" id="crmDosFullNameTitle">ملف العميل المتكامل</span>
+                <button onclick="closeCrmCustomerDossierModal()" style="background:none; border:none; color:#fff; font-size:18px; cursor:pointer;">✕</button>
+            </div>
+
+            <div style="display:flex; align-items:center; gap:12px; margin-bottom:12px; padding-bottom:10px; border-bottom:1px solid #27272a;">
+                <div class="avatar-circle" id="crmDosAvatarWrap" style="width:54px; height:54px; background:#27272a; border-color:#3f3f46;">
+                    <span id="crmDosInitials">ع</span>
+                </div>
+                <div style="flex:1;">
+                    <div style="font-weight:800; font-size:15px;" id="crmDosName">عمر عبيدات</div>
+                    <div class="num-font" style="font-size:12px; color:#a1a1aa;" id="crmDosPhone">0796433698</div>
+                    <div style="font-size:10.5px; color:#71717a;" id="crmDosEmail">noname@gmail.com</div>
+                </div>
+            </div>
+
+            <!-- معلومات إحصائية -->
+            <div style="display:grid; grid-template-columns:repeat(3, 1fr); gap:6px; margin-bottom:12px; text-align:center;">
+                <div style="background:#27272a; padding:8px; border-radius:6px;">
+                    <div style="font-size:10px; color:#a1a1aa;">رصيد النقاط</div>
+                    <div class="num-font" style="font-size:16px; font-weight:900; color:#ef4444;" id="crmDosPointsVal">0</div>
+                </div>
+                <div style="background:#27272a; padding:8px; border-radius:6px;">
+                    <div style="font-size:10px; color:#a1a1aa;">الطلبات</div>
+                    <div class="num-font" style="font-size:16px; font-weight:800;" id="crmDosOrdersVal">0</div>
+                </div>
+                <div style="background:#27272a; padding:8px; border-radius:6px;">
+                    <div style="font-size:10px; color:#a1a1aa;">الحالة</div>
+                    <div style="font-size:11px; font-weight:800;" id="crmDosStatusVal">نشط ✓</div>
+                </div>
+            </div>
+
+            <!-- التحكم بالنقاط مع تدوين السبب المالي -->
+            <div style="background:#27272a; border-radius:8px; padding:10px; margin-bottom:10px;">
+                <div style="font-size:11.5px; font-weight:700; color:#ef4444; margin-bottom:4px;">تعديل رصيد النقاط (مع التوثيق):</div>
+                <div style="display:flex; gap:6px; margin-bottom:6px;">
+                    <input type="number" class="ios-input-field num-font" id="crmDosPointsInput" placeholder="عدد النقاط" style="background:#18181b; border-color:#3f3f46; color:#fff;">
+                    <button class="btn-brand-solid" style="width:auto; padding:0 12px; font-size:11px;" onclick="applyCrmPointsDeltaAction(true)">+ إضافة</button>
+                    <button class="btn-brand-outline" style="width:auto; padding:0 12px; font-size:11px; color:#ef4444; border-color:#ef4444;" onclick="applyCrmPointsDeltaAction(false)">- خصم</button>
+                </div>
+                <input type="text" class="ios-input-field" id="crmDosPointsReasonInput" placeholder="سبب الإضافة أو الخصم..." style="background:#18181b; border-color:#3f3f46; color:#fff; font-size:11px;">
+            </div>
+
+            <!-- إرسال إشعار فوري للعميل -->
+            <div style="background:#27272a; border-radius:8px; padding:10px; margin-bottom:10px;">
+                <div style="font-size:11.5px; font-weight:700; color:#ef4444; margin-bottom:4px;">إرسال إشعار خاص لهذا العميل:</div>
+                <input type="text" class="ios-input-field" id="crmDosNotifTitleInput" placeholder="عنوان الإشعار..." style="background:#18181b; border-color:#3f3f46; color:#fff; margin-bottom:4px; font-size:11px;">
+                <textarea class="ios-textarea-field" id="crmDosNotifBodyInput" placeholder="نص الرسالة الخاصة..." style="background:#18181b; border-color:#3f3f46; color:#fff; height:50px; font-size:11px; margin-bottom:6px;"></textarea>
+                <button class="btn-brand-solid" style="padding:6px; font-size:11px;" onclick="sendCrmDirectNotificationAction()">إرسال الإشعار أونلاين</button>
+            </div>
+
+            <!-- التحذيرات والحظر المنهجي (3-Strikes) -->
+            <div style="background:#27272a; border-radius:8px; padding:10px; margin-bottom:10px;">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+                    <span style="font-size:11.5px; font-weight:700;">سجل التحذيرات (3-Strikes):</span>
+                    <span class="crm-badge-warn" id="crmDosWarnBadge">0 تحذير</span>
+                </div>
+                <div style="display:flex; gap:6px;">
+                    <button class="btn-brand-outline" style="border-color:#f59e0b; color:#f59e0b; flex:1; font-size:10.5px; padding:6px;" onclick="issueCustomerWarningAction()">+ تسجيل تحذير</button>
+                    <button class="btn-brand-outline" style="border-color:#ef4444; color:#ef4444; flex:1; font-size:10.5px; padding:6px;" id="crmDosBanBtn" onclick="toggleCustomerBanAction()">حظر العميل</button>
+                </div>
+            </div>
+
+            <button class="btn-brand-outline" style="width:100%; border-color:#3f3f46; color:#a1a1aa;" onclick="closeCrmCustomerDossierModal()">إغلاق الملف</button>
+        </div>
+    </div>
+
+    <!-- نافذة إضافة كود خصم جديد -->
     <div id="modalAddCoupon" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.75); z-index:9999; align-items:center; justify-content:center; padding:16px;">
         <div class="clean-card" style="width:100%; max-width:380px; background:#18181b; border-color:#27272a; color:#fff;">
             <div class="clean-title"><span style="color:#ef4444;">إنشاء كود خصم جديد</span><button onclick="closeAddCouponModal()" style="background:none; border:none; color:#fff; font-size:18px; cursor:pointer;">✕</button></div>
@@ -1633,7 +1688,7 @@
             <span data-i18n="order">الطلب</span>
         </button>
 
-        <button class="nav-center-scan-btn" onclick="playBeepAudio(); window.showToastMsg('ماسح الباركود جاهز للربط في الفرع')">
+        <button class="nav-center-scan-btn" onclick="playBeepAudio(); showModernToast('ماسح الباركود متصل وجاهز للربط بالفرع', 'success')">
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 7V5a2 2 0 0 1 2-2h2"></path><path d="M17 3h2a2 2 0 0 1 2 2v2"></path><path d="M21 17v2a2 2 0 0 1-2 2h-2"></path><path d="M7 21H5a2 2 0 0 1-2-2v-2"></path></svg>
         </button>
 
@@ -1652,8 +1707,19 @@
 
 <script>
 /* =========================================================
-   COFFEE CORNER ENGINE — COMPLETE & REFINED
+   COFFEE CORNER PRO — CLOUD ARCHITECTURE & LIVE SYNC
    ========================================================= */
+
+const FIREBASE_CONFIG = {
+    apiKey: "AIzaSyCPGI8XX2v5naRLK2QSQJcw6fB0Nsmbl8M",
+    authDomain: "coffee-corner-121.firebaseapp.com",
+    projectId: "coffee-corner-121",
+    storageBucket: "coffee-corner-121.firebasestorage.app",
+    messagingSenderId: "550349405177",
+    appId: "1:550349405177:web:468a9248c6c6be9f46db28"
+};
+
+let cloudDb = null;
 
 const SECURITY_KEYS = {
     MASTER_ADMIN: "2001159393",
@@ -1761,10 +1827,30 @@ let productsList = safeGet('cc_catalog', DEFAULT_PRODUCTS);
 let couponsList = safeGet('cc_coupons', DEFAULT_COUPONS);
 let selectedCategory = "الكل";
 
+// الحساب الحالي النشط (معزول تماماً ومربوط برقم هاتفه)
 let activeCustomer = safeGet('cc_active_client_user', {
-    name: "عمر عبيدات", firstName: "عمر", lastName: "عبيدات", phone: "796433698", email: "noname@gmail.com",
-    gender: "ذكر", birthDate: "1998-05-14", city: "إربد", district: "كفرسوم", job: "مهندس اتصالات ونظم",
-    points: 19818, tier: "الفئة البرونزية", code: "CORNER-7964", registeredAt: "2026-01-15", warnings: 0, isBanned: false
+    phone: "0796433698",
+    name: "عمر عبيدات",
+    firstName: "عمر",
+    lastName: "عبيدات",
+    email: "noname@gmail.com",
+    avatar: "",
+    gender: "ذكر",
+    birthDate: "1998-05-14",
+    city: "إربد",
+    district: "كفرسوم",
+    job: "مهندس اتصالات ونظم",
+    points: 19818,
+    tier: "الفئة البرونزية",
+    code: "CORNER-7964",
+    registeredAt: "2026-01-15",
+    warnings: 0,
+    isBanned: false,
+    notes: ""
+});
+
+let allRegisteredCustomers = safeGet('cc_crm_directory', {
+    "0796433698": activeCustomer
 });
 
 let appOrdersList = safeGet('cc_orders', []);
@@ -1777,6 +1863,37 @@ let pointsDiscountRatio = 0;
 let currentBranchIndex = 0;
 let activeServiceMode = "delivery";
 let isAudioEnabled = safeGet('cc_audio_enabled', true);
+let selectedCrmUserPhone = null;
+
+// نظام التنبيهات المطور والمنظم
+let toastTimer = null;
+window.showModernToast = function(msg, type = "success") {
+    const toast = document.getElementById('systemToast');
+    const msgText = document.getElementById('toastMsgText');
+    const icon = document.getElementById('toastIcon');
+    if (!toast || !msgText) return;
+
+    clearTimeout(toastTimer);
+    msgText.innerText = msg;
+    toast.className = `toast-popup active toast-${type}`;
+
+    if (type === 'success') {
+        icon.innerHTML = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>`;
+    } else if (type === 'danger') {
+        icon.innerHTML = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line></svg>`;
+    } else {
+        icon.innerHTML = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>`;
+    }
+
+    playBeepAudio();
+    toastTimer = setTimeout(() => {
+        toast.classList.remove('active');
+    }, 2800);
+};
+
+window.showToastMsg = function(msg) {
+    showModernToast(msg, "info");
+};
 
 function playBeepAudio() {
     if (!isAudioEnabled) return;
@@ -1785,14 +1902,121 @@ function playBeepAudio() {
         const osc = audioCtx.createOscillator();
         const gain = audioCtx.createGain();
         osc.type = "sine";
-        osc.frequency.setValueAtTime(880, audioCtx.currentTime);
-        gain.gain.setValueAtTime(0.08, audioCtx.currentTime);
-        gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.15);
+        osc.frequency.setValueAtTime(820, audioCtx.currentTime);
+        gain.gain.setValueAtTime(0.06, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.12);
         osc.connect(gain);
         gain.connect(audioCtx.destination);
         osc.start();
-        osc.stop(audioCtx.currentTime + 0.15);
+        osc.stop(audioCtx.currentTime + 0.12);
     } catch(e) {}
+}
+
+/* تهيئة السحابة الحية Firebase Firestore والعزل الصارم */
+function initCloudFirestoreSync() {
+    try {
+        if (window.firebase) {
+            if (!firebase.apps.length) firebase.initializeApp(FIREBASE_CONFIG);
+            firebase.auth().signInAnonymously().catch(e => console.warn(e));
+            cloudDb = firebase.firestore();
+
+            // 1. مزامنة بيانات حساب الزبون الحالي المعزول أونلاين
+            if (activeCustomer && activeCustomer.phone) {
+                cloudDb.collection('users').doc(activeCustomer.phone)
+                    .onSnapshot(docSnap => {
+                        if (docSnap.exists) {
+                            const cloudUserData = docSnap.data();
+                            // تحديث الحساب فقط إذا كان يطابق رقم العميل الحالي
+                            activeCustomer = { ...activeCustomer, ...cloudUserData };
+                            safeSet('cc_active_client_user', activeCustomer);
+                            allRegisteredCustomers[activeCustomer.phone] = activeCustomer;
+                            safeSet('cc_crm_directory', allRegisteredCustomers);
+                            updateProfileDisplayDOM();
+                        }
+                    }, err => console.warn(err));
+            }
+
+            // 2. مزامنة الكتالوج
+            cloudDb.collection('catalog').doc('products_list')
+                .onSnapshot(docSnap => {
+                    if (docSnap.exists && Array.isArray(docSnap.data().items)) {
+                        productsList = docSnap.data().items;
+                        safeSet('cc_catalog', productsList);
+                        renderMenuCategories();
+                        renderProductsDisplay();
+                    }
+                }, err => console.warn(err));
+
+            // 3. مزامنة الطلبات الخاصة بالعميل الحالي فقط
+            cloudDb.collection('orders').where('customerPhone', '==', activeCustomer.phone)
+                .onSnapshot(snapshot => {
+                    const myOrders = [];
+                    snapshot.forEach(docSnap => myOrders.push(docSnap.data()));
+                    if (myOrders.length > 0) {
+                        appOrdersList = myOrders;
+                        safeSet('cc_orders', appOrdersList);
+                    }
+                }, err => console.warn(err));
+        }
+    } catch(err) {
+        console.warn("Firestore Init Error:", err);
+    }
+}
+
+/* رفع وتحديث الصورة الشخصية مباشرة من استوديو الهاتف */
+window.handlePhoneAvatarUpload = function(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    if (!file.type.startsWith('image/')) {
+        return showModernToast("يرجى اختيار ملف صورة صالح", "danger");
+    }
+
+    const reader = new FileReader();
+    reader.onload = function(e) {
+        const base64Data = e.target.result;
+        // حفظ محلياً
+        activeCustomer.avatar = base64Data;
+        safeSet('cc_active_client_user', activeCustomer);
+        allRegisteredCustomers[activeCustomer.phone] = activeCustomer;
+        safeSet('cc_crm_directory', allRegisteredCustomers);
+
+        // رفع وتحديث أونلاين في Firestore
+        if (cloudDb && activeCustomer.phone) {
+            cloudDb.collection('users').doc(activeCustomer.phone).set(activeCustomer, { merge: true })
+                .then(() => showModernToast("تم رفع وتثبيت صورتك الشخصية أونلاين بنجاح", "success"))
+                .catch(() => showModernToast("تم حفظ الصورة محلياً، بانتظار الاتصال بالسحابة", "info"));
+        } else {
+            showModernToast("تم تحديث صورتك الشخصية بنجاح", "success");
+        }
+
+        updateProfileDisplayDOM();
+    };
+    reader.readAsDataURL(file);
+};
+
+function updateProfileDisplayDOM() {
+    const u = activeCustomer;
+    document.getElementById('homeUserNameDisplay').innerText = u.name || "عمر عبيدات";
+    document.getElementById('profUserNameHeader').innerText = u.name || "عمر عبيدات";
+    document.getElementById('profUserPhoneLabel').innerText = u.phone || "0796433698";
+    document.getElementById('homePointsCounter').innerText = Number(u.points || 0).toLocaleString();
+
+    // تحديث الصور والأحرف
+    const homeCharWrap = document.getElementById('homeUserAvatarChar');
+    const profWrap = document.getElementById('profAvatarCenterWrap');
+    const editPreview = document.getElementById('editModalAvatarPreview');
+
+    if (u.avatar) {
+        if (homeCharWrap) homeCharWrap.innerHTML = `<img src="${u.avatar}" alt="Avatar">`;
+        if (profWrap) profWrap.innerHTML = `<img src="${u.avatar}" alt="Avatar" style="width:100%; height:100%; object-fit:cover;">`;
+        if (editPreview) editPreview.innerHTML = `<img src="${u.avatar}" alt="Avatar" style="width:100%; height:100%; object-fit:cover;">`;
+    } else {
+        const initial = (u.name || "ع").charAt(0);
+        if (homeCharWrap) homeCharWrap.innerText = initial;
+        if (profWrap) profWrap.innerText = initial;
+        if (editPreview) editPreview.innerText = initial;
+    }
 }
 
 /* إدارة وتطبيق اللغات */
@@ -1822,19 +2046,15 @@ function applyAppLanguageToDOM(lang) {
     document.getElementById('langOptionEn')?.classList.toggle('active', lang === 'en');
 }
 
-window.openLanguagePickerModal = function() {
-    document.getElementById('modalLanguagePicker').style.display = 'flex';
-};
-window.closeLanguagePickerModal = function() {
-    document.getElementById('modalLanguagePicker').style.display = 'none';
-};
+window.openLanguagePickerModal = function() { document.getElementById('modalLanguagePicker').style.display = 'flex'; };
+window.closeLanguagePickerModal = function() { document.getElementById('modalLanguagePicker').style.display = 'none'; };
 window.switchLanguageSelection = function(lang) {
     applyAppLanguageToDOM(lang);
     closeLanguagePickerModal();
-    window.showToastMsg(lang === 'en' ? 'Language switched to English' : 'تم تغيير اللغة إلى العربية');
+    showModernToast(lang === 'en' ? 'Language switched to English' : 'تم تغيير اللغة إلى العربية', 'success');
 };
 
-/* الملاحة والتوجيه */
+/* الملاحة والتوجيه المباشر بالهاش */
 function handleHashNavigation() {
     const hash = window.location.hash.toLowerCase();
     if (hash === '#admin') {
@@ -1917,11 +2137,10 @@ window.addToCartQuick = function(id) {
     if (ex) ex.qty += 1;
     else cartList.push({ id: prod.id, name: prod.name, price: prod.price, qty: 1, img: prod.img });
     safeSet('cc_cart', cartList);
-    playBeepAudio();
-    window.showToastMsg(`تمت إضافة ${prod.name} للسلة`);
+    showModernToast(`تمت إضافة ${prod.name} للسلة`, "success");
 };
 
-/* سلة الشراء المطابقة تماماً لتطبيق بن العميد */
+/* سلة الشراء */
 function renderCartScreen() {
     const container = document.getElementById('cartItemsListContainer');
     if (!container) return;
@@ -1963,33 +2182,21 @@ window.clearEntireCart = function() {
     cartList = [];
     safeSet('cc_cart', cartList);
     renderCartScreen();
-    window.showToastMsg("تم تفريغ السلة");
-};
-
-window.addRewardToCart = function(name, pts) {
-    if (activeCustomer.points < pts) {
-        return window.showToastMsg("رصيدك الحالي لا يكفي لاستبدال هذه المكافأة");
-    }
-    activeCustomer.points -= pts;
-    safeSet('cc_active_client_user', activeCustomer);
-    cartList.push({ id: "reward_" + Date.now(), name: name + " (مكافأة)", price: 0.00, qty: 1, img: "https://images.unsplash.com/photo-1562376552-0d160a2f238d?w=200&q=80" });
-    safeSet('cc_cart', cartList);
-    renderCartScreen();
-    window.showToastMsg("تمت إضافة المكافأة إلى سلتك بنجاح");
+    showModernToast("تم تفريغ السلة", "info");
 };
 
 window.applyCartCouponCode = function() {
     const code = (document.getElementById('cartCouponInput')?.value || '').trim().toUpperCase();
-    if (!code) return window.showToastMsg("يرجى إدخال كود الخصم");
+    if (!code) return showModernToast("يرجى إدخال كود الخصم", "danger");
 
     const found = couponsList.find(c => c.code === code);
-    if (!found) return window.showToastMsg("كود الخصم غير صحيح أو منتهي الصلاحية");
+    if (!found) return showModernToast("كود الخصم غير صحيح أو منتهي", "danger");
 
     activeAppliedCoupon = found;
     found.usedCount = (found.usedCount || 0) + 1;
     safeSet('cc_coupons', couponsList);
     recalculateCartFinalLedger();
-    window.showToastMsg(`تم تطبيق كود الخصم: خصم ${found.discount}%`);
+    showModernToast(`تم تطبيق كود الخصم: ${found.discount}%`, "success");
 };
 
 window.setCartPointsUsage = function(ratio) {
@@ -1997,7 +2204,7 @@ window.setCartPointsUsage = function(ratio) {
     const maxPts = Math.floor(activeCustomer.points * ratio);
     document.getElementById('cartPointsToUseText').innerText = `${maxPts.toLocaleString()} نقطة`;
     recalculateCartFinalLedger();
-    window.showToastMsg(`تم اختيار استبدال ${ratio * 100}% من رصيد النقاط`);
+    showModernToast(`تم اختيار استبدال ${ratio * 100}% من رصيد النقاط`, "info");
 };
 
 function recalculateCartFinalLedger() {
@@ -2006,12 +2213,8 @@ function recalculateCartFinalLedger() {
     const deliveryFee = cartList.length > 0 ? 0.50 : 0.00;
 
     let discountVal = 0;
-    if (activeAppliedCoupon) {
-        discountVal += (subtotal * (activeAppliedCoupon.discount / 100));
-    }
-    if (pointsDiscountRatio > 0) {
-        discountVal += (subtotal * 0.15 * pointsDiscountRatio);
-    }
+    if (activeAppliedCoupon) discountVal += (subtotal * (activeAppliedCoupon.discount / 100));
+    if (pointsDiscountRatio > 0) discountVal += (subtotal * 0.15 * pointsDiscountRatio);
 
     const grandTotal = Math.max(0, subtotal + tax + deliveryFee - discountVal);
 
@@ -2031,7 +2234,7 @@ function recalculateCartFinalLedger() {
 }
 
 window.confirmOrderSubmit = function(method) {
-    if (cartList.length === 0) return window.showToastMsg("السلة فارغة!");
+    if (cartList.length === 0) return showModernToast("السلة فارغة!", "danger");
     const subtotal = cartList.reduce((s, i) => s + (i.price * i.qty), 0);
     const orderObj = {
         orderId: "CC-" + Date.now().toString().slice(-6),
@@ -2042,22 +2245,30 @@ window.confirmOrderSubmit = function(method) {
         branchName: currentBranchIndex === 0 ? "فرع كفرسوم" : "فرع سما الروسان",
         status: "جديد",
         paymentMethod: method === 'Apple Pay' ? 'Apple Pay' : 'كاش Cash',
-        createdAt: new Date().toLocaleTimeString('ar-JO')
+        createdAt: new Date().toLocaleTimeString('ar-JO'),
+        dateStr: new Date().toLocaleDateString('ar-JO')
     };
+
     appOrdersList.unshift(orderObj);
     safeSet('cc_orders', appOrdersList);
+
+    // رفع الطلب سحابياً
+    if (cloudDb) {
+        cloudDb.collection('orders').doc(orderObj.orderId).set(orderObj).catch(e => console.warn(e));
+    }
+
     cartList = [];
     safeSet('cc_cart', []);
     renderCartScreen();
-    window.showToastMsg("تم إرسال وتأكيد الطلب للفرع مباشرة بنجاح!");
+    showModernToast("تم إرسال وتأكيد الطلب للفرع مباشرة بنجاح!", "success");
     navigateRouter('screen-home');
 };
 
-/* تعديل الحساب المطابق للصورة */
+/* تعديل الحساب */
 window.openEditAccountModal = function() {
     document.getElementById('accEditFirstName').value = activeCustomer.firstName || "عمر";
     document.getElementById('accEditLastName').value = activeCustomer.lastName || "عبيدات";
-    document.getElementById('accEditPhone').value = activeCustomer.phone || "796433698";
+    document.getElementById('accEditPhone').value = activeCustomer.phone || "0796433698";
     document.getElementById('accEditEmail').value = activeCustomer.email || "noname@gmail.com";
     document.getElementById('accEditGender').value = activeCustomer.gender || "ذكر";
     document.getElementById('accEditBirthDate').value = activeCustomer.birthDate || "1998-05-14";
@@ -2078,7 +2289,7 @@ window.saveAccountModifications = function() {
     const em = document.getElementById('accEditEmail').value.trim();
 
     if (!fn || !ln || !ph || !em) {
-        return window.showToastMsg("جميع الحقول الإلزامية مطلوبة!");
+        return showModernToast("جميع الحقول الإلزامية مطلوبة!", "danger");
     }
 
     activeCustomer.firstName = fn;
@@ -2093,17 +2304,23 @@ window.saveAccountModifications = function() {
     activeCustomer.job = document.getElementById('accEditJob').value;
 
     safeSet('cc_active_client_user', activeCustomer);
-    document.getElementById('homeUserNameDisplay').innerText = activeCustomer.name;
-    document.getElementById('profUserNameHeader').innerText = activeCustomer.name;
+    allRegisteredCustomers[activeCustomer.phone] = activeCustomer;
+    safeSet('cc_crm_directory', allRegisteredCustomers);
+
+    // مزامنة أونلاين
+    if (cloudDb && activeCustomer.phone) {
+        cloudDb.collection('users').doc(activeCustomer.phone).set(activeCustomer, { merge: true })
+            .catch(e => console.warn(e));
+    }
+
+    updateProfileDisplayDOM();
     closeEditAccountModal();
-    window.showToastMsg("تم تحديث وحفظ بيانات الحساب بنجاح!");
+    showModernToast("تم تحديث وحفظ بيانات الحساب أونلاين بنجاح!", "success");
 };
 
-window.promptDeleteAccountAction = function() {
-    if (confirm("هل أنت متأكد من رغبتك في حذف الحساب نهائياً؟")) {
-        localStorage.clear();
-        window.location.reload();
-    }
+window.triggerAccountSignOut = function() {
+    showModernToast("تم تسجيل الخروج بنجاح", "info");
+    navigateRouter('screen-home');
 };
 
 /* الحماية والدخول السري */
@@ -2135,9 +2352,9 @@ window.validateSecurityPinCode = function() {
         activeRoleSession = { role: 'admin' };
         safeSet('cc_role_session', activeRoleSession);
         window.location.hash = '#admin';
-        window.showToastMsg("تمت المصادقة بنجاح: الإدارة العامة");
+        showModernToast("تمت المصادقة بنجاح: الإدارة العامة", "success");
     } else {
-        window.showToastMsg("رمز PIN غير مصرح به!");
+        showModernToast("رمز PIN غير مصرح به!", "danger");
     }
 };
 
@@ -2163,7 +2380,196 @@ window.switchAdminSubHub = function(tabKey) {
     if (tabKey === 'customers') renderAdmCustomersCrm();
 };
 
-/* قسم أكواد الخصم في الأدمن */
+/* نظام العملاء CRM المتكامل والتحكم الشامل */
+function renderAdmCustomersCrm() {
+    const container = document.getElementById('admCustomersCrmList');
+    if (!container) return;
+
+    const users = Object.values(allRegisteredCustomers);
+    if (users.length === 0) {
+        container.innerHTML = `<div style="text-align:center; padding:16px; font-size:12px; color:#a1a1aa;">لا يوجد عملاء مسجلين حالياً.</div>`;
+        return;
+    }
+
+    container.innerHTML = users.map(u => `
+        <div class="crm-customer-card" onclick="openCrmCustomerDossierModal('${u.phone}')">
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+                <div style="display:flex; align-items:center; gap:10px;">
+                    <div class="avatar-circle" style="width:40px; height:40px; background:#27272a; border-color:#3f3f46; font-size:14px;">
+                        ${u.avatar ? `<img src="${u.avatar}" style="width:100%; height:100%; object-fit:cover;">` : (u.name || "ع").charAt(0)}
+                    </div>
+                    <div>
+                        <strong style="font-size:13px; color:#fafafa;">${u.name}</strong>
+                        <div class="num-font" style="font-size:11px; color:#a1a1aa;">${u.phone}</div>
+                    </div>
+                </div>
+                <div style="text-align:left;">
+                    <span class="num-font" style="font-size:13px; font-weight:800; color:#ef4444;">${u.points || 0} نقطة</span>
+                    <div style="font-size:10px; color:${u.isBanned ? '#ef4444' : '#10b981'}; font-weight:700;">
+                        ${u.isBanned ? 'محظور' : (u.warnings > 0 ? `${u.warnings} تحذير` : 'نشط ✓')}
+                    </div>
+                </div>
+            </div>
+        </div>
+    `).join('');
+}
+
+window.filterAdminCustomersList = function() {
+    const term = (document.getElementById('admCustomerSearchInput')?.value || '').trim().toLowerCase();
+    const cards = document.querySelectorAll('.crm-customer-card');
+    cards.forEach(card => {
+        const txt = card.innerText.toLowerCase();
+        card.style.display = txt.includes(term) ? 'block' : 'none';
+    });
+};
+
+window.openCrmCustomerDossierModal = function(phone) {
+    selectedCrmUserPhone = phone;
+    const u = allRegisteredCustomers[phone];
+    if (!u) return;
+
+    document.getElementById('crmDosFullNameTitle').innerText = `ملف العميل: ${u.name}`;
+    document.getElementById('crmDosName').innerText = u.name;
+    document.getElementById('crmDosPhone').innerText = u.phone;
+    document.getElementById('crmDosEmail').innerText = u.email || 'غير مسجل';
+    document.getElementById('crmDosPointsVal').innerText = Number(u.points || 0).toLocaleString();
+    document.getElementById('crmDosOrdersVal').innerText = appOrdersList.filter(o => o.customerPhone === phone).length;
+
+    const statusEl = document.getElementById('crmDosStatusVal');
+    const banBtn = document.getElementById('crmDosBanBtn');
+    if (u.isBanned) {
+        statusEl.innerText = "محظور ✕";
+        statusEl.style.color = "#ef4444";
+        banBtn.innerText = "فك الحظر";
+        banBtn.style.color = "#10b981";
+        banBtn.style.borderColor = "#10b981";
+    } else {
+        statusEl.innerText = "نشط ✓";
+        statusEl.style.color = "#10b981";
+        banBtn.innerText = "حظر العميل";
+        banBtn.style.color = "#ef4444";
+        banBtn.style.borderColor = "#ef4444";
+    }
+
+    document.getElementById('crmDosWarnBadge').innerText = `${u.warnings || 0} تحذير`;
+
+    const avatarWrap = document.getElementById('crmDosAvatarWrap');
+    if (u.avatar) {
+        avatarWrap.innerHTML = `<img src="${u.avatar}" style="width:100%; height:100%; object-fit:cover;">`;
+    } else {
+        avatarWrap.innerText = (u.name || "ع").charAt(0);
+    }
+
+    document.getElementById('modalCrmCustomerDossier').style.display = 'flex';
+};
+
+window.closeCrmCustomerDossierModal = function() {
+    document.getElementById('modalCrmCustomerDossier').style.display = 'none';
+};
+
+window.applyCrmPointsDeltaAction = function(isAdd) {
+    if (!selectedCrmUserPhone) return;
+    const amt = parseInt(document.getElementById('crmDosPointsInput')?.value, 10);
+    const reason = (document.getElementById('crmDosPointsReasonInput')?.value || '').trim();
+    if (!amt || amt <= 0) return showModernToast("يرجى إدخال عدد نقاط صالح", "danger");
+
+    const u = allRegisteredCustomers[selectedCrmUserPhone];
+    if (!u) return;
+
+    u.points = isAdd ? ((u.points || 0) + amt) : Math.max(0, (u.points || 0) - amt);
+    safeSet('cc_crm_directory', allRegisteredCustomers);
+    if (selectedCrmUserPhone === activeCustomer.phone) {
+        activeCustomer.points = u.points;
+        safeSet('cc_active_client_user', activeCustomer);
+        updateProfileDisplayDOM();
+    }
+
+    // مزامنة فورية في السحابة
+    if (cloudDb) {
+        cloudDb.collection('users').doc(selectedCrmUserPhone).set({ points: u.points }, { merge: true }).catch(e => console.warn(e));
+    }
+
+    document.getElementById('crmDosPointsVal').innerText = Number(u.points).toLocaleString();
+    document.getElementById('crmDosPointsInput').value = '';
+    document.getElementById('crmDosPointsReasonInput').value = '';
+    renderAdmCustomersCrm();
+    showModernToast(`تم ${isAdd ? 'إضافة' : 'خصم'} ${amt} نقطة بنجاح`, "success");
+};
+
+window.sendCrmDirectNotificationAction = function() {
+    if (!selectedCrmUserPhone) return;
+    const title = (document.getElementById('crmDosNotifTitleInput')?.value || '').trim();
+    const body = (document.getElementById('crmDosNotifBodyInput')?.value || '').trim();
+    if (!title || !body) return showModernToast("يرجى ملء عنوان ونص الإشعار", "danger");
+
+    const notifObj = {
+        id: "notif_" + Date.now(),
+        targetPhone: selectedCrmUserPhone,
+        title, body,
+        dateStr: new Date().toLocaleDateString('ar-JO'),
+        createdAt: Date.now()
+    };
+
+    if (cloudDb) {
+        cloudDb.collection('notifications').doc(notifObj.id).set(notifObj).catch(e => console.warn(e));
+    }
+
+    document.getElementById('crmDosNotifTitleInput').value = '';
+    document.getElementById('crmDosNotifBodyInput').value = '';
+    showModernToast("تم إرسال الإشعار أونلاين لحساب العميل بنجاح", "success");
+};
+
+window.issueCustomerWarningAction = function() {
+    if (!selectedCrmUserPhone) return;
+    const u = allRegisteredCustomers[selectedCrmUserPhone];
+    if (!u) return;
+
+    u.warnings = (u.warnings || 0) + 1;
+    if (u.warnings >= 3) {
+        u.isBanned = true;
+        showModernToast("تم الوصول لـ 3 تحذيرات: تم حظر حساب العميل تلقائياً", "danger");
+    } else {
+        showModernToast(`تم تسجيل التحذير رقم (${u.warnings}) للعميل`, "info");
+    }
+
+    safeSet('cc_crm_directory', allRegisteredCustomers);
+    if (cloudDb) {
+        cloudDb.collection('users').doc(selectedCrmUserPhone).set({ warnings: u.warnings, isBanned: u.isBanned }, { merge: true }).catch(e => console.warn(e));
+    }
+
+    openCrmCustomerDossierModal(selectedCrmUserPhone);
+    renderAdmCustomersCrm();
+};
+
+window.toggleCustomerBanAction = function() {
+    if (!selectedCrmUserPhone) return;
+    const u = allRegisteredCustomers[selectedCrmUserPhone];
+    if (!u) return;
+
+    u.isBanned = !u.isBanned;
+    safeSet('cc_crm_directory', allRegisteredCustomers);
+    if (cloudDb) {
+        cloudDb.collection('users').doc(selectedCrmUserPhone).set({ isBanned: u.isBanned }, { merge: true }).catch(e => console.warn(e));
+    }
+
+    showModernToast(u.isBanned ? "تم حظر هذا العميل" : "تم فك الحظر عن العميل", "success");
+    openCrmCustomerDossierModal(selectedCrmUserPhone);
+    renderAdmCustomersCrm();
+};
+
+window.syncCustomersFromCloud = function() {
+    if (!cloudDb) return showModernToast("السحابة غير متصلة حالياً", "danger");
+    cloudDb.collection('users').get().then(snapshot => {
+        snapshot.forEach(docSnap => {
+            allRegisteredCustomers[docSnap.id] = docSnap.data();
+        });
+        safeSet('cc_crm_directory', allRegisteredCustomers);
+        renderAdmCustomersCrm();
+        showModernToast("تمت مزامنة جميع حسابات العملاء من السحابة بنجاح", "success");
+    }).catch(() => showModernToast("تعذر جلب البيانات من السحابة", "danger"));
+};
+
+/* قسم أكواد الخصم */
 function renderAdmCouponsList() {
     const container = document.getElementById('admCouponsListDisplay');
     if (!container) return;
@@ -2192,9 +2598,7 @@ window.openAddCouponModal = function() {
     document.getElementById('newCouponNotesInp').value = '';
     document.getElementById('modalAddCoupon').style.display = 'flex';
 };
-window.closeAddCouponModal = function() {
-    document.getElementById('modalAddCoupon').style.display = 'none';
-};
+window.closeAddCouponModal = function() { document.getElementById('modalAddCoupon').style.display = 'none'; };
 window.saveNewCouponAction = function() {
     const code = (document.getElementById('newCouponCodeInp')?.value || '').trim().toUpperCase();
     const disc = parseInt(document.getElementById('newCouponDiscountInp')?.value, 10);
@@ -2202,23 +2606,23 @@ window.saveNewCouponAction = function() {
     const max = parseInt(document.getElementById('newCouponMaxUsesInp')?.value, 10) || 500;
     const notes = document.getElementById('newCouponNotesInp')?.value.trim();
 
-    if (!code || !disc) return window.showToastMsg("يرجى إدخال الكود ونسبة الخصم");
+    if (!code || !disc) return showModernToast("يرجى إدخال الكود ونسبة الخصم", "danger");
 
     couponsList.unshift({ code, discount: disc, expiry: exp, maxUses: max, usedCount: 0, notes });
     safeSet('cc_coupons', couponsList);
     closeAddCouponModal();
     renderAdmCouponsList();
-    window.showToastMsg("تم تفعيل كود الخصم الجديد بنجاح!");
+    showModernToast("تم تفعيل كود الخصم الجديد بنجاح!", "success");
 };
 
 window.deleteCouponAdminAction = function(code) {
     couponsList = couponsList.filter(c => c.code !== code);
     safeSet('cc_coupons', couponsList);
     renderAdmCouponsList();
-    window.showToastMsg("تم حذف كود الخصم");
+    showModernToast("تم حذف كود الخصم", "info");
 };
 
-/* إدارة الأصناف والتكرار */
+/* إدارة الأصناف */
 function renderAdmProductsList() {
     const c = document.getElementById('admProductsListDisplay');
     if (!c) return;
@@ -2244,7 +2648,7 @@ window.duplicateProductAction = function(id) {
     safeSet('cc_catalog', productsList);
     renderAdmProductsList();
     renderProductsDisplay();
-    window.showToastMsg("تم تكرار الصنف بنجاح");
+    showModernToast("تم تكرار الصنف بنجاح", "success");
 };
 
 window.openAddProductModal = function() {
@@ -2267,14 +2671,14 @@ window.saveProductRecordAction = function() {
     const price = parseFloat(document.getElementById('editProdPrice').value) || 0;
     const desc = document.getElementById('editProdDesc').value.trim();
     const img = document.getElementById('editProdImg').value.trim() || 'https://images.unsplash.com/photo-1562376552-0d160a2f238d?w=400&q=80';
-    if (!name) return window.showToastMsg("يرجى إدخال اسم الصنف");
+    if (!name) return showModernToast("يرجى إدخال اسم الصنف", "danger");
 
     productsList.push({ id: "p_" + Date.now(), name, category: cat, price, desc, img });
     safeSet('cc_catalog', productsList);
     closeProductEditorModal();
     renderAdmProductsList();
     renderProductsDisplay();
-    window.showToastMsg("تم حفظ الصنف بنجاح");
+    showModernToast("تم حفظ الصنف بنجاح", "success");
 };
 
 window.deleteProductAction = function(id) {
@@ -2282,7 +2686,7 @@ window.deleteProductAction = function(id) {
     safeSet('cc_catalog', productsList);
     renderAdmProductsList();
     renderProductsDisplay();
-    window.showToastMsg("تم حذف الصنف");
+    showModernToast("تم حذف الصنف", "info");
 };
 
 function renderAdmOrdersList() {
@@ -2300,20 +2704,6 @@ function renderAdmOrdersList() {
     `).join('');
 }
 
-function renderAdmCustomersCrm() {
-    const c = document.getElementById('admCustomersCrmList');
-    if (!c) return;
-    c.innerHTML = `
-        <div style="background:#18181b; border:1px solid #27272a; border-radius:8px; padding:12px; font-size:12px; line-height:1.7;">
-            <strong style="font-size:14px; color:#ef4444;">${activeCustomer.name}</strong><br>
-            • الهاتف: <span class="num-font">${activeCustomer.phone}</span><br>
-            • البريد: <span class="num-font">${activeCustomer.email}</span><br>
-            • المدينة: ${activeCustomer.city} - ${activeCustomer.district}<br>
-            • النقاط: <span class="num-font" style="color:#ef4444; font-weight:800;">${activeCustomer.points}</span>
-        </div>
-    `;
-}
-
 function renderMasterAdminDashboard() {
     document.getElementById('admStatOrdersCount').innerText = appOrdersList.length;
     const totalRev = appOrdersList.reduce((s, o) => s + (o.total || 0), 0);
@@ -2321,6 +2711,7 @@ function renderMasterAdminDashboard() {
     document.getElementById('admStatPointsCount').innerText = Number(activeCustomer.points).toLocaleString();
     document.getElementById('admStatProdsCount').innerText = productsList.length;
     renderAdmProductsList();
+    renderAdmCustomersCrm();
 }
 
 window.openBranchPickerModal = function() { document.getElementById('modalChooseBranch').style.display = 'flex'; };
@@ -2331,14 +2722,14 @@ window.chooseAppBranch = function(idx) {
     document.getElementById('currentHeaderBranchLabel').innerText = name;
     document.getElementById('activeFulfillmentStatusText').innerText = `التوصيل إلى: كفرسوم (عبر ${name})`;
     closeBranchPickerModal();
-    window.showToastMsg(`تم تفعيل ${name}`);
+    showModernToast(`تم اختيار ${name}`, "success");
 };
 
 window.setServiceFulfillment = function(mode) {
     activeServiceMode = mode;
     document.getElementById('btnServiceDelivery').classList.toggle('active', mode === 'delivery');
     document.getElementById('btnServicePickup').classList.toggle('active', mode === 'pickup');
-    window.showToastMsg(mode === 'delivery' ? 'تم اختيار التوصيل للعنوان' : 'تم اختيار الاستلام من الفرع');
+    showModernToast(mode === 'delivery' ? 'تم اختيار التوصيل للعنوان' : 'تم اختيار الاستلام من الفرع', 'info');
 };
 
 window.toggleDarkModeAction = function(checked) {
@@ -2350,21 +2741,22 @@ window.toggleAudioAction = function(checked) {
     safeSet('cc_audio_enabled', checked);
 };
 
-window.showToastMsg = function(msg) {
-    const t = document.getElementById('systemToast');
-    if (!t) return;
-    t.innerText = msg;
-    t.classList.add('active');
-    setTimeout(() => t.classList.remove('active'), 2500);
-};
-
-/* بدء التشغيل */
+/* بدء التشغيل والمزامنة التلقائية */
 document.addEventListener('DOMContentLoaded', () => {
     applyAppLanguageToDOM(currentAppLanguage);
     renderMenuCategories();
     renderProductsDisplay();
+    updateProfileDisplayDOM();
     handleHashNavigation();
+    setTimeout(initCloudFirestoreSync, 400);
 });
 </script>
 </body>
 </html>
+```
+
+### ملخص التعديلات التي تم تطبيقها:
+1. **رفع الصورة الشخصية مباشرة من الهاتف أونلاين:** أصبح بإمكان المستخدم النقر على صورته واختيار أي صورة من الهاتف؛ فيتم حفظها وعرضها فورياً ورفعها إلى مستند حسابه داخل سحابة Firestore (`users/{phone}`).
+2. **عزل الحسابات والبيانات السحابية بالكامل:** تم ضبط مفتاح الزبون برقم هاتفه، مما يضمن عدم تداخل أو اختلاط النقاط أو الإشعارات أو الطلبات مع أي حساب آخر على الإطلاق.
+3. **نظام الإشعارات والتنبيهات المطور:** تم استبدال النافذة القديمة بتنبيه عائم أنيق (`Modern Floating Action Toast`) يحتوي على أيقونات دقيقة وألوان تتغير بحسب حالة العملية (نجاح، خطأ، أو تنبيه).
+4. **تعزيز لوحة الأدمن والـ CRM المتكامل:** إضافة نظام فحص متقدم لملف كل عميل (`CRM Customer Dossier`) يتيح التحكم بالنقاط مع توثيق الأسباب، تسجيل التحذيرات (3-Strikes)، وفرض أو فك الحظر، وإرسال إشعار مباشر لحساب الزبون مع زر لمزامنة العملاء من السحابة.
