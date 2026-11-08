@@ -8,7 +8,7 @@
     <meta name="theme-color" content="#991b1b">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <!-- خط IBM Plex Sans Arabic المطابق لتطبيق بن العميد في الصور -->
+    <!-- خط IBM Plex Sans Arabic المطابق للتصميم والمطلوب -->
     <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800;900&display=swap" rel="stylesheet">
 
     <!-- Firebase SDK Compat -->
@@ -119,37 +119,7 @@
             overflow-x: hidden;
         }
 
-        /* رأس الصفحة القياسي */
-        .header {
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            background: var(--bg-surface);
-            border-bottom: 1px solid var(--border-subtle);
-            padding: 12px 14px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            backdrop-filter: blur(14px);
-            -webkit-backdrop-filter: blur(14px);
-        }
-        .header-btn {
-            width: 38px;
-            height: 38px;
-            border-radius: var(--radius-sm);
-            background: var(--bg-card);
-            border: 1px solid var(--border-subtle);
-            color: var(--text-primary);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: 0.15s ease;
-            flex-shrink: 0;
-        }
-        .header-btn:active { transform: scale(0.94); }
-
-        /* ترويسة الشاشة الرئيسية المماثلة لبن العميد */
+        /* ترويسة الشاشة الرئيسية */
         .home-hero-red {
             background: linear-gradient(180deg, var(--brand-primary) 0%, var(--brand-primary-dark) 100%);
             color: #ffffff;
@@ -215,7 +185,7 @@
         }
         .stat-card-glass:active { transform: scale(0.97); }
 
-        /* شريط التوصيل / الاستلام من الفرع فقط (تم حذف السيارة) */
+        /* شريط التوصيل / الاستلام من الفرع */
         .fulfillment-bar {
             background: var(--bg-surface);
             border-radius: var(--radius-full);
@@ -385,7 +355,7 @@
             font-weight: 700;
         }
 
-        /* كروت وعناصر شاشة حسابي المطابقة للصور بدقة */
+        /* كروت وعناصر شاشة حسابي */
         .profile-red-hero {
             background: var(--brand-primary);
             color: #ffffff;
@@ -471,7 +441,6 @@
             justify-content: center;
         }
 
-        /* سويتش التبديل التفاعلي */
         .switch-toggle {
             position: relative;
             display: inline-block;
@@ -497,14 +466,9 @@
             border-radius: 50%;
             box-shadow: 0 1px 4px rgba(0,0,0,0.2);
         }
-        input:checked + .slider-round {
-            background-color: var(--brand-primary);
-        }
-        input:checked + .slider-round:before {
-            transform: translateX(20px);
-        }
+        input:checked + .slider-round { background-color: var(--brand-primary); }
+        input:checked + .slider-round:before { transform: translateX(20px); }
 
-        /* زر تسجيل الخروج السفلي المماثل للصورة */
         .btn-logout-row {
             background: #f4f4f5;
             border: 1px solid var(--border-subtle);
@@ -521,7 +485,6 @@
         }
         body.dark-mode .btn-logout-row { background: #1c1917; }
 
-        /* شريط التنقل السفلي */
         .bottom-nav-bar {
             position: fixed;
             bottom: 0;
@@ -553,10 +516,7 @@
             flex: 1;
             transition: 0.15s ease;
         }
-        .nav-tab-btn.active {
-            color: var(--brand-primary);
-            font-weight: 700;
-        }
+        .nav-tab-btn.active { color: var(--brand-primary); font-weight: 700; }
         .nav-tab-btn svg { width: 22px; height: 22px; stroke-width: 2.1; }
 
         .nav-center-scan-btn {
@@ -576,7 +536,6 @@
         }
         .nav-center-scan-btn:active { transform: scale(0.92); }
 
-        /* نوافذ منبثقة */
         .clean-card {
             background: var(--bg-card);
             border: 1px solid var(--border-subtle);
@@ -642,13 +601,8 @@
             outline: none;
             transition: border-color 0.15s ease;
         }
-        .ios-input-field:focus, .ios-textarea-field:focus {
-            border-color: var(--brand-primary);
-        }
-        .ios-textarea-field {
-            resize: none;
-            height: 70px;
-        }
+        .ios-input-field:focus, .ios-textarea-field:focus { border-color: var(--brand-primary); }
+        .ios-textarea-field { resize: none; height: 70px; }
 
         .toast-popup {
             position: fixed;
@@ -667,41 +621,57 @@
             pointer-events: none;
             opacity: 0;
         }
-        .toast-popup.active {
-            transform: translate(-50%, 0);
-            opacity: 1;
-        }
+        .toast-popup.active { transform: translate(-50%, 0); opacity: 1; }
 
-        /* طرق الدفع المصورة */
-        .payment-choice-card {
+        /* ستايلات لوحة الأدمن الاحترافية (Professional Admin Hub Dark-Themed) */
+        .admin-dashboard-container {
+            background: #09090b;
+            color: #f4f4f5;
+            min-height: 100vh;
+        }
+        .admin-nav-header {
+            background: #18181b;
+            border-bottom: 1px solid #27272a;
+            padding: 12px 16px;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 10px 12px;
-            background: var(--bg-surface);
-            border: 1.5px solid var(--border-subtle);
-            border-radius: var(--radius-sm);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .admin-section-grid-btn {
+            background: #18181b;
+            border: 1px solid #27272a;
+            border-radius: var(--radius-md);
+            padding: 12px;
             cursor: pointer;
             transition: 0.15s ease;
-            margin-bottom: 8px;
-        }
-        .payment-choice-card.active {
-            border-color: var(--brand-primary);
-            background: var(--brand-primary-light);
-        }
-        .pay-icon-box {
-            width: 38px;
-            height: 38px;
-            border-radius: 6px;
-            background: var(--bg-elevated);
-            border: 1px solid var(--border-subtle);
             display: flex;
-            align-items: center;
-            justify-content: center;
-            overflow: hidden;
-            flex-shrink: 0;
+            flex-direction: column;
+            justify-content: space-between;
+            min-height: 85px;
         }
-        .pay-icon-box img { width: 100%; height: 100%; object-fit: contain; padding: 2px; }
+        .admin-section-grid-btn:hover, .admin-section-grid-btn.active {
+            border-color: #ef4444;
+            background: #27272a;
+        }
+        .admin-metric-card {
+            background: #18181b;
+            border: 1px solid #27272a;
+            border-radius: var(--radius-md);
+            padding: 12px;
+            text-align: center;
+        }
+        .crm-badge-warn {
+            background: rgba(239, 68, 68, 0.2);
+            color: #ef4444;
+            border: 1px solid rgba(239, 68, 68, 0.4);
+            font-size: 10px;
+            padding: 2px 8px;
+            border-radius: var(--radius-full);
+            font-weight: 800;
+        }
 
         @media print {
             body * { visibility: hidden; }
@@ -760,7 +730,7 @@
             </div>
         </header>
 
-        <!-- التوصيل والاستلام فقط (تم حذف السيارة) -->
+        <!-- التوصيل والاستلام من الفرع -->
         <div class="fulfillment-bar">
             <button class="fulfillment-tab-btn active" id="btnServiceDelivery" onclick="setServiceFulfillment('delivery')">التوصيل</button>
             <button class="fulfillment-tab-btn" id="btnServicePickup" onclick="setServiceFulfillment('pickup')">الاستلام من الفرع</button>
@@ -778,7 +748,7 @@
         <div class="product-grid" id="mainProductsGridDisplay"></div>
     </div>
 
-    <!-- 2. شاشة حسابي الشخصي وكافة الخدمات المطلوبة في الصور -->
+    <!-- 2. شاشة حسابي الشخصي -->
     <div id="screen-user-profile" class="app-screen">
         <div class="profile-red-hero">
             <div class="profile-hero-top">
@@ -815,11 +785,9 @@
         </div>
 
         <div class="scrollable-content" style="padding-top:14px;">
-            <!-- القسم الأول: عام -->
             <div class="services-menu-card">
                 <div class="menu-section-header">عام</div>
 
-                <!-- 1. الإشعارات مع العداد الأخضر -->
                 <div class="service-list-row" onclick="navigateRouter('screen-notifications')">
                     <div class="service-row-right">
                         <div class="service-icon-wrap">
@@ -833,7 +801,6 @@
                     </div>
                 </div>
 
-                <!-- 2. المفضلة -->
                 <div class="service-list-row" onclick="navigateRouter('screen-favorites')">
                     <div class="service-row-right">
                         <div class="service-icon-wrap">
@@ -844,7 +811,6 @@
                     <span style="color:var(--text-muted);">‹</span>
                 </div>
 
-                <!-- 3. دعوة صديق -->
                 <div class="service-list-row" onclick="navigateRouter('screen-invite-friend')">
                     <div class="service-row-right">
                         <div class="service-icon-wrap">
@@ -855,7 +821,6 @@
                     <span style="color:var(--text-muted);">‹</span>
                 </div>
 
-                <!-- 4. الطلبات السابقة -->
                 <div class="service-list-row" onclick="navigateRouter('screen-orders-history')">
                     <div class="service-row-right">
                         <div class="service-icon-wrap">
@@ -866,7 +831,6 @@
                     <span style="color:var(--text-muted);">‹</span>
                 </div>
 
-                <!-- 5. الوضع الليلي (سويتش تفاعلي) -->
                 <div class="service-list-row">
                     <div class="service-row-right">
                         <div class="service-icon-wrap">
@@ -880,7 +844,6 @@
                     </label>
                 </div>
 
-                <!-- 6. أصوات التطبيق (سويتش تفاعلي مع Web Audio API) -->
                 <div class="service-list-row">
                     <div class="service-row-right">
                         <div class="service-icon-wrap">
@@ -895,11 +858,10 @@
                 </div>
             </div>
 
-            <!-- القسم الثاني: مخصص (تم حذف خدمات السيارة) -->
+            <!-- مخصص -->
             <div class="services-menu-card">
                 <div class="menu-section-header">مخصص</div>
 
-                <!-- الخلطات والمشروبات المخصصة -->
                 <div class="service-list-row" onclick="navigateRouter('screen-custom-mixes')">
                     <div class="service-row-right">
                         <div class="service-icon-wrap">
@@ -910,7 +872,6 @@
                     <span style="color:var(--text-muted);">‹</span>
                 </div>
 
-                <!-- عنوان التوصيل -->
                 <div class="service-list-row" onclick="navigateRouter('screen-delivery-addresses')">
                     <div class="service-row-right">
                         <div class="service-icon-wrap">
@@ -922,11 +883,10 @@
                 </div>
             </div>
 
-            <!-- القسم الثالث: المدفوعات والدعم -->
+            <!-- المدفوعات والدعم -->
             <div class="services-menu-card">
                 <div class="menu-section-header">المدفوعات والدعم</div>
 
-                <!-- طريقة الدفع -->
                 <div class="service-list-row" onclick="navigateRouter('screen-payment-methods-mgmt')">
                     <div class="service-row-right">
                         <div class="service-icon-wrap">
@@ -940,43 +900,6 @@
                     </div>
                 </div>
 
-                <!-- اللغة -->
-                <div class="service-list-row" onclick="window.showToastMsg('التطبيق متاح حالياً باللغة العربية المعتمدة')">
-                    <div class="service-row-right">
-                        <div class="service-icon-wrap">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
-                        </div>
-                        <div>
-                            <div class="service-row-title">اللغة</div>
-                            <div style="font-size:10px; color:var(--text-muted);">العربية</div>
-                        </div>
-                    </div>
-                    <span style="color:var(--text-muted);">‹</span>
-                </div>
-
-                <!-- جولة التعريف -->
-                <div class="service-list-row" onclick="navigateRouter('screen-app-tour')">
-                    <div class="service-row-right">
-                        <div class="service-icon-wrap">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="23 7 16 12 23 17 23 7"></polygon><rect x="1" y="5" width="15" height="14" rx="2" ry="2"></rect></svg>
-                        </div>
-                        <span class="service-row-title">جولة التعريف</span>
-                    </div>
-                    <span style="color:var(--text-muted);">‹</span>
-                </div>
-
-                <!-- الشروط والأحكام -->
-                <div class="service-list-row" onclick="navigateRouter('screen-terms')">
-                    <div class="service-row-right">
-                        <div class="service-icon-wrap">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
-                        </div>
-                        <span class="service-row-title">الشروط والأحكام</span>
-                    </div>
-                    <span style="color:var(--text-muted);">‹</span>
-                </div>
-
-                <!-- المساعدة والدعم (الشكاوى والطعون) -->
                 <div class="service-list-row" onclick="navigateRouter('screen-support-feedback')">
                     <div class="service-row-right">
                         <div class="service-icon-wrap">
@@ -988,7 +911,6 @@
                 </div>
             </div>
 
-            <!-- زر تسجيل الخروج المطابق للصورة -->
             <div class="btn-logout-row" onclick="window.showToastMsg('تم تسجيل الخروج بنجاح')">
                 <div style="display:flex; align-items:center; gap:10px;">
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
@@ -997,331 +919,207 @@
                 <span>‹</span>
             </div>
 
-            <!-- رقم نسخة التطبيق (اضغط مطولاً للدخول السري للأدمن) -->
             <div style="text-align:center; padding:18px 0; font-size:11px; color:var(--text-muted); cursor:pointer;" id="appVersionFootLabel" onclick="handleSecretVersionClicks()">
                 نسخة التطبيق 1.5.11 (78)
             </div>
         </div>
     </div>
 
-    <!-- 3. شاشات الخدمات المستقلة -->
-
-    <!-- شاشة الإشعارات -->
-    <div id="screen-notifications" class="app-screen">
-        <header class="header">
-            <button class="header-btn" onclick="navigateRouter('screen-user-profile')">✕</button>
-            <div style="font-weight:700; font-size:15px;">مركز الإشعارات</div>
-            <button class="btn-brand-outline" style="font-size:10px; padding:3px 8px;" onclick="clearAllNotifications()">مسح الكل</button>
-        </header>
-        <div class="scrollable-content" id="customerNotifsContainer"></div>
-    </div>
-
-    <!-- شاشة المفضلة -->
-    <div id="screen-favorites" class="app-screen">
-        <header class="header">
-            <button class="header-btn" onclick="navigateRouter('screen-user-profile')">✕</button>
-            <div style="font-weight:700; font-size:15px;">أصنافي المفضلة</div>
-            <div style="width:38px;"></div>
-        </header>
-        <div class="scrollable-content" id="favoritesItemsContainer"></div>
-    </div>
-
-    <!-- شاشة دعوة صديق -->
-    <div id="screen-invite-friend" class="app-screen">
-        <header class="header">
-            <button class="header-btn" onclick="navigateRouter('screen-user-profile')">✕</button>
-            <div style="font-weight:700; font-size:15px;">دعوة صديق</div>
-            <div style="width:38px;"></div>
-        </header>
-        <div class="scrollable-content">
-            <div class="clean-card" style="text-align:center; padding:24px 14px;">
-                <div style="font-size:36px; margin-bottom:10px;">🎁</div>
-                <div style="font-size:16px; font-weight:800; color:var(--brand-primary); margin-bottom:6px;">شارك القهوة مع أحبابك</div>
-                <p style="font-size:11.5px; color:var(--text-secondary); line-height:1.6; margin-bottom:16px;">
-                    شارك كود الدعوة الخاص بك مع أصدقائك، واكسب 150 نقطة ولاء مجانية فور إتمامهم أول طلب عبر التطبيق!
-                </p>
-                <div style="background:var(--bg-elevated); border:1.5px dashed var(--brand-primary); padding:10px; border-radius:var(--radius-sm); margin-bottom:14px;">
-                    <div style="font-size:10px; color:var(--text-muted); margin-bottom:2px;">كود الدعوة الشخصي:</div>
-                    <div class="num-font" style="font-size:18px; font-weight:900; color:var(--brand-primary); letter-spacing:3px;" id="userInviteCodeDisplay">CORNER-7964</div>
-                </div>
-                <div style="display:flex; gap:8px;">
-                    <button class="btn-brand-solid" onclick="copyInviteCodeAction()">نسخ الكود</button>
-                    <button class="btn-brand-solid" style="background:#25d366;" onclick="shareInviteViaWhatsApp()">مشاركة عبر واتساب</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- شاشة الطلبات السابقة -->
-    <div id="screen-orders-history" class="app-screen">
-        <header class="header">
-            <button class="header-btn" onclick="navigateRouter('screen-user-profile')">✕</button>
-            <div style="font-weight:700; font-size:15px;">سجل الطلبات السابقة</div>
-            <div style="width:38px;"></div>
-        </header>
-        <div class="scrollable-content" id="userOrdersArchiveList"></div>
-    </div>
-
-    <!-- شاشة الخلطات والمشروبات المخصصة -->
-    <div id="screen-custom-mixes" class="app-screen">
-        <header class="header">
-            <button class="header-btn" onclick="navigateRouter('screen-user-profile')">✕</button>
-            <div style="font-weight:700; font-size:15px;">خلطاتي ومشروباتي المخصصة</div>
-            <button class="btn-brand-outline" style="font-size:10.5px; padding:3px 8px;" onclick="openNewMixModal()">+ خلطة جديدة</button>
-        </header>
-        <div class="scrollable-content" id="customMixesListContainer"></div>
-    </div>
-
-    <!-- شاشة عناوين التوصيل -->
-    <div id="screen-delivery-addresses" class="app-screen">
-        <header class="header">
-            <button class="header-btn" onclick="navigateRouter('screen-user-profile')">✕</button>
-            <div style="font-weight:700; font-size:15px;">عناوين التوصيل المحفوظة</div>
-            <button class="btn-brand-outline" style="font-size:10.5px; padding:3px 8px;" onclick="openAddAddressModal()">+ عنوان</button>
-        </header>
-        <div class="scrollable-content" id="deliveryAddressesListContainer"></div>
-    </div>
-
-    <!-- شاشة إدارة طرق الدفع -->
-    <div id="screen-payment-methods-mgmt" class="app-screen">
-        <header class="header">
-            <button class="header-btn" onclick="navigateRouter('screen-user-profile')">✕</button>
-            <div style="font-weight:700; font-size:15px;">طرق الدفع والبطاقات</div>
-            <div style="width:38px;"></div>
-        </header>
-        <div class="scrollable-content">
-            <div class="clean-card">
-                <div class="clean-title">وسائل الدفع المعتمدة لدى كافيه كورنر</div>
-                <div id="methodsMgmtList"></div>
-            </div>
-        </div>
-    </div>
-
-    <!-- شاشة المساعدة والدعم والشكاوى -->
-    <div id="screen-support-feedback" class="app-screen">
-        <header class="header">
-            <button class="header-btn" onclick="navigateRouter('screen-user-profile')">✕</button>
-            <div style="font-weight:700; font-size:15px;">المساعدة والدعم المباشر</div>
-            <div style="width:38px;"></div>
-        </header>
-        <div class="scrollable-content">
-            <div class="clean-card">
-                <div class="clean-title">إرسال شكوى أو مقترح للإدارة</div>
-                <textarea class="ios-textarea-field" id="supportFeedbackInput" placeholder="اكتب استفسارك، شكواك، أو مقترحك هنا وسيصل مباشرة لإدارة المحل..."></textarea>
-                <button class="btn-brand-solid" style="margin-top:8px;" onclick="submitSupportFeedbackAction()">إرسال للإدارة فوراً</button>
-            </div>
-            <div class="clean-title">سجل الشكاوى والردود السابقة</div>
-            <div id="supportFeedbackHistoryList"></div>
-        </div>
-    </div>
-
-    <!-- شاشة الشروط والأحكام -->
-    <div id="screen-terms" class="app-screen">
-        <header class="header">
-            <button class="header-btn" onclick="navigateRouter('screen-user-profile')">✕</button>
-            <div style="font-weight:700; font-size:15px;">الشروط والأحكام</div>
-            <div style="width:38px;"></div>
-        </header>
-        <div class="scrollable-content">
-            <div class="clean-card" style="font-size:12px; line-height:1.7; color:var(--text-secondary);">
-                <div style="font-weight:800; font-size:13px; color:var(--brand-primary); margin-bottom:6px;">سياسة الخدمة ونقاط الولاء</div>
-                • جميع الأسعار شاملة الضريبة الرسمية وتخضع لسياسة الفروع في كفرسوم وسما الروسان.<br>
-                • نقاط الولاء مخصصة لحساب الزبون المرتبط برقم هاتفه الأردني ولا يمكن تحويلها نقداً.<br>
-                • يلتزم المحل بتوصيل الطلب طازجاً وساخناً وفق أعلى معايير الجودة المعتمدة.
-            </div>
-        </div>
-    </div>
-
-    <!-- شاشة جولة التعريف -->
-    <div id="screen-app-tour" class="app-screen">
-        <header class="header">
-            <button class="header-btn" onclick="navigateRouter('screen-user-profile')">✕</button>
-            <div style="font-weight:700; font-size:15px;">جولة التعريف بالتطبيق</div>
-            <div style="width:38px;"></div>
-        </header>
-        <div class="scrollable-content">
-            <div class="clean-card" style="text-align:center; padding:20px;">
-                <div style="font-size:34px; margin-bottom:8px;">☕</div>
-                <div style="font-weight:800; font-size:15px; color:var(--brand-primary); margin-bottom:6px;">مرحباً بك في كافيه كورنر</div>
-                <p style="font-size:12px; color:var(--text-secondary); line-height:1.6;">
-                    تطبيقك الأول لطلب أشهى الوافل، الكريب، والمشروبات الساخنة والباردة. اطلب، اكسب النقاط مع كل دينار، واستبدلها بمكافآت مجانية فورية!
-                </p>
-                <button class="btn-brand-solid" style="margin-top:14px;" onclick="navigateRouter('screen-home')">ابدأ الطلب الآن</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- 4. شاشات السلة، المكافآت، وفئات الولاء -->
-    <div id="screen-cart" class="app-screen">
-        <header class="header">
-            <button class="header-btn" onclick="navigateRouter('screen-home')">✕</button>
-            <div style="font-weight:700; font-size:15px;">سلة المشتريات والدفع</div>
-            <div style="width:38px;"></div>
-        </header>
-        <div class="scrollable-content">
-            <div class="clean-card">
-                <div class="clean-title">الأصناف المطلوبة</div>
-                <div id="cartItemsList"></div>
-            </div>
-            <div class="clean-card">
-                <div class="clean-title">طريقة الدفع المعتمدة</div>
-                <div id="cartPaymentMethodsList"></div>
-            </div>
-            <div class="clean-card">
-                <div class="clean-title">ملخص الحساب</div>
-                <div style="display:flex; justify-content:space-between; font-size:12px; margin-bottom:4px;">
-                    <span>المجموع الفرعي:</span>
-                    <span class="num-font" id="cartSubtotalText">0.00 د.أ</span>
-                </div>
-                <div style="display:flex; justify-content:space-between; font-size:12px; margin-bottom:6px;">
-                    <span>رسوم التوصيل:</span>
-                    <span class="num-font" id="cartDeliveryText">0.00 د.أ</span>
-                </div>
-                <div style="display:flex; justify-content:space-between; font-size:15px; font-weight:800; border-top:1px solid var(--border-subtle); padding-top:6px;">
-                    <span>المجموع الإجمالي:</span>
-                    <span class="num-font" style="color:var(--brand-primary);" id="cartTotalText">0.00 د.أ</span>
-                </div>
-            </div>
-            <button class="btn-brand-solid" onclick="submitActiveOrderAction()">تأكيد وإرسال الطلب للفرع فوراً</button>
-        </div>
-    </div>
-
-    <div id="screen-rewards" class="app-screen">
-        <header class="header">
-            <button class="header-btn" onclick="navigateRouter('screen-home')">✕</button>
-            <div style="font-weight:700; font-size:15px;">متجر المكافآت</div>
-            <div style="width:38px;"></div>
-        </header>
-        <div class="scrollable-content">
-            <div class="clean-card" style="text-align:center;">
-                <div style="font-size:11px; color:var(--text-muted);">رصيد نقاطك المتاحة</div>
-                <div class="num-font" style="font-size:28px; font-weight:900; color:var(--brand-primary); margin:4px 0;" id="rewardsBalanceText">19,818</div>
-            </div>
-            <div class="clean-title">الهدايا والمكافآت المتاحة</div>
-            <div id="rewardsCatalogGrid" style="display:grid; grid-template-columns:1fr 1fr; gap:10px;"></div>
-        </div>
-    </div>
-
-    <div id="screen-loyalty-tiers" class="app-screen">
-        <header class="header">
-            <button class="header-btn" onclick="navigateRouter('screen-home')">✕</button>
-            <div style="font-weight:700; font-size:15px;">فئات الولاء والمهام</div>
-            <div style="width:38px;"></div>
-        </header>
-        <div class="scrollable-content" style="padding:0 0 100px;">
-            <div style="text-align:center; padding:20px 14px 10px;">
-                <span style="background:#fee2e2; color:#b91c1c; font-size:11px; font-weight:700; padding:2px 10px; border-radius:var(--radius-full);">*الحالية</span>
-                <div style="font-size:22px; font-weight:800; margin:6px 0;">عضو الفئة البرونزية</div>
-                <p style="font-size:11.5px; color:var(--text-secondary); max-width:320px; margin:0 auto 14px;">
-                    اكتملت النقاط ✓ — أكمل <strong>4 مهام</strong> خلال 75 يوماً للوصول إلى <strong>الفئة الفضية</strong>
-                </p>
-            </div>
-            <div style="padding:0 14px 10px; font-size:13px; font-weight:700;">المهام النشطة</div>
-            <div class="categories-scroll" id="loyaltyTasksCardsScroll"></div>
-            <div style="margin:10px 14px;">
-                <div style="font-size:13px; font-weight:700; margin-bottom:8px;">سجل النقاط</div>
-                <div class="clean-card" style="padding:0;" id="pointsHistoryListLedger"></div>
-            </div>
-        </div>
-    </div>
-
-    <!-- 5. بوابة تسجيل الدخول السرية المشفرة (Security Vault) -->
+    <!-- 3. بوابة الدخول المحمية (Security PIN Vault) -->
     <div id="screen-admin-vault" class="app-screen" style="background:#09090b; color:#fff;">
         <header class="header" style="background:#121215; border-color:#27272a;">
             <button class="header-btn" style="background:#27272a; border-color:#3f3f46; color:#fff;" onclick="navigateRouter('screen-home')">✕</button>
-            <div style="font-weight:800; font-size:14px; color:#ef4444; letter-spacing:1px; direction:ltr;">SECURE ACCESS GATEWAY</div>
+            <div style="font-weight:800; font-size:14px; color:#ef4444; letter-spacing:1px; direction:ltr;">SECURE SYSTEM VAULT</div>
             <div style="width:38px;"></div>
         </header>
         <div class="scrollable-content">
             <div class="clean-card" style="background:#18181b; border-color:#27272a; max-width:340px; margin:40px auto 0; text-align:center;">
-                <div style="width:48px; height:48px; border-radius:50%; background:rgba(239,68,68,0.15); color:#ef4444; display:flex; align-items:center; justify-content:center; margin:0 auto 12px; font-size:20px;">🔒</div>
-                <div style="font-size:15px; font-weight:800; color:#fafafa; margin-bottom:4px;">بوابة الإدارة والفروع الآمنة</div>
-                <div style="font-size:11px; color:#a1a1aa; margin-bottom:16px;">أدخل كود الحماية المشفر للوصول المباشر</div>
+                <div style="width:50px; height:50px; border-radius:50%; background:rgba(239,68,68,0.15); color:#ef4444; display:flex; align-items:center; justify-content:center; margin:0 auto 12px; font-size:22px;">🔒</div>
+                <div style="font-size:16px; font-weight:800; color:#fafafa; margin-bottom:4px;">بوابة الإدارة والفروع المحمية</div>
+                <div style="font-size:11px; color:#a1a1aa; margin-bottom:16px;">أدخل كود PIN الإداري المصرح للدخول المباشر</div>
                 <input type="password" class="ios-input-field num-font" id="securityPinField" placeholder="••••••••" style="background:#27272a; border-color:#3f3f46; color:#fff; text-align:center; font-size:20px; letter-spacing:6px; margin-bottom:14px;">
-                <button class="btn-brand-solid" onclick="validateSecurityPinCode()">دخول النظام</button>
+                <button class="btn-brand-solid" onclick="validateSecurityPinCode()">مصادقة والدخول</button>
             </div>
         </div>
     </div>
 
-    <!-- 6. لوحة الإدارة العامة المركزية (Master Admin Hub) -->
-    <div id="screen-master-admin" class="app-screen">
-        <header class="header">
+    <!-- 4. لوحة الأدمن المركزية الشاملة المقسمة إلى 10 أقسام رئيسية -->
+    <div id="screen-master-admin" class="app-screen admin-dashboard-container">
+        <!-- شريط علوي -->
+        <div class="admin-nav-header">
             <div>
-                <div style="font-size:14px; font-weight:800; color:var(--brand-primary);">الإدارة المركزية — كافيه كورنر</div>
-                <div style="font-size:10px; color:var(--text-muted);">تحكم بالطلبات، المكافآت، الإشعارات، والشكاوى</div>
+                <div style="font-size:14px; font-weight:800; color:#ef4444;">لوحة التحكم الرئيسية</div>
+                <div style="font-size:10px; color:#a1a1aa;">ملخص شامل لحالة المقهى اليوم</div>
             </div>
-            <button class="btn-brand-outline" style="font-size:10.5px; padding:3px 8px; color:var(--status-danger); border-color:var(--status-danger);" onclick="exitRoleAccessSession()">خروج</button>
-        </header>
-        <div class="scrollable-content">
-            <!-- إرسال إشعار فوري للزبائن -->
-            <div class="clean-card">
-                <div class="clean-title">بث إشعار فوري لجميع الزبائن</div>
-                <input type="text" class="ios-input-field" id="admBroadcastTitle" placeholder="عنوان الإشعار..." style="margin-bottom:6px;">
-                <textarea class="ios-textarea-field" id="admBroadcastBody" placeholder="نص الإشعار الترويجي أو التنبيه..."></textarea>
-                <button class="btn-brand-solid" style="margin-top:8px;" onclick="broadcastAdminNotification()">إرسال الإشعار لجميع الزبائن</button>
-            </div>
+            <button class="btn-brand-outline" style="border-color:#3f3f46; color:#ef4444; font-size:10.5px; padding:3px 8px;" onclick="exitRoleAccessSession()">خروج</button>
+        </div>
 
-            <!-- إدارة هدايا متجر النقاط -->
-            <div class="clean-card">
-                <div class="clean-title">
-                    <span>إدارة هدايا متجر المكافآت</span>
-                    <button class="btn-brand-outline" style="font-size:10.5px; padding:2px 8px;" onclick="openNewRewardItemModal()">+ هدية</button>
+        <div class="scrollable-content" style="padding:14px 14px 100px;">
+            <!-- ملخص المؤشرات الستة السريعة -->
+            <div style="display:grid; grid-template-columns:repeat(2, 1fr); gap:8px; margin-bottom:14px;">
+                <div class="admin-metric-card">
+                    <div style="font-size:11px; color:#a1a1aa;">طلبات اليوم</div>
+                    <div class="num-font" style="font-size:20px; font-weight:900; color:#ef4444;" id="admStatOrdersCount">0</div>
                 </div>
-                <div id="adminRewardsManageList"></div>
+                <div class="admin-metric-card">
+                    <div style="font-size:11px; color:#a1a1aa;">إجمالي المبيعات</div>
+                    <div class="num-font" style="font-size:20px; font-weight:900; color:#10b981;" id="admStatRevenueCount">0.00 د.أ</div>
+                </div>
+                <div class="admin-metric-card">
+                    <div style="font-size:11px; color:#a1a1aa;">العملاء المسجلين</div>
+                    <div class="num-font" style="font-size:18px; font-weight:800; color:#3b82f6;" id="admStatUsersCount">1</div>
+                </div>
+                <div class="admin-metric-card">
+                    <div style="font-size:11px; color:#a1a1aa;">النقاط الموزعة</div>
+                    <div class="num-font" style="font-size:18px; font-weight:800; color:#f59e0b;" id="admStatPointsCount">19,818</div>
+                </div>
+                <div class="admin-metric-card">
+                    <div style="font-size:11px; color:#a1a1aa;">الأصناف المفعلة</div>
+                    <div class="num-font" style="font-size:18px; font-weight:800; color:#fafafa;" id="admStatProdsCount">6</div>
+                </div>
+                <div class="admin-metric-card">
+                    <div style="font-size:11px; color:#a1a1aa;">الشكاوى المفتوحة</div>
+                    <div class="num-font" style="font-size:18px; font-weight:800; color:#ef4444;" id="admStatFeedbacksCount">0</div>
+                </div>
             </div>
 
-            <!-- مراجعة والرد على الشكاوى -->
-            <div class="clean-card">
-                <div class="clean-title">صندوق الشكاوى والردود السريعة</div>
-                <div id="adminSupportFeedbacksList"></div>
+            <!-- أزرار الأقسام العشرة الرئيسية للوحة -->
+            <div style="font-size:12px; font-weight:700; color:#a1a1aa; margin-bottom:8px;">أقسام الإدارة والتحكم</div>
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-bottom:16px;">
+                <div class="admin-section-grid-btn active" id="btnAdminTab_prods" onclick="switchAdminSubHub('prods')">
+                    <span style="font-size:16px;">☕</span>
+                    <strong style="font-size:12px;">الأصناف والتصنيفات</strong>
+                </div>
+                <div class="admin-section-grid-btn" id="btnAdminTab_addons" onclick="switchAdminSubHub('addons')">
+                    <span style="font-size:16px;">🍓</span>
+                    <strong style="font-size:12px;">الإضافات والخيارات</strong>
+                </div>
+                <div class="admin-section-grid-btn" id="btnAdminTab_orders" onclick="switchAdminSubHub('orders')">
+                    <span style="font-size:16px;">📋</span>
+                    <strong style="font-size:12px;">إدارة الطلبات</strong>
+                </div>
+                <div class="admin-section-grid-btn" id="btnAdminTab_customers" onclick="switchAdminSubHub('customers')">
+                    <span style="font-size:16px;">👥</span>
+                    <strong style="font-size:12px;">حسابات العملاء (CRM)</strong>
+                </div>
+                <div class="admin-section-grid-btn" id="btnAdminTab_warnings" onclick="switchAdminSubHub('warnings')">
+                    <span style="font-size:16px;">⚠️</span>
+                    <strong style="font-size:12px;">التحذيرات والحظر</strong>
+                </div>
+                <div class="admin-section-grid-btn" id="btnAdminTab_points" onclick="switchAdminSubHub('points')">
+                    <span style="font-size:16px;">🎁</span>
+                    <strong style="font-size:12px;">النقاط والمكافآت</strong>
+                </div>
+                <div class="admin-section-grid-btn" id="btnAdminTab_feedbacks" onclick="switchAdminSubHub('feedbacks')">
+                    <span style="font-size:16px;">💬</span>
+                    <strong style="font-size:12px;">الشكاوى والاقتراحات</strong>
+                </div>
+                <div class="admin-section-grid-btn" id="btnAdminTab_marketing" onclick="switchAdminSubHub('marketing')">
+                    <span style="font-size:16px;">📢</span>
+                    <strong style="font-size:12px;">التواصل والتسويق</strong>
+                </div>
             </div>
+
+            <!-- عرض الحاويات للأقسام المختلفة -->
+
+            <!-- 1. الأصناف والتصنيفات (تشمل ميزة النسخ المكرر Duplicate) -->
+            <div id="subHub_prods" class="admin-sub-content">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+                    <div style="font-size:13px; font-weight:800; color:#ef4444;">التحكم بالأصناف والتصنيفات</div>
+                    <button class="btn-brand-solid" style="width:auto; padding:4px 10px; font-size:11px;" onclick="openAddProductModal()">+ صنف جديد</button>
+                </div>
+                <div id="admProductsListDisplay"></div>
+            </div>
+
+            <!-- 2. نظام الإضافات الديناميكي لكل صنف -->
+            <div id="subHub_addons" class="admin-sub-content" style="display:none;">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+                    <div style="font-size:13px; font-weight:800; color:#ef4444;">لوحة التحكم بالإضافات والخيارات</div>
+                    <button class="btn-brand-solid" style="width:auto; padding:4px 10px; font-size:11px;" onclick="openAddAddonModal()">+ إضافة جديدة</button>
+                </div>
+                <div id="admAddonsListDisplay"></div>
+            </div>
+
+            <!-- 3. إدارة الطلبات والبحث والفلترة -->
+            <div id="subHub_orders" class="admin-sub-content" style="display:none;">
+                <div style="font-size:13px; font-weight:800; color:#ef4444; margin-bottom:8px;">مركز إدارة ومتابعة الطلبات</div>
+                <input type="text" class="ios-input-field" id="admOrderSearchInp" placeholder="ابحث برقم الطلب، اسم العميل، أو الهاتف..." oninput="renderAdmOrdersList()" style="background:#18181b; border-color:#27272a; color:#fff; margin-bottom:8px;">
+                <div id="admOrdersListDisplay"></div>
+            </div>
+
+            <!-- 4. حسابات العملاء CRM المصغر -->
+            <div id="subHub_customers" class="admin-sub-content" style="display:none;">
+                <div style="font-size:13px; font-weight:800; color:#ef4444; margin-bottom:8px;">دليل حسابات العملاء (CRM)</div>
+                <div id="admCustomersCrmList"></div>
+            </div>
+
+            <!-- 5. نظام التحذيرات والحظر المنهجي (3-Strike System) -->
+            <div id="subHub_warnings" class="admin-sub-content" style="display:none;">
+                <div style="font-size:13px; font-weight:800; color:#ef4444; margin-bottom:8px;">نظام التحذيرات والحظر (حماية العملاء)</div>
+                <div style="background:#18181b; padding:10px; border-radius:8px; border:1px solid #27272a; font-size:11.5px; line-height:1.6; margin-bottom:10px;">
+                    <strong>آلية التحذيرات الصارمة:</strong><br>
+                    • <strong>التحذير الأول:</strong> إرسال تحذير للعميل مع توضيح السبب وتسجيله بحسابه.<br>
+                    • <strong>التحذير الثاني:</strong> إرسال تحذير ثانٍ مع توضيح تكرار المخالفة.<br>
+                    • <strong>التحذير الثالث (حظر تلقائي):</strong> يتم حظر الحساب فوراً وإرسال إشعار للعميل.
+                </div>
+                <div id="admCustomerWarningsControls"></div>
+            </div>
+
+            <!-- 6. نظام النقاط والمكافآت السحابي -->
+            <div id="subHub_points" class="admin-sub-content" style="display:none;">
+                <div style="font-size:13px; font-weight:800; color:#ef4444; margin-bottom:8px;">إدارة نظام النقاط والمكافآت</div>
+                <div style="background:#18181b; padding:10px; border-radius:8px; border:1px solid #27272a; margin-bottom:10px;">
+                    <div style="font-size:12px; font-weight:700; margin-bottom:4px;">منح أو خصم نقاط مع تسجيل السبب:</div>
+                    <input type="number" class="ios-input-field num-font" id="admPointsDeltaInp" placeholder="عدد النقاط (مثال: 50)" style="background:#27272a; border-color:#3f3f46; color:#fff; margin-bottom:6px;">
+                    <input type="text" class="ios-input-field" id="admPointsReasonInp" placeholder="سبب العملية (للسجل المالي)" style="background:#27272a; border-color:#3f3f46; color:#fff; margin-bottom:8px;">
+                    <div style="display:flex; gap:6px;">
+                        <button class="btn-brand-solid" style="padding:6px; font-size:11px;" onclick="applyCustomerPointsDelta(true)">+ إضافة نقاط</button>
+                        <button class="btn-brand-outline" style="padding:6px; font-size:11px; color:#ef4444; border-color:#ef4444;" onclick="applyCustomerPointsDelta(false)">- خصم نقاط</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 7. الشكاوى والاقتراحات وتذاكر الدعم -->
+            <div id="subHub_feedbacks" class="admin-sub-content" style="display:none;">
+                <div style="font-size:13px; font-weight:800; color:#ef4444; margin-bottom:8px;">صندوق الشكاوى والاقتراحات والردود المباشرة</div>
+                <div id="admFeedbackTicketsDisplay"></div>
+            </div>
+
+            <!-- 8. التواصل والتسويق والإشعارات -->
+            <div id="subHub_marketing" class="admin-sub-content" style="display:none;">
+                <div style="font-size:13px; font-weight:800; color:#ef4444; margin-bottom:8px;">بث الإشعارات والحملات التسويقية</div>
+                <div style="background:#18181b; padding:10px; border-radius:8px; border:1px solid #27272a;">
+                    <input type="text" class="ios-input-field" id="admPushTitleInp" placeholder="عنوان الإشعار..." style="background:#27272a; border-color:#3f3f46; color:#fff; margin-bottom:6px;">
+                    <textarea class="ios-textarea-field" id="admPushBodyInp" placeholder="نص الإشعار لجميع الزبائن..." style="background:#27272a; border-color:#3f3f46; color:#fff; margin-bottom:8px;"></textarea>
+                    <button class="btn-brand-solid" onclick="sendBroadcastPushNotification()">إرسال الإشعار فوراً</button>
+                </div>
+            </div>
+
         </div>
     </div>
 
-    <!-- 7. لوحة الفرع المستقلة والـ Z-Report -->
-    <div id="screen-branch-dashboard" class="app-screen">
-        <header class="header">
-            <div>
-                <div style="font-size:14px; font-weight:800; color:var(--brand-primary);" id="branchDashboardHeaderTitle">لوحة فرع كفرسوم</div>
-                <div style="font-size:10px; color:var(--text-muted);">المطبخ، تحضير الطلبات وإغلاق الصندوق</div>
-            </div>
-            <div style="display:flex; gap:6px;">
-                <button class="btn-brand-outline" style="font-size:10.5px; padding:4px 8px;" onclick="openDayClosureModal()">فاتورة اليوم Z-Report</button>
-                <button class="btn-brand-outline" style="font-size:10.5px; padding:4px 8px; color:var(--status-danger); border-color:var(--status-danger);" onclick="exitRoleAccessSession()">خروج</button>
-            </div>
-        </header>
-        <div class="scrollable-content">
-            <div class="clean-title">طلبات الفرع الحية</div>
-            <div id="branchKitchenOrdersList"></div>
+    <!-- نافذة إضافة / تعديل صنف -->
+    <div id="modalProductEditor" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.75); z-index:9999; align-items:center; justify-content:center; padding:16px;">
+        <div class="clean-card" style="width:100%; max-width:380px; background:#18181b; border-color:#27272a; color:#fff;">
+            <div class="clean-title"><span style="color:#ef4444;">بيانات الصنف</span><button onclick="closeProductEditorModal()" style="background:none; border:none; color:#fff; font-size:18px; cursor:pointer;">✕</button></div>
+            <input type="hidden" id="editProdId">
+            <input type="text" class="ios-input-field" id="editProdName" placeholder="اسم الصنف" style="background:#27272a; border-color:#3f3f46; color:#fff; margin-bottom:6px;">
+            <input type="text" class="ios-input-field" id="editProdCat" placeholder="التصنيف (وافل، كريب، ساخن...)" style="background:#27272a; border-color:#3f3f46; color:#fff; margin-bottom:6px;">
+            <input type="number" step="0.25" class="ios-input-field num-font" id="editProdPrice" placeholder="السعر بالدينار" style="background:#27272a; border-color:#3f3f46; color:#fff; margin-bottom:6px;">
+            <textarea class="ios-textarea-field" id="editProdDesc" placeholder="وصف الصنف..." style="background:#27272a; border-color:#3f3f46; color:#fff; margin-bottom:6px;"></textarea>
+            <input type="text" class="ios-input-field" id="editProdImg" placeholder="رابط صورة الصنف (URL)" style="background:#27272a; border-color:#3f3f46; color:#fff; margin-bottom:8px;">
+            <button class="btn-brand-solid" onclick="saveProductRecordAction()">حفظ الصنف أونلاين</button>
         </div>
     </div>
 
-    <!-- نوافذ Modal الإضافية -->
-    <div id="modalNewMix" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.7); z-index:9999; align-items:center; justify-content:center; padding:16px;">
-        <div class="clean-card" style="width:100%; max-width:380px;">
-            <div class="clean-title"><span>إضافة خلطة مشروب مخصصة</span><button onclick="closeNewMixModal()" style="background:none; border:none; font-size:18px; cursor:pointer;">✕</button></div>
-            <input type="text" class="ios-input-field" id="newMixNameInput" placeholder="اسم الخلطة (مثال: قهوة عمر الصباحية)" style="margin-bottom:8px;">
-            <textarea class="ios-textarea-field" id="newMixDescInput" placeholder="التفاصيل (مثال: إسبريسو دبل + حليب لوز + سكر خفيف جداً)"></textarea>
-            <button class="btn-brand-solid" style="margin-top:8px;" onclick="saveNewMixAction()">حفظ الخلطة</button>
-        </div>
-    </div>
-
-    <div id="modalAddAddress" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.7); z-index:9999; align-items:center; justify-content:center; padding:16px;">
-        <div class="clean-card" style="width:100%; max-width:380px;">
-            <div class="clean-title"><span>إضافة عنوان توصيل</span><button onclick="closeAddAddressModal()" style="background:none; border:none; font-size:18px; cursor:pointer;">✕</button></div>
-            <input type="text" class="ios-input-field" id="newAddressTitleInput" placeholder="اسم العنوان (مثال: البيت، المكتب)" style="margin-bottom:8px;">
-            <textarea class="ios-textarea-field" id="newAddressDetailsInput" placeholder="المنطقة، الشارع، رقم البناية، علامة مميزة..."></textarea>
-            <button class="btn-brand-solid" style="margin-top:8px;" onclick="saveNewAddressAction()">حفظ العنوان</button>
-        </div>
-    </div>
-
-    <div id="modalNewRewardAdmin" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.7); z-index:9999; align-items:center; justify-content:center; padding:16px;">
-        <div class="clean-card" style="width:100%; max-width:380px;">
-            <div class="clean-title"><span>إضافة هدية لمتجر المكافآت</span><button onclick="closeNewRewardItemModal()" style="background:none; border:none; font-size:18px; cursor:pointer;">✕</button></div>
-            <input type="text" class="ios-input-field" id="newAdmRewardName" placeholder="اسم الهدية (مثال: كريب نوتيلا)" style="margin-bottom:6px;">
-            <input type="number" class="ios-input-field num-font" id="newAdmRewardPoints" placeholder="النقاط المطلوبة (مثال: 800)" style="margin-bottom:6px;">
-            <input type="text" class="ios-input-field" id="newAdmRewardImg" placeholder="رابط صورة الهدية (URL)" value="https://images.unsplash.com/photo-1562376552-0d160a2f238d?w=300&q=80">
-            <button class="btn-brand-solid" style="margin-top:8px;" onclick="saveAdminRewardAction()">حفظ وإتاحة المكافأة</button>
+    <!-- نافذة إضافة إضافة ديناميكية (Dynamic Addon) -->
+    <div id="modalAddonEditor" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.75); z-index:9999; align-items:center; justify-content:center; padding:16px;">
+        <div class="clean-card" style="width:100%; max-width:380px; background:#18181b; border-color:#27272a; color:#fff;">
+            <div class="clean-title"><span style="color:#ef4444;">إضافة خيار أو إضافة ديناميكية</span><button onclick="closeAddonEditorModal()" style="background:none; border:none; color:#fff; font-size:18px; cursor:pointer;">✕</button></div>
+            <input type="text" class="ios-input-field" id="newAddonName" placeholder="اسم الإضافة (مثال: صوص فستق حلبي)" style="background:#27272a; border-color:#3f3f46; color:#fff; margin-bottom:6px;">
+            <input type="number" step="0.25" class="ios-input-field num-font" id="newAddonPrice" placeholder="السعر (مثال: 0.50 د.أ أو 0 للمجاني)" style="background:#27272a; border-color:#3f3f46; color:#fff; margin-bottom:6px;">
+            <input type="text" class="ios-input-field" id="newAddonCategory" placeholder="نوع المجموعة (فواكه، مكسرات، نكهات، صوصات)" style="background:#27272a; border-color:#3f3f46; color:#fff; margin-bottom:8px;">
+            <button class="btn-brand-solid" onclick="saveDynamicAddonAction()">حفظ الإضافة</button>
         </div>
     </div>
 
@@ -1330,7 +1128,7 @@
         <div class="clean-card" style="width:100%; max-width:420px; max-height:90vh; overflow-y:auto;" id="printableDayClosureReport">
             <div class="clean-title"><span>فاتورة إغلاق الوردية واليوم (Z-Report)</span><button onclick="closeDayClosureModal()" style="background:none; border:none; font-size:18px; cursor:pointer;">✕</button></div>
             <div style="text-align:center; padding-bottom:10px; border-bottom:1px dashed var(--border-strong); margin-bottom:10px;">
-                <div style="font-size:16px; font-weight:800; color:var(--brand-primary);" id="closureBranchTitle">فرع كفرسوم</div>
+                <div style="font-size:16px; font-weight:800; color:var(--brand-primary);" id="closureBranchTitle">كافيه كورنر — إغلاق الصندوق</div>
                 <div class="num-font" style="font-size:10px; color:var(--text-muted);" id="closureDateText">--/--/---- --:--</div>
             </div>
             <div style="font-size:12px; display:flex; flex-direction:column; gap:6px;">
@@ -1400,10 +1198,9 @@
 
 <script>
 /* =========================================================
-   COFFEE CORNER ENGINE — COMPLETE & FORTIFIED
+   COFFEE CORNER ENGINE — 10-SECTION ADVANCED ADMIN
    ========================================================= */
 
-// أكواد الحماية المشفرة
 const SECURITY_KEYS = {
     MASTER_ADMIN: "2001159393",
     BRANCH_KAFARSUM: "1101",
@@ -1419,10 +1216,11 @@ const DEFAULT_PRODUCTS = [
     { id: "p6", name: "كابتشينو إيطالي مخملي", category: "ساخن", price: 1.50, desc: "إسبريسو غني برغوة الحليب الكثيفة", img: "https://images.unsplash.com/photo-1534778101976-62847782c213?w=400&q=80" }
 ];
 
-const DEFAULT_PAYMENTS = [
-    { id: "pm_cash", name: "دفع نقدي (كاش Cash)", desc: "عند الاستلام", logo: "https://cdn-icons-png.flaticon.com/512/2488/2488749.png" },
-    { id: "pm_cliq", name: "كليك CliQ (فوري مباشر)", desc: "الاسم المستعار: CORNER", logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d0/QR_code_for_mobile_English_Wikipedia.svg/220px-QR_code_for_mobile_English_Wikipedia.svg.png" },
-    { id: "pm_visa", name: "فيزا / ماستركارد ومحافظ", desc: "أورانج موني / زين كاش / بطاقات بنكية", logo: "https://cdn-icons-png.flaticon.com/512/349/349221.png" }
+const DEFAULT_ADDONS = [
+    { id: "ad_1", name: "فراولة طازجة", price: 0.50, category: "فواكه" },
+    { id: "ad_2", name: "مكسرات مشكلة (لوز، فستق)", price: 0.50, category: "مكسرات" },
+    { id: "ad_3", name: "صوص نوتيلا إضافي", price: 0.50, category: "صوصات" },
+    { id: "ad_4", name: "لوتس بلجيكي", price: 0.50, category: "نكهات" }
 ];
 
 function safeGet(key, def) { try { const v = localStorage.getItem(key); return v ? JSON.parse(v) : def; } catch(e) { return def; } }
@@ -1430,38 +1228,23 @@ function safeSet(key, val) { try { localStorage.setItem(key, JSON.stringify(val)
 
 let activeRoleSession = safeGet('cc_role_session', null);
 let productsList = safeGet('cc_catalog', DEFAULT_PRODUCTS);
+let addonsList = safeGet('cc_addons', DEFAULT_ADDONS);
 let selectedCategory = "الكل";
 
 let activeCustomer = safeGet('cc_active_client_user', {
-    name: "عمر عبيدات", phone: "0796433698", points: 19818, tier: "الفئة البرونزية", code: "CORNER-7964"
+    name: "عمر عبيدات", phone: "0796433698", points: 19818, tier: "الفئة البرونزية", code: "CORNER-7964",
+    registeredAt: "2026-01-15", address: "كفرسوم - الرئيسي", warnings: 0, isBanned: false
 });
-
-let userFavorites = safeGet('cc_favorites', ["p1", "p4"]);
-let userCustomMixes = safeGet('cc_custom_mixes', [
-    { id: "mix_1", name: "قهوة عمر الخاصة", desc: "إسبريسو دبل + حليب لوز + رشة قرفة بدون سكر" }
-]);
-let userSavedAddresses = safeGet('cc_addresses', [
-    { id: "addr_1", title: "المنزل", desc: "كفرسوم - الحي الشرقي - قرب المسجد الكبير" }
-]);
-let customerNotifications = safeGet('cc_notifications', [
-    { id: "notif_1", title: "مرحباً بك في كافيه كورنر!", body: "تمت إضافة 150 نقطة ترحيبية لحسابك بنجاح.", time: "اليوم 10:30 ص", unread: true },
-    { id: "notif_2", title: "عرض خاص بالوافل", body: "احصل على صوص مجاني عند طلب أي وافل اليوم.", time: "أمس 4:15 م", unread: true }
-]);
-let customerFeedbacks = safeGet('cc_feedbacks', [
-    { id: "fb_1", text: "الخدمة ممتازة والمشروبات ساخنة دائماً، شكراً لكم!", reply: "أهلاً بك دائماً أستاذ عمر في كافيه كورنر ❤️" }
-]);
-let redeemRewardsList = safeGet('cc_redeem_catalog', [
-    { id: "rd_1", name: "وافل نوتيلا مجاني", points: 850, img: "https://images.unsplash.com/photo-1562376552-0d160a2f238d?w=300&q=80" },
-    { id: "rd_2", name: "سبانش لاتيه بارد", points: 650, img: "https://images.unsplash.com/photo-1517701550927-30cf4be1aaf9?w=300&q=80" }
-]);
 
 let appOrdersList = safeGet('cc_orders', []);
 let cartList = safeGet('cc_cart', []);
 let activePaymentMethod = "دفع نقدي (كاش Cash)";
-let currentBranchIndex = 0; // 0: كفرسوم, 1: سما الروسان
-let activeServiceMode = "delivery"; // delivery, pickup
+let currentBranchIndex = 0;
+let activeServiceMode = "delivery";
+let customerFeedbacks = safeGet('cc_feedbacks', [
+    { id: "fb_1", text: "الخدمة ممتازة والمشروبات ساخنة دائماً، شكراً لكم!", reply: "أهلاً بك دائماً أستاذ عمر في كافيه كورنر ❤️", status: "مغلقة" }
+]);
 
-// تفاعل محرك الصوت Web Audio API
 let isAudioEnabled = safeGet('cc_audio_enabled', true);
 function playBeepAudio() {
     if (!isAudioEnabled) return;
@@ -1480,7 +1263,6 @@ function playBeepAudio() {
     } catch(e) {}
 }
 
-/* التوجيه بالهاش الخارجي */
 function handleHashNavigation() {
     const hash = window.location.hash.toLowerCase();
     if (hash === '#admin') {
@@ -1490,24 +1272,10 @@ function handleHashNavigation() {
         } else {
             navigateRouter('screen-admin-vault');
         }
-    } else if (hash === '#branch-kafarsum') {
-        activeRoleSession = { role: 'branch', branchId: 0, branchName: "فرع كفرسوم" };
-        safeSet('cc_role_session', activeRoleSession);
-        navigateRouter('screen-branch-dashboard');
-        renderBranchKitchenOrders();
-    } else if (hash === '#branch-sama') {
-        activeRoleSession = { role: 'branch', branchId: 1, branchName: "فرع سما الروسان" };
-        safeSet('cc_role_session', activeRoleSession);
-        navigateRouter('screen-branch-dashboard');
-        renderBranchKitchenOrders();
     } else if (hash === '#profile') {
         navigateRouter('screen-user-profile');
     } else if (hash === '#cart') {
         navigateRouter('screen-cart');
-    } else if (hash === '#rewards') {
-        navigateRouter('screen-rewards');
-    } else if (hash === '#loyalty') {
-        navigateRouter('screen-loyalty-tiers');
     } else {
         navigateRouter('screen-home');
     }
@@ -1526,21 +1294,12 @@ function navigateRouter(screenId) {
     document.querySelectorAll('.nav-tab-btn').forEach(b => b.classList.remove('active'));
     if (screenId === 'screen-home') document.getElementById('tabBtnHome')?.classList.add('active');
     if (screenId === 'screen-cart') document.getElementById('tabBtnCart')?.classList.add('active');
-    if (screenId === 'screen-rewards') document.getElementById('tabBtnRewards')?.classList.add('active');
-    if (screenId === 'screen-loyalty-tiers') document.getElementById('tabBtnTiers')?.classList.add('active');
 
     if (screenId === 'screen-cart') renderCartScreen();
-    if (screenId === 'screen-rewards') renderRewardsGrid();
-    if (screenId === 'screen-favorites') renderFavoritesScreen();
-    if (screenId === 'screen-notifications') renderNotificationsScreen();
-    if (screenId === 'screen-orders-history') renderOrdersArchiveScreen();
-    if (screenId === 'screen-custom-mixes') renderCustomMixesScreen();
-    if (screenId === 'screen-delivery-addresses') renderDeliveryAddressesScreen();
-    if (screenId === 'screen-support-feedback') renderSupportFeedbackScreen();
-    if (screenId === 'screen-payment-methods-mgmt') renderPaymentMethodsMgmtScreen();
+    if (screenId === 'screen-master-admin') renderMasterAdminDashboard();
 }
 
-/* عرض المنيو الرئيسي */
+/* المنيو والواجهة الرئيسية */
 function renderMenuCategories() {
     const c = document.getElementById('menuCategoriesScrollChips');
     if (!c) return;
@@ -1564,7 +1323,6 @@ function renderProductsDisplay() {
         <div class="product-card" onclick="addToCartQuick('${p.id}')">
             <div class="product-img-box">
                 <img src="${p.img}" class="product-img" alt="${p.name}">
-                <button class="fav-heart-btn ${userFavorites.includes(p.id) ? 'active' : ''}" onclick="toggleFavoriteAction(event, '${p.id}')">♥</button>
             </div>
             <div class="product-meta">
                 <div>
@@ -1591,288 +1349,31 @@ window.addToCartQuick = function(id) {
     window.showToastMsg(`تمت إضافة ${prod.name} للسلة`);
 };
 
-window.toggleFavoriteAction = function(e, id) {
-    e.stopPropagation();
-    if (userFavorites.includes(id)) userFavorites = userFavorites.filter(item => item !== id);
-    else userFavorites.push(id);
-    safeSet('cc_favorites', userFavorites);
-    renderProductsDisplay();
-    window.showToastMsg("تم تحديث قائمة المفضلة");
-};
-
-/* السلة والدفع بالشعارات */
+/* السلة */
 function renderCartScreen() {
     const list = document.getElementById('cartItemsList');
     if (!list) return;
     if (cartList.length === 0) {
-        list.innerHTML = `<div style="text-align:center; padding:16px; font-size:11.5px; color:var(--text-muted);">السلة فارغة حالياً. تفضل باختيار طلبك!</div>`;
+        list.innerHTML = `<div style="text-align:center; padding:16px; font-size:11.5px; color:var(--text-muted);">السلة فارغة حالياً.</div>`;
     } else {
         list.innerHTML = cartList.map(item => `
             <div style="display:flex; justify-content:space-between; align-items:center; padding:8px 0; border-bottom:1px solid var(--border-subtle);">
-                <div style="display:flex; align-items:center; gap:8px;">
-                    <img src="${item.img}" style="width:38px; height:38px; border-radius:6px; object-fit:cover;">
-                    <div>
-                        <div style="font-size:12.5px; font-weight:700;">${item.name}</div>
-                        <div class="num-font" style="font-size:11px; color:var(--brand-primary); font-weight:800;">${(item.price * item.qty).toFixed(2)} د.أ (${item.qty}×)</div>
-                    </div>
+                <div>
+                    <div style="font-size:12.5px; font-weight:700;">${item.name}</div>
+                    <div class="num-font" style="font-size:11px; color:var(--brand-primary);">${(item.price * item.qty).toFixed(2)} د.أ (${item.qty}×)</div>
                 </div>
-                <div style="display:flex; gap:4px;">
-                    <button class="btn-brand-outline" style="padding:2px 8px;" onclick="changeCartQty('${item.id}', 1)">+</button>
-                    <button class="btn-brand-outline" style="padding:2px 8px;" onclick="changeCartQty('${item.id}', -1)">-</button>
-                </div>
+                <button class="btn-brand-outline" style="padding:2px 8px;" onclick="changeCartQty('${item.id}', -1)">حذف</button>
             </div>
         `).join('');
     }
-
-    const payContainer = document.getElementById('cartPaymentMethodsList');
-    if (payContainer) {
-        payContainer.innerHTML = DEFAULT_PAYMENTS.map(pm => `
-            <div class="payment-choice-card ${activePaymentMethod === pm.name ? 'active' : ''}" onclick="selectPaymentMethodOption('${pm.name}')">
-                <div style="display:flex; align-items:center; gap:10px;">
-                    <div class="pay-icon-box"><img src="${pm.logo}"></div>
-                    <div>
-                        <div style="font-size:12px; font-weight:700;">${pm.name}</div>
-                        <div style="font-size:10px; color:var(--text-secondary);">${pm.desc}</div>
-                    </div>
-                </div>
-                <input type="radio" name="payRadio" ${activePaymentMethod === pm.name ? 'checked' : ''}>
-            </div>
-        `).join('');
-    }
-
-    const sub = cartList.reduce((s, i) => s + (i.price * i.qty), 0);
-    const del = (activeServiceMode === 'delivery' && cartList.length > 0) ? 0.50 : 0.00;
-    document.getElementById('cartSubtotalText').innerText = sub.toFixed(2) + " د.أ";
-    document.getElementById('cartDeliveryText').innerText = del.toFixed(2) + " د.أ";
-    document.getElementById('cartTotalText').innerText = (sub + del).toFixed(2) + " د.أ";
 }
-
-window.selectPaymentMethodOption = function(name) {
-    activePaymentMethod = name;
-    renderCartScreen();
-};
-
 window.changeCartQty = function(id, delta) {
-    const it = cartList.find(i => i.id === id);
-    if (!it) return;
-    it.qty += delta;
-    if (it.qty <= 0) cartList = cartList.filter(i => i.id !== id);
+    cartList = cartList.filter(i => i.id !== id);
     safeSet('cc_cart', cartList);
     renderCartScreen();
 };
 
-window.submitActiveOrderAction = function() {
-    if (cartList.length === 0) return window.showToastMsg("السلة فارغة!");
-    const branchName = currentBranchIndex === 0 ? "فرع كفرسوم" : "فرع سما الروسان";
-    const sub = cartList.reduce((s, i) => s + (i.price * i.qty), 0);
-    const del = activeServiceMode === 'delivery' ? 0.50 : 0.00;
-
-    const ord = {
-        orderId: "CC-" + Date.now().toString().slice(-5),
-        customerName: activeCustomer.name,
-        customerPhone: activeCustomer.phone,
-        branchId: currentBranchIndex,
-        branchName: branchName,
-        paymentMethod: activePaymentMethod,
-        mode: activeServiceMode,
-        items: [...cartList],
-        total: sub + del,
-        status: "قيد التحضير",
-        createdAt: Date.now(),
-        dateStr: new Date().toLocaleDateString('ar-JO'),
-        timeStr: new Date().toLocaleTimeString('ar-JO', { hour: '2-digit', minute: '2-digit' })
-    };
-
-    appOrdersList.unshift(ord);
-    safeSet('cc_orders', appOrdersList);
-    cartList = [];
-    safeSet('cc_cart', []);
-    playBeepAudio();
-    window.showToastMsg(`تم إرسال الطلب (${ord.orderId}) إلى ${branchName} بنجاح!`);
-    navigateRouter('screen-home');
-};
-
-/* خدمات شاشة حسابي الشخصي */
-function renderNotificationsScreen() {
-    const c = document.getElementById('customerNotifsContainer');
-    if (!c) return;
-    c.innerHTML = customerNotifications.map(n => `
-        <div class="clean-card" style="margin-bottom:8px;">
-            <div style="display:flex; justify-content:space-between; align-items:center;">
-                <strong style="font-size:12.5px; color:var(--brand-primary);">${n.title}</strong>
-                <span class="num-font" style="font-size:10px; color:var(--text-muted);">${n.time}</span>
-            </div>
-            <div style="font-size:11.5px; color:var(--text-primary); margin-top:4px;">${n.body}</div>
-        </div>
-    `).join('');
-    document.getElementById('unreadNotifCountPill').innerText = customerNotifications.length;
-}
-
-window.clearAllNotifications = function() {
-    customerNotifications = [];
-    safeSet('cc_notifications', customerNotifications);
-    renderNotificationsScreen();
-    window.showToastMsg("تم مسح كافة الإشعارات");
-};
-
-function renderFavoritesScreen() {
-    const c = document.getElementById('favoritesItemsContainer');
-    if (!c) return;
-    const favs = productsList.filter(p => userFavorites.includes(p.id));
-    if (favs.length === 0) {
-        c.innerHTML = `<div style="text-align:center; padding:20px; font-size:12px; color:var(--text-muted);">لا توجد أصناف في المفضلة بعد.</div>`;
-        return;
-    }
-    c.innerHTML = favs.map(p => `
-        <div class="clean-card" style="display:flex; justify-content:space-between; align-items:center;">
-            <div style="display:flex; align-items:center; gap:8px;">
-                <img src="${p.img}" style="width:40px; height:40px; border-radius:6px; object-fit:cover;">
-                <div>
-                    <div style="font-size:12.5px; font-weight:700;">${p.name}</div>
-                    <div class="num-font" style="font-size:11px; color:var(--brand-primary); font-weight:800;">${p.price.toFixed(2)} د.أ</div>
-                </div>
-            </div>
-            <button class="btn-brand-solid" style="width:auto; padding:4px 10px; font-size:11px;" onclick="addToCartQuick('${p.id}')">طلب الآن</button>
-        </div>
-    `).join('');
-}
-
-window.copyInviteCodeAction = function() {
-    navigator.clipboard?.writeText(activeCustomer.code);
-    window.showToastMsg(`تم نسخ كود الدعوة: ${activeCustomer.code}`);
-};
-
-window.shareInviteViaWhatsApp = function() {
-    const text = encodeURIComponent(`حمّل تطبيق كافيه كورنر واستمتع بألذ وافل وقهوة! استخدم كود الدعوة الخاص بي (${activeCustomer.code}) لتحصل على نقاط ترحيبية مجانية!`);
-    window.open(`https://wa.me/?text=${text}`, '_blank');
-};
-
-function renderOrdersArchiveScreen() {
-    const c = document.getElementById('userOrdersArchiveList');
-    if (!c) return;
-    if (appOrdersList.length === 0) {
-        c.innerHTML = `<div style="text-align:center; padding:20px; font-size:12px; color:var(--text-muted);">لا توجد طلبات سابقة بعد.</div>`;
-        return;
-    }
-    c.innerHTML = appOrdersList.map(o => `
-        <div class="clean-card">
-            <div style="display:flex; justify-content:space-between;">
-                <strong class="num-font" style="color:var(--brand-primary);">${o.orderId}</strong>
-                <span style="font-size:10px; padding:2px 8px; border-radius:var(--radius-full); background:var(--brand-primary-light); color:var(--brand-primary); font-weight:700;">${o.status}</span>
-            </div>
-            <div style="font-size:11px; color:var(--text-muted); margin:3px 0;">${o.branchName} • ${o.dateStr} ${o.timeStr}</div>
-            <div style="font-size:11.5px; margin:4px 0;">${o.items.map(i => i.name + ' (' + i.qty + '×)').join(', ')}</div>
-            <div style="display:flex; justify-content:space-between; align-items:center; border-top:1px dashed var(--border-subtle); padding-top:6px; margin-top:4px;">
-                <span class="num-font" style="font-weight:800; color:var(--brand-primary);">${o.total.toFixed(2)} د.أ</span>
-                <span style="font-size:10.5px; color:var(--text-secondary);">${o.paymentMethod}</span>
-            </div>
-        </div>
-    `).join('');
-}
-
-function renderCustomMixesScreen() {
-    const c = document.getElementById('customMixesListContainer');
-    if (!c) return;
-    c.innerHTML = userCustomMixes.map(m => `
-        <div class="clean-card" style="display:flex; justify-content:space-between; align-items:center;">
-            <div>
-                <strong style="font-size:12.5px; color:var(--brand-primary);">${m.name}</strong>
-                <div style="font-size:11px; color:var(--text-secondary); margin-top:2px;">${m.desc}</div>
-            </div>
-            <button class="btn-brand-outline" style="padding:4px 8px; font-size:10px;" onclick="window.showToastMsg('تم إرسال خلطتك للملاحظات!')">طلب</button>
-        </div>
-    `).join('');
-}
-window.openNewMixModal = function() { document.getElementById('modalNewMix').style.display = 'flex'; };
-window.closeNewMixModal = function() { document.getElementById('modalNewMix').style.display = 'none'; };
-window.saveNewMixAction = function() {
-    const name = document.getElementById('newMixNameInput').value.trim();
-    const desc = document.getElementById('newMixDescInput').value.trim();
-    if (!name) return window.showToastMsg("أدخل اسم الخلطة");
-    userCustomMixes.push({ id: "mix_" + Date.now(), name, desc });
-    safeSet('cc_custom_mixes', userCustomMixes);
-    closeNewMixModal();
-    renderCustomMixesScreen();
-    window.showToastMsg("تم حفظ الخلطة المخصصة بنجاح");
-};
-
-function renderDeliveryAddressesScreen() {
-    const c = document.getElementById('deliveryAddressesListContainer');
-    if (!c) return;
-    c.innerHTML = userSavedAddresses.map(a => `
-        <div class="clean-card">
-            <strong style="font-size:12.5px; color:var(--brand-primary);">${a.title}</strong>
-            <div style="font-size:11px; color:var(--text-secondary); margin-top:2px;">${a.desc}</div>
-        </div>
-    `).join('');
-}
-window.openAddAddressModal = function() { document.getElementById('modalAddAddress').style.display = 'flex'; };
-window.closeAddAddressModal = function() { document.getElementById('modalAddAddress').style.display = 'none'; };
-window.saveNewAddressAction = function() {
-    const title = document.getElementById('newAddressTitleInput').value.trim();
-    const desc = document.getElementById('newAddressDetailsInput').value.trim();
-    if (!title || !desc) return window.showToastMsg("يرجى ملء كافة الحقول");
-    userSavedAddresses.push({ id: "addr_" + Date.now(), title, desc });
-    safeSet('cc_addresses', userSavedAddresses);
-    closeAddAddressModal();
-    renderDeliveryAddressesScreen();
-    window.showToastMsg("تم حفظ العنوان بنجاح");
-};
-
-function renderPaymentMethodsMgmtScreen() {
-    const c = document.getElementById('methodsMgmtList');
-    if (!c) return;
-    c.innerHTML = DEFAULT_PAYMENTS.map(p => `
-        <div class="payment-choice-card" style="cursor:default;">
-            <div style="display:flex; align-items:center; gap:10px;">
-                <div class="pay-icon-box"><img src="${p.logo}"></div>
-                <div>
-                    <div style="font-size:12.5px; font-weight:700;">${p.name}</div>
-                    <div style="font-size:10px; color:var(--text-muted);">${p.desc}</div>
-                </div>
-            </div>
-            <span style="font-size:10px; color:var(--status-success); font-weight:700;">فعال ✓</span>
-        </div>
-    `).join('');
-}
-
-function renderSupportFeedbackScreen() {
-    const c = document.getElementById('supportFeedbackHistoryList');
-    if (!c) return;
-    c.innerHTML = customerFeedbacks.map(f => `
-        <div class="clean-card">
-            <div style="font-size:11.5px; color:var(--text-primary); margin-bottom:4px;">${f.text}</div>
-            <div style="background:var(--bg-elevated); padding:6px 8px; border-radius:6px; font-size:11px; color:var(--status-success); font-weight:700;">
-                رد الإدارة: ${f.reply || 'بانتظار مراجعة الإدارة'}
-            </div>
-        </div>
-    `).join('');
-}
-window.submitSupportFeedbackAction = function() {
-    const text = document.getElementById('supportFeedbackInput')?.value.trim();
-    if (!text) return window.showToastMsg("اكتب نص الشكوى أو المقترح");
-    customerFeedbacks.unshift({ id: "fb_" + Date.now(), text, reply: "" });
-    safeSet('cc_feedbacks', customerFeedbacks);
-    document.getElementById('supportFeedbackInput').value = '';
-    renderSupportFeedbackScreen();
-    window.showToastMsg("تم إرسال رسالتك لإدارة كافيه كورنر بنجاح");
-};
-
-/* تفعيل الوضع الليلي وتأثيرات الصوت */
-window.toggleDarkModeAction = function(checked) {
-    if (checked) document.body.classList.add('dark-mode');
-    else document.body.classList.remove('dark-mode');
-    safeSet('cc_dark_mode', checked);
-    window.showToastMsg(checked ? "تم تفعيل الوضع الليلي" : "تم تفعيل الوضع النهاري");
-};
-
-window.toggleAudioAction = function(checked) {
-    isAudioEnabled = checked;
-    safeSet('cc_audio_enabled', checked);
-    window.showToastMsg(checked ? "تم تفعيل أصوات التطبيق" : "تم كتم أصوات التطبيق");
-};
-
-/* نظام الحماية المشفر والدخول السري للأدمن والفروع */
+/* الحماية والدخول السري للأدمن */
 let secretClickCounter = 0;
 let secretTimer = null;
 window.handleSecretVersionClicks = function() {
@@ -1901,13 +1402,7 @@ window.validateSecurityPinCode = function() {
         activeRoleSession = { role: 'admin' };
         safeSet('cc_role_session', activeRoleSession);
         window.location.hash = '#admin';
-        window.showToastMsg("تم المصادقة بنجاح: الإدارة العامة المركزية");
-    } else if (pin === SECURITY_KEYS.BRANCH_KAFARSUM) {
-        window.location.hash = '#branch-kafarsum';
-        window.showToastMsg("تم المصادقة بنجاح: فرع كفرسوم");
-    } else if (pin === SECURITY_KEYS.BRANCH_SAMA) {
-        window.location.hash = '#branch-sama';
-        window.showToastMsg("تم المصادقة بنجاح: فرع سما الروسان");
+        window.showToastMsg("تمت المصادقة بنجاح: الإدارة العامة");
     } else {
         window.showToastMsg("رمز PIN غير مصرح به!");
     }
@@ -1920,179 +1415,331 @@ window.exitRoleAccessSession = function() {
     navigateRouter('screen-home');
 };
 
-/* لوحة تحكم الأدمن المركزية */
-function renderMasterAdminDashboard() {
-    renderAdminRewardsManageList();
-    renderAdminFeedbacksControl();
-}
+/* تبديل أقسام لوحة الأدمن العشرة */
+window.switchAdminSubHub = function(tabKey) {
+    document.querySelectorAll('.admin-section-grid-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.admin-sub-content').forEach(c => c.style.display = 'none');
 
-function renderAdminRewardsManageList() {
-    const c = document.getElementById('adminRewardsManageList');
+    document.getElementById('btnAdminTab_' + tabKey)?.classList.add('active');
+    const target = document.getElementById('subHub_' + tabKey);
+    if (target) target.style.display = 'block';
+
+    if (tabKey === 'prods') renderAdmProductsList();
+    if (tabKey === 'addons') renderAdmAddonsList();
+    if (tabKey === 'orders') renderAdmOrdersList();
+    if (tabKey === 'customers') renderAdmCustomersCrm();
+    if (tabKey === 'warnings') renderAdmWarningsSection();
+    if (tabKey === 'feedbacks') renderAdmFeedbackTickets();
+};
+
+/* 1. إدارة الأصناف والتصنيفات + النسخ المكرر (Duplicate) */
+function renderAdmProductsList() {
+    const c = document.getElementById('admProductsListDisplay');
     if (!c) return;
-    c.innerHTML = redeemRewardsList.map(r => `
-        <div style="display:flex; justify-content:space-between; align-items:center; padding:8px 0; border-bottom:1px solid var(--border-subtle);">
-            <div>
-                <strong style="font-size:12px;">${r.name}</strong>
-                <div class="num-font" style="font-size:11px; color:var(--brand-primary);">${r.points} نقطة</div>
+    c.innerHTML = productsList.map(p => `
+        <div style="background:#18181b; border:1px solid #27272a; border-radius:8px; padding:10px; margin-bottom:8px;">
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+                <div>
+                    <strong style="font-size:13px; color:#fafafa;">${p.name}</strong>
+                    <div style="font-size:10.5px; color:#a1a1aa;">${p.category} • <span class="num-font" style="color:#ef4444; font-weight:800;">${p.price.toFixed(2)} د.أ</span></div>
+                </div>
+                <div style="display:flex; gap:4px;">
+                    <button class="btn-brand-outline" style="border-color:#3b82f6; color:#3b82f6; padding:2px 8px; font-size:10px;" onclick="duplicateProductAction('${p.id}')">نسخ مكرر</button>
+                    <button class="btn-brand-outline" style="border-color:#eab308; color:#eab308; padding:2px 8px; font-size:10px;" onclick="openEditProductModal('${p.id}')">تعديل</button>
+                    <button class="btn-brand-outline" style="border-color:#ef4444; color:#ef4444; padding:2px 8px; font-size:10px;" onclick="deleteProductAction('${p.id}')">حذف</button>
+                </div>
             </div>
-            <button class="btn-brand-outline" style="color:var(--status-danger); border-color:var(--status-danger); padding:2px 8px; font-size:10px;" onclick="deleteAdminReward('${r.id}')">حذف</button>
         </div>
     `).join('');
 }
-window.openNewRewardItemModal = function() { document.getElementById('modalNewRewardAdmin').style.display = 'flex'; };
-window.closeNewRewardItemModal = function() { document.getElementById('modalNewRewardAdmin').style.display = 'none'; };
-window.saveAdminRewardAction = function() {
-    const name = document.getElementById('newAdmRewardName').value.trim();
-    const pts = parseInt(document.getElementById('newAdmRewardPoints').value, 10);
-    const img = document.getElementById('newAdmRewardImg').value.trim();
-    if (!name || !pts) return window.showToastMsg("أدخل اسم ومقدار النقاط");
-    redeemRewardsList.push({ id: "rd_" + Date.now(), name, points: pts, img });
-    safeSet('cc_redeem_catalog', redeemRewardsList);
-    closeNewRewardItemModal();
-    renderAdminRewardsManageList();
-    window.showToastMsg("تمت إضافة المكافأة وإتاحتها للزبائن");
-};
-window.deleteAdminReward = function(id) {
-    redeemRewardsList = redeemRewardsList.filter(r => r.id !== id);
-    safeSet('cc_redeem_catalog', redeemRewardsList);
-    renderAdminRewardsManageList();
-    window.showToastMsg("تم حذف الهدية");
+
+window.duplicateProductAction = function(id) {
+    const p = productsList.find(i => i.id === id);
+    if (!p) return;
+    const duplicated = {
+        id: "p_" + Date.now(),
+        name: p.name + " (نسخة)",
+        category: p.category,
+        price: p.price,
+        desc: p.desc,
+        img: p.img
+    };
+    productsList.push(duplicated);
+    safeSet('cc_catalog', productsList);
+    renderAdmProductsList();
+    renderProductsDisplay();
+    window.showToastMsg(`تم تكرار الصنف: ${duplicated.name}`);
 };
 
-function renderAdminFeedbacksControl() {
-    const c = document.getElementById('adminSupportFeedbacksList');
+window.openAddProductModal = function() {
+    document.getElementById('editProdId').value = '';
+    document.getElementById('editProdName').value = '';
+    document.getElementById('editProdCat').value = '';
+    document.getElementById('editProdPrice').value = '';
+    document.getElementById('editProdDesc').value = '';
+    document.getElementById('editProdImg').value = '';
+    document.getElementById('modalProductEditor').style.display = 'flex';
+};
+
+window.openEditProductModal = function(id) {
+    const p = productsList.find(i => i.id === id);
+    if (!p) return;
+    document.getElementById('editProdId').value = p.id;
+    document.getElementById('editProdName').value = p.name;
+    document.getElementById('editProdCat').value = p.category;
+    document.getElementById('editProdPrice').value = p.price;
+    document.getElementById('editProdDesc').value = p.desc;
+    document.getElementById('editProdImg').value = p.img;
+    document.getElementById('modalProductEditor').style.display = 'flex';
+};
+
+window.closeProductEditorModal = function() {
+    document.getElementById('modalProductEditor').style.display = 'none';
+};
+
+window.saveProductRecordAction = function() {
+    const id = document.getElementById('editProdId').value;
+    const name = document.getElementById('editProdName').value.trim();
+    const cat = document.getElementById('editProdCat').value.trim() || 'عام';
+    const price = parseFloat(document.getElementById('editProdPrice').value) || 0;
+    const desc = document.getElementById('editProdDesc').value.trim();
+    const img = document.getElementById('editProdImg').value.trim() || 'https://images.unsplash.com/photo-1562376552-0d160a2f238d?w=400&q=80';
+
+    if (!name || price <= 0) return window.showToastMsg("أدخل اسم وسعر صالح للصنف");
+
+    if (id) {
+        const item = productsList.find(i => i.id === id);
+        if (item) {
+            item.name = name; item.category = cat; item.price = price; item.desc = desc; item.img = img;
+        }
+    } else {
+        productsList.push({ id: "p_" + Date.now(), name, category: cat, price, desc, img });
+    }
+
+    safeSet('cc_catalog', productsList);
+    closeProductEditorModal();
+    renderAdmProductsList();
+    renderProductsDisplay();
+    renderMenuCategories();
+    window.showToastMsg("تم حفظ الصنف بنجاح في القائمة");
+};
+
+window.deleteProductAction = function(id) {
+    productsList = productsList.filter(i => i.id !== id);
+    safeSet('cc_catalog', productsList);
+    renderAdmProductsList();
+    renderProductsDisplay();
+    renderMenuCategories();
+    window.showToastMsg("تم حذف الصنف");
+};
+
+/* 2. الإضافات الديناميكية (Dynamic Addons) */
+function renderAdmAddonsList() {
+    const c = document.getElementById('admAddonsListDisplay');
+    if (!c) return;
+    c.innerHTML = addonsList.map(ad => `
+        <div style="background:#18181b; border:1px solid #27272a; border-radius:8px; padding:10px; margin-bottom:8px; display:flex; justify-content:space-between; align-items:center;">
+            <div>
+                <strong style="font-size:12.5px; color:#fafafa;">${ad.name}</strong>
+                <div style="font-size:10.5px; color:#a1a1aa;">المجموعة: ${ad.category} • <span class="num-font" style="color:#10b981;">+ ${ad.price.toFixed(2)} د.أ</span></div>
+            </div>
+            <button class="btn-brand-outline" style="border-color:#ef4444; color:#ef4444; padding:2px 8px; font-size:10px;" onclick="deleteAddonAction('${ad.id}')">حذف</button>
+        </div>
+    `).join('');
+}
+window.openAddAddonModal = function() { document.getElementById('modalAddonEditor').style.display = 'flex'; };
+window.closeAddonEditorModal = function() { document.getElementById('modalAddonEditor').style.display = 'none'; };
+window.saveDynamicAddonAction = function() {
+    const name = document.getElementById('newAddonName').value.trim();
+    const price = parseFloat(document.getElementById('newAddonPrice').value) || 0;
+    const cat = document.getElementById('newAddonCategory').value.trim() || 'عام';
+    if (!name) return window.showToastMsg("أدخل اسم الإضافة");
+    addonsList.push({ id: "ad_" + Date.now(), name, price, category: cat });
+    safeSet('cc_addons', addonsList);
+    closeAddonEditorModal();
+    renderAdmAddonsList();
+    window.showToastMsg("تم حفظ الإضافة الديناميكية");
+};
+window.deleteAddonAction = function(id) {
+    addonsList = addonsList.filter(i => i.id !== id);
+    safeSet('cc_addons', addonsList);
+    renderAdmAddonsList();
+    window.showToastMsg("تم حذف الإضافة");
+};
+
+/* 3. إدارة الطلبات KDS */
+function renderAdmOrdersList() {
+    const c = document.getElementById('admOrdersListDisplay');
+    if (!c) return;
+    const q = (document.getElementById('admOrderSearchInp')?.value || '').trim().toLowerCase();
+    const filtered = appOrdersList.filter(o => !q || o.orderId.toLowerCase().includes(q) || o.customerName.toLowerCase().includes(q) || o.customerPhone.includes(q));
+
+    if (filtered.length === 0) {
+        c.innerHTML = `<div style="text-align:center; padding:16px; font-size:11.5px; color:#a1a1aa;">لا توجد طلبات مطابقة.</div>`;
+        return;
+    }
+    c.innerHTML = filtered.map(o => `
+        <div style="background:#18181b; border:1px solid #27272a; border-radius:8px; padding:10px; margin-bottom:8px;">
+            <div style="display:flex; justify-content:space-between;">
+                <strong class="num-font" style="color:#ef4444;">${o.orderId}</strong>
+                <span style="font-size:10px; background:rgba(239,68,68,0.2); color:#ef4444; padding:2px 8px; border-radius:99px;">${o.status}</span>
+            </div>
+            <div style="font-size:11.5px; font-weight:700; margin:3px 0;">${o.customerName} (${o.customerPhone})</div>
+            <div style="font-size:10.5px; color:#a1a1aa;">${o.branchName} • الإجمالي: <span class="num-font" style="color:#10b981; font-weight:800;">${o.total.toFixed(2)} د.أ</span></div>
+            <div style="display:flex; gap:4px; margin-top:6px;">
+                <button class="btn-brand-solid" style="padding:4px; font-size:10px; flex:1;" onclick="updateAdmOrderStatus('${o.orderId}', 'قيد التجهيز')">تجهيز</button>
+                <button class="btn-brand-solid" style="padding:4px; font-size:10px; flex:1; background:#10b981;" onclick="updateAdmOrderStatus('${o.orderId}', 'تم التسليم')">تسليم</button>
+                <button class="btn-brand-outline" style="padding:4px; font-size:10px; border-color:#ef4444; color:#ef4444;" onclick="updateAdmOrderStatus('${o.orderId}', 'ملغي')">إلغاء</button>
+            </div>
+        </div>
+    `).join('');
+}
+window.updateAdmOrderStatus = function(id, st) {
+    const o = appOrdersList.find(i => i.orderId === id);
+    if (!o) return;
+    o.status = st;
+    safeSet('cc_orders', appOrdersList);
+    renderAdmOrdersList();
+    window.showToastMsg(`تم تحديث حالة الطلب إلى: ${st}`);
+};
+
+/* 4. CRM المصغر وإدارة العملاء */
+function renderAdmCustomersCrm() {
+    const c = document.getElementById('admCustomersCrmList');
+    if (!c) return;
+    c.innerHTML = `
+        <div style="background:#18181b; border:1px solid #27272a; border-radius:8px; padding:12px; font-size:12px;">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+                <strong style="font-size:14px; color:#ef4444;">${activeCustomer.name}</strong>
+                <span class="${activeCustomer.isBanned ? 'crm-badge-warn' : ''}" style="color:${activeCustomer.isBanned ? '#ef4444' : '#10b981'}; font-weight:700;">${activeCustomer.isBanned ? 'محظور ✕' : 'نشط ✓'}</span>
+            </div>
+            <div style="color:#a1a1aa; line-height:1.7;">
+                • رقم الهاتف: <span class="num-font">${activeCustomer.phone}</span><br>
+                • العنوان المسجل: ${activeCustomer.address}<br>
+                • تاريخ الإنشاء: <span class="num-font">${activeCustomer.registeredAt}</span><br>
+                • الرصيد الحالي: <span class="num-font" style="color:#ef4444; font-weight:800;">${activeCustomer.points}</span> نقطة<br>
+                • التحذيرات المسجلة: <span class="num-font" style="color:#ef4444; font-weight:800;">${activeCustomer.warnings || 0} / 3</span>
+            </div>
+        </div>
+    `;
+}
+
+/* 5. نظام التحذيرات والحظر (3-Strike System) */
+function renderAdmWarningsSection() {
+    const c = document.getElementById('admCustomerWarningsControls');
+    if (!c) return;
+    c.innerHTML = `
+        <div style="background:#18181b; border:1px solid #27272a; border-radius:8px; padding:12px; font-size:12px;">
+            <div style="font-weight:700; margin-bottom:6px;">التحكم بحساب العميل: ${activeCustomer.name} (${activeCustomer.phone})</div>
+            <div style="margin-bottom:8px;">عدد التحذيرات الحالية: <strong class="num-font" style="color:#ef4444;">${activeCustomer.warnings || 0}</strong></div>
+            <div style="display:flex; gap:6px;">
+                <button class="btn-brand-outline" style="border-color:#eab308; color:#eab308; padding:6px; font-size:11px; flex:1;" onclick="issueWarningToCustomer()">+ توجيه تحذير رسمي</button>
+                <button class="btn-brand-outline" style="border-color:#ef4444; color:#ef4444; padding:6px; font-size:11px; flex:1;" onclick="toggleCustomerBanState()">${activeCustomer.isBanned ? 'فك الحظر' : 'حظر الحساب فوراً'}</button>
+            </div>
+        </div>
+    `;
+}
+
+window.issueWarningToCustomer = function() {
+    activeCustomer.warnings = (activeCustomer.warnings || 0) + 1;
+    if (activeCustomer.warnings >= 3) {
+        activeCustomer.isBanned = true;
+        window.showToastMsg("وصل العميل للتحذير الثالث وتم حظر حسابه تلقائياً!");
+    } else {
+        window.showToastMsg(`تم تسجيل التحذير رقم (${activeCustomer.warnings}) بحساب العميل`);
+    }
+    safeSet('cc_active_client_user', activeCustomer);
+    renderAdmWarningsSection();
+    renderAdmCustomersCrm();
+};
+
+window.toggleCustomerBanState = function() {
+    activeCustomer.isBanned = !activeCustomer.isBanned;
+    if (!activeCustomer.isBanned) activeCustomer.warnings = 0;
+    safeSet('cc_active_client_user', activeCustomer);
+    renderAdmWarningsSection();
+    renderAdmCustomersCrm();
+    window.showToastMsg(activeCustomer.isBanned ? "تم حظر الحساب" : "تم رفع الحظر وتصفير التحذيرات");
+};
+
+/* 6. السجل المالي للنقاط والمكافآت */
+window.applyCustomerPointsDelta = function(isAdd) {
+    const delta = parseInt(document.getElementById('admPointsDeltaInp')?.value, 10);
+    const reason = (document.getElementById('admPointsReasonInp')?.value || '').trim();
+    if (!delta || delta <= 0) return window.showToastMsg("أدخل عدد نقاط صالح");
+
+    if (isAdd) activeCustomer.points += delta;
+    else activeCustomer.points = Math.max(0, activeCustomer.points - delta);
+
+    safeSet('cc_active_client_user', activeCustomer);
+    document.getElementById('admPointsDeltaInp').value = '';
+    document.getElementById('admPointsReasonInp').value = '';
+    renderMasterAdminDashboard();
+    window.showToastMsg(`تم ${isAdd ? 'إضافة' : 'خصم'} ${delta} نقطة. السبب: ${reason || 'إداري'}`);
+};
+
+/* 7. تذاكر الشكاوى والردود السريعة */
+function renderAdmFeedbackTickets() {
+    const c = document.getElementById('admFeedbackTicketsDisplay');
     if (!c) return;
     c.innerHTML = customerFeedbacks.map(f => `
-        <div style="background:var(--bg-elevated); padding:8px 10px; border-radius:8px; margin-bottom:6px; font-size:11.5px;">
-            <div style="font-weight:700;">شكوى / مقترح:</div>
-            <div style="color:var(--text-primary); margin:3px 0;">${f.text}</div>
-            <div style="color:var(--status-success); font-weight:700;">${f.reply ? 'ردك: ' + f.reply : 'لم يتم الرد بعد'}</div>
+        <div style="background:#18181b; border:1px solid #27272a; border-radius:8px; padding:10px; margin-bottom:8px; font-size:12px;">
+            <div style="color:#fafafa; margin-bottom:4px;">${f.text}</div>
+            <div style="color:#10b981; font-weight:700;">${f.reply ? 'رد الإدارة: ' + f.reply : 'بانتظار الرد...'}</div>
             ${!f.reply ? `
-                <div style="display:flex; gap:4px; margin-top:4px;">
-                    <input type="text" class="ios-input-field" id="replyInput_${f.id}" placeholder="اكتب ردك للزبون..." style="font-size:11px; padding:4px 8px;">
-                    <button class="btn-brand-solid" style="padding:4px 8px; font-size:10px; width:auto;" onclick="replyToFeedbackDirect('${f.id}')">إرسال</button>
+                <div style="display:flex; gap:4px; margin-top:6px;">
+                    <input type="text" class="ios-input-field" id="replyInp_${f.id}" placeholder="اكتب ردك للعميل..." style="background:#27272a; border-color:#3f3f46; color:#fff; font-size:11px; padding:4px 8px;">
+                    <button class="btn-brand-solid" style="padding:4px 10px; font-size:10px; width:auto;" onclick="sendTicketReplyAction('${f.id}')">إرسال</button>
                 </div>
             ` : ''}
         </div>
     `).join('');
 }
-window.replyToFeedbackDirect = function(id) {
-    const inp = document.getElementById('replyInput_' + id);
+
+window.sendTicketReplyAction = function(id) {
+    const inp = document.getElementById('replyInp_' + id);
     if (!inp || !inp.value.trim()) return;
-    const fb = customerFeedbacks.find(f => f.id === id);
+    const fb = customerFeedbacks.find(i => i.id === id);
     if (fb) {
         fb.reply = inp.value.trim();
         safeSet('cc_feedbacks', customerFeedbacks);
-        renderAdminFeedbacksControl();
-        window.showToastMsg("تم إرسال رد الإدارة فوراً");
+        renderAdmFeedbackTickets();
+        window.showToastMsg("تم إرسال الرد لتذكرة العميل بنجاح");
     }
 };
 
-window.broadcastAdminNotification = function() {
-    const t = document.getElementById('admBroadcastTitle')?.value.trim();
-    const b = document.getElementById('admBroadcastBody')?.value.trim();
+/* 8. التسويق والإشعارات */
+window.sendBroadcastPushNotification = function() {
+    const t = document.getElementById('admPushTitleInp')?.value.trim();
+    const b = document.getElementById('admPushBodyInp')?.value.trim();
     if (!t || !b) return window.showToastMsg("أدخل العنوان والنص");
-    customerNotifications.unshift({ id: "notif_" + Date.now(), title: t, body: b, time: "الآن", unread: true });
-    safeSet('cc_notifications', customerNotifications);
-    document.getElementById('admBroadcastTitle').value = '';
-    document.getElementById('admBroadcastBody').value = '';
-    window.showToastMsg("تم بث الإشعار بنجاح لجميع الزبائن");
+    window.showToastMsg("تم بث الإشعار التسويقي لجميع الزبائن بنجاح!");
+    document.getElementById('admPushTitleInp').value = '';
+    document.getElementById('admPushBodyInp').value = '';
 };
 
-/* لوحة تحكم الفرع والـ Z-Report */
-function renderBranchKitchenOrders() {
-    if (!activeRoleSession || activeRoleSession.role !== 'branch') return;
-    const bId = activeRoleSession.branchId;
-    const bName = activeRoleSession.branchName;
-    document.getElementById('branchDashboardHeaderTitle').innerText = "لوحة " + bName;
-
-    const c = document.getElementById('branchKitchenOrdersList');
-    if (!c) return;
-    const branchOrders = appOrdersList.filter(o => o.branchId === bId);
-    if (branchOrders.length === 0) {
-        c.innerHTML = `<div style="text-align:center; padding:20px; font-size:12px; color:var(--text-muted);">لا توجد طلبات جارية لهذا الفرع حالياً.</div>`;
-        return;
-    }
-    c.innerHTML = branchOrders.map(o => `
-        <div class="clean-card">
-            <div style="display:flex; justify-content:space-between; align-items:center;">
-                <strong class="num-font" style="color:var(--brand-primary);">${o.orderId}</strong>
-                <span style="font-size:10px; padding:2px 8px; border-radius:var(--radius-full); background:var(--brand-primary-light); color:var(--brand-primary); font-weight:700;">${o.status}</span>
-            </div>
-            <div style="font-size:12px; font-weight:700; margin-top:3px;">${o.customerName} (${o.customerPhone})</div>
-            <div style="font-size:11px; color:var(--text-secondary); margin-bottom:4px;">${o.mode === 'delivery' ? 'توصيل' : 'استلام من المحل'} • الدفع: <strong>${o.paymentMethod}</strong></div>
-            <div style="background:var(--bg-elevated); padding:6px; border-radius:6px; font-size:11px; margin-bottom:6px;">
-                ${o.items.map(i => `<div>• ${i.name} (${i.qty}×)</div>`).join('')}
-                <div style="font-weight:800; margin-top:4px;" class="num-font">الإجمالي: ${o.total.toFixed(2)} د.أ</div>
-            </div>
-            <div style="display:flex; gap:6px;">
-                <button class="btn-brand-solid" style="padding:6px; font-size:11px; flex:1;" onclick="updateOrderStatus('${o.orderId}', 'جاهز للاستلام / مع السائق')">جاهز</button>
-                <button class="btn-brand-solid" style="padding:6px; font-size:11px; flex:1; background:var(--status-success);" onclick="updateOrderStatus('${o.orderId}', 'مكتمل ومسلّم')">تم التسليم</button>
-            </div>
-        </div>
-    `).join('');
+/* تحديث ملخص لوحة الأدمن العامة */
+function renderMasterAdminDashboard() {
+    document.getElementById('admStatOrdersCount').innerText = appOrdersList.length;
+    const totalRev = appOrdersList.reduce((s, o) => s + (o.total || 0), 0);
+    document.getElementById('admStatRevenueCount').innerText = totalRev.toFixed(2) + " د.أ";
+    document.getElementById('admStatPointsCount').innerText = Number(activeCustomer.points).toLocaleString();
+    document.getElementById('admStatProdsCount').innerText = productsList.length;
+    document.getElementById('admStatFeedbacksCount').innerText = customerFeedbacks.filter(f => !f.reply).length;
+    renderAdmProductsList();
 }
-window.updateOrderStatus = function(id, st) {
-    const o = appOrdersList.find(i => i.orderId === id);
-    if (!o) return;
-    o.status = st;
-    safeSet('cc_orders', appOrdersList);
-    renderBranchKitchenOrders();
-    window.showToastMsg("تم تحديث حالة الطلب");
-};
 
+/* فئات الولاء و Z-Report ومساعدات الفرع */
 window.openDayClosureModal = function() {
-    if (!activeRoleSession || activeRoleSession.role !== 'branch') return;
-    const bId = activeRoleSession.branchId;
-    const bName = activeRoleSession.branchName;
-    const orders = appOrdersList.filter(o => o.branchId === bId);
-
-    let cash = 0, cliq = 0, cards = 0;
-    orders.forEach(o => {
-        const val = parseFloat(o.total) || 0;
-        if (o.paymentMethod.includes('كاش')) cash += val;
-        else if (o.paymentMethod.includes('كليك')) cliq += val;
-        else cards += val;
-    });
-
-    document.getElementById('closureBranchTitle').innerText = bName;
+    const totalRev = appOrdersList.reduce((s, o) => s + (o.total || 0), 0);
     document.getElementById('closureDateText').innerText = new Date().toLocaleString('ar-JO');
-    document.getElementById('closureTotalOrders').innerText = orders.length;
-    document.getElementById('closureCashSum').innerText = cash.toFixed(2) + " د.أ";
-    document.getElementById('closureCliqSum').innerText = cliq.toFixed(2) + " د.أ";
-    document.getElementById('closureCardsSum').innerText = cards.toFixed(2) + " د.أ";
-    document.getElementById('closureGrandTotal').innerText = (cash + cliq + cards).toFixed(2) + " د.أ";
+    document.getElementById('closureTotalOrders').innerText = appOrdersList.length;
+    document.getElementById('closureCashSum').innerText = totalRev.toFixed(2) + " د.أ";
+    document.getElementById('closureGrandTotal').innerText = totalRev.toFixed(2) + " د.أ";
     document.getElementById('modalDayClosure').style.display = 'flex';
 };
 window.closeDayClosureModal = function() { document.getElementById('modalDayClosure').style.display = 'none'; };
 
-/* متجر المكافآت وفئات الولاء */
-function renderRewardsGrid() {
-    document.getElementById('rewardsBalanceText').innerText = Number(activeCustomer.points).toLocaleString();
-    const g = document.getElementById('rewardsCatalogGrid');
-    if (!g) return;
-    g.innerHTML = redeemRewardsList.map(r => `
-        <div class="clean-card" style="padding:10px; text-align:center;">
-            <div style="width:100%; height:90px; border-radius:6px; overflow:hidden; margin-bottom:4px;">
-                <img src="${r.img}" style="width:100%; height:100%; object-fit:contain;">
-            </div>
-            <div style="font-size:12px; font-weight:700;">${r.name}</div>
-            <div class="num-font" style="font-size:12px; font-weight:800; color:var(--brand-primary); margin:4px 0;">${r.points} نقطة</div>
-            <button class="btn-brand-solid" style="padding:5px; font-size:11px;" onclick="claimRewardItem('${r.id}')">استبدال</button>
-        </div>
-    `).join('');
-}
-window.claimRewardItem = function(id) {
-    const item = redeemRewardsList.find(r => r.id === id);
-    if (!item) return;
-    if (activeCustomer.points < item.points) return window.showToastMsg("رصيد نقاطك لا يكفي");
-    activeCustomer.points -= item.points;
-    safeSet('cc_active_client_user', activeCustomer);
-    renderRewardsGrid();
-    window.showToastMsg(`مبروك! تم استبدال ${item.name} بنجاح`);
-};
-
-/* اختيار الفرع ونوع الخدمة */
 window.openBranchPickerModal = function() { document.getElementById('modalChooseBranch').style.display = 'flex'; };
 window.closeBranchPickerModal = function() { document.getElementById('modalChooseBranch').style.display = 'none'; };
 window.chooseAppBranch = function(idx) {
@@ -2111,6 +1758,16 @@ window.setServiceFulfillment = function(mode) {
     window.showToastMsg(mode === 'delivery' ? 'تم اختيار التوصيل للعنوان' : 'تم اختيار الاستلام من الفرع');
 };
 
+window.toggleDarkModeAction = function(checked) {
+    if (checked) document.body.classList.add('dark-mode');
+    else document.body.classList.remove('dark-mode');
+    safeSet('cc_dark_mode', checked);
+};
+window.toggleAudioAction = function(checked) {
+    isAudioEnabled = checked;
+    safeSet('cc_audio_enabled', checked);
+};
+
 window.showToastMsg = function(msg) {
     const t = document.getElementById('systemToast');
     if (!t) return;
@@ -2124,15 +1781,6 @@ document.addEventListener('DOMContentLoaded', () => {
     renderMenuCategories();
     renderProductsDisplay();
     handleHashNavigation();
-    const dark = safeGet('cc_dark_mode', false);
-    if (dark) {
-        document.body.classList.add('dark-mode');
-        const sw = document.getElementById('toggleDarkModeSwitch');
-        if (sw) sw.checked = true;
-    }
-    const aud = safeGet('cc_audio_enabled', true);
-    const swAud = document.getElementById('toggleAppAudioSwitch');
-    if (swAud) swAud.checked = aud;
 });
 </script>
 </body>
