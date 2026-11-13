@@ -2,6 +2,7 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://www.gstatic.com https://apis.google.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: https:; connect-src https://*.googleapis.com https://*.cloudfunctions.net https://*.run.app https://*.firebaseio.com https://*.firebaseapp.com wss://*.firebaseio.com; frame-src https://*.firebaseapp.com; object-src 'none'; base-uri 'self'">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>COFFEE CORNER | كافيه كورنر</title>
     
@@ -9,12 +10,13 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800;900&display=swap" rel="stylesheet">
-
+ 
     <!-- Firebase SDK Compat -->
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
-
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-functions-compat.js"></script>
+ 
     <style>
         :root {
             --brand-primary: #991b1b;
@@ -50,7 +52,7 @@
             --shadow-subtle: 0 2px 10px rgba(0,0,0,0.03);
             --shadow-float: 0 10px 25px rgba(153, 27, 27, 0.22);
         }
-
+ 
         body.branch-sama-theme {
             --brand-primary: #2d6a4f;
             --brand-primary-dark: #1b4332;
@@ -59,7 +61,7 @@
             --brand-gradient: linear-gradient(180deg, #2d6a4f 0%, #1b4332 100%);
             --shadow-float: 0 10px 25px rgba(45, 106, 79, 0.25);
         }
-
+ 
         body.dark-mode {
             --bg-main: #000000 !important;
             --bg-surface: #0e0e0e !important;
@@ -71,14 +73,14 @@
             --border-subtle: #27272a !important;
             --border-strong: #3f3f46 !important;
         }
-
+ 
         *, *::before, *::after {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
             -webkit-tap-highlight-color: transparent;
         }
-
+ 
         html, body {
             width: 100%;
             max-width: 100%;
@@ -89,13 +91,13 @@
             text-align: right;
             -webkit-font-smoothing: antialiased;
         }
-
+ 
         .num-font {
             font-family: var(--font-num);
             direction: ltr;
             display: inline-block;
         }
-
+ 
         .app-container {
             width: 100%;
             max-width: 480px;
@@ -108,7 +110,7 @@
             display: flex;
             flex-direction: column;
         }
-
+ 
         .app-screen {
             display: none;
             width: 100%;
@@ -117,17 +119,17 @@
             background: var(--bg-main);
             overflow-x: hidden;
         }
-
+ 
         .app-screen.active {
             display: block;
         }
-
+ 
         .scrollable-content {
             width: 100%;
             padding: 14px 14px 115px;
             overflow-x: hidden;
         }
-
+ 
         /* بوابة تسجيل الدخول الإلزامية */
         #authGatekeeperOverlay {
             position: fixed;
@@ -153,7 +155,7 @@
             box-shadow: 0 15px 45px rgba(0,0,0,0.15);
             text-align: center;
         }
-
+ 
         /* نافذة الدخول السري للأدمن */
         #adminPinModalOverlay {
             position: fixed;
@@ -177,7 +179,7 @@
             text-align: center;
             box-shadow: 0 20px 50px rgba(0,0,0,0.5);
         }
-
+ 
         /* هيدر الصفحة الرئيسية */
         .home-hero-header {
             background: var(--brand-gradient);
@@ -221,7 +223,7 @@
             height: 100%;
             object-fit: cover;
         }
-
+ 
         .branch-badge-pill {
             background: rgba(0,0,0,0.25);
             border: 1px solid rgba(255,255,255,0.25);
@@ -235,7 +237,7 @@
             gap: 6px;
             cursor: pointer;
         }
-
+ 
         .home-stats-duo {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -252,7 +254,7 @@
             transition: 0.15s ease;
         }
         .stat-card-glass:active { transform: scale(0.97); }
-
+ 
         .fulfillment-bar {
             background: var(--bg-surface);
             border-radius: var(--radius-full);
@@ -282,7 +284,7 @@
             color: #ffffff;
             box-shadow: 0 2px 8px rgba(0,0,0,0.18);
         }
-
+ 
         .branch-status-strip {
             background: var(--bg-surface);
             border: 1px solid var(--border-subtle);
@@ -295,7 +297,7 @@
             font-size: 12px;
             cursor: pointer;
         }
-
+ 
         .home-search-wrap {
             padding: 0 14px 10px;
         }
@@ -318,7 +320,7 @@
             font-size: 12.5px;
             outline: none;
         }
-
+ 
         .categories-scroll {
             display: flex;
             gap: 8px;
@@ -345,7 +347,7 @@
             color: #ffffff;
             border-color: var(--brand-primary);
         }
-
+ 
         .menu-section-header {
             display: flex;
             align-items: center;
@@ -369,7 +371,7 @@
             padding: 2px 8px;
             border-radius: var(--radius-full);
         }
-
+ 
         .product-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
@@ -389,7 +391,7 @@
             position: relative;
         }
         .product-card:active { transform: scale(0.97); border-color: var(--brand-primary); }
-
+ 
         .product-img-box {
             width: 100%;
             height: 130px;
@@ -436,7 +438,7 @@
         .product-fav-btn.active {
             color: #ef4444;
         }
-
+ 
         .product-meta {
             padding: 10px;
             display: flex;
@@ -482,7 +484,7 @@
             font-weight: 700;
             cursor: pointer;
         }
-
+ 
         /* اللوحة الجانبية */
         .sidebar-mask {
             position: fixed;
@@ -511,7 +513,7 @@
             overflow-y: auto;
         }
         .sidebar-drawer.active { transform: translate3d(0, 0, 0); }
-
+ 
         .drawer-hero-header {
             background: var(--brand-gradient);
             color: #ffffff;
@@ -535,7 +537,7 @@
             justify-content: center;
             cursor: pointer;
         }
-
+ 
         .drawer-stats-duo {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -549,7 +551,7 @@
             padding: 10px 8px;
             text-align: center;
         }
-
+ 
         .drawer-section-title {
             font-size: 11px;
             font-weight: 700;
@@ -576,7 +578,7 @@
             font-weight: 600;
             color: var(--text-primary);
         }
-
+ 
         /* شريط السلة العائم */
         .floating-cart-summary-dock {
             position: fixed;
@@ -603,7 +605,7 @@
             opacity: 1;
             pointer-events: auto;
         }
-
+ 
         /* شريط التنقل السفلي */
         .bottom-nav-bar {
             position: fixed;
@@ -655,7 +657,7 @@
             justify-content: center;
             padding: 0 3px;
         }
-
+ 
         .nav-center-scan-btn {
             width: 52px;
             height: 52px;
@@ -671,7 +673,7 @@
             margin-top: -26px;
             transition: 0.15s ease;
         }
-
+ 
         .header {
             position: sticky;
             top: 0;
@@ -695,7 +697,7 @@
             justify-content: center;
             cursor: pointer;
         }
-
+ 
         .clean-card {
             background: var(--bg-card);
             border: 1px solid var(--border-subtle);
@@ -748,7 +750,7 @@
             transition: 0.15s ease;
             text-decoration: none;
         }
-
+ 
         .ios-input-field, .ios-textarea-field {
             width: 100%;
             background: var(--bg-surface);
@@ -763,7 +765,7 @@
         }
         .ios-input-field:focus, .ios-textarea-field:focus { border-color: var(--brand-primary); }
         .ios-textarea-field { resize: none; height: 70px; }
-
+ 
         .toast-popup {
             position: fixed;
             top: 24px;
@@ -791,7 +793,7 @@
         .toast-popup.active { transform: translate(-50%, 0); opacity: 1; }
         .toast-popup.toast-success { border-color: rgba(16, 185, 129, 0.4); }
         .toast-popup.toast-danger { border-color: rgba(239, 68, 68, 0.5); }
-
+ 
         /* تنسيقات تقسيم لوحة الأدمن إلى لوحات مستقلة */
         .admin-hub-grid {
             display: grid;
@@ -858,7 +860,7 @@
     </style>
 </head>
 <body>
-
+ 
 <!-- عنصر التنبيهات المطور -->
 <div class="toast-popup" id="systemToast">
     <span class="toast-icon" id="toastIcon">
@@ -866,7 +868,7 @@
     </span>
     <span id="toastMsgText">تم بنجاح</span>
 </div>
-
+ 
 <!-- بوابة تسجيل الدخول وإنشاء الحساب الإلزامية -->
 <div id="authGatekeeperOverlay">
     <div class="auth-gate-card">
@@ -875,12 +877,12 @@
         </div>
         <h2 style="font-size:18px; font-weight:800; color:var(--text-primary); margin-bottom:4px;">كافيه كورنر | COFFEE CORNER</h2>
         <p style="font-size:11.5px; color:var(--text-secondary); margin-bottom:16px;">يرجى تسجيل الدخول أو إنشاء حسابك الجديد للمتابعة والتصفح والطلب وجمع النقاط.</p>
-
+ 
         <div style="display:flex; background:#f4f4f5; border-radius:var(--radius-sm); padding:3px; margin-bottom:14px;">
             <button id="gateTabLogin" class="fulfillment-tab-btn active" style="padding:6px; font-size:12px;" onclick="switchGateAuthMode('login')">تسجيل دخول</button>
             <button id="gateTabRegister" class="fulfillment-tab-btn" style="padding:6px; font-size:12px;" onclick="switchGateAuthMode('register')">حساب جديد</button>
         </div>
-
+ 
         <div id="gateRegFields" style="display:none; text-align:right; margin-bottom:10px;">
             <label style="font-size:11.5px; font-weight:600; display:block; margin-bottom:4px;">الاسم الكامل:</label>
             <input type="text" class="ios-input-field" id="gateInputName" placeholder="أدخل اسمك الكريم">
@@ -888,21 +890,27 @@
             <label style="font-size:11.5px; font-weight:600; display:block; margin:8px 0 4px;">رمز الدعوة (اختياري - 150 نقطة مكافأة):</label>
             <input type="text" class="ios-input-field num-font" id="gateInputReferralCode" placeholder="مثال: CORNER-7964" style="text-transform:uppercase;">
         </div>
-
+ 
         <div style="text-align:right; margin-bottom:10px;">
             <label style="font-size:11.5px; font-weight:600; display:block; margin-bottom:4px;">رقم الهاتف الأردني (يبدأ بـ 07):</label>
             <input type="tel" class="ios-input-field num-font" id="gateInputPhone" placeholder="07xxxxxxxx" maxlength="10">
         </div>
-
+ 
         <div style="text-align:right; margin-bottom:14px;">
             <label style="font-size:11.5px; font-weight:600; display:block; margin-bottom:4px;">كلمة المرور:</label>
             <input type="password" class="ios-input-field num-font" id="gateInputPassword" placeholder="••••••••">
         </div>
-
-        <button class="btn-brand-solid" id="gateSubmitBtn" onclick="submitGateAuthenticationAction()">تسجيل الدخول للمتجر</button>
+ 
+        <div style="text-align:right; margin-bottom:10px; display:none;">
+            <label style="font-size:11.5px; font-weight:600; display:block; margin-bottom:4px;">البريد الإلكتروني:</label>
+            <input type="email" class="ios-input-field num-font" id="gateInputEmail" placeholder="name@example.com" autocomplete="email">
+        </div>
+        <button class="btn-brand-solid" id="gateSubmitBtn" onclick="submitGateAuthenticationAction()">إرسال رمز التحقق عبر SMS</button>
+        <div id="gateResetLink" style="display:none; margin-top:10px; font-size:11.5px;"><a href="#" onclick="resetEmailPassword(); return false;" style="color:var(--brand-primary); font-weight:700;">نسيت كلمة المرور؟</a></div>
+        
     </div>
 </div>
-
+ 
 <!-- نافذة التحقق المشفرة بالـ PIN للأدمن والأفرع -->
 <div id="adminPinModalOverlay">
     <div class="admin-pin-card">
@@ -918,9 +926,9 @@
         </div>
     </div>
 </div>
-
+ 
 <div class="app-container" id="appContainer">
-
+ 
     <!-- 1. الشاشة الرئيسية والمنيو المنظم -->
     <div id="screen-home" class="app-screen active">
         <header class="home-hero-header">
@@ -934,7 +942,7 @@
                         <div style="font-size:14px; font-weight:700;" id="homeUserNameDisplay">عمر عبيدات</div>
                     </div>
                 </div>
-
+ 
                 <div style="display:flex; gap:6px;">
                     <div class="branch-badge-pill" onclick="openBranchPickerModal()">
                         <span id="currentHeaderBranchLabel">فرع كفرسوم</span>
@@ -945,7 +953,7 @@
                     </button>
                 </div>
             </div>
-
+ 
             <div class="home-stats-duo">
                 <div class="stat-card-glass" onclick="navigateRouter('screen-rewards')">
                     <div style="font-size:10.5px; color:rgba(255,255,255,0.8); font-weight:600;">النقاط المتاحة</div>
@@ -955,7 +963,7 @@
                     </div>
                     <div style="font-size:9.5px; color:rgba(255,255,255,0.7); margin-top:4px;">اضغط لاستبدال نقاطك بالمكافآت ↗</div>
                 </div>
-
+ 
                 <div class="stat-card-glass" onclick="navigateRouter('screen-loyalty-tiers')">
                     <div style="font-size:10.5px; color:rgba(255,255,255,0.8); font-weight:600;">الفئة الحالية</div>
                     <div style="display:flex; align-items:center; justify-content:space-between; margin-top:2px;">
@@ -966,12 +974,12 @@
                 </div>
             </div>
         </header>
-
+ 
         <div class="fulfillment-bar">
             <button class="fulfillment-tab-btn active" id="btnServiceDelivery" onclick="setServiceFulfillment('delivery')">التوصيل</button>
             <button class="fulfillment-tab-btn" id="btnServicePickup" onclick="setServiceFulfillment('pickup')">الاستلام من الفرع</button>
         </div>
-
+ 
         <div class="branch-status-strip" onclick="openBranchPickerModal()">
             <div style="display:flex; align-items:center; gap:6px;">
                 <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--brand-primary)" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
@@ -979,7 +987,7 @@
             </div>
             <span style="color:var(--brand-primary); font-weight:700;">تغيير الفرع</span>
         </div>
-
+ 
         <!-- شريط البحث السريع في المنيو -->
         <div class="home-search-wrap">
             <div class="home-search-box">
@@ -987,14 +995,14 @@
                 <input type="text" id="homeMenuSearchInput" placeholder="ابحث عن وافل، كريب، كوكتيل، سبانش لاتيه..." oninput="renderProductsDisplay()">
             </div>
         </div>
-
+ 
         <!-- شريط التصنيفات -->
         <div class="categories-scroll" id="menuCategoriesScrollChips"></div>
-
+ 
         <!-- حاوية عرض الأصناف المرتبة حسب التصنيف -->
         <div id="mainOrganizedMenuWrapper"></div>
     </div>
-
+ 
     <!-- شريط السلة العائم في الصفحة الرئيسية -->
     <div class="floating-cart-summary-dock" id="floatingCartSummaryDock">
         <div>
@@ -1003,7 +1011,7 @@
         </div>
         <button class="btn-brand-solid" style="width:auto; padding:8px 20px; font-size:13px;" onclick="navigateRouter('screen-cart')">راجع سلتك</button>
     </div>
-
+ 
     <!-- 2. واجهة متجر النقاط والمكافآت -->
     <div id="screen-rewards" class="app-screen">
         <header class="header">
@@ -1013,7 +1021,7 @@
             <div style="font-weight:800; font-size:15px;">متجر النقاط والمكافآت</div>
             <div style="width:38px;"></div>
         </header>
-
+ 
         <div class="scrollable-content">
             <div class="clean-card" style="text-align:center;">
                 <div style="font-size:11.5px; color:var(--text-secondary);">رصيد النقاط المتاحة للاستبدال</div>
@@ -1023,12 +1031,12 @@
                     <button class="btn-brand-outline" onclick="navigateRouter('screen-loyalty-tiers')">سجل النقاط</button>
                 </div>
             </div>
-
+ 
             <div class="clean-title">الهدايا والمكافآت المتاحة</div>
             <div id="clientRewardItemsCatalogList"></div>
         </div>
     </div>
-
+ 
     <!-- 3. واجهة فئات الولاء والمهام وسجل النقاط -->
     <div id="screen-loyalty-tiers" class="app-screen">
         <header class="header">
@@ -1038,7 +1046,7 @@
             <div style="font-weight:800; font-size:15px;">فئات الولاء والمهام</div>
             <div style="width:38px;"></div>
         </header>
-
+ 
         <div class="scrollable-content">
             <div class="clean-card" style="text-align:center; padding:20px;">
                 <div style="width:96px; height:96px; border-radius:50%; background:linear-gradient(135deg, #d4a373 0%, #a9714b 100%); margin:0 auto 10px; display:flex; align-items:center; justify-content:center; color:#fff; font-size:28px; font-weight:900; box-shadow:0 10px 25px rgba(169, 113, 75, 0.35);">
@@ -1048,7 +1056,7 @@
                 <h2 style="font-size:18px; font-weight:800; margin:6px 0 2px;">عضو الفئة البرونزية</h2>
                 <p style="font-size:11.5px; color:var(--text-secondary);" id="tierDynamicStatusNotice">اكتملت النقاط — أكمل 3 مهام خلال 71 يوماً للوصول إلى الفئة الفضية</p>
             </div>
-
+ 
             <div style="display:grid; grid-template-columns:repeat(3, 1fr); gap:8px; margin-bottom:12px;">
                 <div class="clean-card" style="text-align:center; padding:10px; margin:0; cursor:pointer;" onclick="navigateRouter('screen-rewards')">
                     <div style="font-size:12px; font-weight:800;">مكافآتي</div>
@@ -1060,15 +1068,15 @@
                     <div style="font-size:12px; font-weight:800;">كيف تكسب</div>
                 </div>
             </div>
-
+ 
             <div class="clean-title">المهام الجارية</div>
             <div id="dynamicTasksContainer"></div>
-
+ 
             <div class="clean-title" style="margin-top:14px;">سجل النقاط والمكافآت</div>
             <div id="dynamicPointsLedgerHistory"></div>
         </div>
     </div>
-
+ 
     <!-- 4. شاشة دعوة صديق التفاعلية -->
     <div id="screen-invite-friend" class="app-screen">
         <header class="header">
@@ -1078,7 +1086,7 @@
             <div style="font-weight:800; font-size:15px;">دعوة الأصدقاء</div>
             <div style="width:38px;"></div>
         </header>
-
+ 
         <div class="scrollable-content">
             <div class="clean-card" style="text-align:center; padding:20px;">
                 <div style="width:64px; height:64px; border-radius:50%; background:var(--brand-primary-light); color:var(--brand-primary); display:flex; align-items:center; justify-content:center; margin:0 auto 12px;">
@@ -1088,18 +1096,18 @@
                 <p style="font-size:12px; color:var(--text-secondary); line-height:1.5; margin-bottom:14px;">
                     شارك رمز الدعوة الخاص بك مع أصدقائك (حتى <span class="num-font" id="refMaxHeadingVal">3</span> أصدقاء). عند إكمال صديقك لأول طلب، ستحصل أنت وصديقك فوراً على النقاط!
                 </p>
-
+ 
                 <div style="background:var(--bg-elevated); border:1px dashed var(--brand-primary); border-radius:var(--radius-md); padding:12px; margin-bottom:14px;">
                     <span style="font-size:11px; color:var(--text-muted); display:block; margin-bottom:4px;">رمز الدعوة الخاص بك:</span>
                     <strong class="num-font" style="font-size:20px; letter-spacing:2px; color:var(--brand-primary);" id="displayUserRefCode">CORNER-0000</strong>
                 </div>
-
+ 
                 <div style="display:flex; gap:8px;">
                     <button class="btn-brand-solid" style="flex:1;" onclick="copyReferralCodeToClipboard()">نسخ الرمز</button>
                     <button class="btn-brand-solid" style="flex:1; background:#25D366;" onclick="shareReferralViaWhatsApp()">مشاركة واتساب</button>
                 </div>
             </div>
-
+ 
             <div class="clean-card">
                 <div class="clean-title">إحصائيات دعواتك</div>
                 <div style="display:flex; justify-content:space-between; font-size:12.5px; margin-bottom:6px;">
@@ -1113,7 +1121,7 @@
             </div>
         </div>
     </div>
-
+ 
     <!-- 5. سلة الشراء ومتابعة الطلب -->
     <div id="screen-cart" class="app-screen">
         <header class="header">
@@ -1123,10 +1131,10 @@
             <div style="font-weight:800; font-size:15px;">سلة المشتريات</div>
             <div style="width:38px;"></div>
         </header>
-
+ 
         <div class="scrollable-content">
             <div id="cartItemsListContainer"></div>
-
+ 
             <!-- كود الخصم التفاعلي -->
             <div class="clean-card" style="margin-top:10px;">
                 <div class="clean-title">كود الخصم الترويجي</div>
@@ -1136,14 +1144,14 @@
                 </div>
                 <div id="cartCouponAppliedHint" style="font-size:11px; color:var(--status-success); font-weight:700; margin-top:6px; display:none;"></div>
             </div>
-
+ 
             <!-- اختيار منطقة التوصيل -->
             <div class="clean-card" id="cartDeliveryZoneCard">
                 <div class="clean-title">منطقة التوصيل والعنوان</div>
                 <select class="ios-input-field" id="cartTownSelector" onchange="renderCartScreen()"></select>
                 <input type="text" class="ios-input-field" id="cartAddressNotesInput" placeholder="تفاصيل العنوان (الحي، الشارع، أقرب معلم)..." style="margin-top:8px;">
             </div>
-
+ 
             <!-- طريقة الدفع مع الشعارات -->
             <div class="clean-card">
                 <div class="clean-title">طريقة الدفع المعتمدة</div>
@@ -1160,7 +1168,7 @@
                             </div>
                         </div>
                     </label>
-
+ 
                     <label style="display:flex; align-items:center; justify-content:space-between; padding:10px 12px; border:1px solid var(--border-subtle); border-radius:var(--radius-sm); cursor:pointer;">
                         <div style="display:flex; align-items:center; gap:10px;">
                             <input type="radio" name="payRadioMethod" value="كليك CliQ">
@@ -1175,7 +1183,7 @@
                     </label>
                 </div>
             </div>
-
+ 
             <div class="clean-card">
                 <div class="clean-title">ملخص الحساب النهائي</div>
                 <div style="display:flex; justify-content:space-between; font-size:13px; margin-bottom:5px;">
@@ -1195,13 +1203,13 @@
                     <strong class="num-font" style="color:var(--brand-primary);" id="cartGrandTotalText">JOD 0.00</strong>
                 </div>
             </div>
-
+ 
             <button class="btn-brand-solid" onclick="confirmOrderAndForwardWhatsApp()">
                 إرسال الطلب للفرع وتأكيده عبر واتساب
             </button>
         </div>
     </div>
-
+ 
     <!-- 6. شاشة الطلبات السابقة -->
     <div id="screen-order-history" class="app-screen">
         <header class="header">
@@ -1215,7 +1223,7 @@
             <div id="customerOrderHistoryList"></div>
         </div>
     </div>
-
+ 
     <!-- 7. شاشة الشكاوى والاقتراحات -->
     <div id="screen-feedback" class="app-screen">
         <header class="header">
@@ -1236,12 +1244,12 @@
                 <textarea class="ios-textarea-field" id="customerFbText" placeholder="اكتب تفاصيل رسالتك هنا..."></textarea>
                 <button class="btn-brand-solid" style="margin-top:8px;" onclick="submitCustomerFeedback()">إرسال للإدارة</button>
             </div>
-
+ 
             <div class="clean-title">سجل رسائلك وردود الإدارة</div>
             <div id="customerFeedbackHistoryList"></div>
         </div>
     </div>
-
+ 
     <!-- 8. لوحة الأدمن الشاملة والمركزية (مقسمة إلى لوحات مستقلة منظمة) -->
     <div id="screen-master-admin" class="app-screen">
         <header class="header">
@@ -1251,7 +1259,7 @@
             </div>
             <button class="btn-brand-outline" style="padding:5px 10px; font-size:11px;" onclick="navigateRouter('screen-home')">العودة للمتجر</button>
         </header>
-
+ 
         <div class="scrollable-content">
             <!-- اللوحة الرئيسية لاختيار القسم الإداري -->
             <div id="adminMainHubView">
@@ -1270,9 +1278,9 @@
                         <div class="num-font" style="font-size:17px; font-weight:900; color:var(--status-success);" id="kpiAdminCustomersCount">0</div>
                     </div>
                 </div>
-
+ 
                 <div style="font-size:12px; font-weight:800; color:var(--text-secondary); margin-bottom:6px;">اختر لوحة الإدارة المطلوبة:</div>
-
+ 
                 <div class="admin-hub-grid">
                     <!-- 1. لوحة الأصناف والتصنيفات -->
                     <div class="admin-module-card" onclick="openAdminSubPanel('products')">
@@ -1285,7 +1293,7 @@
                             <div style="font-size:10px; color:var(--text-secondary); margin-top:2px;">إضافة، تعديل، نسخ، وإخفاء الأصناف</div>
                         </div>
                     </div>
-
+ 
                     <!-- 2. لوحة إدارة الطلبات الحية -->
                     <div class="admin-module-card" onclick="openAdminSubPanel('orders')">
                         <span class="admin-module-badge num-font" id="badgeHubOrders">0</span>
@@ -1297,7 +1305,7 @@
                             <div style="font-size:10px; color:var(--text-secondary); margin-top:2px;">متابعة، قبول، تجهيز، وإغلاق الطلبات</div>
                         </div>
                     </div>
-
+ 
                     <!-- 3. لوحة إدارة العملاء -->
                     <div class="admin-module-card" onclick="openAdminSubPanel('customers')">
                         <span class="admin-module-badge num-font" id="badgeHubCustomers">0</span>
@@ -1309,7 +1317,7 @@
                             <div style="font-size:10px; color:var(--text-secondary); margin-top:2px;">تعديل النقاط، بيانات الزبائن، والدعوات</div>
                         </div>
                     </div>
-
+ 
                     <!-- 4. لوحة الولاء والمكافآت -->
                     <div class="admin-module-card" onclick="openAdminSubPanel('loyalty')">
                         <div class="admin-module-icon">
@@ -1320,7 +1328,7 @@
                             <div style="font-size:10px; color:var(--text-secondary); margin-top:2px;">هدايا المتجر ونقاط الدعوة والمستويات</div>
                         </div>
                     </div>
-
+ 
                     <!-- 5. لوحة الكوبونات والإشعارات -->
                     <div class="admin-module-card" onclick="openAdminSubPanel('marketing')">
                         <div class="admin-module-icon">
@@ -1331,7 +1339,7 @@
                             <div style="font-size:10px; color:var(--text-secondary); margin-top:2px;">أكواد الخصم وإرسال الإشعارات للجميع</div>
                         </div>
                     </div>
-
+ 
                     <!-- 6. لوحة الشكاوى والاقتراحات -->
                     <div class="admin-module-card" onclick="openAdminSubPanel('feedback')">
                         <span class="admin-module-badge num-font" id="badgeHubFeedback">0</span>
@@ -1345,7 +1353,7 @@
                     </div>
                 </div>
             </div>
-
+ 
             <!-- اللوحة الفرعية 1: إدارة الأصناف والمنيو -->
             <div id="adminPanel-products" class="admin-sub-panel">
                 <div class="admin-panel-topbar">
@@ -1353,7 +1361,7 @@
                     <strong style="font-size:13.5px; color:var(--brand-primary);">إدارة الأصناف والتصنيفات</strong>
                     <button class="btn-brand-solid" style="width:auto; padding:6px 12px; font-size:11px;" onclick="openAdminProductEditor(null)">+ صنف جديد</button>
                 </div>
-
+ 
                 <div class="clean-card" style="padding:10px;">
                     <div style="display:flex; gap:6px; margin-bottom:10px;">
                         <input type="text" class="ios-input-field" id="adminProdSearchInput" placeholder="ابحث باسم الصنف أو التصنيف..." oninput="renderAdminProductsPanel()">
@@ -1361,7 +1369,7 @@
                     <div id="adminProductsManageList"></div>
                 </div>
             </div>
-
+ 
             <!-- اللوحة الفرعية 2: إدارة الطلبات الحية -->
             <div id="adminPanel-orders" class="admin-sub-panel">
                 <div class="admin-panel-topbar">
@@ -1369,13 +1377,13 @@
                     <strong style="font-size:13.5px; color:var(--brand-primary);">إدارة الطلبات الواردة</strong>
                     <div style="width:45px;"></div>
                 </div>
-
+ 
                 <div class="clean-card">
                     <div class="clean-title">سجل الطلبات الحية والمكتملة</div>
                     <div id="admLiveOrdersAuditList"></div>
                 </div>
             </div>
-
+ 
             <!-- اللوحة الفرعية 3: إدارة العملاء -->
             <div id="adminPanel-customers" class="admin-sub-panel">
                 <div class="admin-panel-topbar">
@@ -1383,7 +1391,7 @@
                     <strong style="font-size:13.5px; color:var(--brand-primary);">دليل حسابات العملاء</strong>
                     <div style="width:45px;"></div>
                 </div>
-
+ 
                 <div class="clean-card">
                     <div style="margin-bottom:10px;">
                         <input type="text" class="ios-input-field" id="adminCustSearchInput" placeholder="ابحث بالاسم أو رقم الهاتف..." oninput="renderAdminCustomersPanel()">
@@ -1391,7 +1399,7 @@
                     <div id="adminCustomersDirectoryList"></div>
                 </div>
             </div>
-
+ 
             <!-- اللوحة الفرعية 4: نظام النقاط والمكافآت -->
             <div id="adminPanel-loyalty" class="admin-sub-panel">
                 <div class="admin-panel-topbar">
@@ -1399,7 +1407,7 @@
                     <strong style="font-size:13.5px; color:var(--brand-primary);">النقاط ومتجر المكافآت</strong>
                     <div style="width:45px;"></div>
                 </div>
-
+ 
                 <div class="clean-card">
                     <div class="clean-title">إعدادات برنامج الولاء ونقاط الدعوة</div>
                     <div style="display:flex; flex-direction:column; gap:8px;">
@@ -1418,7 +1426,7 @@
                         <button class="btn-brand-solid" onclick="saveAdminLoyaltyRules()">تثبيت وتحديث إعدادات الولاء أونلاين</button>
                     </div>
                 </div>
-
+ 
                 <div class="clean-card">
                     <div class="clean-title">إضافة مكافأة جديدة لمتجر النقاط</div>
                     <div style="display:flex; flex-direction:column; gap:8px;">
@@ -1431,7 +1439,7 @@
                     <div id="admExistingRewardsList"></div>
                 </div>
             </div>
-
+ 
             <!-- اللوحة الفرعية 5: أكواد الخصم والإشعارات -->
             <div id="adminPanel-marketing" class="admin-sub-panel">
                 <div class="admin-panel-topbar">
@@ -1439,7 +1447,7 @@
                     <strong style="font-size:13.5px; color:var(--brand-primary);">أكواد الخصم والتواصل</strong>
                     <div style="width:45px;"></div>
                 </div>
-
+ 
                 <div class="clean-card">
                     <div class="clean-title">إضافة كود خصم جديد</div>
                     <div style="display:flex; flex-direction:column; gap:8px;">
@@ -1454,7 +1462,7 @@
                     <div class="clean-title" style="margin-top:12px;">الكوبونات الفعالة حالياً:</div>
                     <div id="admCouponsActiveList"></div>
                 </div>
-
+ 
                 <div class="clean-card">
                     <div class="clean-title">إرسال إشعار عام لكافة العملاء</div>
                     <div style="display:flex; flex-direction:column; gap:8px;">
@@ -1464,7 +1472,7 @@
                     </div>
                 </div>
             </div>
-
+ 
             <!-- اللوحة الفرعية 6: الشكاوى والاقتراحات -->
             <div id="adminPanel-feedback" class="admin-sub-panel">
                 <div class="admin-panel-topbar">
@@ -1472,7 +1480,7 @@
                     <strong style="font-size:13.5px; color:var(--brand-primary);">الشكاوى والاقتراحات</strong>
                     <div style="width:45px;"></div>
                 </div>
-
+ 
                 <div class="clean-card">
                     <div class="clean-title">الرسائل الواردة من العملاء</div>
                     <div id="adminFeedbackInboxList"></div>
@@ -1480,7 +1488,7 @@
             </div>
         </div>
     </div>
-
+ 
     <!-- نافذة تعديل وإضافة الصنف للأدمن -->
     <div id="modalAdminProductEditor" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.75); z-index:99998; align-items:center; justify-content:center; padding:16px;">
         <div class="clean-card" style="width:100%; max-width:420px; max-height:90vh; overflow-y:auto; position:relative;">
@@ -1488,14 +1496,14 @@
                 <strong style="font-size:15px; color:var(--brand-primary);" id="admProdEditorModalTitle">تعديل بيانات الصنف</strong>
                 <button onclick="closeAdminProductEditor()" style="background:none; border:none; font-size:18px; cursor:pointer;">✕</button>
             </div>
-
+ 
             <input type="hidden" id="admEditProdId">
             <div style="display:flex; flex-direction:column; gap:10px;">
                 <div>
                     <label style="font-size:11px; font-weight:700; display:block; margin-bottom:3px;">اسم الصنف:</label>
                     <input type="text" class="ios-input-field" id="admEditProdName" placeholder="مثال: وافل بستاشيو إيطالي">
                 </div>
-
+ 
                 <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px;">
                     <div>
                         <label style="font-size:11px; font-weight:700; display:block; margin-bottom:3px;">التصنيف:</label>
@@ -1514,12 +1522,12 @@
                         <input type="number" step="0.25" class="ios-input-field num-font" id="admEditProdPrice" placeholder="2.50">
                     </div>
                 </div>
-
+ 
                 <div>
                     <label style="font-size:11px; font-weight:700; display:block; margin-bottom:3px;">وصف الصنف ومكوناته:</label>
                     <textarea class="ios-textarea-field" id="admEditProdDesc" placeholder="اكتب وصفاً شهياً ومختصراً للصنف..."></textarea>
                 </div>
-
+ 
                 <div>
                     <label style="font-size:11px; font-weight:700; display:block; margin-bottom:4px;">صورة الصنف (رفع من الهاتف أو رابط):</label>
                     <div style="display:flex; align-items:center; gap:10px;">
@@ -1531,12 +1539,12 @@
                         </div>
                     </div>
                 </div>
-
+ 
                 <label style="display:flex; align-items:center; justify-content:space-between; background:var(--bg-elevated); padding:10px 12px; border-radius:var(--radius-sm); cursor:pointer;">
                     <span style="font-size:12px; font-weight:700;">حالة الصنف (متوفر للطلب حالياً)</span>
                     <input type="checkbox" id="admEditProdAvailable" checked>
                 </label>
-
+ 
                 <div style="display:flex; gap:8px; margin-top:4px;">
                     <button class="btn-brand-solid" style="flex:1;" onclick="saveAdminProductForm()">حفظ وتثبيت الصنف أونلاين</button>
                     <button class="btn-brand-outline" onclick="closeAdminProductEditor()">إلغاء</button>
@@ -1544,7 +1552,7 @@
             </div>
         </div>
     </div>
-
+ 
     <!-- نافذة تخصيص الصنف والإضافات المنبثقة -->
     <div id="modalProductCustomizer" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.7); z-index:99990; align-items:center; justify-content:center; padding:16px;">
         <div class="clean-card" style="width:100%; max-width:420px; max-height:88vh; overflow-y:auto; position:relative;">
@@ -1554,7 +1562,7 @@
             </div>
             <img src="" id="custModalProdImg" style="width:100%; height:140px; object-fit:cover; border-radius:var(--radius-sm); margin-bottom:8px; background:var(--bg-elevated);">
             <div style="font-size:11.5px; color:var(--text-secondary); margin-bottom:10px;" id="custModalProdDesc"></div>
-
+ 
             <div class="clean-title" style="font-size:12px;">اختر الحجم</div>
             <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-bottom:12px;">
                 <label style="display:flex; align-items:center; justify-content:space-between; padding:8px 10px; border:1px solid var(--border-subtle); border-radius:var(--radius-sm); cursor:pointer;">
@@ -1572,13 +1580,13 @@
                     <span class="num-font" style="font-size:10.5px; color:var(--brand-primary);">+0.50 د.أ</span>
                 </label>
             </div>
-
+ 
             <div class="clean-title" style="font-size:12px;">الإضافات والنكهات الفاخرة</div>
             <div id="custModalAddonsChecklist" style="display:flex; flex-direction:column; gap:6px; margin-bottom:12px;"></div>
-
+ 
             <div class="clean-title" style="font-size:12px;">ملاحظات خاصة للفرع</div>
             <input type="text" class="ios-input-field" id="custModalProdNotes" placeholder="مثال: سكر خفيف، بدون ثلج، زيادة صوص...">
-
+ 
             <div style="display:flex; justify-content:space-between; align-items:center; margin-top:14px; border-top:1px solid var(--border-subtle); padding-top:10px;">
                 <div style="display:flex; align-items:center; gap:8px;">
                     <button class="header-btn" style="width:30px; height:30px;" onclick="adjustCustomizerQty(-1)">−</button>
@@ -1591,14 +1599,14 @@
             </div>
         </div>
     </div>
-
+ 
     <!-- نافذة تعديل الحساب الشاملة -->
     <div id="modalEditAccountComprehensive" style="display:none; position:fixed; inset:0; background:var(--bg-surface); z-index:99995; overflow-y:auto; padding:16px;">
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px;">
             <strong style="font-size:16px;">تعديل الحساب الشخصي</strong>
             <button onclick="closeEditAccountModal()" style="background:none; border:none; font-size:18px; cursor:pointer;">✕</button>
         </div>
-
+ 
         <div style="display:flex; flex-direction:column; gap:10px;">
             <div style="text-align:center; margin-bottom:6px;">
                 <div class="avatar-circle" id="accEditAvatarPreview" style="width:72px; height:72px; margin:0 auto; cursor:pointer; background:var(--brand-primary);" onclick="document.getElementById('accEditFileInput').click()">
@@ -1607,7 +1615,7 @@
                 <input type="file" id="accEditFileInput" accept="image/*" style="display:none;" onchange="handlePhoneAvatarUpload(event)">
                 <span style="font-size:11px; color:var(--brand-primary); font-weight:700; cursor:pointer; display:block; margin-top:6px;" onclick="document.getElementById('accEditFileInput').click()">تغيير الصورة الشخصية من الهاتف</span>
             </div>
-
+ 
             <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px;">
                 <div>
                     <label style="font-size:11px; font-weight:700;">الاسم الأول:</label>
@@ -1618,7 +1626,7 @@
                     <input type="text" class="ios-input-field" id="accEditLastName" value="عبيدات">
                 </div>
             </div>
-
+ 
             <div>
                 <label style="font-size:11px; font-weight:700;">رقم الهاتف:</label>
                 <div style="display:flex; gap:6px;">
@@ -1629,12 +1637,12 @@
                     </div>
                 </div>
             </div>
-
+ 
             <div>
                 <label style="font-size:11px; font-weight:700;">البريد الإلكتروني:</label>
                 <input type="email" class="ios-input-field num-font" id="accEditEmailAddress" placeholder="name@gmail.com">
             </div>
-
+ 
             <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px;">
                 <div>
                     <label style="font-size:11px; font-weight:700;">المدينة:</label>
@@ -1645,11 +1653,11 @@
                     <input type="text" class="ios-input-field" id="accEditArea" value="كفرسوم">
                 </div>
             </div>
-
+ 
             <button class="btn-brand-solid" style="margin-top:10px;" onclick="saveComprehensiveProfileModifications()">حفظ وتحديث الحساب أونلاين</button>
         </div>
     </div>
-
+ 
     <!-- نافذة اختيار الفرع -->
     <div id="modalChooseBranch" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.65); z-index:99999; align-items:flex-end; justify-content:center;">
         <div style="width:100%; max-width:480px; background:var(--bg-surface); border-top-left-radius:24px; border-top-right-radius:24px; padding:18px;">
@@ -1667,7 +1675,7 @@
             </div>
         </div>
     </div>
-
+ 
     <!-- نافذة الإشعارات المنبثقة للعميل -->
     <div id="modalCustomerNotifications" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.65); z-index:99997; align-items:center; justify-content:center; padding:16px;">
         <div class="clean-card" style="width:100%; max-width:420px; max-height:82vh; overflow-y:auto;">
@@ -1678,37 +1686,37 @@
             <div id="customerNotificationsListContainer"></div>
         </div>
     </div>
-
+ 
     <!-- شريط التنقل السفلي -->
     <nav class="bottom-nav-bar" id="appBottomNavBar">
         <button class="nav-tab-btn active" onclick="navigateRouter('screen-home')" id="tabBtnHome">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path></svg>
             <span>الرئيسية</span>
         </button>
-
+ 
         <button class="nav-tab-btn" onclick="navigateRouter('screen-cart')" id="tabBtnCart">
             <span class="nav-cart-badge num-font" id="bottomNavCartBadge">0</span>
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>
             <span>الطلب</span>
         </button>
-
+ 
         <button class="nav-center-scan-btn" onclick="openSidebarDrawer()">
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
         </button>
-
+ 
         <button class="nav-tab-btn" onclick="navigateRouter('screen-rewards')" id="tabBtnRewards">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="8" width="18" height="4" rx="1"></rect><path d="M12 8v13"></path><path d="M19 12v7a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-7"></path></svg>
             <span>المكافآت</span>
         </button>
-
+ 
         <button class="nav-tab-btn" onclick="navigateRouter('screen-loyalty-tiers')" id="tabBtnTiers">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="8" r="7"></circle><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"></polyline></svg>
             <span>الفئات</span>
         </button>
     </nav>
-
+ 
 </div>
-
+ 
 <!-- اللوحة الجانبية -->
 <div class="sidebar-mask" id="sidebarMask" onclick="closeSidebarDrawer()"></div>
 <div class="sidebar-drawer" id="sidebarDrawer">
@@ -1723,7 +1731,7 @@
                 <span class="num-font" style="font-size:11px; opacity:0.85;" id="drawerUserPhoneLabel">0796433698</span>
             </div>
         </div>
-
+ 
         <div class="drawer-stats-duo">
             <div class="drawer-stat-pill">
                 <div style="font-size:9.5px; opacity:0.8;">إجمالي التوفير</div>
@@ -1737,7 +1745,7 @@
             </div>
         </div>
     </div>
-
+ 
     <div class="drawer-section-title">عام</div>
     <div class="drawer-item-row" onclick="openCustomerNotificationsModal(); closeSidebarDrawer();">
         <div class="drawer-item-left">
@@ -1746,7 +1754,7 @@
         </div>
         <span class="num-font" style="background:#84cc16; color:#fff; font-size:10px; font-weight:800; padding:2px 7px; border-radius:50%;" id="drawerNotifBadgeCount">1</span>
     </div>
-
+ 
     <div class="drawer-item-row" onclick="filterByFavoritesOnly(); closeSidebarDrawer();">
         <div class="drawer-item-left">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
@@ -1754,7 +1762,7 @@
         </div>
         <span style="color:var(--text-muted);">‹</span>
     </div>
-
+ 
     <div class="drawer-item-row" onclick="navigateRouter('screen-invite-friend'); closeSidebarDrawer();">
         <div class="drawer-item-left">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="8.5" cy="7" r="4"></circle><line x1="20" y1="8" x2="20" y2="14"></line><line x1="23" y1="11" x2="17" y2="11"></line></svg>
@@ -1762,7 +1770,7 @@
         </div>
         <span style="color:var(--text-muted);">‹</span>
     </div>
-
+ 
     <div class="drawer-item-row" onclick="navigateRouter('screen-order-history'); closeSidebarDrawer();">
         <div class="drawer-item-left">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
@@ -1770,7 +1778,7 @@
         </div>
         <span style="color:var(--text-muted);">‹</span>
     </div>
-
+ 
     <div class="drawer-item-row">
         <div class="drawer-item-left">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
@@ -1778,7 +1786,7 @@
         </div>
         <input type="checkbox" id="sidebarDarkModeToggle" onchange="toggleDarkModeSetting(this.checked)">
     </div>
-
+ 
     <div class="drawer-section-title">المدفوعات والدعم</div>
     <div class="drawer-item-row" onclick="openEditAccountModal(); closeSidebarDrawer();">
         <div class="drawer-item-left">
@@ -1787,7 +1795,7 @@
         </div>
         <span style="color:var(--text-muted);">‹</span>
     </div>
-
+ 
     <div class="drawer-item-row" onclick="navigateRouter('screen-feedback'); closeSidebarDrawer();">
         <div class="drawer-item-left">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
@@ -1795,25 +1803,25 @@
         </div>
         <span style="color:var(--text-muted);">‹</span>
     </div>
-
+ 
     <div class="drawer-item-row" onclick="triggerAccountSignOut(); closeSidebarDrawer();">
         <div class="drawer-item-left" style="color:var(--status-danger);">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
             <span>تسجيل الخروج</span>
         </div>
     </div>
-
+ 
     <!-- زر الدخول السري للأدمن عبر النقر 4 مرات -->
     <div style="padding:16px 18px; font-size:11px; color:var(--text-muted); text-align:center; cursor:pointer;" onclick="handleSecretAdminTriggerClick()">
         نسخة التطبيق 1.5.11 (78)
     </div>
 </div>
-
+ 
 <script>
 /* =========================================================
    COFFEE CORNER PRO — COMPLETE & ORGANIZED SYSTEM ENGINE
    ========================================================= */
-
+ 
 const FIREBASE_CONFIG = {
     apiKey: "AIzaSyCPGI8XX2v5naRLK2QSQJcw6fB0Nsmbl8M",
     authDomain: "coffee-corner-121.firebaseapp.com",
@@ -1822,9 +1830,19 @@ const FIREBASE_CONFIG = {
     messagingSenderId: "550349405177",
     appId: "1:550349405177:web:468a9248c6c6be9f46db28"
 };
-
+ 
 let cloudDb = null;
-
+ 
+const ADMIN_PIN_HASH = "a5325536ecdb18b57931a1657d8b9cf628f052b3b0b330fa727c28fa0dd1efd7";
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const escId = s => String(s ?? '').replace(/[^\w\-]/g, '');
+async function sha256Hex(t) {
+    const b = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(t));
+    return [...new Uint8Array(b)].map(x => x.toString(16).padStart(2, '0')).join('');
+}
+const hashSecret = (phone, pass) => sha256Hex(phone + ':' + pass + ':cc-v1');
+ 
+ 
 // كتالوج الأصناف الكامل والمرتب حسب الفئات
 const COMPREHENSIVE_CATALOG = [
     // 1. الوافل
@@ -1832,42 +1850,42 @@ const COMPREHENSIVE_CATALOG = [
     { id: "wf_2", name: "وافل لوتس بلجيكي كرانشي", category: "وافل", price: 2.50, desc: "وافل غني بزبدة وبسكويت اللوتس البلجيكي المقرمش", img: "https://images.unsplash.com/photo-1598214886806-c87b84b7078b?w=400&q=80", isAvailable: true },
     { id: "wf_3", name: "وافل بستاشيو إيطالي فاخر", category: "وافل", price: 2.75, desc: "وافل مغطى بصوص الفستق الحلبي الطبيعي الفاخر والمكسرات", img: "https://images.unsplash.com/photo-1562376552-0d160a2f238d?w=400&q=80", isAvailable: true },
     { id: "wf_4", name: "وافل كيندر بوينو مكس", category: "وافل", price: 2.50, desc: "مكس شوكولاتة كيندر بوينو البيضاء والداكنة", img: "https://images.unsplash.com/photo-1562376552-0d160a2f238d?w=400&q=80", isAvailable: true },
-
+ 
     // 2. الكريب
     { id: "cr_1", name: "كريب رول كيندر نوتيلا", category: "كريب", price: 2.50, desc: "كريب فرنسي رقيق محشو بكريمة الكيندر ومغطى بالنوتيلا", img: "https://images.unsplash.com/photo-1519676867240-f03562e64548?w=400&q=80", isAvailable: true },
     { id: "cr_2", name: "كريب فوتوتشيني إيطالي", category: "كريب", price: 2.75, desc: "شرائط كريب رقيقة مغطاة بثلاثة أنواع شوكولاتة بلجيكية فاخرة", img: "https://images.unsplash.com/photo-1519676867240-f03562e64548?w=400&q=80", isAvailable: true },
     { id: "cr_3", name: "كريب تريبل شوكليت فواكه", category: "كريب", price: 3.00, desc: "كريب محشو بقطع الفراولة والموز الطازج مع مكس شوكولاتة", img: "https://images.unsplash.com/photo-1519676867240-f03562e64548?w=400&q=80", isAvailable: true },
-
+ 
     // 3. البان كيك
     { id: "pc_1", name: "ميني بان كيك كلاسيك (10 قطع)", category: "بان كيك", price: 2.00, desc: "10 قطع ميني بان كيك هشة وطرية مع صوص النوتيلا", img: "https://images.unsplash.com/photo-1528207776546-365bb710ee93?w=400&q=80", isAvailable: true },
     { id: "pc_2", name: "ميني بان كيك عائلي (15 قطعة)", category: "بان كيك", price: 2.75, desc: "15 قطعة بان كيك مع تشكيلة صوصات: بستاشيو، كيندر، لوتس", img: "https://images.unsplash.com/photo-1528207776546-365bb710ee93?w=400&q=80", isAvailable: true },
-
+ 
     // 4. الكوكتيلات والعصائر الطبيعية
     { id: "ck_1", name: "كوكتيل إمبراطور كورنر الملكي", category: "كوكتيلات", price: 2.50, desc: "طبقات من المانجو، الفراولة، الأفوكادو، مع القشطة والمكسرات والعسل", img: "https://images.unsplash.com/photo-1553530666-ba11a7da3888?w=400&q=80", isAvailable: true },
     { id: "ck_2", name: "كوكتيل أفوكادو عسل وقشطة", category: "كوكتيلات", price: 2.50, desc: "أفوكادو طبيعي طازج مع القشطة البلدية والمكسرات وعسل السدر", img: "https://images.unsplash.com/photo-1553530666-ba11a7da3888?w=400&q=80", isAvailable: true },
     { id: "ck_3", name: "عصير مانجو طبيعي مثلج", category: "كوكتيلات", price: 1.75, desc: "قطع مانجو استوائية طازجة ومخفوقة بالثلج", img: "https://images.unsplash.com/photo-1546173159-315724a31696?w=400&q=80", isAvailable: true },
     { id: "ck_4", name: "ليمون نعناع فريش منعش", category: "كوكتيلات", price: 1.50, desc: "عصير ليمون طازج مع أوراق النعناع البلدي وقطع الثلج", img: "https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?w=400&q=80", isAvailable: true },
-
+ 
     // 5. المشروبات الباردة والمثلجة
     { id: "cd_1", name: "سبانش لاتيه مثلج فاخر", category: "بارد", price: 2.25, desc: "إسبريسو دبل شوت غني مع حليب مكثف محلى وحليب بارد ومكعبات ثلج", img: "https://images.unsplash.com/photo-1517701550927-30cf4be1aaf9?w=400&q=80", isAvailable: true },
     { id: "cd_2", name: "آيس كراميل ماكياتو مثلج", category: "بارد", price: 2.25, desc: "طبقات الحليب البارد وصوص الكراميل مع الإسبريسو المركز", img: "https://images.unsplash.com/photo-1517701550927-30cf4be1aaf9?w=400&q=80", isAvailable: true },
     { id: "cd_3", name: "آيس وايت موكا مثلج", category: "بارد", price: 2.50, desc: "إسبريسو مع الشوكولاتة البيضاء السويسرية والحليب البارد", img: "https://images.unsplash.com/photo-1517701550927-30cf4be1aaf9?w=400&q=80", isAvailable: true },
     { id: "cd_4", name: "آيس بستاشيو لاتيه كولد", category: "بارد", price: 2.75, desc: "خلطة بستاشيو إيطالي مثلج مع القهوة الفاخرة", img: "https://images.unsplash.com/photo-1517701550927-30cf4be1aaf9?w=400&q=80", isAvailable: true },
-
+ 
     // 6. المشروبات الساخنة
     { id: "ht_1", name: "كابتشينو إيطالي مخملي", category: "ساخن", price: 1.50, desc: "إسبريسو غني برغوة الحليب الكثيفة والمتناسقة", img: "https://images.unsplash.com/photo-1534778101976-62847782c213?w=400&q=80", isAvailable: true },
     { id: "ht_2", name: "فلات وايت أسترالي", category: "ساخن", price: 1.75, desc: "دبل شوت إسبريسو مع رغوة حليب ميكرو فوم ناعمة وحريرية", img: "https://images.unsplash.com/photo-1577968897966-3d4325b36b61?w=400&q=80", isAvailable: true },
     { id: "ht_3", name: "كورتادو إسباني كلاسيك", category: "ساخن", price: 1.50, desc: "كميات متساوية من الإسبريسو المركّز والحليب المبخر الدافئ", img: "https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?w=400&q=80", isAvailable: true },
     { id: "ht_4", name: "قهوة أمريكانو كلاسيك", category: "ساخن", price: 1.25, desc: "إسبريسو نقي ممدد بالماء الساخن بنكهة واضحة ومميزة", img: "https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?w=400&q=80", isAvailable: true },
     { id: "ht_5", name: "شاي كرك بالهيل والزعفران", category: "ساخن", price: 1.00, desc: "شاي مغلي بالحليب والبهارات والزعفران الأصلي", img: "https://images.unsplash.com/photo-1544787219-7f47ccb76574?w=400&q=80", isAvailable: true },
-
+ 
     // 7. كبسولات الإسبريسو
     { id: "cp_1", name: "10 كبسولات جينجربيرد", category: "كبسولات", price: 6.00, desc: "إسبريسو بنكهة غنية ومميزة تمزج الكراميل والقرفة (متوافقة مع نسبريسو)", img: "https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?w=400&q=80", isAvailable: true },
     { id: "cp_2", name: "10 كبسولات كلاسيك", category: "كبسولات", price: 5.00, desc: "كبسولات إسبريسو كلاسيك - قهوة أرابيكا 100% متوازنة التحميص", img: "https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?w=400&q=80", isAvailable: true },
     { id: "cp_3", name: "10 كبسولات ديكاف (بدون كافيين)", category: "كبسولات", price: 5.50, desc: "مذاق غني ورائع منزوع الكافيين تماماً", img: "https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?w=400&q=80", isAvailable: true },
     { id: "cp_4", name: "10 كبسولات بنكهة البندق", category: "كبسولات", price: 5.50, desc: "انغمس في تجربة فريدة مع نكهة البندق المحمص والمخملي", img: "https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?w=400&q=80", isAvailable: true }
 ];
-
+ 
 const ADDONS_CATALOG = [
     { id: "ad_cream", name: "قشطة بلدية طازجة", price: 0.50 },
     { id: "ad_nuts", name: "مكسرات مشكلة محمصة", price: 0.50 },
@@ -1876,14 +1894,14 @@ const ADDONS_CATALOG = [
     { id: "ad_nutella", name: "إضافة شوكولاتة نوتيلا", price: 0.50 },
     { id: "ad_fruits", name: "قطع فراولة وموز طازجة", price: 0.50 }
 ];
-
+ 
 const DEFAULT_REWARDS = [
     { id: "rw1", name: "حقيبة ظهر رياضية كافيه كورنر", points: 3103, img: "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=400&q=80" },
     { id: "rw2", name: "وافل نوتيلا بلجيكي مجاني", points: 50, img: "https://images.unsplash.com/photo-1562376552-0d160a2f238d?w=400&q=80" },
     { id: "rw3", name: "كوب حافظ للحرارة ستانلس ستيل", points: 1200, img: "https://images.unsplash.com/photo-1517256064527-09c73fc73e38?w=400&q=80" },
     { id: "rw4", name: "مشروب سبانش لاتيه مثلج مجاناً", points: 65, img: "https://images.unsplash.com/photo-1517701550927-30cf4be1aaf9?w=400&q=80" }
 ];
-
+ 
 const branchesContacts = [
     {
         id: 0,
@@ -1898,24 +1916,24 @@ const branchesContacts = [
         towns: { "سما الروسان": 0.50, "حاتم": 1.00, "إبدر": 1.00, "الخرابشة": 1.50, "ملكا": 1.50 }
     }
 ];
-
+ 
 function safeGet(key, def) { try { const v = localStorage.getItem(key); return v ? JSON.parse(v) : def; } catch(e) { return def; } }
 function safeSet(key, val) { try { localStorage.setItem(key, JSON.stringify(val)); } catch(e) {} }
-
-let activeCustomer = safeGet('cc_active_client_user', null);
-let allRegisteredCustomers = safeGet('cc_crm_directory', {});
+ 
+let activeCustomer = null;
+let allRegisteredCustomers = {};
 let productsList = safeGet('cc_catalog', COMPREHENSIVE_CATALOG);
 if (!Array.isArray(productsList) || productsList.length === 0) {
     productsList = COMPREHENSIVE_CATALOG;
     safeSet('cc_catalog', productsList);
 }
-
+ 
 let rewardsCatalog = safeGet('cc_rewards_catalog', DEFAULT_REWARDS);
 if (!Array.isArray(rewardsCatalog) || rewardsCatalog.length === 0) {
     rewardsCatalog = DEFAULT_REWARDS;
     safeSet('cc_rewards_catalog', rewardsCatalog);
 }
-
+ 
 let activeOrdersList = safeGet('cc_orders', []);
 let systemFeedbacks = safeGet('cc_feedbacks', []);
 let systemNotifications = safeGet('cc_notifications', [
@@ -1929,7 +1947,7 @@ let loyaltyRules = safeGet('cc_loyalty_rules', {
     referralBonus: 150,
     maxReferrals: 3
 });
-
+ 
 let activeCartCoupon = null;
 let cartList = safeGet('cc_cart', []);
 let currentBranchIndex = safeGet('cc_selected_branch', 0);
@@ -1937,11 +1955,11 @@ let currentFulfillmentMode = "delivery";
 let activeSelectedCategory = "الكل";
 let favoritesOnlyMode = false;
 let userFavoritesList = safeGet('cc_favorites', []);
-
+ 
 let gateAuthMode = "login";
 let selectedCustomizerProduct = null;
 let customizerQty = 1;
-
+ 
 /* =========================================================
    1. التنبيهات والتنقل
    ========================================================= */
@@ -1950,7 +1968,7 @@ window.showModernToast = function(msg, type = "success") {
     const txt = document.getElementById('toastMsgText');
     const icon = document.getElementById('toastIcon');
     if (!toast || !txt) return;
-
+ 
     txt.innerText = msg;
     toast.className = 'toast-popup active';
     if (type === 'danger') {
@@ -1962,13 +1980,13 @@ window.showModernToast = function(msg, type = "success") {
         toast.classList.add('toast-success');
         icon.innerHTML = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>`;
     }
-
+ 
     clearTimeout(window._toastTimer);
     window._toastTimer = setTimeout(() => {
         toast.classList.remove('active');
     }, 2800);
 };
-
+ 
 window.navigateRouter = function(screenId) {
     document.querySelectorAll('.app-screen').forEach(s => s.classList.remove('active'));
     const target = document.getElementById(screenId);
@@ -1976,7 +1994,7 @@ window.navigateRouter = function(screenId) {
         target.classList.add('active');
         window.scrollTo({ top: 0, behavior: 'instant' });
     }
-
+ 
     document.querySelectorAll('.nav-tab-btn').forEach(btn => btn.classList.remove('active'));
     if (screenId === 'screen-home') document.getElementById('tabBtnHome')?.classList.add('active');
     if (screenId === 'screen-cart') {
@@ -1994,10 +2012,10 @@ window.navigateRouter = function(screenId) {
     if (screenId === 'screen-invite-friend') renderInviteFriendScreen();
     if (screenId === 'screen-order-history') renderCustomerOrderHistory();
     if (screenId === 'screen-feedback') renderCustomerFeedbackScreen();
-
+ 
     refreshFloatingCartDock();
 };
-
+ 
 window.openSidebarDrawer = function() {
     document.getElementById('sidebarMask')?.classList.add('active');
     document.getElementById('sidebarDrawer')?.classList.add('active');
@@ -2006,13 +2024,13 @@ window.closeSidebarDrawer = function() {
     document.getElementById('sidebarMask')?.classList.remove('active');
     document.getElementById('sidebarDrawer')?.classList.remove('active');
 };
-
+ 
 window.toggleDarkModeSetting = function(isDark) {
     if (isDark) document.body.classList.add('dark-mode');
     else document.body.classList.remove('dark-mode');
     safeSet('cc_dark_mode', isDark);
 };
-
+ 
 /* =========================================================
    2. بوابة المصادقة ونظام الدعوة (150 نقطة)
    ========================================================= */
@@ -2026,7 +2044,7 @@ function enforceAuthGatekeeper() {
         updateProfileDisplayDOM();
     }
 }
-
+ 
 window.switchGateAuthMode = function(mode) {
     gateAuthMode = mode;
     document.getElementById('gateTabLogin').classList.toggle('active', mode === 'login');
@@ -2034,96 +2052,102 @@ window.switchGateAuthMode = function(mode) {
     document.getElementById('gateRegFields').style.display = (mode === 'register') ? 'block' : 'none';
     document.getElementById('gateSubmitBtn').innerText = (mode === 'register') ? 'إنشاء حساب جديد والدخول' : 'تسجيل الدخول للمتجر';
 };
-
-window.submitGateAuthenticationAction = function() {
-    const phone = (document.getElementById('gateInputPhone')?.value || '').trim();
-    const pass = (document.getElementById('gateInputPassword')?.value || '').trim();
-
-    if (!/^07[789]\d{7}$/.test(phone)) {
-        return showModernToast("يرجى إدخال رقم هاتف أردني صحيح (07xxxxxxxx)", "danger");
-    }
-    if (!pass || pass.length < 4) {
-        return showModernToast("كلمة المرور يجب أن تكون 4 خانات على الأقل", "danger");
-    }
-
-    if (gateAuthMode === 'register') {
-        const name = (document.getElementById('gateInputName')?.value || '').trim();
-        const refInput = (document.getElementById('gateInputReferralCode')?.value || '').trim().toUpperCase();
-
-        if (!name) return showModernToast("يرجى إدخال اسمك الكامل", "danger");
-        if (allRegisteredCustomers[phone]) {
-            return showModernToast("رقم الهاتف هذا مسجل مسبقاً! يرجى تسجيل الدخول", "danger");
-        }
-
-        let validReferrerPhone = null;
-        if (refInput) {
-            const referrerObj = Object.values(allRegisteredCustomers).find(u => u.code === refInput);
-            if (!referrerObj) {
-                return showModernToast("رمز الدعوة المدخل غير صحيح!", "danger");
-            }
-            if ((referrerObj.referralCount || 0) >= (loyaltyRules.maxReferrals || 3)) {
-                return showModernToast("عذراً، هذا الرمز وصل للحد الأقصى للدعوات", "danger");
-            }
-            validReferrerPhone = referrerObj.phone;
-        }
-
-        const myUniqueCode = "CORNER-" + phone.slice(-4);
-        const newCustomer = {
-            name,
-            phone,
-            password: pass,
-            points: 15,
-            savedTotal: 0,
-            ordersCount: 0,
-            code: myUniqueCode,
-            referredBy: validReferrerPhone,
-            referralRewardClaimed: false,
-            referralCount: 0,
-            referralEarnedPoints: 0,
-            city: "إربد",
-            area: "كفرسوم",
-            pointsHistory: [
-                { title: "مكافأة التسجيل الترحيبية", points: 15, date: new Date().toLocaleDateString('ar-JO') }
-            ],
-            createdAt: Date.now()
-        };
-
-        allRegisteredCustomers[phone] = newCustomer;
-        activeCustomer = newCustomer;
-        safeSet('cc_crm_directory', allRegisteredCustomers);
-        safeSet('cc_active_client_user', activeCustomer);
-
-        if (cloudDb) {
-            cloudDb.collection('users').doc(phone).set(newCustomer).catch(e => console.warn(e));
-        }
-
-        showModernToast("تم إنشاء حسابك ومنحك 15 نقطة ترحيبية!", "success");
-    } else {
-        const existing = allRegisteredCustomers[phone];
-        if (!existing || existing.password !== pass) {
-            return showModernToast("رقم الهاتف أو كلمة المرور غير صحيحة", "danger");
-        }
-        activeCustomer = existing;
-        safeSet('cc_active_client_user', activeCustomer);
-        showModernToast("أهلاً بعودتك، " + activeCustomer.name, "success");
-    }
-
-    enforceAuthGatekeeper();
-    updateProfileDisplayDOM();
+ 
+ 
+let fns = null, auth = null, isAdminUser = false, gateMethod = 'phone', phoneConfirmation = null,
+    recaptchaVerifier = null, pendingProfile = null, privateAttached = false;
+const privQ = n => isAdminUser ? cloudDb.collection(n) : cloudDb.collection(n).where('uid', '==', auth.currentUser.uid);
+const toE164 = p => '+962' + p.replace(/^0/, '');
+const AUTH_ERR = {
+    'auth/invalid-credential': 'بيانات الدخول غير صحيحة', 'auth/wrong-password': 'بيانات الدخول غير صحيحة',
+    'auth/user-not-found': 'بيانات الدخول غير صحيحة', 'auth/email-already-in-use': 'هذا البريد مسجّل مسبقاً',
+    'auth/too-many-requests': 'محاولات كثيرة، حاول لاحقاً', 'auth/invalid-verification-code': 'رمز التحقق غير صحيح',
+    'auth/code-expired': 'انتهت صلاحية الرمز، أعد الإرسال', 'auth/invalid-phone-number': 'رقم الهاتف غير صحيح',
+    'auth/operation-not-allowed': 'هذه الطريقة غير مفعّلة في Firebase', 'auth/weak-password': 'كلمة المرور ضعيفة'
 };
-
-window.triggerAccountSignOut = function() {
-    activeCustomer = null;
-    safeSet('cc_active_client_user', null);
-    enforceAuthGatekeeper();
-    showModernToast("تم تسجيل الخروج بنجاح", "info");
+ 
+function updateGateUI() {
+    const g = id => document.getElementById(id);
+    const phoneWrap = g('gateInputPhone').parentElement, emailWrap = g('gateInputEmail').parentElement;
+    if (emailWrap.nextElementSibling !== phoneWrap) phoneWrap.parentElement.insertBefore(emailWrap, phoneWrap);
+    const reg = gateAuthMode === 'register';
+    emailWrap.style.display = 'block';
+    phoneWrap.style.display = reg ? 'block' : 'none';
+    g('gateInputPassword').parentElement.style.display = 'block';
+    g('gateResetLink').style.display = reg ? 'none' : 'block';
+    g('gateSubmitBtn').innerText = reg ? 'إنشاء حساب جديد' : 'تسجيل الدخول للمتجر';
+}
+const _switchMode = window.switchGateAuthMode;
+window.switchGateAuthMode = function(mode) { _switchMode(mode); updateGateUI(); };
+ 
+window.submitGateAuthenticationAction = async function() {
+    if (!auth) return showModernToast('خدمة الدخول غير متاحة حالياً', 'danger');
+    const val = id => (document.getElementById(id)?.value || '').trim();
+    const btn = document.getElementById('gateSubmitBtn');
+    btn.disabled = true;
+    try {
+        const email = val('gateInputEmail'), pass = document.getElementById('gateInputPassword').value;
+        if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) throw { msg: 'البريد الإلكتروني مطلوب وبصيغة صحيحة' };
+        if (pass.length < 8) throw { msg: 'كلمة المرور يجب ألا تقل عن 8 خانات' };
+        if (gateAuthMode === 'register') {
+            const name = val('gateInputName').slice(0, 40), phone = val('gateInputPhone');
+            if (!name) throw { msg: 'يرجى إدخال اسمك الكامل' };
+            if (!/^07[789]\d{7}$/.test(phone)) throw { msg: 'يرجى إدخال رقم هاتف أردني صحيح (07xxxxxxxx)' };
+            pendingProfile = { name, phone, ref: val('gateInputReferralCode').toUpperCase() };
+            const cred = await auth.createUserWithEmailAndPassword(email, pass);
+            cred.user.sendEmailVerification().catch(() => {});
+        } else {
+            pendingProfile = null;
+            await auth.signInWithEmailAndPassword(email, pass);
+        }
+    } catch (e) {
+        showModernToast(e.msg || AUTH_ERR[e.code] || 'تعذّر إتمام العملية، حاول مرة أخرى', 'danger');
+    } finally { btn.disabled = false; }
 };
-
+ 
+window.resetEmailPassword = async function() {
+    const email = (document.getElementById('gateInputEmail')?.value || '').trim();
+    if (!email) return showModernToast('أدخل بريدك الإلكتروني أولاً', 'danger');
+    try { await auth.sendPasswordResetEmail(email); } catch (e) {}
+    showModernToast('إن كان البريد مسجلاً فسيصلك رابط إعادة التعيين', 'info');
+};
+ 
+async function handleAuthState(user) {
+    if (!user) {
+        activeCustomer = null; isAdminUser = false;
+        return enforceAuthGatekeeper();
+    }
+    try {
+        const tok = await user.getIdTokenResult(true);
+        isAdminUser = tok.claims.admin === true;
+        const ref = cloudDb.collection('users').doc(user.uid);
+        let snap = await ref.get();
+        if (!snap.exists) {
+            const p = pendingProfile || {};
+            await fns.httpsCallable('registerProfile')({ name: p.name || '', phone: p.phone || '', ref: p.ref || '' });
+            snap = await ref.get();
+        }
+        activeCustomer = snap.data();
+        allRegisteredCustomers[user.uid] = activeCustomer;
+        enforceAuthGatekeeper();
+        updateProfileDisplayDOM();
+        if (!privateAttached) { privateAttached = true; attachPrivateListeners(); }
+    } catch (e) {
+        console.warn('Auth state error:', e);
+        showModernToast('تعذّر تحميل حسابك، تحقق من قواعد Firestore', 'danger');
+    }
+}
+ 
+window.triggerAccountSignOut = async function() {
+    try { await auth.signOut(); } catch (e) {}
+    location.reload();
+};
+ 
 function updateProfileDisplayDOM() {
     if (!activeCustomer) return;
     const u = activeCustomer;
     const firstChar = (u.name || "ع").trim().charAt(0);
-
+ 
     document.getElementById('homeUserNameDisplay').innerText = u.name;
     document.getElementById('drawerUserNameLabel').innerText = u.name;
     document.getElementById('drawerUserPhoneLabel').innerText = u.phone;
@@ -2131,42 +2155,42 @@ function updateProfileDisplayDOM() {
     document.getElementById('drawerPointsBadgeLabel').innerText = (u.points || 0) + " نقطة";
     document.getElementById('drawerSavedAmountLabel').innerText = "JOD " + Number(u.savedTotal || 0).toFixed(2);
     document.getElementById('rewardScreenPointsNum').innerText = (u.points || 0).toLocaleString('en-US');
-
+ 
     const homeAvatar = document.getElementById('homeUserAvatarChar');
     const drawerAvatar = document.getElementById('drawerAvatarChar');
     if (u.avatar) {
-        homeAvatar.innerHTML = `<img src="${u.avatar}" alt="Avatar">`;
-        drawerAvatar.innerHTML = `<img src="${u.avatar}" alt="Avatar">`;
+        homeAvatar.innerHTML = `<img src="${esc(u.avatar)}" alt="Avatar">`;
+        drawerAvatar.innerHTML = `<img src="${esc(u.avatar)}" alt="Avatar">`;
     } else {
         homeAvatar.innerHTML = `<span>${firstChar}</span>`;
         drawerAvatar.innerHTML = `<span>${firstChar}</span>`;
     }
 }
-
+ 
 /* =========================================================
    3. المنيو المنظم والتصنيفات وتخصيص الأصناف
    ========================================================= */
 function renderCategoryChips() {
     const container = document.getElementById('menuCategoriesScrollChips');
     if (!container) return;
-
+ 
     const availableProducts = productsList.filter(p => p.isAvailable !== false);
     const categories = ["الكل", ...new Set(availableProducts.map(p => p.category))];
-
+ 
     container.innerHTML = categories.map(cat => `
         <button class="cat-chip ${!favoritesOnlyMode && activeSelectedCategory === cat ? 'active' : ''}" onclick="selectMenuCategory('${cat}')">
             ${cat}
         </button>
     `).join('');
 }
-
+ 
 window.selectMenuCategory = function(cat) {
     favoritesOnlyMode = false;
     activeSelectedCategory = cat;
     renderCategoryChips();
     renderProductsDisplay();
 };
-
+ 
 window.filterByFavoritesOnly = function() {
     favoritesOnlyMode = true;
     renderCategoryChips();
@@ -2174,7 +2198,7 @@ window.filterByFavoritesOnly = function() {
     navigateRouter('screen-home');
     showModernToast("عرض الأصناف المفضلة لديك", "info");
 };
-
+ 
 window.toggleProductFavorite = function(event, prodId) {
     event.stopPropagation();
     if (userFavoritesList.includes(prodId)) {
@@ -2187,18 +2211,18 @@ window.toggleProductFavorite = function(event, prodId) {
     safeSet('cc_favorites', userFavoritesList);
     renderProductsDisplay();
 };
-
+ 
 function renderProductsDisplay() {
     const wrapper = document.getElementById('mainOrganizedMenuWrapper');
     if (!wrapper) return;
-
+ 
     const searchQuery = (document.getElementById('homeMenuSearchInput')?.value || '').trim().toLowerCase();
     let baseList = productsList.filter(p => p.isAvailable !== false);
-
+ 
     if (favoritesOnlyMode) {
         baseList = baseList.filter(p => userFavoritesList.includes(p.id));
     }
-
+ 
     if (searchQuery) {
         baseList = baseList.filter(p =>
             p.name.toLowerCase().includes(searchQuery) ||
@@ -2206,7 +2230,7 @@ function renderProductsDisplay() {
             p.category.toLowerCase().includes(searchQuery)
         );
     }
-
+ 
     if (baseList.length === 0) {
         wrapper.innerHTML = `
             <div style="text-align:center; padding:45px 20px; color:var(--text-muted);">
@@ -2216,7 +2240,7 @@ function renderProductsDisplay() {
         `;
         return;
     }
-
+ 
     if (activeSelectedCategory !== "الكل" || searchQuery || favoritesOnlyMode) {
         const filtered = activeSelectedCategory === "الكل" ? baseList : baseList.filter(p => p.category === activeSelectedCategory);
         wrapper.innerHTML = `
@@ -2234,7 +2258,7 @@ function renderProductsDisplay() {
             if (!grouped[p.category]) grouped[p.category] = [];
             grouped[p.category].push(p);
         });
-
+ 
         wrapper.innerHTML = Object.entries(grouped).map(([catName, items]) => `
             <div style="margin-bottom:8px;">
                 <div class="menu-section-header">
@@ -2248,7 +2272,7 @@ function renderProductsDisplay() {
         `).join('');
     }
 }
-
+ 
 function buildProductCardHTML(p) {
     const isFav = userFavoritesList.includes(p.id);
     return `
@@ -2273,23 +2297,23 @@ function buildProductCardHTML(p) {
         </div>
     `;
 }
-
+ 
 window.openProductCustomizer = function(prodId) {
     const prod = productsList.find(p => p.id === prodId);
     if (!prod) return;
-
+ 
     selectedCustomizerProduct = prod;
     customizerQty = 1;
-
+ 
     document.getElementById('custModalProdName').innerText = prod.name;
     document.getElementById('custModalProdDesc').innerText = prod.desc || '';
     document.getElementById('custModalProdImg').src = prod.img;
     document.getElementById('custModalProdNotes').value = '';
     document.getElementById('custModalQtyCount').innerText = '1';
-
+ 
     const defaultRadio = document.querySelector('input[name="custSizeRadio"][value="وسط"]');
     if (defaultRadio) defaultRadio.checked = true;
-
+ 
     const addonsContainer = document.getElementById('custModalAddonsChecklist');
     addonsContainer.innerHTML = ADDONS_CATALOG.map(ad => `
         <label style="display:flex; align-items:center; justify-content:space-between; padding:8px 10px; border:1px solid var(--border-subtle); border-radius:var(--radius-sm); cursor:pointer;">
@@ -2300,52 +2324,52 @@ window.openProductCustomizer = function(prodId) {
             <span class="num-font" style="font-size:11px; color:var(--brand-primary);">+${ad.price.toFixed(2)} د.أ</span>
         </label>
     `).join('');
-
+ 
     recalculateCustomizerTotal();
     document.getElementById('modalProductCustomizer').style.display = 'flex';
 };
-
+ 
 window.closeProductCustomizerModal = function() {
     document.getElementById('modalProductCustomizer').style.display = 'none';
 };
-
+ 
 window.adjustCustomizerQty = function(delta) {
     customizerQty = Math.max(1, customizerQty + delta);
     document.getElementById('custModalQtyCount').innerText = customizerQty;
     recalculateCustomizerTotal();
 };
-
+ 
 window.recalculateCustomizerTotal = function() {
     if (!selectedCustomizerProduct) return;
     let unitPrice = Number(selectedCustomizerProduct.price) || 0;
-
+ 
     const sizeEl = document.querySelector('input[name="custSizeRadio"]:checked');
     if (sizeEl) unitPrice += parseFloat(sizeEl.dataset.extra) || 0;
-
+ 
     document.querySelectorAll('.cust-addon-checkbox:checked').forEach(cb => {
         unitPrice += parseFloat(cb.dataset.price) || 0;
     });
-
+ 
     const total = unitPrice * customizerQty;
     document.getElementById('custModalFinalPrice').innerText = total.toFixed(2);
 };
-
+ 
 window.confirmAddCustomizedItemToCart = function() {
     if (!selectedCustomizerProduct) return;
-
+ 
     let unitPrice = Number(selectedCustomizerProduct.price) || 0;
     const sizeEl = document.querySelector('input[name="custSizeRadio"]:checked');
     const sizeName = sizeEl ? sizeEl.value : "وسط";
     if (sizeEl) unitPrice += parseFloat(sizeEl.dataset.extra) || 0;
-
+ 
     const chosenAddons = [];
     document.querySelectorAll('.cust-addon-checkbox:checked').forEach(cb => {
         chosenAddons.push(cb.value);
         unitPrice += parseFloat(cb.dataset.price) || 0;
     });
-
+ 
     const notes = (document.getElementById('custModalProdNotes')?.value || '').trim();
-
+ 
     cartList.push({
         cartId: "ci_" + Date.now() + "_" + Math.floor(Math.random() * 999),
         id: selectedCustomizerProduct.id,
@@ -2357,13 +2381,13 @@ window.confirmAddCustomizedItemToCart = function() {
         price: unitPrice,
         qty: customizerQty
     });
-
+ 
     safeSet('cc_cart', cartList);
     closeProductCustomizerModal();
     refreshFloatingCartDock();
     showModernToast("تمت إضافة الصنف إلى سلتك بنجاح", "success");
 };
-
+ 
 /* =========================================================
    4. الفروع والثيمات
    ========================================================= */
@@ -2373,7 +2397,7 @@ window.openBranchPickerModal = function() {
 window.closeBranchPickerModal = function() {
     document.getElementById('modalChooseBranch').style.display = 'none';
 };
-
+ 
 window.chooseAppBranch = function(branchIdx) {
     currentBranchIndex = branchIdx;
     safeSet('cc_selected_branch', branchIdx);
@@ -2382,7 +2406,7 @@ window.chooseAppBranch = function(branchIdx) {
     renderCartScreen();
     showModernToast("تم التحويل إلى " + branchesContacts[branchIdx].name, "success");
 };
-
+ 
 function applyBranchColorTheme(branchIdx) {
     const branch = branchesContacts[branchIdx] || branchesContacts[0];
     if (branchIdx === 1) {
@@ -2394,7 +2418,7 @@ function applyBranchColorTheme(branchIdx) {
     if (label) label.innerText = branch.name;
     updateFulfillmentBannerText();
 }
-
+ 
 window.setServiceFulfillment = function(mode) {
     currentFulfillmentMode = mode;
     document.getElementById('btnServiceDelivery').classList.toggle('active', mode === 'delivery');
@@ -2402,7 +2426,7 @@ window.setServiceFulfillment = function(mode) {
     updateFulfillmentBannerText();
     renderCartScreen();
 };
-
+ 
 function updateFulfillmentBannerText() {
     const branch = branchesContacts[currentBranchIndex] || branchesContacts[0];
     const el = document.getElementById('activeFulfillmentStatusText');
@@ -2411,7 +2435,7 @@ function updateFulfillmentBannerText() {
         ? `التوصيل عبر: ${branch.name}`
         : `الاستلام المباشر من: ${branch.name}`;
 }
-
+ 
 /* =========================================================
    5. سلة الشراء وإرسال الطلب عبر واتساب والسحابة
    ========================================================= */
@@ -2420,12 +2444,12 @@ function refreshFloatingCartDock() {
     const bottomBadge = document.getElementById('bottomNavCartBadge');
     const count = cartList.reduce((s, i) => s + i.qty, 0);
     const total = cartList.reduce((s, i) => s + (i.price * i.qty), 0);
-
+ 
     if (bottomBadge) {
         bottomBadge.style.display = count > 0 ? 'flex' : 'none';
         bottomBadge.innerText = count;
     }
-
+ 
     if (!dock) return;
     const isHome = document.getElementById('screen-home')?.classList.contains('active');
     if (count > 0 && isHome) {
@@ -2436,14 +2460,14 @@ function refreshFloatingCartDock() {
         dock.classList.remove('visible');
     }
 }
-
+ 
 function renderCartScreen() {
     const listContainer = document.getElementById('cartItemsListContainer');
     const deliveryCard = document.getElementById('cartDeliveryZoneCard');
     const townSelect = document.getElementById('cartTownSelector');
-
+ 
     if (!listContainer) return;
-
+ 
     const branch = branchesContacts[currentBranchIndex] || branchesContacts[0];
     if (townSelect && townSelect.dataset.branchId !== String(branch.id)) {
         townSelect.dataset.branchId = String(branch.id);
@@ -2451,11 +2475,11 @@ function renderCartScreen() {
             `<option value="${tName}" data-fee="${fee}">${tName} (+${fee.toFixed(2)} د.أ توصيل)</option>`
         ).join('');
     }
-
+ 
     if (deliveryCard) {
         deliveryCard.style.display = (currentFulfillmentMode === 'delivery') ? 'block' : 'none';
     }
-
+ 
     if (cartList.length === 0) {
         listContainer.innerHTML = `
             <div class="clean-card" style="text-align:center; padding:30px 14px;">
@@ -2472,9 +2496,9 @@ function renderCartScreen() {
                     <div style="min-width:0;">
                         <div style="font-size:13px; font-weight:800;">${item.name}</div>
                         <div style="font-size:10.5px; color:var(--text-secondary);">
-                            الحجم: ${item.size} ${item.addons && item.addons.length ? '| ' + item.addons.join('، ') : ''}
+                            الحجم: ${item.size} ${item.addons && item.addons.length ? '| ' + esc(item.addons.join('، ')) : ''}
                         </div>
-                        ${item.notes ? `<div style="font-size:10px; color:var(--brand-primary);">ملاحظة: ${item.notes}</div>` : ''}
+                        ${item.notes ? `<div style="font-size:10px; color:var(--brand-primary);">ملاحظة: ${esc(item.notes)}</div>` : ''}
                         <div class="num-font" style="font-size:12.5px; font-weight:800; color:var(--brand-primary); margin-top:2px;">
                             ${(item.price * item.qty).toFixed(2)} د.أ
                         </div>
@@ -2488,7 +2512,7 @@ function renderCartScreen() {
             </div>
         `).join('');
     }
-
+ 
     const sub = cartList.reduce((s, i) => s + (i.price * i.qty), 0);
     let discountVal = 0;
     const discountRow = document.getElementById('cartDiscountRow');
@@ -2501,18 +2525,18 @@ function renderCartScreen() {
     } else if (discountRow) {
         discountRow.style.display = 'none';
     }
-
+ 
     let deliveryFee = 0;
     if (currentFulfillmentMode === 'delivery' && sub > 0 && townSelect && townSelect.selectedOptions[0]) {
         deliveryFee = parseFloat(townSelect.selectedOptions[0].dataset.fee) || 0.50;
     }
-
+ 
     const finalTotal = Math.max(0, sub - discountVal) + deliveryFee;
     document.getElementById('cartSubtotalText').innerText = `JOD ${sub.toFixed(2)}`;
     document.getElementById('cartDeliveryFeeText').innerText = `JOD ${deliveryFee.toFixed(2)}`;
     document.getElementById('cartGrandTotalText').innerText = `JOD ${finalTotal.toFixed(2)}`;
 }
-
+ 
 window.updateCartItemQty = function(idx, delta) {
     if (!cartList[idx]) return;
     cartList[idx].qty += delta;
@@ -2523,12 +2547,12 @@ window.updateCartItemQty = function(idx, delta) {
     renderCartScreen();
     refreshFloatingCartDock();
 };
-
+ 
 window.applyCartCouponCode = function() {
     const code = (document.getElementById('cartCouponInput')?.value || '').trim().toUpperCase();
     const hint = document.getElementById('cartCouponAppliedHint');
     if (!code) return showModernToast("يرجى إدخال رمز الكوبون أولاً", "danger");
-
+ 
     const cp = systemCoupons[code];
     if (!cp) {
         activeCartCoupon = null;
@@ -2536,11 +2560,14 @@ window.applyCartCouponCode = function() {
         renderCartScreen();
         return showModernToast("كود الخصم غير صالح أو منتهي الصلاحية", "danger");
     }
-
+ 
     if (cp.maxUses && (cp.usedCount || 0) >= cp.maxUses) {
         return showModernToast("تم استهلاك الحد الأقصى لهذا الكوبون", "danger");
     }
-
+ 
+    if (cp.expiry && new Date(cp.expiry + 'T23:59:59') < new Date()) {
+        return showModernToast('انتهت صلاحية هذا الكوبون', 'danger');
+    }
     activeCartCoupon = { code, ...cp };
     if (hint) {
         hint.style.display = 'block';
@@ -2549,121 +2576,49 @@ window.applyCartCouponCode = function() {
     renderCartScreen();
     showModernToast(`تم تطبيق خصم ${cp.discount}% على سلتك!`, "success");
 };
-
-window.confirmOrderAndForwardWhatsApp = function() {
+ 
+let _orderBusy = false;
+async function refreshMyProfile() {
+    const s = await cloudDb.collection('users').doc(activeCustomer.uid).get();
+    if (s.exists) { activeCustomer = s.data(); allRegisteredCustomers[activeCustomer.uid] = activeCustomer; updateProfileDisplayDOM(); }
+}
+window.confirmOrderAndForwardWhatsApp = async function() {
     if (!activeCustomer) return enforceAuthGatekeeper();
     if (cartList.length === 0) return showModernToast("سلة المشتريات فارغة!", "danger");
-
+    if (_orderBusy) return;
     const branch = branchesContacts[currentBranchIndex] || branchesContacts[0];
-    const sub = cartList.reduce((s, i) => s + (i.price * i.qty), 0);
-    const discountVal = activeCartCoupon ? (sub * (activeCartCoupon.discount / 100)) : 0;
-
     const townSelect = document.getElementById('cartTownSelector');
-    const townName = (currentFulfillmentMode === 'delivery' && townSelect) ? townSelect.value : "استلام من الفرع";
-    const deliveryFee = (currentFulfillmentMode === 'delivery' && townSelect && townSelect.selectedOptions[0])
-        ? (parseFloat(townSelect.selectedOptions[0].dataset.fee) || 0.50)
-        : 0;
+    const delivery = currentFulfillmentMode === 'delivery';
     const addrNotes = (document.getElementById('cartAddressNotesInput')?.value || '').trim();
-
-    const grand = (Math.max(0, sub - discountVal) + deliveryFee).toFixed(2);
-    const payMethod = document.querySelector('input[name="payRadioMethod"]:checked')?.value || "دفع نقدي";
-
-    const orderId = "CC-" + Date.now().toString().slice(-5);
-    const orderObj = {
-        orderId,
-        customerName: activeCustomer.name,
-        customerPhone: activeCustomer.phone,
-        branchId: branch.id,
-        branchName: branch.name,
-        mode: currentFulfillmentMode,
-        town: townName,
-        addressNotes: addrNotes,
-        items: [...cartList],
-        total: grand,
-        paymentMethod: payMethod,
-        status: "pending",
-        date: new Date().toLocaleDateString('ar-JO')
-    };
-
-    activeOrdersList.unshift(orderObj);
-    safeSet('cc_orders', activeOrdersList);
-    if (cloudDb) cloudDb.collection('orders').doc(orderId).set(orderObj).catch(err => console.warn(err));
-
-    if (activeCartCoupon && systemCoupons[activeCartCoupon.code]) {
-        systemCoupons[activeCartCoupon.code].usedCount = (systemCoupons[activeCartCoupon.code].usedCount || 0) + 1;
-        safeSet('cc_coupons', systemCoupons);
-        if (cloudDb) cloudDb.collection('settings').doc('coupons').set({ data: systemCoupons }).catch(e => console.warn(e));
-    }
-
-    const earnedOrderPoints = Math.max(5, Math.round(parseFloat(grand) * (loyaltyRules.pointsPerJod || 73)));
-    activeCustomer.points = (activeCustomer.points || 0) + earnedOrderPoints;
-    activeCustomer.ordersCount = (activeCustomer.ordersCount || 0) + 1;
-    activeCustomer.savedTotal = (activeCustomer.savedTotal || 0) + discountVal;
-    if (!Array.isArray(activeCustomer.pointsHistory)) activeCustomer.pointsHistory = [];
-    activeCustomer.pointsHistory.unshift({
-        title: `طلب رقم ${orderId}`,
-        points: earnedOrderPoints,
-        date: new Date().toLocaleDateString('ar-JO')
-    });
-
-    if (activeCustomer.referredBy && !activeCustomer.referralRewardClaimed) {
-        const bonus = loyaltyRules.referralBonus || 150;
-        const referrer = allRegisteredCustomers[activeCustomer.referredBy];
-        if (referrer && (referrer.referralCount || 0) < (loyaltyRules.maxReferrals || 3)) {
-            referrer.points = (referrer.points || 0) + bonus;
-            referrer.referralCount = (referrer.referralCount || 0) + 1;
-            referrer.referralEarnedPoints = (referrer.referralEarnedPoints || 0) + bonus;
-            if (!Array.isArray(referrer.pointsHistory)) referrer.pointsHistory = [];
-            referrer.pointsHistory.unshift({
-                title: `مكافأة دعوة صديق (${activeCustomer.name})`,
-                points: bonus,
-                date: new Date().toLocaleDateString('ar-JO')
-            });
-
-            activeCustomer.points += bonus;
-            activeCustomer.referralRewardClaimed = true;
-            activeCustomer.pointsHistory.unshift({
-                title: `مكافأة تفعيل رمز الدعوة`,
-                points: bonus,
-                date: new Date().toLocaleDateString('ar-JO')
-            });
-
-            allRegisteredCustomers[referrer.phone] = referrer;
-            if (cloudDb) cloudDb.collection('users').doc(referrer.phone).set(referrer).catch(e => console.warn(e));
-        }
-    }
-
-    allRegisteredCustomers[activeCustomer.phone] = activeCustomer;
-    safeSet('cc_crm_directory', allRegisteredCustomers);
-    safeSet('cc_active_client_user', activeCustomer);
-    if (cloudDb) cloudDb.collection('users').doc(activeCustomer.phone).set(activeCustomer).catch(e => console.warn(e));
-
-    const itemsLines = cartList.map(i => `• ${i.name} (${i.qty}×) [${i.size}]${i.addons.length ? ' + ' + i.addons.join('، ') : ''}`).join('\n');
-    const waText = `طلب جديد من تطبيق كافيه كورنر\nرقم الطلب: ${orderId}\nالفرع: ${branch.name}\nالعميل: ${activeCustomer.name} (${activeCustomer.phone})\nالاستلام: ${townName} ${addrNotes ? '(' + addrNotes + ')' : ''}\nالدفع: ${payMethod}\n\nالأصناف:\n${itemsLines}\n\nالإجمالي: ${grand} د.أ`;
-
-    activeCartCoupon = null;
-    cartList = [];
-    safeSet('cc_cart', []);
-    updateProfileDisplayDOM();
-    renderCartScreen();
-    refreshFloatingCartDock();
-    updateAdminHubCounters();
-
-    showModernToast(`تم إرسال طلبك بنجاح وكسبت ${earnedOrderPoints} نقطة!`, "success");
-    window.open(`https://wa.me/${branch.whatsapp}?text=${encodeURIComponent(waText)}`, '_blank');
-    navigateRouter('screen-order-history');
+    const payMethod = document.querySelector('input[name="payRadioMethod"]:checked')?.value || "دفع نقدي (كاش Cash)";
+    _orderBusy = true;
+    try {
+        const res = await fns.httpsCallable('placeOrder')({
+            items: cartList.map(i => ({ id: i.id, size: i.size, addons: i.addons, notes: i.notes, qty: i.qty })),
+            branchId: branch.id, mode: currentFulfillmentMode, town: delivery && townSelect ? townSelect.value : '',
+            addressNotes: addrNotes, paymentMethod: payMethod, couponCode: activeCartCoupon ? activeCartCoupon.code : ''
+        });
+        const o = res.data;
+        const itemsLines = cartList.map(i => `• ${i.name} (${i.qty}×) [${i.size}]${i.addons.length ? ' + ' + i.addons.join('، ') : ''}`).join('\n');
+        const waText = `طلب جديد من تطبيق كافيه كورنر\nرقم الطلب: ${o.orderId}\nالفرع: ${branch.name}\nالعميل: ${activeCustomer.name} (${activeCustomer.phone || activeCustomer.email})\nالاستلام: ${delivery ? townSelect.value : 'استلام من الفرع'} ${addrNotes ? '(' + addrNotes + ')' : ''}\nالدفع: ${payMethod}\n\nالأصناف:\n${itemsLines}\n\nالإجمالي: ${o.total} د.أ`;
+        activeCartCoupon = null; cartList = []; safeSet('cc_cart', []);
+        await refreshMyProfile();
+        renderCartScreen(); refreshFloatingCartDock();
+        showModernToast(`تم إرسال طلبك بنجاح وكسبت ${o.earned} نقطة!`, "success");
+        window.open(`https://wa.me/${branch.whatsapp}?text=${encodeURIComponent(waText)}`, '_blank');
+        navigateRouter('screen-order-history');
+    } catch (e) {
+        showModernToast(e.message || 'تعذّر إرسال الطلب', 'danger');
+    } finally { _orderBusy = false; }
 };
-
-/* =========================================================
-   6. المكافآت وفئات الولاء ودعوة الصديق والملف الشخصي
-   ========================================================= */
+ 
 function renderRewardsDisplay() {
     const c = document.getElementById('clientRewardItemsCatalogList');
     if (!c) return;
     if (activeCustomer) {
         document.getElementById('rewardScreenPointsNum').innerText = (activeCustomer.points || 0).toLocaleString('en-US');
     }
-
+ 
     c.innerHTML = rewardsCatalog.map(rw => `
         <div class="clean-card" style="display:flex; align-items:center; justify-content:space-between; gap:10px;">
             <div style="display:flex; align-items:center; gap:10px;">
@@ -2677,39 +2632,22 @@ function renderRewardsDisplay() {
         </div>
     `).join('');
 }
-
-window.redeemRewardItem = function(rwId) {
+ 
+window.redeemRewardItem = async function(rwId) {
     if (!activeCustomer) return enforceAuthGatekeeper();
-    const rw = rewardsCatalog.find(r => r.id === rwId);
-    if (!rw) return;
-
-    if ((activeCustomer.points || 0) < rw.points) {
-        return showModernToast("رصيد نقاطك الحالي لا يكفي لاستبدال هذه المكافأة", "danger");
-    }
-
-    activeCustomer.points -= rw.points;
-    if (!Array.isArray(activeCustomer.pointsHistory)) activeCustomer.pointsHistory = [];
-    activeCustomer.pointsHistory.unshift({
-        title: `استبدال مكافأة: ${rw.name}`,
-        points: -rw.points,
-        date: new Date().toLocaleDateString('ar-JO')
-    });
-
-    allRegisteredCustomers[activeCustomer.phone] = activeCustomer;
-    safeSet('cc_crm_directory', allRegisteredCustomers);
-    safeSet('cc_active_client_user', activeCustomer);
-    if (cloudDb) cloudDb.collection('users').doc(activeCustomer.phone).set(activeCustomer).catch(e => console.warn(e));
-
-    updateProfileDisplayDOM();
-    renderRewardsDisplay();
-    showModernToast(`تم استبدال (${rw.name}) بنجاح!`, "success");
+    try {
+        const res = await fns.httpsCallable('redeemReward')({ rewardId: rwId });
+        await refreshMyProfile();
+        renderRewardsDisplay();
+        showModernToast(`تم استبدال (${res.data.name}) بنجاح!`, "success");
+    } catch (e) { showModernToast(e.message || 'تعذّر الاستبدال', 'danger'); }
 };
-
+ 
 function renderLoyaltyTiersScreen() {
     const tasksEl = document.getElementById('dynamicTasksContainer');
     const ledgerEl = document.getElementById('dynamicPointsLedgerHistory');
     const ordersCount = activeCustomer ? (activeCustomer.ordersCount || 0) : 0;
-
+ 
     if (tasksEl) {
         const prog1 = Math.min(3, ordersCount);
         tasksEl.innerHTML = `
@@ -2725,7 +2663,7 @@ function renderLoyaltyTiersScreen() {
             </div>
         `;
     }
-
+ 
     if (ledgerEl) {
         const hist = (activeCustomer && Array.isArray(activeCustomer.pointsHistory)) ? activeCustomer.pointsHistory : [];
         if (hist.length === 0) {
@@ -2734,7 +2672,7 @@ function renderLoyaltyTiersScreen() {
             ledgerEl.innerHTML = hist.map(h => `
                 <div class="clean-card" style="display:flex; justify-content:space-between; align-items:center; padding:10px 14px;">
                     <div>
-                        <div style="font-size:12px; font-weight:700;">${h.title}</div>
+                        <div style="font-size:12px; font-weight:700;">${esc(h.title)}</div>
                         <div class="num-font" style="font-size:10px; color:var(--text-muted);">${h.date}</div>
                     </div>
                     <strong class="num-font" style="font-size:13px; color:${h.points >= 0 ? 'var(--status-success)' : 'var(--status-danger)'};">
@@ -2745,7 +2683,7 @@ function renderLoyaltyTiersScreen() {
         }
     }
 }
-
+ 
 function renderInviteFriendScreen() {
     if (!activeCustomer) return;
     document.getElementById('refBonusHeadingVal').innerText = loyaltyRules.referralBonus || 150;
@@ -2754,21 +2692,21 @@ function renderInviteFriendScreen() {
     document.getElementById('userReferralsCountNum').innerText = `${activeCustomer.referralCount || 0} / ${loyaltyRules.maxReferrals || 3}`;
     document.getElementById('userReferralEarnedPoints').innerText = `${activeCustomer.referralEarnedPoints || 0} نقطة`;
 }
-
+ 
 window.copyReferralCodeToClipboard = function() {
     if (!activeCustomer) return;
     const code = activeCustomer.code || ("CORNER-" + activeCustomer.phone.slice(-4));
     navigator.clipboard?.writeText(code);
     showModernToast("تم نسخ رمز الدعوة: " + code, "success");
 };
-
+ 
 window.shareReferralViaWhatsApp = function() {
     if (!activeCustomer) return;
     const code = activeCustomer.code || ("CORNER-" + activeCustomer.phone.slice(-4));
     const msg = `سجل في تطبيق كافيه كورنر واستخدم رمز الدعوة الخاص بي (${code}) لتحصل على ${loyaltyRules.referralBonus || 150} نقطة مجانية عند أول طلب!`;
     window.open(`https://wa.me/?text=${encodeURIComponent(msg)}`, '_blank');
 };
-
+ 
 window.openEditAccountModal = function() {
     if (!activeCustomer) return;
     const parts = (activeCustomer.name || "عمر عبيدات").split(" ");
@@ -2778,24 +2716,25 @@ window.openEditAccountModal = function() {
     document.getElementById('accEditEmailAddress').value = activeCustomer.email || "";
     document.getElementById('accEditCity').value = activeCustomer.city || "إربد";
     document.getElementById('accEditArea').value = activeCustomer.area || "كفرسوم";
-
+ 
     const prev = document.getElementById('accEditAvatarPreview');
     if (activeCustomer.avatar) {
-        prev.innerHTML = `<img src="${activeCustomer.avatar}" alt="Avatar">`;
+        prev.innerHTML = `<img src="${esc(activeCustomer.avatar)}" alt="Avatar">`;
     } else {
         prev.innerHTML = `<span>${(activeCustomer.name || "ع").charAt(0)}</span>`;
     }
-
+ 
     document.getElementById('modalEditAccountComprehensive').style.display = 'block';
 };
-
+ 
 window.closeEditAccountModal = function() {
     document.getElementById('modalEditAccountComprehensive').style.display = 'none';
 };
-
+ 
 window.handlePhoneAvatarUpload = function(event) {
     const file = event.target.files[0];
     if (!file || !activeCustomer) return;
+    if (!/^image\/(png|jpe?g|webp)$/.test(file.type) || file.size > 300 * 1024) return showModernToast('صورة png/jpg/webp وبحد أقصى 300KB فقط', 'danger');
     const reader = new FileReader();
     reader.onload = function(e) {
         activeCustomer.avatar = e.target.result;
@@ -2803,32 +2742,32 @@ window.handlePhoneAvatarUpload = function(event) {
     };
     reader.readAsDataURL(file);
 };
-
+ 
 window.saveComprehensiveProfileModifications = function() {
     if (!activeCustomer) return;
     const fn = document.getElementById('accEditFirstName').value.trim();
     const ln = document.getElementById('accEditLastName').value.trim();
     if (!fn) return showModernToast("يرجى إدخال الاسم الأول", "danger");
-
+ 
     activeCustomer.name = `${fn} ${ln}`.trim();
     activeCustomer.email = document.getElementById('accEditEmailAddress').value.trim();
     activeCustomer.city = document.getElementById('accEditCity').value.trim();
     activeCustomer.area = document.getElementById('accEditArea').value.trim();
-
-    allRegisteredCustomers[activeCustomer.phone] = activeCustomer;
+ 
+    allRegisteredCustomers[activeCustomer.uid] = activeCustomer;
     safeSet('cc_crm_directory', allRegisteredCustomers);
     safeSet('cc_active_client_user', activeCustomer);
-    if (cloudDb) cloudDb.collection('users').doc(activeCustomer.phone).set(activeCustomer).catch(e => console.warn(e));
-
+    if (cloudDb) cloudDb.collection('users').doc(activeCustomer.uid).update({ name: activeCustomer.name, email: activeCustomer.email || '', city: activeCustomer.city || '', area: activeCustomer.area || '', ...(activeCustomer.avatar ? { avatar: activeCustomer.avatar } : {}) }).catch(e => console.warn(e));
+ 
     updateProfileDisplayDOM();
     closeEditAccountModal();
     showModernToast("تم حفظ وتحديث بيانات الحساب أونلاين", "success");
 };
-
+ 
 function renderCustomerOrderHistory() {
     const c = document.getElementById('customerOrderHistoryList');
     if (!c) return;
-    const myOrders = activeCustomer ? activeOrdersList.filter(o => o.customerPhone === activeCustomer.phone) : [];
+    const myOrders = activeCustomer ? activeOrdersList.filter(o => o.uid === activeCustomer.uid) : [];
     if (myOrders.length === 0) {
         c.innerHTML = `<div class="clean-card" style="text-align:center; padding:25px; font-size:12px; color:var(--text-muted);">لا توجد طلبات سابقة مسجلة لحسابك.</div>`;
         return;
@@ -2842,59 +2781,60 @@ function renderCustomerOrderHistory() {
     c.innerHTML = myOrders.map(o => `
         <div class="clean-card">
             <div style="display:flex; justify-content:space-between; margin-bottom:4px;">
-                <strong class="num-font" style="color:var(--brand-primary);">${o.orderId}</strong>
+                <strong class="num-font" style="color:var(--brand-primary);">${escId(o.orderId)}</strong>
                 <span style="font-size:10.5px; font-weight:700;">${statusMap[o.status] || o.status}</span>
             </div>
-            <div style="font-size:11px; color:var(--text-secondary); margin-bottom:6px;">${o.branchName} • ${o.date}</div>
-            <div style="font-size:11.5px; margin-bottom:6px;">${(o.items || []).map(i => `${i.name} (${i.qty}×)`).join('، ')}</div>
+            <div style="font-size:11px; color:var(--text-secondary); margin-bottom:6px;">${esc(o.branchName)} • ${esc(o.date)}</div>
+            <div style="font-size:11.5px; margin-bottom:6px;">${(o.items || []).map(i => `${esc(i.name)} (${i.qty}×)`).join('، ')}</div>
             <div style="font-weight:800; font-size:12.5px;" class="num-font">الإجمالي: ${o.total} د.أ</div>
         </div>
     `).join('');
 }
-
+ 
 window.openCustomerNotificationsModal = function() {
     const c = document.getElementById('customerNotificationsListContainer');
     if (c) {
         c.innerHTML = systemNotifications.map(n => `
             <div style="border-bottom:1px solid var(--border-subtle); padding:10px 0;">
                 <div style="display:flex; justify-content:space-between; font-size:12.5px; font-weight:800; color:var(--brand-primary);">
-                    <span>${n.title}</span>
+                    <span>${esc(n.title)}</span>
                     <span class="num-font" style="font-size:10px; color:var(--text-muted);">${n.dateStr || ''}</span>
                 </div>
-                <div style="font-size:11.5px; color:var(--text-primary); margin-top:4px; line-height:1.4;">${n.body}</div>
+                <div style="font-size:11.5px; color:var(--text-primary); margin-top:4px; line-height:1.4;">${esc(n.body)}</div>
             </div>
         `).join('');
     }
     document.getElementById('modalCustomerNotifications').style.display = 'flex';
 };
-
+ 
 function renderCustomerFeedbackScreen() {
     const c = document.getElementById('customerFeedbackHistoryList');
     if (!c) return;
-    const myFbs = activeCustomer ? systemFeedbacks.filter(f => f.phone === activeCustomer.phone) : [];
+    const myFbs = activeCustomer ? systemFeedbacks.filter(f => f.uid === activeCustomer.uid) : [];
     if (myFbs.length === 0) {
         c.innerHTML = `<div class="clean-card" style="text-align:center; font-size:11.5px; color:var(--text-muted);">لم تقم بإرسال أي رسائل سابقة.</div>`;
         return;
     }
     c.innerHTML = myFbs.map(f => `
         <div class="clean-card">
-            <div style="font-size:11.5px; font-weight:800; color:var(--brand-primary);">${f.category}</div>
-            <div style="font-size:12px; margin:4px 0;">${f.text}</div>
-            ${f.reply ? `<div style="background:var(--bg-elevated); padding:8px; border-radius:6px; font-size:11px; color:var(--status-success); font-weight:700;">رد الإدارة: ${f.reply}</div>` : `<div style="font-size:10px; color:var(--text-muted);">بانتظار رد الإدارة...</div>`}
+            <div style="font-size:11.5px; font-weight:800; color:var(--brand-primary);">${esc(f.category)}</div>
+            <div style="font-size:12px; margin:4px 0;">${esc(f.text)}</div>
+            ${f.reply ? `<div style="background:var(--bg-elevated); padding:8px; border-radius:6px; font-size:11px; color:var(--status-success); font-weight:700;">رد الإدارة: ${esc(f.reply)}</div>` : `<div style="font-size:10px; color:var(--text-muted);">بانتظار رد الإدارة...</div>`}
         </div>
     `).join('');
 }
-
+ 
 window.submitCustomerFeedback = function() {
     if (!activeCustomer) return enforceAuthGatekeeper();
     const cat = document.getElementById('customerFbCategory').value;
     const text = (document.getElementById('customerFbText')?.value || '').trim();
     if (!text) return showModernToast("يرجى كتابة نص الرسالة أولاً", "danger");
-
+ 
     const fb = {
         id: "fb_" + Date.now(),
         name: activeCustomer.name,
         phone: activeCustomer.phone,
+        uid: activeCustomer.uid,
         category: cat,
         text,
         reply: "",
@@ -2903,19 +2843,19 @@ window.submitCustomerFeedback = function() {
     systemFeedbacks.unshift(fb);
     safeSet('cc_feedbacks', systemFeedbacks);
     if (cloudDb) cloudDb.collection('feedbacks').doc(fb.id).set(fb).catch(e => console.warn(e));
-
+ 
     document.getElementById('customerFbText').value = '';
     renderCustomerFeedbackScreen();
     updateAdminHubCounters();
     showModernToast("تم إرسال رسالتك للإدارة بنجاح", "success");
 };
-
+ 
 /* =========================================================
    7. بوابة الدخول السرية ولوحة تحكم الأدمن المنقسمة
    ========================================================= */
 let _secretClicksCount = 0;
 let _secretClicksTimer = null;
-
+ 
 window.handleSecretAdminTriggerClick = function() {
     _secretClicksCount++;
     clearTimeout(_secretClicksTimer);
@@ -2925,7 +2865,7 @@ window.handleSecretAdminTriggerClick = function() {
         openAdminPinModal();
     }
 };
-
+ 
 window.openAdminPinModal = function() {
     document.getElementById('adminSecretPinField').value = '';
     document.getElementById('adminPinModalOverlay').style.display = 'flex';
@@ -2933,10 +2873,10 @@ window.openAdminPinModal = function() {
 window.closeAdminPinModal = function() {
     document.getElementById('adminPinModalOverlay').style.display = 'none';
 };
-
-window.verifyAdminSecretPin = function() {
+ 
+window.verifyAdminSecretPin = async function() {
     const pin = (document.getElementById('adminSecretPinField')?.value || '').trim();
-    if (pin === "2001159393") {
+    if (isAdminUser && await sha256Hex('cc-admin:' + pin) === ADMIN_PIN_HASH) {
         closeAdminPinModal();
         closeSidebarDrawer();
         navigateRouter('screen-master-admin');
@@ -2956,7 +2896,7 @@ window.verifyAdminSecretPin = function() {
         showModernToast("رمز PIN غير صحيح ومرفوض!", "danger");
     }
 };
-
+ 
 function handleUrlHashRouting() {
     const h = window.location.hash.toLowerCase();
     if (h === '#admin') openAdminPinModal();
@@ -2964,13 +2904,13 @@ function handleUrlHashRouting() {
     else if (h === '#branch-sama') chooseAppBranch(1);
 }
 window.addEventListener('hashchange', handleUrlHashRouting);
-
+ 
 function updateAdminHubCounters() {
     const prodCount = productsList.length;
     const ordCount = activeOrdersList.length;
     const custCount = Object.keys(allRegisteredCustomers).length;
     const openFbCount = systemFeedbacks.filter(f => !f.reply).length;
-
+ 
     if (document.getElementById('kpiAdminProductsCount')) document.getElementById('kpiAdminProductsCount').innerText = prodCount;
     if (document.getElementById('kpiAdminOrdersCount')) document.getElementById('kpiAdminOrdersCount').innerText = ordCount;
     if (document.getElementById('kpiAdminCustomersCount')) document.getElementById('kpiAdminCustomersCount').innerText = custCount;
@@ -2979,7 +2919,7 @@ function updateAdminHubCounters() {
     if (document.getElementById('badgeHubCustomers')) document.getElementById('badgeHubCustomers').innerText = custCount;
     if (document.getElementById('badgeHubFeedback')) document.getElementById('badgeHubFeedback').innerText = openFbCount;
 }
-
+ 
 window.openAdminSubPanel = function(panelKey) {
     document.getElementById('adminMainHubView').style.display = 'none';
     document.querySelectorAll('.admin-sub-panel').forEach(p => p.classList.remove('active'));
@@ -2988,7 +2928,7 @@ window.openAdminSubPanel = function(panelKey) {
         target.classList.add('active');
         window.scrollTo({ top: 0, behavior: 'instant' });
     }
-
+ 
     if (panelKey === 'products') renderAdminProductsPanel();
     if (panelKey === 'orders') renderAdminOrdersPanel();
     if (panelKey === 'customers') renderAdminCustomersPanel();
@@ -3001,29 +2941,29 @@ window.openAdminSubPanel = function(panelKey) {
     if (panelKey === 'marketing') renderAdminCouponsList();
     if (panelKey === 'feedback') renderAdminFeedbackInbox();
 };
-
+ 
 window.backToAdminHub = function() {
     document.querySelectorAll('.admin-sub-panel').forEach(p => p.classList.remove('active'));
     document.getElementById('adminMainHubView').style.display = 'block';
     updateAdminHubCounters();
     window.scrollTo({ top: 0, behavior: 'instant' });
 };
-
+ 
 /* اللوحة 1: إدارة الأصناف وتعديلها ونسخها وإخفائها */
 function renderAdminProductsPanel() {
     const container = document.getElementById('adminProductsManageList');
     if (!container) return;
-
+ 
     const query = (document.getElementById('adminProdSearchInput')?.value || '').trim().toLowerCase();
     const filtered = productsList.filter(p =>
         !query || p.name.toLowerCase().includes(query) || p.category.toLowerCase().includes(query)
     );
-
+ 
     if (filtered.length === 0) {
         container.innerHTML = `<div style="text-align:center; padding:20px; font-size:12px; color:var(--text-muted);">لا توجد أصناف مطابقة للبحث.</div>`;
         return;
     }
-
+ 
     container.innerHTML = filtered.map(p => {
         const isAvail = p.isAvailable !== false;
         return `
@@ -3050,7 +2990,7 @@ function renderAdminProductsPanel() {
         `;
     }).join('');
 }
-
+ 
 window.openAdminProductEditor = function(prodId) {
     const modal = document.getElementById('modalAdminProductEditor');
     const title = document.getElementById('admProdEditorModalTitle');
@@ -3079,14 +3019,15 @@ window.openAdminProductEditor = function(prodId) {
     }
     modal.style.display = 'flex';
 };
-
+ 
 window.closeAdminProductEditor = function() {
     document.getElementById('modalAdminProductEditor').style.display = 'none';
 };
-
+ 
 window.handleAdminProdImageUpload = function(event) {
     const file = event.target.files[0];
     if (!file) return;
+    if (!/^image\/(png|jpe?g|webp)$/.test(file.type) || file.size > 300 * 1024) return showModernToast('صورة png/jpg/webp وبحد أقصى 300KB فقط', 'danger');
     const reader = new FileReader();
     reader.onload = function(e) {
         document.getElementById('admEditProdImgPreview').src = e.target.result;
@@ -3094,7 +3035,7 @@ window.handleAdminProdImageUpload = function(event) {
     };
     reader.readAsDataURL(file);
 };
-
+ 
 window.saveAdminProductForm = function() {
     const id = document.getElementById('admEditProdId').value;
     const name = document.getElementById('admEditProdName').value.trim();
@@ -3103,11 +3044,11 @@ window.saveAdminProductForm = function() {
     const desc = document.getElementById('admEditProdDesc').value.trim();
     const img = document.getElementById('admEditProdImgUrl').value.trim() || document.getElementById('admEditProdImgPreview').src;
     const isAvailable = document.getElementById('admEditProdAvailable').checked;
-
+ 
     if (!name || isNaN(price) || price < 0) {
         return showModernToast("يرجى إدخال اسم الصنف وسعر صحيح", "danger");
     }
-
+ 
     if (id) {
         const idx = productsList.findIndex(p => p.id === id);
         if (idx !== -1) {
@@ -3119,13 +3060,13 @@ window.saveAdminProductForm = function() {
             name, category, price, desc, img, isAvailable
         });
     }
-
+ 
     syncCatalogToCloudAndUI();
     closeAdminProductEditor();
     renderAdminProductsPanel();
     showModernToast(id ? "تم حفظ تعديلات الصنف أونلاين" : "تمت إضافة الصنف الجديد بنجاح", "success");
 };
-
+ 
 window.duplicateAdminProduct = function(prodId) {
     const orig = productsList.find(p => p.id === prodId);
     if (!orig) return;
@@ -3139,7 +3080,7 @@ window.duplicateAdminProduct = function(prodId) {
     renderAdminProductsPanel();
     showModernToast("تم إنشاء نسخة مكررة من الصنف، يمكنك تعديلها الآن", "success");
 };
-
+ 
 window.toggleAdminProductAvailability = function(prodId) {
     const p = productsList.find(item => item.id === prodId);
     if (!p) return;
@@ -3148,14 +3089,14 @@ window.toggleAdminProductAvailability = function(prodId) {
     renderAdminProductsPanel();
     showModernToast(p.isAvailable ? "تم إظهار الصنف في المنيو" : "تم إخفاء الصنف مؤقتاً من المنيو", "info");
 };
-
+ 
 window.deleteAdminProduct = function(prodId) {
     productsList = productsList.filter(p => p.id !== prodId);
     syncCatalogToCloudAndUI();
     renderAdminProductsPanel();
     showModernToast("تم حذف الصنف نهائياً", "info");
 };
-
+ 
 function syncCatalogToCloudAndUI() {
     safeSet('cc_catalog', productsList);
     if (cloudDb) {
@@ -3165,7 +3106,7 @@ function syncCatalogToCloudAndUI() {
     renderProductsDisplay();
     updateAdminHubCounters();
 }
-
+ 
 /* اللوحة 2: إدارة الطلبات الحية */
 function renderAdminOrdersPanel() {
     const c = document.getElementById('admLiveOrdersAuditList');
@@ -3185,26 +3126,26 @@ function renderAdminOrdersPanel() {
         return `
             <div style="border:1px solid var(--border-subtle); border-radius:var(--radius-sm); padding:10px; margin-bottom:8px; background:var(--bg-surface);">
                 <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
-                    <strong class="num-font" style="color:var(--brand-primary);">${ord.orderId}</strong>
+                    <strong class="num-font" style="color:var(--brand-primary);">${escId(ord.orderId)}</strong>
                     <span style="font-size:10px; font-weight:800; color:${st.color};">${st.label}</span>
                 </div>
-                <div style="font-size:11.5px; font-weight:700;">${ord.customerName} (${ord.customerPhone}) • ${ord.branchName}</div>
+                <div style="font-size:11.5px; font-weight:700;">${esc(ord.customerName)} (${escId(ord.customerPhone)}) • ${esc(ord.branchName)}</div>
                 <div style="font-size:10.5px; color:var(--text-secondary); margin:4px 0;">
-                    ${(ord.items || []).map(i => `${i.name} (${i.qty}×)`).join(' | ')}
+                    ${(ord.items || []).map(i => `${esc(i.name)} (${i.qty}×)`).join(' | ')}
                 </div>
                 <div style="display:flex; justify-content:space-between; align-items:center; margin-top:6px; padding-top:6px; border-top:1px dashed var(--border-subtle);">
-                    <strong class="num-font" style="font-size:12.5px;">${ord.total} د.أ (${ord.paymentMethod})</strong>
+                    <strong class="num-font" style="font-size:12.5px;">${ord.total} د.أ (${esc(ord.paymentMethod)})</strong>
                     <div style="display:flex; gap:4px;">
-                        <button class="btn-brand-outline" style="padding:3px 8px; font-size:10px;" onclick="updateAdminOrderStatus('${ord.orderId}', 'preparing')">تجهيز</button>
-                        <button class="btn-brand-solid" style="width:auto; padding:3px 8px; font-size:10px; background:var(--status-success);" onclick="updateAdminOrderStatus('${ord.orderId}', 'completed')">تسليم</button>
-                        <button class="btn-brand-outline" style="padding:3px 8px; font-size:10px; color:var(--status-danger); border-color:var(--status-danger);" onclick="updateAdminOrderStatus('${ord.orderId}', 'cancelled')">إلغاء</button>
+                        <button class="btn-brand-outline" style="padding:3px 8px; font-size:10px;" onclick="updateAdminOrderStatus('${escId(ord.orderId)}', 'preparing')">تجهيز</button>
+                        <button class="btn-brand-solid" style="width:auto; padding:3px 8px; font-size:10px; background:var(--status-success);" onclick="updateAdminOrderStatus('${escId(ord.orderId)}', 'completed')">تسليم</button>
+                        <button class="btn-brand-outline" style="padding:3px 8px; font-size:10px; color:var(--status-danger); border-color:var(--status-danger);" onclick="updateAdminOrderStatus('${escId(ord.orderId)}', 'cancelled')">إلغاء</button>
                     </div>
                 </div>
             </div>
         `;
     }).join('');
 }
-
+ 
 window.updateAdminOrderStatus = function(orderId, newStatus) {
     const ord = activeOrdersList.find(o => o.orderId === orderId);
     if (!ord) return;
@@ -3214,7 +3155,7 @@ window.updateAdminOrderStatus = function(orderId, newStatus) {
     renderAdminOrdersPanel();
     showModernToast("تم تحديث حالة الطلب بنجاح", "success");
 };
-
+ 
 /* اللوحة 3: إدارة العملاء */
 function renderAdminCustomersPanel() {
     const c = document.getElementById('adminCustomersDirectoryList');
@@ -3223,42 +3164,37 @@ function renderAdminCustomersPanel() {
     const users = Object.values(allRegisteredCustomers).filter(u =>
         !query || (u.name && u.name.toLowerCase().includes(query)) || (u.phone && u.phone.includes(query))
     );
-
+ 
     if (users.length === 0) {
         c.innerHTML = `<div style="text-align:center; padding:20px; font-size:12px; color:var(--text-muted);">لا يوجد عملاء مسجلون حالياً.</div>`;
         return;
     }
-
+ 
     c.innerHTML = users.map(u => `
         <div style="border-bottom:1px solid var(--border-subtle); padding:10px 0; display:flex; justify-content:space-between; align-items:center;">
             <div>
-                <div style="font-size:12.5px; font-weight:800;">${u.name}</div>
-                <div class="num-font" style="font-size:10.5px; color:var(--text-secondary);">${u.phone} • النقاط: <strong style="color:var(--brand-primary);">${u.points || 0}</strong></div>
-                <div style="font-size:9.5px; color:var(--text-muted);">كود الدعوة: ${u.code || '-'} • الدعوات: ${u.referralCount || 0}</div>
+                <div style="font-size:12.5px; font-weight:800;">${esc(u.name)}</div>
+                <div class="num-font" style="font-size:10.5px; color:var(--text-secondary);">${escId(u.phone)} • النقاط: <strong style="color:var(--brand-primary);">${u.points || 0}</strong></div>
+                <div style="font-size:9.5px; color:var(--text-muted);">كود الدعوة: ${esc(u.code || '-')} • الدعوات: ${u.referralCount || 0}</div>
             </div>
             <div style="display:flex; gap:4px;">
-                <button class="btn-brand-solid" style="width:auto; padding:4px 8px; font-size:10.5px;" onclick="adjustCustomerPointsAdmin('${u.phone}', 50)">+50 نقطة</button>
-                <button class="btn-brand-outline" style="padding:4px 8px; font-size:10.5px; color:var(--status-danger); border-color:var(--status-danger);" onclick="adjustCustomerPointsAdmin('${u.phone}', -50)">-50</button>
+                <button class="btn-brand-solid" style="width:auto; padding:4px 8px; font-size:10.5px;" onclick="adjustCustomerPointsAdmin('${escId(u.uid)}', 50)">+50 نقطة</button>
+                <button class="btn-brand-outline" style="padding:4px 8px; font-size:10.5px; color:var(--status-danger); border-color:var(--status-danger);" onclick="adjustCustomerPointsAdmin('${escId(u.uid)}', -50)">-50</button>
             </div>
         </div>
     `).join('');
 }
-
-window.adjustCustomerPointsAdmin = function(phone, delta) {
-    const u = allRegisteredCustomers[phone];
-    if (!u) return;
-    u.points = Math.max(0, (u.points || 0) + delta);
-    safeSet('cc_crm_directory', allRegisteredCustomers);
-    if (cloudDb) cloudDb.collection('users').doc(phone).set(u).catch(e => console.warn(e));
-    if (activeCustomer && activeCustomer.phone === phone) {
-        activeCustomer = u;
-        safeSet('cc_active_client_user', activeCustomer);
-        updateProfileDisplayDOM();
-    }
-    renderAdminCustomersPanel();
-    showModernToast(`تم تحديث رصيد (${u.name}) إلى ${u.points} نقطة`, "success");
+ 
+window.adjustCustomerPointsAdmin = async function(uid, delta) {
+    try {
+        const res = await fns.httpsCallable('adminAdjustPoints')({ uid, delta });
+        if (allRegisteredCustomers[uid]) allRegisteredCustomers[uid].points = res.data.points;
+        if (activeCustomer && activeCustomer.uid === uid) await refreshMyProfile();
+        renderAdminCustomersPanel();
+        showModernToast(`تم تحديث رصيد (${res.data.name}) إلى ${res.data.points} نقطة`, "success");
+    } catch (e) { showModernToast(e.message || 'تعذّر التعديل', 'danger'); }
 };
-
+ 
 /* اللوحة 4: النقاط ومتجر المكافآت */
 window.saveAdminLoyaltyRules = function() {
     loyaltyRules = {
@@ -3270,20 +3206,20 @@ window.saveAdminLoyaltyRules = function() {
     if (cloudDb) cloudDb.collection('settings').doc('loyalty_rules').set(loyaltyRules).catch(e => console.warn(e));
     showModernToast("تم تحديث قواعد النقاط والدعوات أونلاين", "success");
 };
-
+ 
 window.saveNewRewardItemFromAdmin = function() {
     const name = (document.getElementById('admNewRewardName')?.value || '').trim();
     const points = parseInt(document.getElementById('admNewRewardPoints')?.value, 10);
     const img = (document.getElementById('admNewRewardImg')?.value || '').trim() || "https://images.unsplash.com/photo-1562376552-0d160a2f238d?w=400&q=80";
-
+ 
     if (!name || !points || points <= 0) {
         return showModernToast("يرجى إدخال اسم الهدية وعدد النقاط", "danger");
     }
-
+ 
     rewardsCatalog.push({ id: "rw_" + Date.now(), name, points, img });
     safeSet('cc_rewards_catalog', rewardsCatalog);
     if (cloudDb) cloudDb.collection('settings').doc('rewards_catalog').set({ items: rewardsCatalog }).catch(e => console.warn(e));
-
+ 
     document.getElementById('admNewRewardName').value = '';
     document.getElementById('admNewRewardPoints').value = '';
     document.getElementById('admNewRewardImg').value = '';
@@ -3291,7 +3227,7 @@ window.saveNewRewardItemFromAdmin = function() {
     renderRewardsDisplay();
     showModernToast("تمت إضافة المكافأة لمتجر النقاط بنجاح", "success");
 };
-
+ 
 function renderAdminExistingRewards() {
     const c = document.getElementById('admExistingRewardsList');
     if (!c) return;
@@ -3304,7 +3240,7 @@ function renderAdminExistingRewards() {
         </div>
     `).join('');
 }
-
+ 
 window.deleteRewardAdmin = function(rwId) {
     rewardsCatalog = rewardsCatalog.filter(r => r.id !== rwId);
     safeSet('cc_rewards_catalog', rewardsCatalog);
@@ -3313,29 +3249,29 @@ window.deleteRewardAdmin = function(rwId) {
     renderRewardsDisplay();
     showModernToast("تم حذف المكافأة", "info");
 };
-
+ 
 /* اللوحة 5: الكوبونات والإشعارات */
 window.saveAdminCoupon = function() {
     const code = (document.getElementById('admNewCouponCode')?.value || '').trim().toUpperCase();
     const discount = parseInt(document.getElementById('admNewCouponPercent')?.value, 10);
     const maxUses = parseInt(document.getElementById('admNewCouponMaxUses')?.value, 10) || 100;
     const expiry = document.getElementById('admNewCouponExpiry')?.value || '2027-12-31';
-
-    if (!code || !discount || discount <= 0 || discount > 100) {
+ 
+    if (!/^[A-Z0-9_-]{3,20}$/.test(code) || !discount || discount <= 0 || discount > 100) {
         return showModernToast("يرجى إدخال كود ونسبة خصم صحيحة (1-100%)", "danger");
     }
-
+ 
     systemCoupons[code] = { discount, maxUses, usedCount: 0, expiry };
     safeSet('cc_coupons', systemCoupons);
     if (cloudDb) cloudDb.collection('settings').doc('coupons').set({ data: systemCoupons }).catch(e => console.warn(e));
-
+ 
     document.getElementById('admNewCouponCode').value = '';
     document.getElementById('admNewCouponPercent').value = '';
     document.getElementById('admNewCouponMaxUses').value = '';
     renderAdminCouponsList();
     showModernToast("تم حفظ وتفعيل كود الخصم أونلاين بنجاح", "success");
 };
-
+ 
 function renderAdminCouponsList() {
     const c = document.getElementById('admCouponsActiveList');
     if (!c) return;
@@ -3354,7 +3290,7 @@ function renderAdminCouponsList() {
         </div>
     `).join('');
 }
-
+ 
 window.deleteCouponAdmin = function(code) {
     delete systemCoupons[code];
     safeSet('cc_coupons', systemCoupons);
@@ -3362,23 +3298,23 @@ window.deleteCouponAdmin = function(code) {
     renderAdminCouponsList();
     showModernToast("تم حذف الكوبون", "info");
 };
-
+ 
 window.sendAdminBroadcastNotification = function() {
     const title = (document.getElementById('admBroadcastTitle')?.value || '').trim();
     const body = (document.getElementById('admBroadcastBody')?.value || '').trim();
     if (!title || !body) return showModernToast("يرجى إدخال عنوان ونص الإشعار", "danger");
-
+ 
     const notif = { id: "nt_" + Date.now(), title, body, dateStr: new Date().toLocaleDateString('ar-JO'), createdAt: Date.now() };
     systemNotifications.unshift(notif);
     safeSet('cc_notifications', systemNotifications);
     if (cloudDb) cloudDb.collection('notifications').doc(notif.id).set(notif).catch(e => console.warn(e));
-
+ 
     document.getElementById('drawerNotifBadgeCount').innerText = systemNotifications.length;
     document.getElementById('admBroadcastTitle').value = '';
     document.getElementById('admBroadcastBody').value = '';
     showModernToast("تم إرسال الإشعار لجميع العملاء بنجاح", "success");
 };
-
+ 
 /* اللوحة 6: الشكاوى والاقتراحات */
 function renderAdminFeedbackInbox() {
     const c = document.getElementById('adminFeedbackInboxList');
@@ -3390,77 +3326,43 @@ function renderAdminFeedbackInbox() {
     c.innerHTML = systemFeedbacks.map(f => `
         <div style="border:1px solid var(--border-subtle); border-radius:8px; padding:10px; margin-bottom:8px;">
             <div style="display:flex; justify-content:space-between; font-size:11.5px; font-weight:800;">
-                <span>${f.name} (${f.phone})</span>
-                <span style="color:var(--brand-primary);">${f.category}</span>
+                <span>${esc(f.name)} (${escId(f.phone)})</span>
+                <span style="color:var(--brand-primary);">${esc(f.category)}</span>
             </div>
-            <div style="font-size:12px; margin:6px 0;">${f.text}</div>
+            <div style="font-size:12px; margin:6px 0;">${esc(f.text)}</div>
             ${f.reply ? `
-                <div style="background:var(--bg-elevated); padding:6px 8px; border-radius:6px; font-size:11px; color:var(--status-success); font-weight:700;">تم الرد: ${f.reply}</div>
+                <div style="background:var(--bg-elevated); padding:6px 8px; border-radius:6px; font-size:11px; color:var(--status-success); font-weight:700;">تم الرد: ${esc(f.reply)}</div>
             ` : `
                 <div style="display:flex; gap:6px; margin-top:6px;">
-                    <input type="text" class="ios-input-field" id="admFbReply_${f.id}" placeholder="اكتب رد الإدارة للعميل..." style="padding:6px 10px; font-size:11px;">
-                    <button class="btn-brand-solid" style="width:auto; padding:0 12px; font-size:11px;" onclick="replyToCustomerFeedbackAdmin('${f.id}')">رد</button>
+                    <input type="text" class="ios-input-field" id="admFbReply_${escId(f.id)}" placeholder="اكتب رد الإدارة للعميل..." style="padding:6px 10px; font-size:11px;">
+                    <button class="btn-brand-solid" style="width:auto; padding:0 12px; font-size:11px;" onclick="replyToCustomerFeedbackAdmin('${escId(f.id)}')">رد</button>
                 </div>
             `}
         </div>
     `).join('');
 }
-
+ 
 window.replyToCustomerFeedbackAdmin = function(fbId) {
     const inp = document.getElementById('admFbReply_' + fbId);
     const reply = (inp?.value || '').trim();
     if (!reply) return showModernToast("يرجى كتابة الرد أولاً", "danger");
-
+ 
     const fb = systemFeedbacks.find(f => f.id === fbId);
     if (!fb) return;
     fb.reply = reply;
     safeSet('cc_feedbacks', systemFeedbacks);
     if (cloudDb) cloudDb.collection('feedbacks').doc(fbId).update({ reply }).catch(e => console.warn(e));
-
+ 
     renderAdminFeedbackInbox();
     updateAdminHubCounters();
     showModernToast("تم إرسال رد الإدارة بنجاح", "success");
 };
-
+ 
 /* =========================================================
    8. التشغيل الفوري والمزامنة السحابية الحية
    ========================================================= */
-document.addEventListener('DOMContentLoaded', () => {
-    const savedDark = safeGet('cc_dark_mode', false);
-    if (savedDark) {
-        document.body.classList.add('dark-mode');
-        const toggle = document.getElementById('sidebarDarkModeToggle');
-        if (toggle) toggle.checked = true;
-    }
-
-    document.getElementById('drawerNotifBadgeCount').innerText = systemNotifications.length;
-
-    applyBranchColorTheme(currentBranchIndex);
-    renderCategoryChips();
-    renderProductsDisplay();
-    renderRewardsDisplay();
-    renderAdminExistingRewards();
-    updateAdminHubCounters();
-    refreshFloatingCartDock();
-    enforceAuthGatekeeper();
-    handleUrlHashRouting();
-
-    try {
-        if (window.firebase && !firebase.apps.length) {
-            firebase.initializeApp(FIREBASE_CONFIG);
-            cloudDb = firebase.firestore();
-
-            cloudDb.collection('catalog').doc('products_list').onSnapshot(doc => {
-                if (doc.exists && Array.isArray(doc.data().items) && doc.data().items.length > 0) {
-                    productsList = doc.data().items;
-                    safeSet('cc_catalog', productsList);
-                    renderCategoryChips();
-                    renderProductsDisplay();
-                    updateAdminHubCounters();
-                }
-            }, err => console.warn("Catalog sync err:", err));
-
-            cloudDb.collection('orders').onSnapshot(snap => {
+window.attachPrivateListeners = function() {
+            privQ('orders').onSnapshot(snap => {
                 const cloudOrders = [];
                 snap.forEach(doc => cloudOrders.push(doc.data()));
                 if (cloudOrders.length > 0) {
@@ -3472,27 +3374,27 @@ document.addEventListener('DOMContentLoaded', () => {
                     }
                 }
             }, err => console.warn("Orders sync err:", err));
-
-            cloudDb.collection('users').onSnapshot(snap => {
+ 
+            privQ('users').onSnapshot(snap => {
                 snap.forEach(doc => {
                     allRegisteredCustomers[doc.id] = doc.data();
                 });
                 safeSet('cc_crm_directory', allRegisteredCustomers);
                 updateAdminHubCounters();
-                if (activeCustomer && allRegisteredCustomers[activeCustomer.phone]) {
-                    activeCustomer = allRegisteredCustomers[activeCustomer.phone];
+                if (activeCustomer && allRegisteredCustomers[activeCustomer.uid]) {
+                    activeCustomer = allRegisteredCustomers[activeCustomer.uid];
                     safeSet('cc_active_client_user', activeCustomer);
                     updateProfileDisplayDOM();
                 }
             }, err => console.warn("Users sync err:", err));
-
+ 
             cloudDb.collection('settings').doc('loyalty_rules').onSnapshot(doc => {
                 if (doc.exists) {
                     loyaltyRules = doc.data();
                     safeSet('cc_loyalty_rules', loyaltyRules);
                 }
             }, err => console.warn("Loyalty err:", err));
-
+ 
             cloudDb.collection('settings').doc('rewards_catalog').onSnapshot(doc => {
                 if (doc.exists && Array.isArray(doc.data().items)) {
                     rewardsCatalog = doc.data().items;
@@ -3500,15 +3402,15 @@ document.addEventListener('DOMContentLoaded', () => {
                     renderRewardsDisplay();
                 }
             }, err => console.warn("Rewards err:", err));
-
+ 
             cloudDb.collection('settings').doc('coupons').onSnapshot(doc => {
                 if (doc.exists && doc.data().data) {
                     systemCoupons = doc.data().data;
                     safeSet('cc_coupons', systemCoupons);
                 }
             }, err => console.warn("Coupons err:", err));
-
-            cloudDb.collection('feedbacks').onSnapshot(snap => {
+ 
+            privQ('feedbacks').onSnapshot(snap => {
                 const fbs = [];
                 snap.forEach(doc => fbs.push(doc.data()));
                 if (fbs.length > 0) {
@@ -3517,6 +3419,48 @@ document.addEventListener('DOMContentLoaded', () => {
                     updateAdminHubCounters();
                 }
             }, err => console.warn("Feedbacks err:", err));
+};
+ 
+document.addEventListener('DOMContentLoaded', () => {
+    const savedDark = safeGet('cc_dark_mode', false);
+    if (savedDark) {
+        document.body.classList.add('dark-mode');
+        const toggle = document.getElementById('sidebarDarkModeToggle');
+        if (toggle) toggle.checked = true;
+    }
+ 
+    document.getElementById('drawerNotifBadgeCount').innerText = systemNotifications.length;
+ 
+    applyBranchColorTheme(currentBranchIndex);
+    renderCategoryChips();
+    renderProductsDisplay();
+    renderRewardsDisplay();
+    renderAdminExistingRewards();
+    updateAdminHubCounters();
+    refreshFloatingCartDock();
+    enforceAuthGatekeeper();
+    updateGateUI();
+    handleUrlHashRouting();
+ 
+    try {
+        if (window.firebase && !firebase.apps.length) {
+            firebase.initializeApp(FIREBASE_CONFIG);
+            cloudDb = firebase.firestore();
+            auth = firebase.auth();
+            fns = firebase.functions();
+            auth.useDeviceLanguage();
+            auth.onAuthStateChanged(handleAuthState);
+ 
+            cloudDb.collection('catalog').doc('products_list').onSnapshot(doc => {
+                if (doc.exists && Array.isArray(doc.data().items) && doc.data().items.length > 0) {
+                    productsList = doc.data().items;
+                    safeSet('cc_catalog', productsList);
+                    renderCategoryChips();
+                    renderProductsDisplay();
+                    updateAdminHubCounters();
+                }
+            }, err => console.warn("Catalog sync err:", err));
+ 
         }
     } catch (e) {
         console.warn("Cloud init error:", e);
