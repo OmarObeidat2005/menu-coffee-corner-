@@ -155,7 +155,7 @@
         }
 
         /* =========================================================
-           تصميم لوحة دخول الإدارة الفاخرة والمنظمة (تناسق لوني وحماية قصوى)
+           تصميم لوحة دخول الإدارة الفاخرة والمنظمة
            ========================================================= */
         #adminPinModalOverlay {
             position: fixed;
@@ -377,6 +377,386 @@
             align-items: center;
             justify-content: center;
             gap: 6px;
+        }
+
+        /* =========================================================
+           المساعد الذكي حلا (صورة واقعية + نظام عرض منظم وتفاعلي)
+           ========================================================= */
+        .hala-floating-launcher {
+            position: fixed;
+            bottom: 78px;
+            left: 16px;
+            z-index: 650;
+            background: linear-gradient(135deg, #1b243b 0%, #0f172a 100%);
+            color: #ffffff;
+            border: 1.5px solid rgba(197, 155, 99, 0.6);
+            border-radius: 99px;
+            padding: 6px 14px 6px 7px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 10px 28px rgba(15, 23, 42, 0.38);
+            cursor: pointer;
+            transition: bottom 0.25s ease, transform 0.15s ease;
+        }
+        .hala-floating-launcher.lifted {
+            bottom: 146px;
+        }
+        .hala-floating-launcher:active {
+            transform: scale(0.95);
+        }
+        .hala-launcher-avatar {
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            background: #f1f5f9;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            position: relative;
+            flex-shrink: 0;
+            border: 1.5px solid #c59b63;
+        }
+        .hala-launcher-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center top;
+        }
+        .hala-online-ping {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            background: #10b981;
+            border: 1.5px solid #ffffff;
+        }
+
+        #screen-hala-ai {
+            padding-bottom: 0;
+            background: #f4f5f8;
+        }
+        body.dark-mode #screen-hala-ai {
+            background: #09090b;
+        }
+        .hala-hero-banner {
+            background: linear-gradient(160deg, #1c253c 0%, #111827 100%);
+            color: #ffffff;
+            padding: 18px 18px 50px;
+            border-bottom-left-radius: 28px;
+            border-bottom-right-radius: 28px;
+            position: relative;
+        }
+        .hala-hero-top-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 16px;
+        }
+        .hala-close-circle-btn {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.12);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+        .hala-brand-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(197, 155, 99, 0.45);
+            padding: 5px 12px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 800;
+            color: #e6c28a;
+        }
+        .hala-welcome-card {
+            background: var(--bg-surface);
+            border: 1px solid var(--border-subtle);
+            border-radius: 26px;
+            margin: -30px 16px 20px;
+            padding: 22px 18px 20px;
+            box-shadow: 0 14px 36px rgba(15, 23, 42, 0.08);
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+            min-height: calc(100vh - 175px);
+        }
+        .hala-realistic-portrait-box {
+            width: 196px;
+            height: 215px;
+            margin: 4px auto 12px;
+            border-radius: 24px;
+            background: linear-gradient(180deg, #f8fafc 0%, #eef2f6 100%);
+            border: 2px solid rgba(197, 155, 99, 0.35);
+            box-shadow: 0 14px 32px rgba(28, 37, 60, 0.12);
+            overflow: hidden;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .hala-realistic-portrait-box img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center 15%;
+        }
+        .hala-portrait-badge-tag {
+            position: absolute;
+            bottom: 8px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(28, 37, 60, 0.92);
+            backdrop-filter: blur(8px);
+            color: #e6c28a;
+            border: 1px solid rgba(197, 155, 99, 0.5);
+            font-size: 10px;
+            font-weight: 800;
+            padding: 3px 12px;
+            border-radius: 99px;
+            white-space: nowrap;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .hala-capabilities-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 7px;
+            width: 100%;
+            margin-top: 12px;
+            text-align: right;
+        }
+        .hala-cap-mini-card {
+            background: var(--bg-main);
+            border: 1px solid var(--border-subtle);
+            border-radius: 12px;
+            padding: 8px 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--text-primary);
+            cursor: pointer;
+            transition: border-color 0.15s ease;
+        }
+        .hala-cap-mini-card:active {
+            border-color: var(--brand-primary);
+        }
+        .hala-cap-icon {
+            width: 26px;
+            height: 26px;
+            border-radius: 8px;
+            background: var(--brand-primary-light);
+            color: var(--brand-primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+        .hala-start-chat-btn {
+            width: 100%;
+            background: #1c253c;
+            color: #ffffff;
+            border: none;
+            border-radius: 14px;
+            padding: 14px 18px;
+            font-family: inherit;
+            font-size: 14.5px;
+            font-weight: 800;
+            cursor: pointer;
+            box-shadow: 0 8px 20px rgba(28, 37, 60, 0.24);
+            transition: transform 0.15s ease, background 0.15s ease;
+        }
+        .hala-start-chat-btn:active {
+            transform: scale(0.98);
+        }
+
+        /* واجهة المحادثة النشطة مع حلا */
+        .hala-chat-shell {
+            display: none;
+            flex-direction: column;
+            height: 100vh;
+            background: var(--bg-main);
+        }
+        .hala-chat-shell.active {
+            display: flex;
+        }
+        .hala-chat-topbar {
+            background: linear-gradient(135deg, #1c253c 0%, #111827 100%);
+            color: #ffffff;
+            padding: 12px 14px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+            flex-shrink: 0;
+            box-shadow: 0 4px 14px rgba(0,0,0,0.12);
+        }
+        .hala-escalate-pill-btn {
+            background: rgba(239, 68, 68, 0.18);
+            border: 1px solid rgba(252, 165, 165, 0.5);
+            color: #fecaca;
+            font-family: inherit;
+            font-size: 11px;
+            font-weight: 800;
+            padding: 6px 11px;
+            border-radius: 99px;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            cursor: pointer;
+            white-space: nowrap;
+        }
+        .hala-messages-feed {
+            flex: 1;
+            overflow-y: auto;
+            padding: 14px 14px 10px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        .hala-msg-row {
+            display: flex;
+            flex-direction: column;
+            max-width: 88%;
+        }
+        .hala-msg-row.bot {
+            align-self: flex-start;
+        }
+        .hala-msg-row.user {
+            align-self: flex-end;
+        }
+        .hala-bot-header-tag {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            margin-bottom: 4px;
+            font-size: 10.5px;
+            font-weight: 800;
+            color: var(--text-secondary);
+        }
+        .hala-bot-header-tag img {
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            object-fit: cover;
+            object-position: center top;
+            border: 1px solid #c59b63;
+        }
+        .hala-msg-bubble {
+            padding: 12px 14px;
+            border-radius: 18px;
+            font-size: 12.5px;
+            line-height: 1.65;
+            word-wrap: break-word;
+        }
+        .hala-msg-row.bot .hala-msg-bubble {
+            background: var(--bg-surface);
+            color: var(--text-primary);
+            border: 1px solid var(--border-subtle);
+            border-top-right-radius: 4px;
+            box-shadow: 0 4px 14px rgba(0,0,0,0.04);
+        }
+        .hala-msg-row.user .hala-msg-bubble {
+            background: var(--brand-primary);
+            color: #ffffff;
+            border-top-left-radius: 4px;
+        }
+        .hala-structured-card {
+            background: var(--bg-main);
+            border: 1px solid var(--border-subtle);
+            border-radius: 12px;
+            padding: 10px 11px;
+            margin-top: 8px;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+        .hala-structured-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 11.5px;
+            padding-bottom: 5px;
+            border-bottom: 1px dashed var(--border-subtle);
+        }
+        .hala-structured-row:last-child {
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+        .hala-msg-meta {
+            font-size: 9.5px;
+            color: var(--text-muted);
+            margin-top: 3px;
+            padding: 0 4px;
+        }
+        .hala-quick-chips-bar {
+            display: flex;
+            gap: 6px;
+            padding: 8px 12px;
+            overflow-x: auto;
+            scrollbar-width: none;
+            background: var(--bg-main);
+            border-top: 1px solid var(--border-subtle);
+            flex-shrink: 0;
+        }
+        .hala-quick-chips-bar::-webkit-scrollbar {
+            display: none;
+        }
+        .hala-quick-chip {
+            background: var(--bg-surface);
+            border: 1px solid var(--border-strong);
+            color: var(--text-primary);
+            font-family: inherit;
+            font-size: 11px;
+            font-weight: 700;
+            padding: 6px 12px;
+            border-radius: 99px;
+            white-space: nowrap;
+            cursor: pointer;
+            flex-shrink: 0;
+        }
+        .hala-quick-chip.urgent {
+            border-color: rgba(239, 68, 68, 0.45);
+            color: var(--status-danger);
+            background: rgba(239, 68, 68, 0.05);
+        }
+        .hala-composer-bar {
+            background: var(--bg-surface);
+            border-top: 1px solid var(--border-subtle);
+            padding: 10px 12px calc(12px + env(safe-area-inset-bottom, 0px));
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-shrink: 0;
+        }
+        .hala-send-circle-btn {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            background: #1c253c;
+            color: #ffffff;
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            flex-shrink: 0;
         }
 
         /* هيدر الصفحة الرئيسية */
@@ -764,6 +1144,25 @@
         .addon-choice-row.selected {
             border-color: var(--brand-primary);
             background: var(--brand-primary-light);
+        }
+
+        /* شارة المكافأة المستبدلة في السلة */
+        .redeemed-reward-cart-card {
+            border: 1.5px solid var(--status-success) !important;
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.06) 0%, var(--bg-card) 100%) !important;
+        }
+        .redeemed-reward-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            background: rgba(16, 185, 129, 0.14);
+            color: var(--status-success);
+            border: 1px solid rgba(16, 185, 129, 0.35);
+            font-size: 9.5px;
+            font-weight: 800;
+            padding: 2px 8px;
+            border-radius: 99px;
+            margin-top: 2px;
         }
 
         /* اللوحة الجانبية */
@@ -1545,7 +1944,7 @@
             </span>
             <input type="password" inputmode="numeric" class="admin-pin-input-box" id="adminSecretPinField" placeholder="••••••••" autocomplete="off" onkeydown="if(event.key==='Enter') verifyAdminSecretPin()">
             <button type="button" class="admin-pin-eye-btn" onclick="toggleAdminPinVisibility()" aria-label="إظهار أو إخفاء الرمز">
-                <svg id="adminPinEyeIcon" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                <svg id="adminPinEyeIcon" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-4 8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
             </button>
         </div>
 
@@ -1664,6 +2063,18 @@
         <div id="mainOrganizedMenuWrapper"></div>
     </div>
 
+    <!-- زر المحادثة العائم مع المساعد الذكي حلا (بصورة واقعية) -->
+    <button type="button" class="hala-floating-launcher" id="halaFloatingTriggerBtn" onclick="openHalaAiChatScreen()" aria-label="المساعد الذكي حلا">
+        <div class="hala-launcher-avatar">
+            <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=200&q=85" alt="حلا" onerror="this.src='https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&w=200&q=85';">
+            <span class="hala-online-ping"></span>
+        </div>
+        <div style="text-align:right; padding-left:4px;">
+            <div style="font-size:11.5px; font-weight:800; line-height:1.1;">اسأل حلا</div>
+            <div style="font-size:9px; color:#e6c28a; font-weight:700;">المساعد الذكي</div>
+        </div>
+    </button>
+
     <!-- شريط السلة العائم في الصفحة الرئيسية -->
     <div class="floating-cart-summary-dock" id="floatingCartSummaryDock">
         <div>
@@ -1671,6 +2082,125 @@
             <div class="num-font" style="font-size:15.5px; font-weight:900; color:var(--brand-primary);" id="dockTotalAmountText">JOD 0.00</div>
         </div>
         <button class="btn-brand-solid" style="width:auto; padding:8px 20px; font-size:13px;" onclick="navigateRouter('screen-cart')" data-i18n="reviewCart">راجع سلتك</button>
+    </div>
+
+    <!-- =========================================================
+         شاشة المساعد الذكي حلا (صورة واقعية + معرفة شاملة + عرض منظم)
+         ========================================================= -->
+    <div id="screen-hala-ai" class="app-screen">
+        <!-- المرحلة 1: شاشة الترحيب المنظمة مع حلا -->
+        <div id="halaWelcomeStage">
+            <div class="hala-hero-banner">
+                <div class="hala-hero-top-row">
+                    <button type="button" class="hala-close-circle-btn" onclick="navigateRouter('screen-home')" aria-label="إغلاق">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                    </button>
+                    <div class="hala-brand-pill">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M18 8h1a4 4 0 0 1 0 8h-1"></path><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"></path></svg>
+                        <span>COFFEE CORNER AI</span>
+                    </div>
+                </div>
+                <h2 style="font-size:21px; font-weight:800; text-align:right; padding-right:4px;">أهلاً بكم في كافيه كورنر</h2>
+                <div style="font-size:11.5px; color:#cbd5e1; margin-top:3px; padding-right:4px;">خدمة العملاء الذكية الفورية على مدار الساعة</div>
+            </div>
+
+            <div class="hala-welcome-card">
+                <div style="width:100%;">
+                    <!-- صورة واقعية احترافية للمساعدة حلا -->
+                    <div class="hala-realistic-portrait-box">
+                        <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=500&q=90" alt="حلا — المساعد الذكي لكافيه كورنر" onerror="this.src='https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&w=500&q=90';">
+                        <span class="hala-portrait-badge-tag">
+                            <span style="width:7px; height:7px; border-radius:50%; background:#10b981; display:inline-block;"></span>
+                            <span>حلا • مستشارة الخدمة الذكية</span>
+                        </span>
+                    </div>
+
+                    <div style="font-size:16px; font-weight:800; color:var(--text-primary); margin-top:6px;">
+                        'للبدء، يرجى اختيار 'محادثة جديدة!'
+                    </div>
+                    <p style="font-size:11.5px; color:var(--text-secondary); margin-top:4px; line-height:1.5;">
+                        مُلمّة بكامل أصناف المنيو، الأسعار، النكهات، الفروع، مناطق التوصيل، نقاطك، وتتبع طلباتك لحظة بلحظة.
+                    </p>
+
+                    <div class="hala-capabilities-grid">
+                        <div class="hala-cap-mini-card" onclick="startNewHalaConversationWithPrompt('استعراض كامل المنيو والأسعار')">
+                            <span class="hala-cap-icon">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M18 8h1a4 4 0 0 1 0 8h-1"></path><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"></path></svg>
+                            </span>
+                            <span>المنيو والأسعار</span>
+                        </div>
+                        <div class="hala-cap-mini-card" onclick="startNewHalaConversationWithPrompt('تتبع طلبي الحالي')">
+                            <span class="hala-cap-icon">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                            </span>
+                            <span>تتبع طلبي</span>
+                        </div>
+                        <div class="hala-cap-mini-card" onclick="startNewHalaConversationWithPrompt('مناطق وأسعار التوصيل والفروع')">
+                            <span class="hala-cap-icon">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+                            </span>
+                            <span>التوصيل والفروع</span>
+                        </div>
+                        <div class="hala-cap-mini-card" onclick="startNewHalaConversationWithPrompt('تفاصيل نقاطي والمكافآت وكود الدعوة')">
+                            <span class="hala-cap-icon">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                            </span>
+                            <span>النقاط والمكافآت</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="width:100%; margin-top:16px;">
+                    <button type="button" class="hala-start-chat-btn" onclick="startNewHalaConversation()">محادثة جديدة</button>
+                    <button type="button" class="btn-brand-outline" style="width:100%; margin-top:8px; font-size:12px;" onclick="escalateHalaToHumanAgent('طلب التحدث المباشر مع موظف خدمة العملاء')">
+                        التحدث مباشرة مع موظف (قسم الشكاوى)
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- المرحلة 2: نافذة المحادثة المباشرة بالذكاء الاصطناعي -->
+        <div id="halaActiveChatStage" class="hala-chat-shell">
+            <div class="hala-chat-topbar">
+                <div style="display:flex; align-items:center; gap:9px;">
+                    <button type="button" class="hala-close-circle-btn" style="width:34px; height:34px;" onclick="resetHalaWelcomeStage()" aria-label="رجوع">
+                        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                    </button>
+                    <div class="hala-launcher-avatar" style="width:38px; height:38px; border:1.5px solid #c59b63;">
+                        <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=200&q=85" alt="حلا" onerror="this.src='https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&w=200&q=85';">
+                        <span class="hala-online-ping"></span>
+                    </div>
+                    <div>
+                        <div style="font-size:13.5px; font-weight:800;">حلا — المساعد الذكي</div>
+                        <div style="font-size:10px; color:#a7f3d0;">متصلة الآن • مُدرّبة على كامل نظام المتجر</div>
+                    </div>
+                </div>
+
+                <button type="button" class="hala-escalate-pill-btn" onclick="escalateHalaToHumanAgent('طلب العميل التحدث مع موظف من خلال المساعد الذكي حلا')">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                    <span>التحدث مع موظف</span>
+                </button>
+            </div>
+
+            <div class="hala-messages-feed" id="halaMessagesContainer"></div>
+
+            <div class="hala-quick-chips-bar">
+                <button type="button" class="hala-quick-chip" onclick="sendHalaQuickPrompt('تتبع طلبي الحالي')">تتبع طلبي الحالي</button>
+                <button type="button" class="hala-quick-chip" onclick="sendHalaQuickPrompt('استعراض كامل المنيو والأسعار')">المنيو والأسعار</button>
+                <button type="button" class="hala-quick-chip" onclick="sendHalaQuickPrompt('مناطق وأسعار التوصيل والفروع')">مناطق التوصيل</button>
+                <button type="button" class="hala-quick-chip" onclick="sendHalaQuickPrompt('النكهات والإضافات المتوفرة')">النكهات والإضافات</button>
+                <button type="button" class="hala-quick-chip" onclick="sendHalaQuickPrompt('تفاصيل نقاطي والمكافآت وكود الدعوة')">نقاطي والمكافآت</button>
+                <button type="button" class="hala-quick-chip" onclick="sendHalaQuickPrompt('طرق الدفع وأكواد الخصم')">طرق الدفع والكوبونات</button>
+                <button type="button" class="hala-quick-chip urgent" onclick="sendHalaQuickPrompt('بدي أتحدث مع موظف')">التحدث مع موظف</button>
+            </div>
+
+            <div class="hala-composer-bar">
+                <input type="text" class="ios-input-field" id="halaUserTextInput" placeholder="اسأل حلا عن أي صنف، سعر، توصيل، نقاط، أو طلبك..." style="border-radius:99px; padding:10px 16px;" onkeydown="if(event.key==='Enter') submitHalaUserMessage()">
+                <button type="button" class="hala-send-circle-btn" onclick="submitHalaUserMessage()" aria-label="إرسال">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
+                </button>
+            </div>
+        </div>
     </div>
 
     <!-- 2. شاشة تتبع طلبي المباشر -->
@@ -1744,7 +2274,7 @@
         </div>
     </div>
 
-    <!-- 5. واجهة متجر النقاط والمكافآت -->
+    <!-- 5. واجهة متجر النقاط والمكافآت (التحويل المباشر للسلة بسعر 0.00 د.أ عند الاستبدال) -->
     <div id="screen-rewards" class="app-screen">
         <header class="header">
             <button class="header-btn" onclick="navigateRouter('screen-home')" aria-label="عودة">
@@ -1758,13 +2288,16 @@
             <div class="clean-card" style="text-align:center;">
                 <div style="font-size:11.5px; color:var(--text-secondary);">رصيد النقاط المتاحة للاستبدال</div>
                 <div class="num-font" style="font-size:28px; font-weight:900; color:var(--brand-primary); margin:4px 0;" id="rewardScreenPointsNum">0</div>
-                <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-top:10px;">
+                <div style="font-size:10.5px; color:var(--status-success); font-weight:700; margin-bottom:8px;">
+                    عند استبدال أي صنف أو هدية من المحل، يتم تحويلها مباشرة إلى سلتك بسعر 0.00 د.أ!
+                </div>
+                <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-top:6px;">
                     <button class="btn-brand-outline" onclick="navigateRouter('screen-loyalty-tiers')">عرض المهام</button>
                     <button class="btn-brand-outline" onclick="navigateRouter('screen-loyalty-tiers')">سجل النقاط</button>
                 </div>
             </div>
 
-            <div class="clean-title">الهدايا والمكافآت المتاحة</div>
+            <div class="clean-title">الهدايا وأصناف المحل المتاحة للاستبدال</div>
             <div id="clientRewardItemsCatalogList"></div>
         </div>
     </div>
@@ -1964,8 +2497,25 @@
             <div style="width:38px;"></div>
         </header>
         <div class="scrollable-content">
+            <!-- بطاقة المساعد الذكي حلا للحل الفوري قبل رفع الشكوى -->
+            <div class="clean-card" style="background:linear-gradient(135deg, #1c253c 0%, #0f172a 100%); color:#ffffff; border-color:#c59b63;">
+                <div style="display:flex; align-items:center; justify-content:space-between; gap:10px;">
+                    <div style="display:flex; align-items:center; gap:10px;">
+                        <div class="hala-launcher-avatar" style="width:42px; height:42px; border:1.5px solid #c59b63;">
+                            <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=200&q=85" alt="حلا" onerror="this.src='https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&w=200&q=85';">
+                            <span class="hala-online-ping"></span>
+                        </div>
+                        <div>
+                            <div style="font-size:13px; font-weight:800; color:#e6c28a;">تحتاج رداً فورياً؟ اسأل حلا الآن</div>
+                            <div style="font-size:10.5px; color:#cbd5e1;">المساعد الذكي يجيبك فوراً أو يحوّلك لموظف</div>
+                        </div>
+                    </div>
+                    <button type="button" class="btn-brand-solid" style="width:auto; padding:7px 12px; font-size:11px; background:#c59b63; color:#09090b;" onclick="openHalaAiChatScreen()">محادثة حلا</button>
+                </div>
+            </div>
+
             <div class="clean-card">
-                <div class="clean-title">إرسال شكوى أو اقتراح للفرع المختص</div>
+                <div class="clean-title">إرسال شكوى أو اقتراح لموظف الفرع المختص</div>
                 <div style="display:flex; flex-direction:column; gap:8px;">
                     <div>
                         <label style="font-size:11px; font-weight:700; display:block; margin-bottom:3px;">الفرع المعني بالملاحظة:</label>
@@ -1975,11 +2525,11 @@
                         </select>
                     </div>
                     <select class="ios-input-field" id="customerFbCategory">
+                        <option value="شكوى بخصوص طلب">شكوى بخصوص طلب / التحدث مع موظف</option>
                         <option value="اقتراح تطويري">اقتراح تطويري</option>
-                        <option value="شكوى بخصوص طلب">شكوى بخصوص طلب</option>
                         <option value="ملاحظة على الجودة">ملاحظة على الجودة والخدمة</option>
                     </select>
-                    <textarea class="ios-textarea-field" id="customerFbText" placeholder="اكتب تفاصيل رسالتك هنا..."></textarea>
+                    <textarea class="ios-textarea-field" id="customerFbText" placeholder="اكتب تفاصيل رسالتك أو طلبك ليقوم الموظف بالرد عليك..."></textarea>
                     <button class="btn-brand-solid" onclick="submitCustomerFeedback()">إرسال للفرع والإدارة</button>
                 </div>
             </div>
@@ -2000,7 +2550,6 @@
         </header>
 
         <div class="scrollable-content">
-            <!-- مؤشرات أداء الفرع المستقلة -->
             <div style="display:grid; grid-template-columns:repeat(3, 1fr); gap:6px; margin-bottom:10px;">
                 <div class="clean-card" style="text-align:center; padding:10px 6px; margin:0;">
                     <div style="font-size:10px; color:var(--text-secondary);">طلبات اليوم</div>
@@ -2016,7 +2565,6 @@
                 </div>
             </div>
 
-            <!-- زر قفل حسابات اليوم وإصدار الفاتورة اليومية للفرع -->
             <button class="btn-brand-solid" style="margin-bottom:12px; font-size:12px; background:#18181b;" onclick="openBranchIsolatedDailyClosing()">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#c59b63" stroke-width="2.2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
                 <span>قفل حسابات الفرع اليومي وإصدار فاتورة المبيعات</span>
@@ -2262,9 +2810,7 @@
                 </div>
             </div>
 
-            <!-- =========================================================
-                 اللوحة الفرعية الجديدة: إدارة مناطق وأسعار التوصيل المنفصلة لكل فرع
-                 ========================================================= -->
+            <!-- اللوحة الفرعية: إدارة مناطق وأسعار التوصيل المنفصلة لكل فرع -->
             <div id="adminPanel-deliveryZones" class="admin-sub-panel">
                 <div class="admin-panel-topbar">
                     <button class="btn-brand-outline" style="padding:5px 10px; font-size:11px;" onclick="backToAdminHub()">→ الرئيسية</button>
@@ -2272,7 +2818,6 @@
                     <div style="width:45px;"></div>
                 </div>
 
-                <!-- اختيار الفرع لإدارة مناطقه بشكل مستقل -->
                 <div class="fulfillment-bar" style="margin:0 0 12px 0;">
                     <button class="fulfillment-tab-btn active" id="admZoneBranchTab_0" onclick="selectAdminZoneBranch(0)">مناطق فرع كفرسوم</button>
                     <button class="fulfillment-tab-btn" id="admZoneBranchTab_1" onclick="selectAdminZoneBranch(1)">مناطق فرع سما الروسان</button>
@@ -2678,12 +3223,12 @@
                 </div>
 
                 <div class="clean-card">
-                    <div class="clean-title">إضافة مكافأة لمتجر النقاط</div>
+                    <div class="clean-title">إضافة مكافأة / صنف من المحل لمتجر النقاط</div>
                     <div style="display:flex; flex-direction:column; gap:8px;">
-                        <input type="text" class="ios-input-field" id="admNewRewardName" placeholder="اسم الهدية / المكافأة">
+                        <input type="text" class="ios-input-field" id="admNewRewardName" placeholder="اسم الصنف أو الهدية (مثال: وافل نوتيلا مجاني)">
                         <input type="number" class="ios-input-field num-font" id="admNewRewardPoints" placeholder="النقاط المطلوبة للاستبدال">
-                        <input type="text" class="ios-input-field" id="admNewRewardImg" placeholder="رابط صورة الهدية (اختياري)">
-                        <button class="btn-brand-solid" onclick="saveNewRewardItemFromAdmin()">إضافة الهدية فوراً</button>
+                        <input type="text" class="ios-input-field" id="admNewRewardImg" placeholder="رابط صورة الصنف أو الهدية (اختياري)">
+                        <button class="btn-brand-solid" onclick="saveNewRewardItemFromAdmin()">إضافة المكافأة فوراً (تُضاف للسلة بـ 0 د.أ عند الاستبدال)</button>
                     </div>
                     <div class="clean-title" style="margin-top:12px;">المكافآت الحالية:</div>
                     <div id="admExistingRewardsList"></div>
@@ -3099,16 +3644,13 @@
         </div>
     </div>
 
-    <!-- =========================================================
-         نافذة تعديل الحساب الشاملة + تأكيد البريد بالرمز + مهمة إكمال الملف الشخصي (150 نقطة)
-         ========================================================= -->
+    <!-- نافذة تعديل الحساب الشاملة + تأكيد البريد بالرمز + مهمة إكمال الملف الشخصي (150 نقطة) -->
     <div id="modalEditAccountComprehensive" style="display:none; position:fixed; inset:0; background:var(--bg-surface); z-index:99995; overflow-y:auto; padding:16px 16px 35px;">
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
             <strong style="font-size:16px;">تعديل وتوثيق الملف الشخصي</strong>
             <button onclick="closeEditAccountModal()" style="background:none; border:none; font-size:18px; cursor:pointer;">✕</button>
         </div>
 
-        <!-- بطاقة مهمة إكمال الملف الشخصي (150 نقطة) -->
         <div class="profile-mission-card" id="editAccountCompletionMissionBox">
             <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:6px;">
                 <div style="display:flex; align-items:center; gap:8px;">
@@ -3159,7 +3701,6 @@
                 </div>
             </div>
 
-            <!-- قسم البريد الإلكتروني وتفعيله عن طريق رمز التحقق (OTP) -->
             <div style="border:1px solid var(--border-subtle); border-radius:var(--radius-md); padding:10px 12px; background:var(--bg-card);">
                 <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
                     <label style="font-size:11.5px; font-weight:800;">البريد الإلكتروني وتفعيله <span style="color:var(--status-danger);">*</span></label>
@@ -3170,7 +3711,6 @@
                     <button type="button" class="btn-brand-solid" id="btnSendEmailOtp" style="width:auto; padding:0 12px; font-size:11px; white-space:nowrap;" onclick="sendEmailVerificationOtp()">إرسال الرمز</button>
                 </div>
 
-                <!-- صندوق إدخال رمز التأكيد المرسل للبريد -->
                 <div class="otp-verify-panel" id="emailOtpVerificationBox" style="display:none;">
                     <div style="font-size:11px; font-weight:700; color:var(--text-primary); margin-bottom:4px;">
                         أدخل رمز التأكيد المكوّن من 6 أرقام المرسل إلى بريدك الإلكتروني:
@@ -3289,8 +3829,8 @@
             <p style="font-size:12px; color:var(--text-secondary); line-height:1.6; margin-bottom:14px;">
                 1. اختر فرعك المفضل (كفرسوم أو سما الروسان) واستمتع بهوية لونية خاصة لكل فرع.<br>
                 2. أكمل ملفك الشخصي وأكّد بريدك الإلكتروني لتحصل فوراً على 150 نقطة مكافأة.<br>
-                3. خصّص طلبك من الوافل والكريب والبان كيك والكنافة والمشروبات مع النكهات والإضافات.<br>
-                4. تابع حالة تجهيز طلبك وتوصيله لحظة بلحظة في شاشة تتبع طلبي المباشر.
+                3. عند استبدال أي صنف من متجر المكافآت، يُضاف مباشرة إلى سلتك بسعر 0.00 د.أ.<br>
+                4. اسأل المساعد الذكي حلا في أي وقت عن الطلبات، التوصيل، النقاط، أو المنيو.
             </p>
             <button class="btn-brand-solid" onclick="document.getElementById('modalAppIntroTour').style.display='none'">فهمت، لنبدأ التجربة</button>
         </div>
@@ -3306,9 +3846,9 @@
             <p style="font-size:11.5px; color:var(--text-secondary); line-height:1.7;">
                 • جميع الطلبات تُحضّر طازجة فور تأكيدها في الفرع المختار.<br>
                 • تُحتسب نقاط الولاء تلقائياً في رصيد العميل فور إصدار الفاتورة.<br>
+                • عند استبدال أي صنف من متجر المكافآت بالنقاط، يتم تحويله مباشرة إلى سلة الشراء بسعر 0.00 د.أ لإتمام طلبه.<br>
                 • نقاط إكمال الملف الشخصي (150 نقطة) تُمنح مرة واحدة فور استكمال كافة البيانات وتأكيد البريد الإلكتروني.<br>
-                • نقاط دعوة الصديق تُضاف للطرفين بعد إتمام المدعو لأول عملية شراء ناجحة.<br>
-                • بيانات العملاء وأرقام الهواتف محمية ومعزولة تماماً وتُستخدم حصرياً لتنفيذ الطلبات وبرامج الولاء.
+                • نقاط دعوة الصديق تُضاف للطرفين بعد إتمام المدعو لأول عملية شراء ناجحة.
             </p>
         </div>
     </div>
@@ -3505,6 +4045,14 @@
         <span style="color:var(--text-muted);">‹</span>
     </div>
 
+    <div class="drawer-item-row" onclick="openHalaAiChatScreen(); closeSidebarDrawer();">
+        <div class="drawer-item-left">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--brand-primary)" stroke-width="2.2"><path d="M12 2a10 10 0 0 1 10 10c0 5.52-4.48 10-10 10H2l2.93-2.93A9.96 9.96 0 0 1 2 12 10 10 0 0 1 12 2z"></path><circle cx="9" cy="12" r="1"></circle><circle cx="15" cy="12" r="1"></circle></svg>
+            <span style="font-weight:800; color:var(--brand-primary);" data-i18n="menuHalaAi">المساعد الذكي حلا</span>
+        </div>
+        <span style="background:#10b981; color:#fff; font-size:9.5px; font-weight:800; padding:2px 7px; border-radius:99px;">متصل</span>
+    </div>
+
     <div class="drawer-item-row" onclick="navigateRouter('screen-feedback'); closeSidebarDrawer();">
         <div class="drawer-item-left">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
@@ -3552,6 +4100,8 @@ const FIREBASE_CONFIG = {
 
 let cloudDb = null;
 
+const HALA_REALISTIC_PORTRAIT_URL = "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=300&q=85";
+
 const NO_SIZE_CATEGORIES = ["وافل", "كريب", "بان كيك", "كنافة"];
 
 const I18N_DICTIONARY = {
@@ -3589,6 +4139,7 @@ const I18N_DICTIONARY = {
         menuLanguage: "اللغة",
         menuIntroTour: "جولة التعريف",
         menuTerms: "الشروط والأحكام",
+        menuHalaAi: "المساعد الذكي حلا",
         menuHelpSupport: "المساعدة والدعم",
         menuEditProfile: "تعديل الملف الشخصي",
         menuLogout: "تسجيل الخروج",
@@ -3628,6 +4179,7 @@ const I18N_DICTIONARY = {
         menuLanguage: "Language",
         menuIntroTour: "Intro Tour",
         menuTerms: "Terms & Conditions",
+        menuHalaAi: "Hala AI Assistant",
         menuHelpSupport: "Help & Support",
         menuEditProfile: "Edit Profile",
         menuLogout: "Sign Out",
@@ -3682,9 +4234,11 @@ const DEFAULT_FLAVORS = [
 ];
 
 const DEFAULT_REWARDS = [
-    { id: "rw1", name: "حقيبة ظهر رياضية كافيه كورنر", points: 3103, img: "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=400&q=80" },
-    { id: "rw2", name: "وافل نوتيلا بلجيكي مجاني", points: 50, img: "https://images.unsplash.com/photo-1562376552-0d160a2f238d?w=400&q=80" },
-    { id: "rw3", name: "كوب حافظ للحرارة ستانلس ستيل", points: 1200, img: "https://images.unsplash.com/photo-1517256064527-09c73fc73e38?w=400&q=80" }
+    { id: "rw1", name: "وافل بلجيكي مقرمش (مكافأة مجانية)", points: 50, img: "https://images.unsplash.com/photo-1562376552-0d160a2f238d?w=400&q=80", isStoreItem: true },
+    { id: "rw2", name: "سبانش لاتيه مثلج فاخر (مكافأة مجانية)", points: 65, img: "https://images.unsplash.com/photo-1517701550927-30cf4be1aaf9?w=400&q=80", isStoreItem: true },
+    { id: "rw3", name: "كريب رول فرنسي فاخر (مكافأة مجانية)", points: 80, img: "https://images.unsplash.com/photo-1519676867240-f03562e64548?w=400&q=80", isStoreItem: true },
+    { id: "rw4", name: "كوب حافظ للحرارة ستانلس ستيل", points: 1200, img: "https://images.unsplash.com/photo-1517256064527-09c73fc73e38?w=400&q=80", isStoreItem: true },
+    { id: "rw5", name: "حقيبة ظهر رياضية كافيه كورنر", points: 3103, img: "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=400&q=80", isStoreItem: true }
 ];
 
 const DEFAULT_PAYMENT_METHODS = [
@@ -3849,6 +4403,444 @@ let activeDossierCustomerPhone = null;
 let pendingDailyClosingDraft = null;
 let lockSessionOnClosingModalClose = false;
 let pendingEmailVerificationOtp = null;
+
+/* =========================================================
+   المساعد الذكي حلا (معرفة شاملة بكل تفاصيل الموقع + عرض منظم)
+   ========================================================= */
+let halaChatHistory = [];
+
+window.openHalaAiChatScreen = function() {
+    navigateRouter('screen-hala-ai');
+    if (halaChatHistory.length === 0) {
+        resetHalaWelcomeStage();
+    } else {
+        document.getElementById('halaWelcomeStage').style.display = 'none';
+        document.getElementById('halaActiveChatStage').classList.add('active');
+    }
+};
+
+window.resetHalaWelcomeStage = function() {
+    document.getElementById('halaWelcomeStage').style.display = 'block';
+    document.getElementById('halaActiveChatStage').classList.remove('active');
+};
+
+window.startNewHalaConversation = function() {
+    halaChatHistory = [];
+    document.getElementById('halaMessagesContainer').innerHTML = '';
+    document.getElementById('halaWelcomeStage').style.display = 'none';
+    document.getElementById('halaActiveChatStage').classList.add('active');
+
+    const userName = activeCustomer ? activeCustomer.name.split(' ')[0] : 'ضيفنا الكريم';
+    const currentBranch = branchesContacts[currentBranchIndex] || branchesContacts[0];
+    const pts = activeCustomer ? (activeCustomer.points || 0) : 0;
+
+    const welcomeIntro = `أهلاً بك يا ${userName} في كافيه كورنر. أنا حلا، مستشارتك الذكية في المتجر.`;
+    const structuredCard = `
+        <div class="hala-structured-card">
+            <div class="hala-structured-row">
+                <span style="color:var(--text-secondary);">الفرع المختار حالياً:</span>
+                <strong style="color:var(--brand-primary);">${currentBranch.name}</strong>
+            </div>
+            <div class="hala-structured-row">
+                <span style="color:var(--text-secondary);">رصيد نقاطك المتاحة:</span>
+                <strong class="num-font">${pts} نقطة</strong>
+            </div>
+            <div class="hala-structured-row">
+                <span style="color:var(--text-secondary);">الأصناف المتوفرة:</span>
+                <strong class="num-font">${productsList.filter(p => p.isAvailable !== false).length} صنف طازج</strong>
+            </div>
+        </div>
+        <div style="margin-top:6px; font-size:11.5px; color:var(--text-secondary);">
+            اسألني عن أي صنف أو سعر، النكهات والإضافات، مناطق ورسوم التوصيل، نقاطك والمكافآت، تتبع طلبك، أو اطلب التحدث مع موظف في أي وقت.
+        </div>
+    `;
+
+    appendHalaChatMessage('bot', welcomeIntro, '', structuredCard);
+    playSoftFeedbackTone(740);
+};
+
+window.startNewHalaConversationWithPrompt = function(initialPrompt) {
+    startNewHalaConversation();
+    setTimeout(() => {
+        sendHalaQuickPrompt(initialPrompt);
+    }, 180);
+};
+
+function normalizeArabicForAi(text) {
+    return String(text || '')
+        .toLowerCase()
+        .replace(/[\u064B-\u065F]/g, '')
+        .replace(/[أإآ]/g, 'ا')
+        .replace(/ة/g, 'ه')
+        .replace(/ى/g, 'ي')
+        .trim();
+}
+
+function appendHalaChatMessage(sender, text, actionButtonsHtml = '', structuredHtml = '') {
+    const feed = document.getElementById('halaMessagesContainer');
+    if (!feed) return;
+
+    const nowTime = new Date().toLocaleTimeString('ar-JO', { hour: '2-digit', minute: '2-digit' });
+    halaChatHistory.push({ sender, text, time: nowTime });
+
+    const row = document.createElement('div');
+    row.className = `hala-msg-row ${sender}`;
+    const formattedHtml = sanitizeText(text).replace(/\n/g, '<br>');
+
+    const botTagHtml = sender === 'bot' ? `
+        <div class="hala-bot-header-tag">
+            <img src="${HALA_REALISTIC_PORTRAIT_URL}" alt="حلا" onerror="this.style.display='none';">
+            <span>حلا • المساعد الذكي</span>
+        </div>
+    ` : '';
+
+    row.innerHTML = `
+        ${botTagHtml}
+        <div class="hala-msg-bubble">
+            <div>${formattedHtml}</div>
+            ${structuredHtml || ''}
+            ${actionButtonsHtml ? `<div style="margin-top:9px; display:flex; flex-wrap:wrap; gap:6px;">${actionButtonsHtml}</div>` : ''}
+        </div>
+        <div class="hala-msg-meta num-font">${nowTime}</div>
+    `;
+    feed.appendChild(row);
+    feed.scrollTop = feed.scrollHeight;
+}
+
+window.sendHalaQuickPrompt = function(promptText) {
+    const inp = document.getElementById('halaUserTextInput');
+    if (inp) inp.value = promptText;
+    submitHalaUserMessage();
+};
+
+window.submitHalaUserMessage = function() {
+    const inp = document.getElementById('halaUserTextInput');
+    const rawText = (inp?.value || '').trim();
+    if (!rawText) return;
+
+    inp.value = '';
+    appendHalaChatMessage('user', rawText);
+    playSoftFeedbackTone(640);
+
+    const feed = document.getElementById('halaMessagesContainer');
+    const typingEl = document.createElement('div');
+    typingEl.className = 'hala-msg-row bot';
+    typingEl.id = 'halaTypingBubble';
+    typingEl.innerHTML = `
+        <div class="hala-bot-header-tag">
+            <img src="${HALA_REALISTIC_PORTRAIT_URL}" alt="حلا" onerror="this.style.display='none';">
+            <span>حلا تبحث وتجهز الرد...</span>
+        </div>
+        <div class="hala-msg-bubble" style="color:var(--text-muted); font-size:11.5px;">جاري مراجعة بيانات المتجر والمنيو...</div>
+    `;
+    feed.appendChild(typingEl);
+    feed.scrollTop = feed.scrollHeight;
+
+    setTimeout(() => {
+        document.getElementById('halaTypingBubble')?.remove();
+        const aiResult = generateHalaIntelligentReply(rawText);
+        appendHalaChatMessage('bot', aiResult.reply, aiResult.actionsHtml || '', aiResult.structuredHtml || '');
+        playSoftFeedbackTone(780);
+    }, 420);
+};
+
+function generateHalaIntelligentReply(rawUserInput) {
+    const q = normalizeArabicForAi(rawUserInput);
+    const availProducts = productsList.filter(p => p.isAvailable !== false);
+
+    // 1. نية التحدث مع موظف أو تقديم شكوى
+    const humanKeywords = ['موظف', 'بشري', 'انسان', 'خدمه عملاء', 'شكوى', 'شكوي', 'اشتكي', 'مشكله', 'تاخير', 'تاخر', 'غلط', 'ناقص', 'مدير', 'مسؤول', 'agent', 'human', 'support', 'complaint', 'staff'];
+    if (humanKeywords.some(kw => q.includes(kw))) {
+        const safeSummary = rawUserInput.replace(/'/g, '');
+        return {
+            reply: "أعتذر منك عن أي إزعاج، يسعدني تحويلك مباشرة إلى قسم الشكاوى والدعم ليقوم موظف الفرع المختص بالتواصل معك وحل موضوعك فوراً.",
+            structuredHtml: `
+                <div class="hala-structured-card">
+                    <div class="hala-structured-row">
+                        <span>الفرع المستلم للرسالة:</span>
+                        <strong style="color:var(--brand-primary);">${branchesContacts[currentBranchIndex]?.name || 'فرع كفرسوم'}</strong>
+                    </div>
+                    <div class="hala-structured-row">
+                        <span>حالة التذكرة:</span>
+                        <strong style="color:var(--status-success);">جاهزة للإرسال الفوري للموظف</strong>
+                    </div>
+                </div>
+            `,
+            actionsHtml: `
+                <button type="button" class="btn-brand-solid" style="padding:7px 12px; font-size:11.5px;" onclick="escalateHalaToHumanAgent('${safeSummary}')">
+                    التحويل الآن إلى موظف (قسم الشكاوى)
+                </button>
+            `
+        };
+    }
+
+    // 2. نية تتبع الطلب الحالي أو الفواتير
+    const orderKeywords = ['طلب', 'طلبي', 'تتبع', 'وصل', 'وين', 'متي', 'حاله', 'فاتوره', 'track', 'order', 'invoice'];
+    if (orderKeywords.some(kw => q.includes(kw))) {
+        if (!activeCustomer) {
+            return {
+                reply: "لمتابعة طلبك المباشر أو استعراض فواتيرك، يرجى تسجيل الدخول بحسابك أولاً وسأعرض لك التفاصيل فوراً.",
+                actionsHtml: `<button type="button" class="btn-brand-solid" style="padding:6px 12px; font-size:11px;" onclick="enforceAuthGatekeeper(true)">تسجيل الدخول</button>`
+            };
+        }
+        const myOrders = activeOrdersList.filter(o => o.customerPhone === activeCustomer.phone);
+        if (myOrders.length === 0) {
+            return {
+                reply: `لا يوجد لديك أي طلب نشط قيد التنفيذ حالياً يا ${activeCustomer.name.split(' ')[0]}. يمكنك الطلب الآن من المنيو وسأتابع طلبك معك لحظة بلحظة!`,
+                actionsHtml: `<button type="button" class="btn-brand-solid" style="padding:6px 12px; font-size:11px;" onclick="navigateRouter('screen-home')">تصفح المنيو</button>`
+            };
+        }
+        const ord = myOrders[0];
+        const statusAr = {
+            pending: "تم استلام الطلب وبانتظار موافقة الفرع",
+            preparing: "قيد التحضير والتجهيز داخل الفرع حالياً",
+            ready: ord.mode === 'pickup' ? "جاهز للاستلام من الفرع الآن" : "خرج مع كابتن التوصيل وهو في الطريق إليك",
+            completed: "مكتمل وتم التسليم بنجاح",
+            cancelled: "تم إلغاء الطلب"
+        };
+        return {
+            reply: `إليك التحديث المباشر لطلبك الأخير في ${ord.branchName}:`,
+            structuredHtml: `
+                <div class="hala-structured-card">
+                    <div class="hala-structured-row"><span>رقم الطلب:</span><strong class="num-font" style="color:var(--brand-primary);">${ord.orderId}</strong></div>
+                    <div class="hala-structured-row"><span>الحالة الحالية:</span><strong style="color:var(--status-success);">${statusAr[ord.status] || ord.status}</strong></div>
+                    <div class="hala-structured-row"><span>الإجمالي وطريقة الدفع:</span><strong class="num-font">${ord.total} د.أ (${ord.paymentMethod})</strong></div>
+                    <div class="hala-structured-row"><span>المنطقة / الاستلام:</span><strong>${ord.town}</strong></div>
+                </div>
+            `,
+            actionsHtml: `
+                <button type="button" class="btn-brand-solid" style="padding:6px 12px; font-size:11px;" onclick="navigateRouter('screen-order-tracking')">شاشة التتبع المباشر</button>
+                <button type="button" class="btn-brand-outline" style="padding:6px 12px; font-size:11px;" onclick="openOfficialInvoiceModal('${ord.orderId}')">عرض الفاتورة</button>
+                <button type="button" class="btn-brand-outline" style="padding:6px 12px; font-size:11px;" onclick="escalateHalaToHumanAgent('متابعة أو استفسار بخصوص الطلب رقم ${ord.orderId}')">تواصل مع موظف</button>
+            `
+        };
+    }
+
+    // 3. نية مناطق وأسعار التوصيل والفروع وأرقام الهواتف
+    const deliveryKeywords = ['توصيل', 'مناطق', 'منطقه', 'رسوم', 'اجره', 'كفرسوم', 'سما', 'حبراص', 'سحم', 'حاتم', 'ابدر', 'ملك', 'عقربا', 'يبلا', 'حرثا', 'رفيد', 'خرابش', 'فرع', 'فروع', 'عنوان', 'موقع', 'رقم', 'واتساب', 'delivery', 'branch'];
+    if (deliveryKeywords.some(kw => q.includes(kw))) {
+        let matchedRows = "";
+        branchesContacts.forEach(br => {
+            (br.zonesList || []).forEach(z => {
+                if (z.active !== false && q.includes(normalizeArabicForAi(z.name))) {
+                    const feeStr = Number(z.fee) === 0 ? 'مجاناً (0.00 د.أ)' : `${Number(z.fee).toFixed(2)} د.أ`;
+                    matchedRows += `
+                        <div class="hala-structured-row">
+                            <span><strong>${z.name}</strong> (${br.name})</span>
+                            <strong class="num-font" style="color:var(--brand-primary);">${feeStr} • ${z.eta || '20-30 د'}</strong>
+                        </div>
+                    `;
+                }
+            });
+        });
+
+        if (matchedRows) {
+            return {
+                reply: "تفاصيل التوصيل للمنطقة التي سألت عنها:",
+                structuredHtml: `<div class="hala-structured-card">${matchedRows}</div>`,
+                actionsHtml: `<button type="button" class="btn-brand-solid" style="padding:6px 12px; font-size:11px;" onclick="navigateRouter('screen-home')">ابدأ الطلب الآن</button>`
+            };
+        }
+
+        const b0 = branchesContacts[0];
+        const b1 = branchesContacts[1];
+        const b0Zones = (b0?.zonesList || []).filter(z => z.active !== false).map(z => `${z.name} (${Number(z.fee).toFixed(2)} د.أ)`).join('، ');
+        const b1Zones = (b1?.zonesList || []).filter(z => z.active !== false).map(z => `${z.name} (${Number(z.fee).toFixed(2)} د.أ)`).join('، ');
+
+        return {
+            reply: "نخدمكم بكل سرور عبر فرعينا المعتمدين في كافيه كورنر (مع إمكانية الاستلام المباشر من الفرع مجاناً):",
+            structuredHtml: `
+                <div class="hala-structured-card">
+                    <div class="hala-structured-row" style="flex-direction:column; align-items:flex-start; gap:3px;">
+                        <strong style="color:#991b1b;">1. ${b0?.name} (${b0?.address || ''})</strong>
+                        <span style="font-size:10.5px; color:var(--text-secondary);">المناطق: ${b0Zones}</span>
+                        <span class="num-font" style="font-size:10px; color:var(--text-muted);">هاتف/واتساب: ${b0?.whatsapp}</span>
+                    </div>
+                    <div class="hala-structured-row" style="flex-direction:column; align-items:flex-start; gap:3px;">
+                        <strong style="color:#2d6a4f;">2. ${b1?.name} (${b1?.address || ''})</strong>
+                        <span style="font-size:10.5px; color:var(--text-secondary);">المناطق: ${b1Zones}</span>
+                        <span class="num-font" style="font-size:10px; color:var(--text-muted);">هاتف/واتساب: ${b1?.whatsapp}</span>
+                    </div>
+                </div>
+            `,
+            actionsHtml: `<button type="button" class="btn-brand-outline" style="padding:6px 12px; font-size:11px;" onclick="openBranchPickerModal()">تغيير الفرع الحالي</button>`
+        };
+    }
+
+    // 4. نية النقاط والمكافآت وإكمال الملف ودعوة صديق والفئات
+    const loyaltyKeywords = ['نقاط', 'نقطه', 'مكافا', 'هديه', 'هدايا', 'استبدال', 'ملف', 'دعوه', 'كود', 'رمز', 'فئه', 'فئات', 'مستوى', 'برونز', 'فضي', 'ذهب', 'vip', 'points', 'reward', 'referral'];
+    if (loyaltyKeywords.some(kw => q.includes(kw))) {
+        const pts = activeCustomer ? (activeCustomer.points || 0) : 0;
+        const tierName = calculateUserTier(activeCustomer);
+        const code = activeCustomer ? (activeCustomer.code || ('CORNER-' + activeCustomer.phone.slice(-4))) : 'CORNER-XXXX';
+        const profBonus = loyaltyRules.profileCompletionBonus || 150;
+        const refBonus = loyaltyRules.referralBonus || 150;
+        const ptsPerJod = loyaltyRules.pointsPerJod || 73;
+        const profDone = activeCustomer && activeCustomer.profileCompletedRewardClaimed;
+        const topRewards = rewardsCatalog.slice(0, 3).map(r => `${r.name} (${r.points} نقطة)`).join(' • ');
+
+        return {
+            reply: "نظام الولاء والمكافآت في كافيه كورنر مصمم لمكافأتك على كل طلب! عند استبدال أي مكافأة من المتجر يتم تحويلها مباشرة إلى سلتك بسعر 0.00 د.أ:",
+            structuredHtml: `
+                <div class="hala-structured-card">
+                    <div class="hala-structured-row"><span>رصيدك وفئتك الحالية:</span><strong class="num-font" style="color:var(--brand-primary);">${pts} نقطة (${tierName})</strong></div>
+                    <div class="hala-structured-row"><span>معدل الكسب:</span><strong class="num-font">${ptsPerJod} نقطة لكل 1 دينار</strong></div>
+                    <div class="hala-structured-row"><span>مكافأة إكمال الملف:</span><strong style="color:${profDone ? 'var(--status-success)' : 'var(--status-warning)'};">${profDone ? 'مكتملة ومستلمة' : '+' + profBonus + ' نقطة متاحة'}</strong></div>
+                    <div class="hala-structured-row"><span>رمز دعوتك:</span><strong class="num-font">${code} (+${refBonus} نقطة)</strong></div>
+                    <div style="font-size:10.5px; color:var(--text-secondary); padding-top:3px;">أبرز المكافآت: ${topRewards}</div>
+                </div>
+            `,
+            actionsHtml: `
+                <button type="button" class="btn-brand-solid" style="padding:6px 12px; font-size:11px;" onclick="navigateRouter('screen-rewards')">متجر المكافآت</button>
+                <button type="button" class="btn-brand-outline" style="padding:6px 12px; font-size:11px;" onclick="navigateRouter('screen-invite-friend')">دعوة صديق</button>
+                ${!profDone ? `<button type="button" class="btn-brand-outline" style="padding:6px 12px; font-size:11px;" onclick="openEditAccountModal()">إكمال الملف (+${profBonus})</button>` : ''}
+            `
+        };
+    }
+
+    // 5. نية النكهات والإضافات المتوفرة
+    const flavorAddonKeywords = ['نكهات', 'نكهه', 'صوص', 'صوصات', 'اضافات', 'اضافه', 'نوتيلا', 'لوتس', 'بستاشيو', 'كيندر', 'قشطه', 'مكسرات', 'عسل', 'ايس كريم', 'flavor', 'addon'];
+    if (flavorAddonKeywords.some(kw => q.includes(kw))) {
+        const flRows = systemFlavors.map(f => `
+            <div class="hala-structured-row">
+                <span>${f.name}</span>
+                <strong class="num-font" style="color:var(--brand-primary);">${Number(f.price) === 0 ? 'مشمول' : '+' + Number(f.price).toFixed(2) + ' د.أ'}</strong>
+            </div>
+        `).join('');
+        const adText = systemAddons.map(a => `${a.name} (+${Number(a.price).toFixed(2)} د.أ)`).join(' • ');
+
+        return {
+            reply: "تشكيلة النكهات والصوصات الفاخرة والإضافات المتوفرة لدينا:",
+            structuredHtml: `
+                <div class="hala-structured-card">
+                    ${flRows}
+                    <div style="font-size:10.5px; color:var(--text-secondary); padding-top:4px; border-top:1px dashed var(--border-subtle);">
+                        <strong>الإضافات المتاحة:</strong> ${adText}
+                    </div>
+                </div>
+            `,
+            actionsHtml: `<button type="button" class="btn-brand-solid" style="padding:6px 12px; font-size:11px;" onclick="navigateRouter('screen-home')">تخصيص صنف من المنيو</button>`
+        };
+    }
+
+    // 6. نية المنيو، الأصناف، الأسعار، والترشيحات
+    const menuKeywords = ['منيو', 'اسعار', 'سعر', 'اصناف', 'صنف', 'وافل', 'كريب', 'بان كيك', 'كنافه', 'كوكتيل', 'قهوه', 'لاتيه', 'سبانش', 'كابتشينو', 'فلات', 'كرك', 'مانجو', 'افوكادو', 'ليمون', 'بارد', 'ساخن', 'كبسول', 'شو عندكم', 'ترشح', 'افضل', 'اقترح', 'menu', 'price'];
+    if (menuKeywords.some(kw => q.includes(kw))) {
+        const queryWords = q.split(/\s+/).filter(w => w.length >= 3 && !['منيو', 'اسعار', 'سعر', 'اصناف', 'عندكم', 'بدي', 'اريد', 'كم'].includes(w));
+        const matchedItems = availProducts.filter(p => {
+            const pNameNorm = normalizeArabicForAi(p.name);
+            const pCatNorm = normalizeArabicForAi(p.category);
+            return queryWords.some(word => pNameNorm.includes(word) || pCatNorm.includes(word));
+        });
+
+        if (matchedItems.length > 0) {
+            const rowsHtml = matchedItems.slice(0, 6).map(p => `
+                <div class="hala-structured-row">
+                    <div>
+                        <strong>${p.name}</strong>
+                        <div style="font-size:10px; color:var(--text-muted);">${p.category}</div>
+                    </div>
+                    <strong class="num-font" style="color:var(--brand-primary);">${Number(p.price).toFixed(2)} د.أ</strong>
+                </div>
+            `).join('');
+
+            const quickOrderBtns = matchedItems.slice(0, 2).map(p =>
+                `<button type="button" class="btn-brand-solid" style="padding:6px 10px; font-size:10.5px;" onclick="openProductCustomizer('${p.id}')">طلب ${p.name}</button>`
+            ).join('');
+
+            return {
+                reply: `وجدت لك ${matchedItems.length} صنف مطابق في المنيو:`,
+                structuredHtml: `<div class="hala-structured-card">${rowsHtml}</div>`,
+                actionsHtml: `${quickOrderBtns}<button type="button" class="btn-brand-outline" style="padding:6px 10px; font-size:10.5px;" onclick="navigateRouter('screen-home')">كامل المنيو</button>`
+            };
+        }
+
+        const categoriesSummary = {};
+        availProducts.forEach(p => {
+            if (!categoriesSummary[p.category]) categoriesSummary[p.category] = { count: 0, minPrice: p.price };
+            categoriesSummary[p.category].count++;
+            if (p.price < categoriesSummary[p.category].minPrice) categoriesSummary[p.category].minPrice = p.price;
+        });
+
+        const catRows = Object.entries(categoriesSummary).map(([cat, info]) => `
+            <div class="hala-structured-row">
+                <span>قسم <strong>${cat}</strong> (${info.count} أصناف)</span>
+                <span class="num-font" style="color:var(--brand-primary); font-weight:800;">تبدأ من ${Number(info.minPrice).toFixed(2)} د.أ</span>
+            </div>
+        `).join('');
+
+        return {
+            reply: "قائمة كافيه كورنر الكاملة مقسمة إلى 8 أقسام رئيسية تُحضّر طازجة عند الطلب:",
+            structuredHtml: `<div class="hala-structured-card">${catRows}</div>`,
+            actionsHtml: `<button type="button" class="btn-brand-solid" style="padding:6px 12px; font-size:11px;" onclick="navigateRouter('screen-home')">استعراض المنيو والطلب</button>`
+        };
+    }
+
+    // 7. نية طرق الدفع والكوبونات
+    const payKeywords = ['دفع', 'كاش', 'كليك', 'فيزا', 'بطاقه', 'خصم', 'كوبون', 'cliq', 'visa', 'cash', 'coupon'];
+    if (payKeywords.some(kw => q.includes(kw))) {
+        const payRows = systemPaymentMethods.map(m => `
+            <div class="hala-structured-row">
+                <strong>${m.name}</strong>
+                <span style="font-size:10.5px; color:var(--text-secondary);">${m.desc || ''}</span>
+            </div>
+        `).join('');
+
+        return {
+            reply: "نوفر لك خيارات دفع مرنة ومعتمدة في جميع الفروع، مع إمكانية تطبيق أكواد الخصم داخل سلة المشتريات:",
+            structuredHtml: `<div class="hala-structured-card">${payRows}</div>`,
+            actionsHtml: `<button type="button" class="btn-brand-outline" style="padding:6px 12px; font-size:11px;" onclick="navigateRouter('screen-cart')">فتح سلة المشتريات</button>`
+        };
+    }
+
+    // 8. ترحيب وشكر
+    const greetKeywords = ['مرحبا', 'اهلا', 'السلام', 'هلا', 'صباح', 'مساء', 'كيفك', 'شكرا', 'يسلمو', 'يعطيك', 'hello', 'hi', 'thanks'];
+    if (greetKeywords.some(kw => q.includes(kw))) {
+        return {
+            reply: "أهلاً وسهلاً بك في كافيه كورنر! يسعدني خدمتك دائماً. اسألني عن أي صنف بالمنيو، أسعار التوصيل، نقاطك والمكافآت، أو تتبع طلبك.",
+            actionsHtml: ""
+        };
+    }
+
+    // 9. رد عام ذكي ومنظم مع كافة الخيارات
+    return {
+        reply: "أنا هنا لمساعدتك في كل ما يخص كافيه كورنر! يمكنك سؤالي مباشرة عن:",
+        structuredHtml: `
+            <div class="hala-structured-card">
+                <div class="hala-structured-row"><span>1. المنيو والأسعار</span><span style="color:var(--text-secondary);">وافل، كريب، كنافة، كوكتيلات، قهوة</span></div>
+                <div class="hala-structured-row"><span>2. التوصيل والفروع</span><span style="color:var(--text-secondary);">كفرسوم وسما الروسان والرسوم</span></div>
+                <div class="hala-structured-row"><span>3. النقاط والمكافآت</span><span style="color:var(--text-secondary);">استبدال مجاني للسلة بـ 0 د.أ</span></div>
+                <div class="hala-structured-row"><span>4. تتبع الطلبات</span><span style="color:var(--text-secondary);">متابعة حية والفواتير</span></div>
+            </div>
+        `,
+        actionsHtml: `
+            <button type="button" class="btn-brand-outline" style="padding:6px 12px; font-size:11px;" onclick="escalateHalaToHumanAgent('${rawUserInput.replace(/'/g, '')}')">التحدث مع موظف (قسم الشكاوى)</button>
+        `
+    };
+}
+
+window.escalateHalaToHumanAgent = function(contextReason = '') {
+    navigateRouter('screen-feedback');
+    const fbCategory = document.getElementById('customerFbCategory');
+    const fbTextarea = document.getElementById('customerFbText');
+    const fbBranchSel = document.getElementById('customerFbBranchSelect');
+
+    if (fbBranchSel) fbBranchSel.value = String(currentBranchIndex);
+    if (fbCategory) fbCategory.value = "شكوى بخصوص طلب";
+
+    const userMsgs = halaChatHistory.filter(m => m.sender === 'user').map(m => m.text).join(' | ');
+    const prefillText = userMsgs
+        ? `محوّل من المساعد الذكي حلا — ملخص استفسار العميل: ${userMsgs}`
+        : (contextReason || "طلب التحدث والمتابعة المباشرة مع موظف خدمة العملاء.");
+
+    if (fbTextarea) {
+        fbTextarea.value = prefillText;
+        fbTextarea.focus();
+    }
+
+    playSoftFeedbackTone(700);
+    showModernToast("تم تحويلك إلى قسم الشكاوى والدعم وتجهيز رسالتك للموظف", "info");
+};
 
 /* =========================================================
    درع الحماية المتقدم، التشفير، والقفل اليومي التلقائي للجلسات
@@ -4224,9 +5216,15 @@ window.navigateRouter = function(screenId) {
     if (target) { target.classList.add('active'); window.scrollTo({ top: 0, behavior: 'instant' }); }
 
     const navBar = document.getElementById('appBottomNavBar');
+    const halaLauncher = document.getElementById('halaFloatingTriggerBtn');
+    const isAdminView = (screenId === 'screen-master-admin' || screenId === 'screen-branch-admin');
+    const isHalaScreen = (screenId === 'screen-hala-ai');
+
     if (navBar) {
-        const isAdminView = (screenId === 'screen-master-admin' || screenId === 'screen-branch-admin');
-        navBar.style.display = isAdminView ? 'none' : 'flex';
+        navBar.style.display = (isAdminView || isHalaScreen) ? 'none' : 'flex';
+    }
+    if (halaLauncher) {
+        halaLauncher.style.display = (isAdminView || isHalaScreen) ? 'none' : 'flex';
     }
 
     document.querySelectorAll('.nav-tab-btn').forEach(btn => btn.classList.remove('active'));
@@ -5474,6 +6472,7 @@ function updateFulfillmentBannerText() {
    ========================================================= */
 function refreshFloatingCartDock() {
     const dock = document.getElementById('floatingCartSummaryDock');
+    const halaLauncher = document.getElementById('halaFloatingTriggerBtn');
     const count = cartList.reduce((s, i) => s + i.qty, 0);
     const total = cartList.reduce((s, i) => s + (i.price * i.qty), 0);
 
@@ -5483,8 +6482,10 @@ function refreshFloatingCartDock() {
         document.getElementById('dockItemsCountText').innerText = `سلة طلبك (${count} عناصر)`;
         document.getElementById('dockTotalAmountText').innerText = `JOD ${total.toFixed(2)}`;
         dock.classList.add('visible');
+        if (halaLauncher) halaLauncher.classList.add('lifted');
     } else {
         dock.classList.remove('visible');
+        if (halaLauncher) halaLauncher.classList.remove('lifted');
     }
 }
 
@@ -5560,25 +6561,37 @@ function renderCartScreen() {
         `;
     } else {
         listContainer.innerHTML = cartList.map((item, idx) => {
+            const isReward = Boolean(item.isRedeemedReward);
             const metaParts = [];
             if (item.flavor) metaParts.push('النكهات: ' + item.flavor);
             if (item.size) metaParts.push('الحجم: ' + item.size);
             if (item.addons && item.addons.length) metaParts.push('إضافات: ' + item.addons.join('، '));
+
             return `
-                <div class="clean-card" style="display:flex; align-items:center; justify-content:space-between; gap:10px;">
+                <div class="clean-card ${isReward ? 'redeemed-reward-cart-card' : ''}" style="display:flex; align-items:center; justify-content:space-between; gap:10px;">
                     <div style="display:flex; align-items:center; gap:10px; flex:1; min-width:0;">
-                        <img src="${item.img}" style="width:48px; height:48px; border-radius:8px; object-fit:cover; background:#000; flex-shrink:0;">
+                        <img src="${item.img}" style="width:48px; height:48px; border-radius:8px; object-fit:cover; background:#000; flex-shrink:0;" onerror="this.src='https://images.unsplash.com/photo-1562376552-0d160a2f238d?w=200&q=80';">
                         <div style="min-width:0;">
                             <div style="font-size:13px; font-weight:800;">${item.name}</div>
-                            <div style="font-size:10.5px; color:var(--text-secondary);">${metaParts.join(' | ')}</div>
-                            <div class="num-font" style="font-size:12.5px; font-weight:800; color:var(--brand-primary); margin-top:2px;">${(item.price * item.qty).toFixed(2)} د.أ</div>
+                            ${isReward
+                                ? `<span class="redeemed-reward-tag">مكافأة مستبدلة بالنقاط • مجاناً</span>`
+                                : `<div style="font-size:10.5px; color:var(--text-secondary);">${metaParts.join(' | ')}</div>`}
+                            <div class="num-font" style="font-size:12.5px; font-weight:900; color:${isReward ? 'var(--status-success)' : 'var(--brand-primary)'}; margin-top:3px;">
+                                ${isReward ? '0.00 د.أ (مشمول بالنقاط)' : (item.price * item.qty).toFixed(2) + ' د.أ'}
+                            </div>
                         </div>
                     </div>
-                    <div style="display:flex; align-items:center; gap:6px;">
-                        <button class="header-btn" style="width:28px; height:28px;" onclick="updateCartItemQty(${idx}, -1)">−</button>
-                        <span class="num-font" style="font-size:13px; font-weight:800;">${item.qty}</span>
-                        <button class="header-btn" style="width:28px; height:28px;" onclick="updateCartItemQty(${idx}, 1)">+</button>
-                    </div>
+                    ${isReward ? `
+                        <button class="header-btn" style="width:32px; height:32px; color:var(--status-danger); border-color:rgba(239,68,68,0.35);" onclick="updateCartItemQty(${idx}, -1)" title="إلغاء الاستبدال واسترجاع النقاط">
+                            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+                        </button>
+                    ` : `
+                        <div style="display:flex; align-items:center; gap:6px;">
+                            <button class="header-btn" style="width:28px; height:28px;" onclick="updateCartItemQty(${idx}, -1)">−</button>
+                            <span class="num-font" style="font-size:13px; font-weight:800;">${item.qty}</span>
+                            <button class="header-btn" style="width:28px; height:28px;" onclick="updateCartItemQty(${idx}, 1)">+</button>
+                        </div>
+                    `}
                 </div>
             `;
         }).join('');
@@ -5593,7 +6606,7 @@ function renderCartScreen() {
     } else if (discountRow) discountRow.style.display = 'none';
 
     let deliveryFee = 0;
-    if (currentFulfillmentMode === 'delivery' && sub > 0 && townSelect && townSelect.selectedOptions[0]) {
+    if (currentFulfillmentMode === 'delivery' && cartList.length > 0 && townSelect && townSelect.selectedOptions[0]) {
         const parsedFee = parseFloat(townSelect.selectedOptions[0].dataset.fee);
         deliveryFee = isNaN(parsedFee) ? 0.50 : parsedFee;
     }
@@ -5605,9 +6618,33 @@ function renderCartScreen() {
 }
 
 window.updateCartItemQty = function(idx, delta) {
-    if (!cartList[idx]) return;
-    cartList[idx].qty += delta;
-    if (cartList[idx].qty <= 0) cartList.splice(idx, 1);
+    const item = cartList[idx];
+    if (!item) return;
+
+    if (item.isRedeemedReward && delta > 0) {
+        return showModernToast("هذا الصنف مكافأة مستبدلة بالنقاط (كمية 1 مجاناً)", "info");
+    }
+
+    item.qty += delta;
+    if (item.qty <= 0) {
+        if (item.isRedeemedReward && item.rewardPointsCost && activeCustomer) {
+            const refundPts = parseInt(item.rewardPointsCost, 10) || 0;
+            activeCustomer.points = (activeCustomer.points || 0) + refundPts;
+            if (!Array.isArray(activeCustomer.pointsHistory)) activeCustomer.pointsHistory = [];
+            activeCustomer.pointsHistory.unshift({
+                title: `استرجاع نقاط إلغاء مكافأة: ${item.name}`,
+                points: refundPts,
+                date: new Date().toLocaleDateString('ar-JO')
+            });
+            allRegisteredCustomers[activeCustomer.phone] = activeCustomer;
+            safeSet('cc_crm_directory', allRegisteredCustomers);
+            safeSet('cc_active_client_user', activeCustomer);
+            if (cloudDb) cloudDb.collection('users').doc(activeCustomer.phone).set(activeCustomer).catch(() => {});
+            updateProfileDisplayDOM();
+            showModernToast(`تمت إزالة المكافأة واسترجاع ${refundPts} نقطة إلى رصيدك`, "info");
+        }
+        cartList.splice(idx, 1);
+    }
     safeSet('cc_cart', cartList);
     renderCartScreen();
     refreshFloatingCartDock();
@@ -5652,6 +6689,11 @@ window.confirmOrderAndForwardWhatsApp = function() {
     if (cartList.length === 0) return showModernToast("سلة المشتريات فارغة!", "danger");
 
     cartList.forEach(item => {
+        if (item.isRedeemedReward) {
+            item.price = 0;
+            item.qty = 1;
+            return;
+        }
         const realProd = productsList.find(p => p.id === item.id);
         if (realProd) {
             let verifiedUnit = Number(realProd.price) || 0;
@@ -5688,7 +6730,7 @@ window.confirmOrderAndForwardWhatsApp = function() {
 
     const grand = (Math.max(0, sub - discountVal) + deliveryFee).toFixed(2);
     const payMethod = document.querySelector('input[name="payRadioMethod"]:checked')?.value || "دفع نقدي (كاش Cash)";
-    const earnedOrderPoints = Math.max(5, Math.round(parseFloat(grand) * (loyaltyRules.pointsPerJod || 73)));
+    const earnedOrderPoints = parseFloat(grand) > 0 ? Math.max(5, Math.round(parseFloat(grand) * (loyaltyRules.pointsPerJod || 73))) : 0;
 
     const nowDate = new Date();
     const todayIso = getTodayIsoDate();
@@ -5733,11 +6775,13 @@ window.confirmOrderAndForwardWhatsApp = function() {
     activeCustomer.ordersCount = (activeCustomer.ordersCount || 0) + 1;
     activeCustomer.savedTotal = (activeCustomer.savedTotal || 0) + discountVal;
     if (!Array.isArray(activeCustomer.pointsHistory)) activeCustomer.pointsHistory = [];
-    activeCustomer.pointsHistory.unshift({
-        title: `فاتورة طلب رقم ${orderId}`,
-        points: earnedOrderPoints,
-        date: nowDate.toLocaleDateString('ar-JO')
-    });
+    if (earnedOrderPoints > 0) {
+        activeCustomer.pointsHistory.unshift({
+            title: `فاتورة طلب رقم ${orderId}`,
+            points: earnedOrderPoints,
+            date: nowDate.toLocaleDateString('ar-JO')
+        });
+    }
 
     if (activeCustomer.referredBy && !activeCustomer.referralRewardClaimed) {
         const bonus = loyaltyRules.referralBonus || 150;
@@ -5796,7 +6840,7 @@ window.confirmOrderAndForwardWhatsApp = function() {
     updateAdminHubCounters();
     playSoftFeedbackTone(880);
 
-    showModernToast(`تم إرسال طلبك بنجاح وكسبت ${earnedOrderPoints} نقطة!`, "success");
+    showModernToast(earnedOrderPoints > 0 ? `تم إرسال طلبك بنجاح وكسبت ${earnedOrderPoints} نقطة!` : "تم إرسال طلبك بنجاح!", "success");
     navigateRouter('screen-order-tracking');
     openOfficialInvoiceModal(orderId);
 };
@@ -5828,6 +6872,7 @@ window.openOfficialInvoiceModal = function(orderId) {
     const tbody = document.getElementById('invItemsTableBody');
     tbody.innerHTML = (ord.items || []).map(it => {
         const subDetails = [];
+        if (it.isRedeemedReward) subDetails.push('مكافأة مستبدلة بالنقاط (مجاني)');
         if (it.flavor) subDetails.push('النكهات: ' + it.flavor);
         if (it.size) subDetails.push('الحجم: ' + it.size);
         if (it.addons && it.addons.length) subDetails.push('إضافات: ' + it.addons.join('، '));
@@ -5858,7 +6903,7 @@ window.openOfficialInvoiceModal = function(orderId) {
     const waBtn = document.getElementById('invWhatsAppShareBtn');
     if (waBtn) {
         waBtn.onclick = function() {
-            const itemsLines = (ord.items || []).map(i => `• ${i.name} (${i.qty}×)${i.flavor ? ' [' + i.flavor + ']' : ''}${i.size ? ' (' + i.size + ')' : ''}`).join('\n');
+            const itemsLines = (ord.items || []).map(i => `• ${i.name} (${i.qty}×)${i.isRedeemedReward ? ' [مكافأة مجانية 0.00 د.أ]' : ''}${i.flavor ? ' [' + i.flavor + ']' : ''}${i.size ? ' (' + i.size + ')' : ''}`).join('\n');
             const waText = `فاتورة طلب رسمية - كافيه كورنر\nرقم الفاتورة: ${ord.orderId}\nالفرع: ${ord.branchName}\nالعميل: ${ord.customerName} (${ord.customerPhone})\nالاستلام: ${ord.town}\nالدفع: ${ord.paymentMethod}\n\nالأصناف:\n${itemsLines}\n\nالإجمالي المستحق: ${ord.total} د.أ`;
             const targetPhone = (ord.branchWhatsapp || branchObj.whatsapp || "962796433698").replace(/[^0-9]/g, '');
             window.open(`https://wa.me/${targetPhone}?text=${encodeURIComponent(waText)}`, '_blank');
@@ -5931,7 +6976,7 @@ function buildDailySalesClosingSnapshot(branchIdOrNull = null, targetIsoDate = n
 }
 
 function renderDailyClosingModalContent(closingObj, isAlreadyArchived = false) {
-    document.getElementById('dCloseBranchTitle').innerText = `فاتورة إقفال المبيعات اليومية — ${closingObj.scopeName}`;
+    document.getElementById('dCloseBranchTitle').innerText = `فاتورة إقفال الحسابات والمبيعات اليومية — ${closingObj.scopeName}`;
     document.getElementById('dCloseScopeSub').innerText = `تاريخ اليوم المالي: ${closingObj.isoDate}`;
     document.getElementById('dCloseInvoiceId').innerText = closingObj.closingId;
     document.getElementById('dCloseDateTime').innerText = `${closingObj.isoDate} • ${closingObj.closedTimeStr || ''}`;
@@ -6201,7 +7246,7 @@ function renderAdminStatisticsPanel() {
 }
 
 /* =========================================================
-   المكافآت وفئات الولاء والمهام (تشمل مهمة إكمال الملف الشخصي)
+   المكافآت (التحويل المباشر للسلة بسعر 0.00 د.أ عند الاستبدال)
    ========================================================= */
 function renderRewardsDisplay() {
     const c = document.getElementById('clientRewardItemsCatalogList');
@@ -6211,36 +7256,72 @@ function renderRewardsDisplay() {
     c.innerHTML = rewardsCatalog.map(rw => `
         <div class="clean-card" style="display:flex; align-items:center; justify-content:space-between; gap:10px;">
             <div style="display:flex; align-items:center; gap:10px;">
-                <img src="${rw.img}" style="width:48px; height:48px; border-radius:8px; object-fit:cover; background:#000;" onerror="this.src='https://images.unsplash.com/photo-1562376552-0d160a2f238d?w=200&q=80';">
+                <img src="${rw.img}" style="width:52px; height:52px; border-radius:10px; object-fit:cover; background:#000; flex-shrink:0;" onerror="this.src='https://images.unsplash.com/photo-1562376552-0d160a2f238d?w=200&q=80';">
                 <div>
                     <div style="font-size:13px; font-weight:800;">${rw.name}</div>
-                    <div class="num-font" style="font-size:11.5px; font-weight:800; color:var(--brand-primary);">${rw.points} نقطة</div>
+                    <div style="display:flex; align-items:center; gap:6px; margin-top:3px;">
+                        <span class="num-font" style="font-size:11.5px; font-weight:800; color:var(--brand-primary);">${rw.points} نقطة</span>
+                        <span style="font-size:9.5px; background:rgba(16,185,129,0.12); color:var(--status-success); padding:1px 7px; border-radius:99px; font-weight:800;">0.00 د.أ في السلة</span>
+                    </div>
                 </div>
             </div>
-            <button class="btn-brand-solid" style="width:auto; padding:6px 14px; font-size:11.5px;" onclick="redeemRewardItem('${rw.id}')">استبدال</button>
+            <button class="btn-brand-solid" style="width:auto; padding:7px 14px; font-size:11.5px;" onclick="redeemRewardItem('${rw.id}')">استبدال</button>
         </div>
     `).join('');
 }
 
 window.redeemRewardItem = function(rwId) {
-    if (!activeCustomer) return enforceAuthGatekeeper();
+    if (!activeCustomer) {
+        guestBrowsingActive = false;
+        enforceAuthGatekeeper(true);
+        return showModernToast("يرجى تسجيل الدخول لاستبدال نقاطك بالمكافآت", "info");
+    }
     const rw = rewardsCatalog.find(r => r.id === rwId);
     if (!rw) return;
 
-    if ((activeCustomer.points || 0) < rw.points) return showModernToast("رصيد نقاطك الحالي لا يكفي لاستبدال هذه المكافأة", "danger");
+    if ((activeCustomer.points || 0) < rw.points) {
+        return showModernToast("رصيد نقاطك الحالي لا يكفي لاستبدال هذه المكافأة", "danger");
+    }
 
+    // 1. خصم النقاط وتسجيل الحركة في سجل النقاط
     activeCustomer.points -= rw.points;
     if (!Array.isArray(activeCustomer.pointsHistory)) activeCustomer.pointsHistory = [];
-    activeCustomer.pointsHistory.unshift({ title: `استبدال مكافأة: ${rw.name}`, points: -rw.points, date: new Date().toLocaleDateString('ar-JO') });
+    activeCustomer.pointsHistory.unshift({
+        title: `استبدال مكافأة وإضافتها للسلة: ${rw.name}`,
+        points: -rw.points,
+        date: new Date().toLocaleDateString('ar-JO')
+    });
 
     allRegisteredCustomers[activeCustomer.phone] = activeCustomer;
     safeSet('cc_crm_directory', allRegisteredCustomers);
     safeSet('cc_active_client_user', activeCustomer);
     if (cloudDb) cloudDb.collection('users').doc(activeCustomer.phone).set(activeCustomer).catch(e => console.warn(e));
 
+    // 2. تحويل الصنف المستبدل مباشرة إلى سلة الشراء بسعر 0.00 د.أ
+    cartList.push({
+        cartId: "rw_cart_" + Date.now() + "_" + Math.floor(Math.random() * 999),
+        id: rw.id,
+        rewardId: rw.id,
+        rewardPointsCost: rw.points,
+        isRedeemedReward: true,
+        name: rw.name,
+        img: rw.img || "https://images.unsplash.com/photo-1562376552-0d160a2f238d?w=400&q=80",
+        flavor: "",
+        size: "",
+        addons: [],
+        notes: "مكافأة مستبدلة بالنقاط - مجاني 0.00 د.أ",
+        price: 0,
+        qty: 1
+    });
+
+    safeSet('cc_cart', cartList);
     updateProfileDisplayDOM();
     renderRewardsDisplay();
-    showModernToast(`تم استبدال (${rw.name}) بنجاح!`, "success");
+    refreshFloatingCartDock();
+    playSoftFeedbackTone(860);
+
+    showModernToast(`تم استبدال (${rw.name}) وتحويله مباشرة إلى سلتك بسعر 0.00 د.أ!`, "success");
+    navigateRouter('screen-cart');
 };
 
 function renderLoyaltyTiersScreen() {
@@ -6369,7 +7450,6 @@ window.openEditAccountModal = function() {
     if (activeCustomer.avatar) prev.innerHTML = `<img src="${activeCustomer.avatar}" alt="Avatar">`;
     else prev.innerHTML = `<span>${(activeCustomer.name || "ع").charAt(0)}</span>`;
 
-    // ربط التحديث الحي لشريط الإكمال عند الكتابة
     ['accEditFirstName', 'accEditLastName', 'accEditEmailAddress', 'accEditGenderSelect', 'accEditBirthDateInput', 'accEditCity', 'accEditArea', 'accEditDetailedLocation'].forEach(id => {
         const el = document.getElementById(id);
         if (el) el.oninput = refreshEditModalCompletionChecklist;
@@ -6412,7 +7492,6 @@ window.saveComprehensiveProfileModifications = function() {
     activeCustomer.locationAddress = sanitizeText(document.getElementById('accEditDetailedLocation').value);
     activeCustomer.profession = sanitizeText(document.getElementById('accEditProfession').value);
 
-    // حفظ العنوان التفصيلي تلقائياً في العناوين المحفوظة إذا كان غير موجود
     if (activeCustomer.city && activeCustomer.locationAddress && savedCustomerAddresses.length === 0) {
         savedCustomerAddresses.push({
             id: "ad_prof_" + Date.now(),
@@ -6551,7 +7630,7 @@ window.submitCustomerFeedback = function() {
     document.getElementById('customerFbText').value = '';
     renderCustomerFeedbackScreen();
     updateAdminHubCounters();
-    showModernToast(`تم إرسال رسالتك إلى ${branchName} بنجاح`, "success");
+    showModernToast(`تم إرسال رسالتك إلى موظفي ${branchName} بنجاح`, "success");
 };
 
 /* =========================================================
@@ -6604,7 +7683,7 @@ function checkAndRenderSecurityLockout() {
         const remSec = Math.ceil((lockUntil - now) / 1000);
         if (noticeEl) {
             noticeEl.style.display = 'block';
-            noticeEl.innerText = `تم إيقاف التحقق مؤقتاً لأسباب أمنية. يرجى الانتظار (${remSec} ثانية).`;
+            noticeEl.innerText = `تم إيقاف التحقق مؤقتاً لأسباب أمنية. يرجى الانتار (${remSec} ثانية).`;
         }
         if (pinField) pinField.disabled = true;
         if (submitBtn) submitBtn.disabled = true;
@@ -6810,7 +7889,7 @@ function renderBranchAdminDashboard() {
                             ${ord.mode === 'pickup' ? 'استلام من الفرع' : 'توصيل: ' + ord.town} • ${ord.paymentMethod}
                         </div>
                         <div style="background:var(--bg-elevated); padding:7px 9px; border-radius:6px; font-size:11px; margin:6px 0;">
-                            ${(ord.items || []).map(i => `<div>• ${i.name} (${i.qty}×) ${i.flavor ? '[' + i.flavor + ']' : ''}</div>`).join('')}
+                            ${(ord.items || []).map(i => `<div>• ${i.name} (${i.qty}×)${i.isRedeemedReward ? ' [مكافأة مجانية 0.00 د.أ]' : ''} ${i.flavor ? '[' + i.flavor + ']' : ''}</div>`).join('')}
                         </div>
                         <div style="display:flex; justify-content:space-between; align-items:center; margin-top:8px; flex-wrap:wrap; gap:6px;">
                             <strong class="num-font" style="font-size:13px;">${ord.total} د.أ</strong>
@@ -7763,7 +8842,7 @@ function renderAdminOrdersPanel() {
                 </div>
                 <div style="font-size:11.5px; font-weight:700;">${ord.customerName} (${ord.customerPhone}) • <span style="color:var(--brand-primary);">${ord.branchName}</span></div>
                 <div style="font-size:10.5px; color:var(--text-secondary); margin:4px 0;">
-                    ${(ord.items || []).map(i => `${i.name} (${i.qty}×)${i.flavor ? ' [' + i.flavor + ']' : ''}${i.size ? ' (' + i.size + ')' : ''}`).join(' | ')}
+                    ${(ord.items || []).map(i => `${i.name} (${i.qty}×)${i.isRedeemedReward ? ' [مكافأة مجانية 0.00 د.أ]' : ''}${i.flavor ? ' [' + i.flavor + ']' : ''}${i.size ? ' (' + i.size + ')' : ''}`).join(' | ')}
                 </div>
                 <div style="display:flex; justify-content:space-between; align-items:center; margin-top:8px; padding-top:6px; border-top:1px dashed var(--border-subtle); flex-wrap:wrap; gap:6px;">
                     <strong class="num-font" style="font-size:12.5px;">${ord.total} د.أ (${ord.paymentMethod})</strong>
@@ -7976,7 +9055,7 @@ window.saveNewRewardItemFromAdmin = function() {
 
     if (!name || !points || points <= 0) return showModernToast("يرجى إدخال اسم الهدية وعدد النقاط", "danger");
 
-    rewardsCatalog.push({ id: "rw_" + Date.now(), name, points, img });
+    rewardsCatalog.push({ id: "rw_" + Date.now(), name, points, img, isStoreItem: true });
     const modStamp = stampLocalModification('rewards_catalog');
     safeSet('cc_rewards_catalog', rewardsCatalog);
     if (cloudDb) cloudDb.collection('settings').doc('rewards_catalog').set({ items: rewardsCatalog, updatedAt: modStamp }).catch(e => console.warn(e));
